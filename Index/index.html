@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="ROBOTS" content="ALL"/>
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <meta name="keywords" content="easySwoole|swoole框架|easySwoole文档" />
+    <meta name="description" content="easySwoole框架文档，旨在提供一个高效、快速、优雅的框架给php开发者。" />
+
+    <!-- Favicons -->
+    <meta name="msapplication-TileColor" content="#113228">
+
+    <title>easySwoole|swoole框架|使PHP开发变得快速、高效</title>
+
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body id="homepage" class="homepage">
+
+<div role="banner" id="top">
+    <div class="container">
+        <a class="logo" href="#">EasySwoole&nbsp;&nbsp;<span>简洁、快速</span></a>
+        <div role="navigation">
+            <ul>
+                <li>
+                    <a href="https://github.com/kiss291323003/easyswoole">下载</a>
+                </li>
+                <li>
+                    <a href="/_book">文档</a>
+                </li>
+                <li>
+                    <a href="/_book/feedBack.html">捐赠</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="copy-banner">
+    <div class="container">
+        <p class="cb-name">EasySwoole</p>
+        <div style="border: solid 1px;width: 390px;text-align: left;border-radius:10px;margin: 0 auto">
+            <p style="font-size: 15px;line-height: 5px;padding: 10px 10px 0 10px;">//命令行快速安装</p>
+            <p style="font-size: 15px;line-height: 10px;padding: 0px 10px 0px 10px;">bash <(curl http://www.easyswoole.com/installer.sh)</p>
+            <p style="font-size: 15px;line-height: 5px;padding: 10px 10px 0 10px;">//OR</p>
+            <p style="font-size: 15px;line-height: 10px;padding: 0px 10px 10px 10px;">curl http://www.easyswoole.com/installer.php | php</p>
+        </div>
+    </div>
+</div>
+<div id="billboard"></div>
+
+<div class="container sidebar-right">
+    <div role="main">
+        <div class="section">
+            <h1>了解 EasySwoole</h1>
+            <p>
+                EasySwoole 是一款基于Swoole Server 开发的常驻内存型PHP框架，专为API而生，摆脱传统PHP运行模式在进程唤起和文件加载上带来的性能损失。EasySwoole 高度封装了Swoole Server 而依旧维持Swoole Server 原有特性，支持同时混合监听HTTP、自定义TCP、UDP协议，让开发者以最低的学习成本和精力编写出多进程，可异步，高可用的应用服务。
+            </p>
+            <h1>项目背景</h1>
+            <p>
+                最早接触Swoole，是2015年年初，为实现一个可以实时控制的多进程爬虫而接触的Swoole，进而为Swoole的各种便捷、高效所着迷。
+                为此，做了综合技术评审之后，公司决定开始全线推展Swoole，并利用Swoole实现承载每天对外过亿的任务爬取与投递服务。2017年年初，在<a href="http://rango.swoole.com/" target="_blank">Rango</a>的鼓励下,我决定将框架进行开源，并在Rango的建议下，命名为EasySwoole。
+            </p>
+            <dl class="list-features">
+                <dt><i class="icon icon-bolt"></i> 开发效率快</dt>
+                <dd>
+                    <p>极度精简的MV设计模式，创建一个控制器并写入对应方法即可实现访问。用法与TP5、Laravel等主流框架高度一致</p>
+                </dd>
+
+                <dt><i class="icon icon-group"></i>并发高</dt>
+                <dd>
+                    <p>支持并发百万TCP连接，在基础的Http接口测试中，阿里云单核1G的机器在输出'hello world'的ab测试中，可达12000Qps</p>
+                </dd>
+
+                <dt><i class="icon icon-align-justify"></i> WEB SOCKET/TCP/UDP/UnixSock</dt>
+                <dd>
+                    <p>支持WEB SOCKET、TCP、UDP协议，支持同时存在多种混合协议与跨协议通讯，助力IM、游戏、IOT等行业</p>
+                </dd>
+
+                <dt><i class="icon icon-tasks"></i> 支持(多)异步任务</dt>
+                <dd>
+                    <p>支持在服务中调用自定义异步任务，将繁重、耗时的任务交由Server异步处理，以提高API响应速度</p>
+                </dd>
+
+                <dt><i class="icon">T</i> 支持毫秒级定时器</dt>
+                <dd>
+                    <p>无需借助crontab即可实现在多个回调函数内创建多个循环定时器和延时定时器</p>
+                </dd>
+
+                <dt><i class="icon">E</i>Event Loop/Process</dt>
+                <dd>
+                    <p>支持添加自定义事件或是Process进程参与Server底层Event Loop循环调度</p>
+                </dd>
+            </dl>
+        </div>
+        <a href="#top" class="backtotop"><i class="icon icon-chevron-up"></i> Back to Top</a>
+    </div>
+
+
+</div>
+
+
+<div role="contentinfo">
+    <div class="footer">
+        <div class="container">
+            <p class="copyright">&copy; 2016-2017 EasySwoole
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+</body>
+</html>
