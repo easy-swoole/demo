@@ -4,35 +4,36 @@
 ## 系统配置项 
 ```
 array(
-       "SERVER"=>
-            array(
+    "SERVER"=>array(
                 "LISTEN"=>"0.0.0.0",
                 "SERVER_NAME"=>"",
                 "PORT"=>9501,
-                "WS_SUPPORT"=>false,
+                "RUN_MODE"=>SWOOLE_PROCESS,//不建议更改此项
+                "SERVER_TYPE"=>\Core\Swoole\Config::SERVER_TYPE_WEB,//
+                'SOCKET_TYPE'=>SWOOLE_TCP,//当SERVER_TYPE为SERVER_TYPE_SERVER模式时有效
                 "CONFIG"=>array(
-                    'task_worker_num' => 4, //异步任务进程
+                    'task_worker_num' => 8, //异步任务进程
                     "task_max_request"=>10,
-                    'max_request'=>3000,
-                    'worker_num'=>4,
-                    "log_file"=>ROOT.'/Log/swoole_log.txt',
-                    'pid_file'=>ROOT."/Log/pid.pid",
+                    'max_request'=>5000,//强烈建议设置此配置项
+                    'worker_num'=>8,
+                    "log_file"=>Di::getInstance()->get(SysConst::LOG_DIRECTORY)."/swoole.log",
+                    'pid_file'=>Di::getInstance()->get(SysConst::LOG_DIRECTORY)."/pid.pid",
                 ),
             ),
-            "DEBUG"=>array(
+    "DEBUG"=>array(
                 "LOG"=>1,
                 "DISPLAY_ERROR"=>1,
                 "ENABLE"=>false,
             ),
-            "CONTROLLER_POOL"=>true
-        );
+    "CONTROLLER_POOL"=>true//web或web socket模式有效
+);
 ```
 每个配置项的含义如下：
 
  - LISTEN, 配置 server 监听的 IP 地址。
  - SERVER_NAME, 为当前 server 配置一个名称。
  - PORT， 配置 Server 监听的端口
- - WS_SUPPORT， 是否开启 Websocket 的支持。
+ - SERVER_TYPE，可选值为SERVER_TYPE_SERVER、SERVER_TYPE_WEB、SERVER_TYPE_WEB_SOCKET 。
  - CONFIG， 这个配置项为一个数组。为 swoole 扩展定义的配置，包括 worker 进程数、task 进程数等等配置。如果需要对 swoole 定义的配置进行设置，可以修改这个数组。更多 swoole 配置相关的内容见 swoole 文档
  - DEBUG['ENABLE']，是否开启 Debug 模式，当这个值为 false, 那么 DEBUG['LOG'] 和 DEBUG['DISPLAY_ERROR'] 配置无效。
  - CONTROLLER_POOL 开启控制器对象池模式
