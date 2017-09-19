@@ -31,7 +31,7 @@ easySwoole 项目依赖于 Swoole 扩展，在使用 easySwoole 之前需要先�
 ## Hello World
 进入 src 目录，执行
 ```
-php server.php start 
+php server start 
 ```
 启动 easySwoole。在浏览器输入 ip:9501/ 可以看到欢迎使用语说明安装成功。
 
