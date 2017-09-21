@@ -185,10 +185,12 @@ class Index extends AbstractController
 ```
 
 ### 代码准备完毕
+
 执行 php server start 启动easySwoole
 - http://localhost:9501/  直播观看界面
 - http://localhost:9501/camera/index.html  直播界面
 
-![实例](Resource/Usage/live.png);
+![example](/Resource/Usage/live.png)
+
 
 > 注意：本代码仅为实例代码，展示了基础原理。未做房间号、缓存等处理，请勿用于生产环境
