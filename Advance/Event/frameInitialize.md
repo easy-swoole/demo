@@ -15,3 +15,8 @@ $loader = AutoLoader::getInstance();
 $loader->requireFile("App/Vendor/Aip/Speech/AipSpeech.php");
 $loader->addNamespace("OSS","App/Vendor/Ali/OSS");
 ```
+
+>注意：执行该事件时，还未初始化应用目录。若需要修改默认应用目录，用以下方式修改:
+```
+Di::getInstance()->set(SysConst::APPLICATION_DIR,"your DIR");
+```
