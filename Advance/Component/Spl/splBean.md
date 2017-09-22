@@ -2,7 +2,7 @@
 SplBean是一个抽象类,借以实现类似Java Bean中半自动化ORM。
 例如在java中常见的：
 ```
-$db->inseert('user_table',$bean->toArray());
+$db->insert('user_table',$bean->toArray());
 ```
 当用户需要Bean层时，只需要新建对应的Bean class并继承\Core\Component\Spl\SplBean实现其initialize()。
 
