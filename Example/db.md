@@ -1,6 +1,5 @@
 # Model与数据库
-鉴于每个用户的使用习惯问题，EasySwoole本身并不提供封装好的数据库操作与Model层，但我们强力
-推荐在项目中使用第三方开源库[https://github.com/joshcam/PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class)
+鉴于每个用户的使用习惯问题，EasySwoole本身并不提供封装好的数据库操作与Model层，但我们强力推荐在项目中使用第三方开源库[https://github.com/joshcam/PHP-MySQLi-Database-Class](https://github.com/joshcam/PHP-MySQLi-Database-Class)
 作为数据操作类库，并构建自己的Model。
 ## 使用指导
 ### 项目引入
@@ -87,4 +86,6 @@ class Goods
     }
 }
 ```
+
+>注意：数据库若使用单例模式保持长连接，一定要处理断线问题。本文中推荐的数据库类已经处理了。
 
