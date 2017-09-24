@@ -53,7 +53,7 @@
     * UDP
     * [直播](Example/live.md)
 * 常见问题
-    * [数据库断线]
+    * [数据库断线](Problem/mysql_disconnect.md)
     * 数据跨进程共享
     * [CURL SSL错误](Problem/curl_ssl.md)
 * 企业用例     
