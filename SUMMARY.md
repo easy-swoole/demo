@@ -14,13 +14,13 @@
     * [框架安装与启动](Base/install.md)    
     * [框架配置文件](Base/config.md)
     * URL与控制器
-        * [URL规则](Base/Controller/url.md)
+        * [URL路由规则](Base/Controller/url.md)
         * [基础控制器](Base/Controller/controller.md)
         * [REST](Base/Controller/rest.md)
         * [Request对象](Base/Controller/request.md)
         * [Response对象](Base/Controller/response.md)
         * [PSR-7 Http Message](Base/Controller/psr-7.md)
-        * [路由](Base/Controller/router.md)
+        * [自定义路由](Base/Controller/router.md)
     * [自动加载](Base/loader.md)    
 * 框架进阶
     * [系统事件](Advance/Event/event.md)
