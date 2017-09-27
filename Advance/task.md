@@ -57,3 +57,59 @@ Core\Component\Barrier 是对SWoole taskWaitMulti的封装实现。
 > 注意：Barrier为阻塞等待执行，所有的任务会被分发到不同Task进程同步执行，
 直到所有的任务执行结束或超时才返回全部结果。以上代码中，限制了三个任务的最大执行时间为1秒，
 仅有a、b两个任务能够被执行并返回结果。
+
+## 使用示例
+### 在控制器中使用
+```
+class Index extends AbstractController
+{
+
+    function index()
+    {
+        // TODO: Implement index() method.
+        AsyncTaskManager::getInstance()->add(function (){
+            sleep(3);
+            Logger::getInstance()->console("task finish");
+        });
+        $this->response()->writeJson(Status::CODE_OK,null,'任务已经提交');
+    }
+
+    function onRequest($actionName)
+    {
+        // TODO: Implement onRequest() method.
+    }
+
+    function actionNotFound($actionName = null, $arguments = null)
+    {
+        // TODO: Implement actionNotFound() method.'
+        $this->response()->withStatus(Status::CODE_NOT_FOUND);
+    }
+
+    function afterAction()
+    {
+        // TODO: Implement afterAction() method.
+    }
+
+    function auth(){
+
+    }
+}
+```
+
+### Event.php workerStart的定时器中使用
+```
+ function onWorkerStart(\swoole_server $server, $workerId)
+    {
+        // TODO: Implement onWorkerStart() method.
+        if($workerId == 0){
+            Timer::loop(110000,function (){
+                AsyncTaskManager::getInstance()->add(function (){
+                    sleep(3);
+                    Logger::getInstance()->console("task finish");
+                });
+            });
+        }
+    }
+```
+
+

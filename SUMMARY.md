@@ -21,6 +21,7 @@
         * [Response对象](Base/Controller/response.md)
         * [PSR-7 Http Message](Base/Controller/psr-7.md)
         * [自定义路由](Base/Controller/router.md)
+        * [请求拦截与权限控制](Base/Controller/auth.md)
     * [自动加载](Base/loader.md)    
 * 框架进阶
     * [系统事件](Advance/Event/event.md)
