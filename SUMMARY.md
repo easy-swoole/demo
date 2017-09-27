@@ -49,6 +49,7 @@
 * 示例代码
     * [控制器](Example/controller.md)
     * [Model与数据库](Example/db.md)
+    * [redis封装示例](Example/redis.md)
     * [web socket]    
     * TCP
     * UDP
