@@ -14,11 +14,11 @@ Di::getInstance()->set("dbClass",new DbClass());
 ## 为Swoole Http Server添加web Socket支持
 ```
 $server->on("message",function (\swoole_websocket_server $server, \swoole_websocket_frame $frame){
-            Logger::console("receive data".$frame->data);
+            Logger::getInstance()->console("receive data".$frame->data);
             $server->push($frame->fd,"you say ".$frame->data);
         });
         $server->on("handshake",function (\swoole_http_request $request, \swoole_http_response $response){
-            Logger::console("handshake");
+            Logger::getInstance()->console("handshake");
             //自定定握手规则，没有设置则用系统内置的（只支持version:13的）
             if (!isset($request->header['sec-websocket-key']))
             {
@@ -53,7 +53,7 @@ $server->on("message",function (\swoole_websocket_server $server, \swoole_websoc
             $response->end();
         });
         $server->on("close",function ($ser,$fd){
-            Logger::console("client {$fd} close");
+            Logger::getInstance()->console("client {$fd} close");
         });
 ```
 ## 监听TCP链接
@@ -65,15 +65,15 @@ $listener = $server->addlistener("0.0.0.0",9502,SWOOLE_TCP);
             "package_max_length"=>2048,
         ));
         $listener->on("connect",function(\swoole_server $server,$fd){
-            Logger::console("client connect");
+            Logger::getInstance()->console("client connect");
         });
         $listener->on("receive",function(\swoole_server $server,$fd,$from_id,$data){
-            Logger::console("received connect");
+            Logger::getInstance()->console("received connect");
             $server->send($fd,"swoole ".$data);
             $server->close($fd);
         });
         $listener->on("close",function (\swoole_server $server,$fd){
-            Logger::console("client close");
+            Logger::getInstance()->console("client close");
         });
 ```
 ## 监听UDP链接
