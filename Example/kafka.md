@@ -1,5 +1,5 @@
 # kafka
-本例子以https://github.com/weiboad/kafka-php作为客户端。使用composer安装时请先看EasySwoole文档中自动加载的章节，
+本例子以[https://github.com/weiboad/kafka-php](https://github.com/weiboad/kafka-php)作为客户端。使用composer安装时请先看EasySwoole文档中自动加载的章节，
 为EasySwoole引入composer。
 
 ## 如何在EasySwoole中添加自定义阻塞进程
