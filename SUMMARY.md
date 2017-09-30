@@ -51,13 +51,11 @@
     * [Model与数据库](Example/db.md)
     * [redis封装示例](Example/redis.md)
     * [kafka使用](Example/kafka.md)
-    * [web socket]    
-    * TCP
-    * UDP
+    * [web socket](Example/web_socket.md)    
     * [直播](Example/live.md)
 * 常见问题
     * [数据库断线](Problem/mysql_disconnect.md)
-    * 数据跨进程共享
+    * [数据跨进程共享](Problem/share_data.md)
     * [CURL SSL错误](Problem/curl_ssl.md)
 * 企业用例     
 * [问题反馈](feedBack.md)  
