@@ -20,6 +20,7 @@
    - 重新编译Swoole启用100-Continue的支持，需要手工修改swoole_config.h，找到SW_HTTP_100_CONTINUE，去掉注释，执行make clean && make install
    
     > 启用100-CONTINUE后会额外消耗服务器的CPU资源
+    
 ## 使用Chrome/FireFox访问服务器会产生2次请求
    这是因为Chrome浏览器会自动请求一次favicon.ico，所以服务器会收到2个Request，通过打印$req->server['request_uri'] 能看到请求的URL路径。
    
