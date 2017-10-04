@@ -48,6 +48,13 @@ var_dump($data);
 ### getUploadedFile($name)
 该方法用于获取客户端上传的某个文件。若该文件存在时，则返回对应的Core\Http\Message\UploadFile对象
 #### 关于 Core\Http\Message\UploadFile对象,详见[PSR7规范](Base/Controller/psr-7.md)
+
 ### getBody()
 该方法用于获取以非form-data或x-www-form-urlenceded编码格式POST提交的原始数据，相当于PHP中的$HTTP_RAW_POST_DATA。
 > 注意,该方法返回的是Core\Http\Message\Stream实例，具体请见[PSR7规范](Base/Controller/psr-7.md)
+
+### Session()
+该方法用于返回当前SessionRequest实例。注意，返回该实例的时候，不会自动执行session start。若有执行get方法，则会自动调用session start
+```
+$request()->session()->get("test");
+```
