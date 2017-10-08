@@ -8,7 +8,6 @@
     * Swoole Http Server 基础
         * [Swoole Http Server](Base/Swoole/server.md)
         * [基础事件回调](Base/Swoole/event.md)
-        * [常见问题](Base/Swoole/problem.md)
         * [异步进程](Base/Swoole/task.md)
         * [定时器](Base/Swoole/tick.md)
     * [框架安装与启动](Base/install.md)    

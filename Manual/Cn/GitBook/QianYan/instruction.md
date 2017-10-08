@@ -7,7 +7,7 @@
 - swoole不支持set_exception_handler，必须使用try/catch方式处理异常
 - Worker进程不得共用同一个Redis或MySQL等网络服务客户端，Redis/MySQL创建连接的相关代码可以放到onWorkerStart回调函数中。
 
-类/函数重复定义
+## 类/函数重复定义
 
 - 新手非常容易犯这个错误，由于easyPHP-Swoole是常驻内存的，所以加载类/函数定义的文件后不会释放。因此引入类/函数的php文件时必须要使用include_once或require_once，否会发生cannot redeclare function/class 的致命错误。
 
