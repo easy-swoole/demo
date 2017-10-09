@@ -1,3 +1,16 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="ROBOTS" content="ALL"/>
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <meta name="keywords" content="easySwoole|swoole框架|easySwoole文档" />
+    <meta name="description" content="easySwoole框架文档，旨在提供一个高效、快速、优雅的框架给php开发者。" />
+    <meta name="msapplication-TileColor" content="#113228">
+    <title>easySwoole|swoole框架|使PHP开发变得快速、高效</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
 # easySwoole
 
 EasySwoole 是一款基于Swoole Server 开发的常驻内存型PHP框架，专为API而生，摆脱传统PHP运行模式在进程唤起和文件加载上带来的性能损失。EasySwoole 高度封装了Swoole Server 而依旧维持Swoole Server 原有特性，支持同时混合监听HTTP、自定义TCP、UDP协议，让开发者以最低的学习成本和精力编写出多进程，可异步，高可用的应用服务。 
@@ -69,6 +82,16 @@ Percentage of the requests served within a certain time (ms)
 - 官方QQ交流群：633921431
 - [文档维护地址](https://github.com/kiss291323003/doc-easyswoole) 
     easySwoole采用gitbook作为文档撰写工具，若您在使用过程中，有发现文档需要纠正/补充。请直接提交在github上。
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>    
 
     
     
