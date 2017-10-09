@@ -52,6 +52,7 @@
     * [kafka使用](Example/kafka.md)
     * [web socket](Example/web_socket.md)    
     * [直播](Example/live.md)
+    * [TCP长链接](Example/tcp.md)
 * 常见问题
     * [数据库断线](Problem/mysql_disconnect.md)
     * [数据跨进程共享](Problem/share_data.md)
