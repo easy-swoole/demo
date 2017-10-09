@@ -47,3 +47,13 @@ easySwoole中，所有的文件均自动转化为UploadFile对象。
    - getClientFilename
    获取文件的客户端文件名。
    - getClientMediaType
+   
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>

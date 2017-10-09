@@ -28,3 +28,12 @@ class Router extends AbstractRouter
 ```
 > 注意：若在路由回调函数中不结束该请求响应，则该次请求将会继续进行Dispatch并尝试寻找对应的控制器进行响应处理。
 
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>

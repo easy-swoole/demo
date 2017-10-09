@@ -56,3 +56,12 @@ php -m | grep swoole                       # check if the swoole extension has b
 See [https://www.swoole.co.uk/](https://www.swoole.co.uk/)
 
 
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>

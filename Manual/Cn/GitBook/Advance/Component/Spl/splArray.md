@@ -64,3 +64,13 @@ echo $spl;
 {"a":1,"b":{"sub":"b1","sub2":"b2"},"c":{"sub":"c1","sub2":"c2"}}
 ```
 > 注意：SplArray中对toString方法的实习实际上是json_encode()
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>

@@ -11,3 +11,13 @@ http://127.0.0.1:9501/a/b/c/d/f
 
 如f为控制器名,执行的方法为:\App\Controller\A\B\C\D\F::index()
 如F为方法名,执行的方法为:\App\Controllers\A\B\C\D::f()
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>   

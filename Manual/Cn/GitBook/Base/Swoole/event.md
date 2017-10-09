@@ -177,4 +177,12 @@ $http_server->on('request', function(swoole_http_request $request, swoole_http_r
    - 客户端未开启KeepAlive，服务器将会切断连接
 
   
-  
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>     

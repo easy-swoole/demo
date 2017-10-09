@@ -11,3 +11,13 @@ easySwoole预留了多种全局事件入口，以方便用户更加自由地使�
 * [onRequest](/Advance/Event/onRequest.md)
 
 * [onResponse](/Advance/Event/onResponse.md)
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>

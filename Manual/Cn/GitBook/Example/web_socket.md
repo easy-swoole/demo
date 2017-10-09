@@ -215,3 +215,13 @@ class WebSocket extends AbstractController
 ```
 
 > 注意：客户端断线问题要处理好，否则会遇见向一个不存在链接推送数据，导致底层发出waring的问题。此问题不会导致服务出错，但对于业务逻辑与保障数据送达方面，会有影响。
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>

@@ -34,3 +34,12 @@
 
     - 以上步骤执行成功后，找到php.ini所在位置，编辑并加入extension=swoole.so,执行php -m可见swoole字样则说明拓展安装成功。
 
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>   

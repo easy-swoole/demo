@@ -71,3 +71,13 @@ server {
    ```
 ### POST/文件上传
    最大尺寸受到 package_max_length 配置项限制，默认为2M，可以调用swoole_server->set传入新的值修改尺寸。swoole底层是全内存的，因此如果设置过大可能会导致大量并发请求将服务器资源耗尽。 计算方法：最大内存占用 = 最大并发请求数 * package_max_length
+   
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>   

@@ -1,15 +1,3 @@
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="ROBOTS" content="ALL"/>
-    <meta name="MSSmartTagsPreventParsing" content="true" />
-    <meta name="keywords" content="easySwoole|swoole框架|easySwoole文档" />
-    <meta name="description" content="easySwoole框架文档，旨在提供一个高效、快速、优雅的框架给php开发者。" />
-    <meta name="msapplication-TileColor" content="#113228">
-    <title>easySwoole|swoole框架|使PHP开发变得快速、高效</title>
-    <link rel="stylesheet" href="css/main.css">
-</head>
 
 # easySwoole
 
