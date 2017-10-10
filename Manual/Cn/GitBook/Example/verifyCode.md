@@ -148,3 +148,13 @@ class Result
 }
 ```
 > 注意，生成验证码的时候，需要字体文件。本代码对应的字体文件是[verify_code_font.ttf](verify_code_font.ttf)
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
