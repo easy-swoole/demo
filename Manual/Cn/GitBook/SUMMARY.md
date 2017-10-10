@@ -52,7 +52,8 @@
     * [kafka使用](Example/kafka.md)
     * [web socket](Example/web_socket.md)    
     * [直播](Example/live.md)
-    * [TCP长链接](Example/tcp.md)
+    * [TCP基础实现](Example/tcp.md)
+    * [TCP命令解析](Example/tcp_command.md)
     * [图片验证码](Example/verifyCode.md)
 * 常见问题
     * [数据库断线](Problem/mysql_disconnect.md)
