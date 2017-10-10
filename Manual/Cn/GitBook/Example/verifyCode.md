@@ -147,4 +147,4 @@ class Result
 
 }
 ```
-> 注意，生成验证码的时候，需要字体文件。本代码对应的字体文件是[verify_code_font.ttf](Example/verify_code_font.ttf)
+> 注意，生成验证码的时候，需要字体文件。本代码对应的字体文件是[verify_code_font.ttf](verify_code_font.ttf)
