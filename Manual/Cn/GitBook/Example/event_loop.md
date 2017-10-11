@@ -33,3 +33,16 @@ $client->close();
 ```
 
 > 当客户端发送给服务端消息时，则会自动调用swoole_event_add中所注册的事件回调逻辑。
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>    
+
+    
