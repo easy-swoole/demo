@@ -10,7 +10,7 @@ Timer::loop(10*1000,function (){
 ## delay
 ```
 //10秒后执行一次
-Timer::loop(10*1000,function (){
+Timer::delay(10*1000,function (){
      Logger::getInstance()->console("this is timer");
 });
 ```
