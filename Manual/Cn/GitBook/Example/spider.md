@@ -1,5 +1,5 @@
 # 多进程爬虫
-利用redis队列+定时器+task进程实现的一个多进程爬虫。直接上代码
+EasySwoole利用redis队列+定时器+task进程实现的一个多进程爬虫。直接上代码
 ## 添加Redis配置信息
 修改配置文件，添加Redis配置
 ```
@@ -277,3 +277,14 @@ class Runner extends AbstractAsyncTask
 启动EasySwoole，访问addTask方法往Redis队列中添加任务，并等待执行结果。
 
 >本例子仅供参考，未做详尽错误处理。
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
