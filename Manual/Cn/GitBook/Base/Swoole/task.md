@@ -38,10 +38,8 @@ WARN: task package is too big.
 - 使用addProcess添加的用户进程中无法使用task投递任务，请使用sendMessage接口与Task工作进程通信
 
 ### 使用例子
-请见easySwoole中异步进程的用例。
+请见EasySwoole中的异步进程章节。
  
- https://github.com/kiss291323003/easyswoole/blob/master/example/multiUsage_01/App/Controller/Test/Async.php
-
 <script>
     var _hmt = _hmt || [];
     (function() {
