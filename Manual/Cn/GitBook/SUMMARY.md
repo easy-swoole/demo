@@ -51,6 +51,7 @@
     * [redis封装示例](Example/redis.md)
     * [kafka使用](Example/kafka.md)
     * [web socket](Example/web_socket.md)    
+    * [web socket client](Example/web_socket_client.md)
     * [直播](Example/live.md)
     * [TCP基础实现](Example/tcp.md)
     * [TCP命令解析](Example/tcp_command.md)
