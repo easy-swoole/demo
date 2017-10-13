@@ -9,11 +9,10 @@ $di = Di::getInstance();
 ```
 
 ### set
-函数原型：set($key, $obj,array $params = array(),$singleton = true)
+函数原型：set($key, $obj,...$arg)
 - key：键名
 - obj:要注入内容。支持注入对象名，对象实例,闭包，资源，字符串等各种常见变量。
-- params:若注入的内容为is_callable，则可以设置该参数以供callable执行时传入。
-- singleton
+- $arg:若注入的内容为is_callable，则可以设置该参数以供callable执行时传入。
 ```
 $di->set('db',new DbClass());
 $di->set('db',DbClass::class);
