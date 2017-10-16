@@ -37,7 +37,7 @@ $db = Di::getInstance()->get('MYSQL');
 ```
 
 > 注意：为避免出现多个进程复用同一个数据库连接的情况，请勿在服务启动前的任一位置执行Di::getInstance()->get('MYSQL')。
-若在frameInitialize或者是beforeWorkerStart事件中使用数据库，请以手动new class()的方式来获取一个数据库对象。其次，在单例子模式下，请注意数据库断线重连问题。
+若在frameInitialize或者是beforeWorkerStart事件中使用数据库，请以手动new class()的方式来获取一个数据库对象。具体请见文档的常见问题章节。其次，在单例子模式下，请注意数据库断线重连问题。
 MysqliDb类库中有实现断线自动重连。
 
 ### 数据库基础用法
