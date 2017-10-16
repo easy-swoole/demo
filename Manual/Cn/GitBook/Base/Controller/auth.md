@@ -64,6 +64,9 @@ class Index extends AbstractBase
 }
 ```
 
+## 使用Session
+EasySwoole也支持用户使用session。
+
 > 注意：以上代码仅仅做逻辑展示，请勿直接使用。
 
 <script>
