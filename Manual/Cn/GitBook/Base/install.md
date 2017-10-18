@@ -36,7 +36,7 @@ php server start
 启动 easySwoole。在浏览器输入 ip:9501/ 可以看到欢迎使用语说明安装成功。
 
 ## 服务启动
-easySwoole 不依赖 Apache/Nginx, 自带 HttpServer 功能，进入项目根目录，执行 php server start 就可以启动 easySwoole。easySwoole 只有三个命令参数 ： start(启动), stop(停止), reload(重载)
+easySwoole 不依赖 Apache/Nginx, 自带 HttpServer 功能，进入项目根目录，执行 php server start 就可以启动 easySwoole。easySwoole 只有四个命令参数 ： start(启动), stop(停止), reload(重载)，update(更新项目Core目录)
 
 在启动 easySwoole 的时候也可以指定一些配置参数。例如通过执行 php server start --help 可以查看所有参数和具体的参数含义。
 
