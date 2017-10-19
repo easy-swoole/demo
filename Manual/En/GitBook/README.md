@@ -1,4 +1,14 @@
 # EasySwoole
+```
+  ______                          _____                              _        
+ |  ____|                        / ____|                            | |       
+ | |__      __ _   ___   _   _  | (___   __      __   ___     ___   | |   ___ 
+ |  __|    / _` | / __| | | | |  \___ \  \ \ /\ / /  / _ \   / _ \  | |  / _ \
+ | |____  | (_| | \__ \ | |_| |  ____) |  \ V  V /  | (_) | | (_) | | | |  __/
+ |______|  \__,_| |___/  \__, | |_____/    \_/\_/    \___/   \___/  |_|  \___|
+                          __/ |                                               
+                         |___/                                                
+```
 EasySwoole is a memory based PHP framework ,which is base on Swoole. EasySwoole is specially designed for API, and eliminates the performance penalty associated with traditional PHP running patterns in process arousal and file loading. And EasySwoole encapsulates Swoole but still keep all the characteristic of Swoole,so that developers can write multi process, asynchronous, highly available application services with minimal learning cost and effort. 
 
 ## Characteristic

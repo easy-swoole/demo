@@ -7,6 +7,7 @@
 ![捐赠](Resource/donate.png)
 
 ## 捐赠者列表
+* *建民
 * *强
 * *新红
 * *雏清
@@ -21,6 +22,7 @@
 * *龙
 * *凯
 * *政明
+* 古之不道
 <script>
     var _hmt = _hmt || [];
     (function() {
