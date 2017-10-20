@@ -24,8 +24,9 @@
     * [自动加载](Base/loader.md)    
 * 框架进阶
     * [系统事件](Advance/Event/event.md)
-        * [frameInitialize](Advance/Event/frameInitialize.md)
-        * [beforeWorkerStart](Advance/Event/beforeWorkerStart.md)
+        * [框架初始化事件](Advance/Event/frameInitialize.md)
+        * [框架初始化后事件](Advance/Event/frameInitialized.md)
+        * [服务启动前事件](Advance/Event/beforeWorkerStart.md)
         * [onRequest](Advance/Event/onRequest.md)
         * [onResponse](Advance/Event/onResponse.md)
     * 系统组件
@@ -46,6 +47,7 @@
         * [随机](Advance/Utility/random.md)
     * [异步进程](Advance/task.md)
     * [定时器](Advance/time.md)
+    * [自定义错误处理器](Advance/errorHandler.md)
 * 示例代码
     * [控制器](Example/controller.md)
     * [Model与数据库](Example/db.md)

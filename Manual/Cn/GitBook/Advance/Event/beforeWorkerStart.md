@@ -1,17 +1,15 @@
 # 服务启动前事件
-在执行该事件时，框架已经完成的工作有：
+在执行beforeWorkerStart事件时，框架已经完成的工作有：
 - frameInitialize 事件内的全部事务
-- 系统临时目录与日志目录的建立
+- frameInitialized 事件内的全部事务
 - 错误处理函数的注册
 - swoole_http_server对象创建，且设置了启动参数。（未启动）
 
 在该回调事件内，依旧可以进行一些全局设置和对象创建,同时可以对Swoole Server进行一些个性化的需求挖掘。
+> 注意，此事件有别与框架初始化后事件，beforeWorkerStart尽在执行了服务启动才会被执行。
 
-## 往DI容器中注入一个全局对象。
-```
-Di::getInstance()->set("dbClass",new DbClass());
-```
-## 为Swoole Http Server添加web Socket支持
+
+## 例如为Swoole Http Server添加web Socket支持
 ```
 $server->on("message",function (\swoole_websocket_server $server, \swoole_websocket_frame $frame){
             Logger::getInstance()->console("receive data".$frame->data);
@@ -56,7 +54,7 @@ $server->on("message",function (\swoole_websocket_server $server, \swoole_websoc
             Logger::getInstance()->console("client {$fd} close");
         });
 ```
-## 监听TCP链接
+## 例如监听TCP链接
 ```
 $listener = $server->addlistener("0.0.0.0",9502,SWOOLE_TCP);
         //混合监听tcp时    要重新设置包解析规则  才不会被HTTP覆盖，且端口不能与HTTP SERVER一致 HTTP本身就是TCP
@@ -76,7 +74,7 @@ $listener = $server->addlistener("0.0.0.0",9502,SWOOLE_TCP);
             Logger::getInstance()->console("client close");
         });
 ```
-## 监听UDP链接
+## 例如监听UDP链接
 ```
 $udp = $server->addlistener("0.0.0.0",9503,SWOOLE_UDP);
         //udp 请勿用receive事件
@@ -106,7 +104,7 @@ $udp = $server->addlistener("0.0.0.0",9503,SWOOLE_UDP);
 ```
 > 注意：TCP同理。
 
-## 添加自定义Process进程
+## 例如添加自定义Process进程
 ```
 $server->addProcess(new \swoole_process(function (){
             while (1){

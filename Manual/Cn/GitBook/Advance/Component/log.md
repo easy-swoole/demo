@@ -14,6 +14,32 @@ $log2->log('message2');
 $log->console("message",false);
 ```
 
+## 自定义日志存储
+实现LoggerWriterInterface接口
+```
+namespace App\Model;
+
+
+use Core\AbstractInterface\LoggerWriterInterface;
+
+class Handler implements LoggerWriterInterface
+{
+
+    static function writeLog($obj, $logCategory, $timeStamp)
+    {
+        // TODO: Implement writeLog() method.
+    }
+}
+```
+在框架初始化后事件注入日志存储处理
+```
+function frameInitialized()
+{
+    // TODO: Implement frameInitialized() method.
+    Di::getInstance()->set(SysConst::DI_LOGGER_WRITER,Handler::class);
+}
+```
+
 <script>
     var _hmt = _hmt || [];
     (function() {
