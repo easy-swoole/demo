@@ -3,11 +3,11 @@ easySwoole 项目依赖于 Swoole 扩展，在使用 easySwoole 之前需要先�
 ## 快速安装
 命令行快速安装：
 
-> bash <(curl http://www.easyswoole.com/installer.sh)
+> bash <(curl https://www.easyswoole.com/installer.sh)
 
 或是：
 
-> curl http://www.easyswoole.com/installer.php | php
+> curl https://www.easyswoole.com/installer.php | php
 
 ## 手动安装
 
