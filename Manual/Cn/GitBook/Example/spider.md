@@ -190,7 +190,7 @@ use Core\Utility\Curl\Request;
 class Runner extends AbstractAsyncTask
 {
 
-    function handler(\swoole_http_server $server, $taskId, $fromId)
+    function handler(\swoole_server $server, $taskId, $fromId)
     {
         // TODO: Implement handler() method.
         //记录处于运行状态的task数量
@@ -215,7 +215,7 @@ class Runner extends AbstractAsyncTask
         $share->commit();
     }
 
-    function finishCallBack(\swoole_http_server $server, $task_id, $resultData)
+    function finishCallBack(\swoole_server $server, $task_id, $resultData)
     {
         // TODO: Implement finishCallBack() method.
     }
