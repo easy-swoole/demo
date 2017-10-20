@@ -38,6 +38,7 @@
         * [日志](Advance/Component/log.md)
         * [系统常量](Advance/Component/const.md)
         * [ShareMemory](Advance/Component/shareMemory.md)
+        * [RPC&SOA](Advance/Component/rpc.md)
     * 系统工具
         * [CURL](Advance/Utility/curl.md)
         * [validate](Advance/Utility/validate.md)
