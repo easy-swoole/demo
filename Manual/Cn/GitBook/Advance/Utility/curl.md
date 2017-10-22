@@ -1,20 +1,78 @@
 # CURL
-easySwoole对CURL进行了封装，以方便开发者更加方便的进行调用。
-## Request对象。
+为了让开发者能更便捷的调用cURL，easySwoole对cURL进行了封装，先来个例子感受一下
+
+```PHP
+use Core\Utility\Curl\Request;
+
+// 获取快递100接口数据
+$param = ['type' => 'zhongtong', 'postid' => '457500981717'];
+$url = 'http://www.kuaidi100.com/query?' . http_build_query($param);
+
+// 创建Request对象
+$request = new Request($url);
+
+// 获取Response对象
+$response = $Request->exec();
+
+// 接口返回内容
+$resources = $Response->getBody();
 ```
-$request = new Request("target url");
+
+没错，就这么简单，这样就完成了一次cURL请求，下面我们来详细的了解一下这里用到的两个对象`Request`和`Response`
+
+## Request对象
+
+### 实例化对象
+
 ```
+$request = new Request($url,$opt)
+```
+|参数|类型|是否必须|说明|示例|
+|:---:|:---:|:---:|:---|:---|
+|url|String|否|需要发起请求的url|http://baidu.com|
+|opt|Array|否|cURL的设置数组|[CURLOPT_RETURNTRANSFER => 1]|
+
 ### 方法列表
+
+|方法名称|返回类型|说明|
+|:---:|:---:|:---:|
+| setPost | Request |设置POST参数|
+| setUrl | Request |设置要请求的URL|
+| setOpt | Request |设置CURL请求参数|
+| getOpt | Array |获取当前的CURL设置|
+| exec | Response |发起一次请求|
+
+其中 `setPost` `setUrl` `setOpt` 方法支持链式调用
+
+```
+$response = $request->setUrl('http://xxx.cn')
+　　　　　　　　　　　　->setPost(["Param"=>"Value"])
+　　　　　　　　　　　　->setOpt([CURLOPT_COOKIE=>"a=asas;b=asas"])
+　　　　　　　　　　　　->exec()
+```
+
 #### setPost
+如果不调用本方法，默认是发起一个GET请求，调用本方法设置了POST参数后则发起POST请求
+
 ```
 $request->setPost(
     array(
-        "col1"=>"col1",
-        "col2"=>"col2"
+        "Param"=>"Value",
+        "Param"=>"Value"
     )
 );
 ```
+
+#### setUrl
+设置要请求的URL，`注意` 这将覆盖实例化时指定的Url
+
+```
+$request->setUrl("new url");
+```
+
 #### setOpt
+设置CURL请求参数，可以用本方法定制更多自定义的CURL参数，如 `COOKIE` `PROXY` 等，如果之前设置过相关的参数，比如已经使用`setPost`方法设置了POST参数，调用本方法时传入了`CURLOPT_POSTFIELDS`则会覆盖之前的设置
+
 ```
 $request->setOpt(
     array(
@@ -22,28 +80,120 @@ $request->setOpt(
     )
 );
 ```
-#### setUrl
-```
-$request->setUrl("new url");
-```
+
 #### getOpt
+获取当前已经设置的CURL参数，返回一个数组
+
 ```
 var_dump($request->getOpt());
 ```
 #### exec
+执行一次请求，无论请求执行是否成功都会返回一个`Response`对象
+
 ```
 $response = $request->exec();
 ```
-## Response
+
+## Response对象
+
+请求执行完成后将得到一个`Response`对象，可以从中获取到本次请求的结果
+
 ### 方法列表
+
+|方法名称|返回类型|说明|
+|:---:|:---:|:---:|
+| getBody | Bool Or String |获取请求到的数据|
+| getError | String |返回错误信息文本|
+| getErrorNo | Int |返回错误信息代码|
+| getCurlInfo | Array |获取本次请求的相关信息|
+| getHeaderLine | Bool Or String |获取本次请求的原始头部信息|
+| getCookies | Array | 获取本次请求的全部Cookie信息|
+| getCookie | String | 获取本次请求的单个Cookie信息|
+
+本对象实现了`__toString`魔术方法，将本对象当做字符串使用时获取到的即是包含请求头信息的原始报文
+
 #### getBody
+如果请求成功，调用本方法将返回响应内容，不含请求头信息，如果请求失败，则返回`false`
+
+```
+// 调用示例
+$response->getBody();
+
+// 返回示例
+// {"msg": "请求成功", "status": true}
+```
+
 #### getError
+如果请求成功没有错误，本方法返回空字符串，否则返回详细的错误信息文本
+
+```
+// 调用示例
+$response->getError();
+
+// 返回示例
+// CURLE_SEND_ERROR (55)
+```
+
 #### getErrorNo
+如果请求成功没有错误，本方法返回`Int`0，否则返回详细的错误代码
+
+```
+// 调用示例
+$response->getErrorNo();
+
+// 具体错误代码参见: http://php.net/manual/zh/function.curl-errno.php
+```
+
 #### getCurlInfo
+返回一个数组，包含了本次请求的具体信息，包括`HTTP响应码`,`请求耗时`等
+
+```
+// 调用示例
+$response->getCurlInfo();
+
+// 具体返回含义参见: http://php.net/manual/zh/function.curl-getinfo.php
+```
+
 #### getHeaderLine
+返回一个字符串，包含了原始的响应头信息
+
+```
+// 调用示例
+$response->getHeaderLine();
+
+// 返回示例
+
+// HTTP/1.1 200 OK
+// Server: nginx
+// Date: Sun, 22 Oct 2017 06:32:16 GMT
+// Content-Type: text/html;charset=UTF-8
+```
+
 #### getCookies
+返回一个数组，包含了本次请求全部的Cookie信息
+
+```
+// 调用示例
+$response->getCookies();
+
+// 返回示例
+array(
+	'H_PS_645EC'=>'9f63mNQg2pgtwXyUfTqxRvv9UXs',
+	'H_PS_PSSID'=>'1441_13551_21117_24022'
+)
+```
+
 #### getCookie
-#### __toString
+传入Cookie的键名，返回Cookie值，如果指定的键名不存在则返回 `null`
+
+```
+// 调用示例
+$response->getCookies('H_PS_645EC');
+
+// 返回示例
+// 9f63mNQg2pgtwXyUfTqxRvv9UXs
+```
+
 
 <script>
     var _hmt = _hmt || [];
