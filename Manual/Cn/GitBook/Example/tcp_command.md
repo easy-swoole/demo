@@ -1,100 +1,117 @@
 # 自定义TCP命令解析
-直接上实例代码。
-## 创建TCP路由与解析规则
+EasySwoole支持用户进行自定义格式的命令解析与路由。以下我们将以最基础的例子作为讲解。
+## 建立自定义命令解析类
 ```
-namespace App\Socket\Tcp;
+namespace App\Sock;
 
 
-use Core\Component\Di;
-use Core\Component\Logger;
-use Core\Component\Socket\Client\TcpClient;
-use Core\Component\Socket\Command\Command;
-use Core\Component\Socket\Dispatcher;
-use Core\Component\Socket\Response;
-use Core\Swoole\AsyncTaskManager;
-
-class Init
-{
-    static function dispatcher(){
-        $dispatcher = new Dispatcher();
-        $dispatcher->setCommandParser(new Parser());
-        //注册一个命令回调
-        $dispatcher->registerCommand("hello",function (Command $command){
-            Logger::getInstance()->console("client say hello ".$command->getMessage());
-            $client = $command->getClient();
-            Response::response($client,"res\n");
-            AsyncTaskManager::getInstance()->add(function ()use($client){
-                sleep(3);
-                Response::response($client,"delay res\n");
-            });
-        });
-        //设置一个默认的处理
-        $dispatcher->setDefaultHandler(function (Command $command){
-            Response::response($command->getClient(),"unknow command\n");
-        });
-        //注入IOC
-        Di::getInstance()->set("TCP_DISPATCHER",$dispatcher);
-    }
-
-    static function listen(\swoole_server $server){
-        $listener = $server->addlistener("0.0.0.0",9502,SWOOLE_TCP);
-        //混合监听tcp时    要重新设置包解析规则  才不会被HTTP覆盖，且端口不能与HTTP SERVER一致 HTTP本身就是TCP
-        $listener->set(array(
-            "open_eof_check"=>false,
-            "package_max_length"=>2048,
-        ));
-
-        $listener->on("connect",function(\swoole_server $server,$fd){
-            Logger::getInstance()->console("client connect",false);
-        });
-
-        $listener->on("receive",function(\swoole_server $server,$fd,$from_id,$data){
-            //注意，这里需要自己创建对应的client
-            $client = new TcpClient($server->getClientInfo($fd));
-            $client->setFd($fd);
-            $client->setReactorId($from_id);
-            //进行包路由解析
-            Di::getInstance()->get('TCP_DISPATCHER')->dispatch($client,$data);
-        });
-
-    }
-}
-```
-```
-namespace App\Socket\Tcp;
-
-
-use Core\Component\Socket\Command\AbstractCommandParser;
+use Core\Component\Socket\AbstractInterface\AbstractClient;
+use Core\Component\Socket\AbstractInterface\AbstractCommandParser;
+use Core\Component\Socket\Common\Command;
 
 class Parser extends AbstractCommandParser
 {
-    protected function handler($data)
-    {
-        // TODO: Implement handler() method.
-        //这里其实就是对客户端发来的数据包做解析。解析出自己的命令
-        $data = trim($data);
-        $data = explode(",",$data);
-        $this->getCommand()->setCommand(array_shift($data));
-        $this->getCommand()->setMessage(array_shift($data));
-    }
 
+    function parser(Command $result, AbstractClient $client, $rawData)
+    {
+        // TODO: Implement parser() method.
+    }
 }
 ```
-## 事件绑定
-修改Conf/Event.php，在以下事件中做事件监听
+在AbstractCommandParser的接口定义中，我们需要实现parser方法，parser的三参数分别为：
+- 解析后的命令包
+- 客户端
+- 原始数据
+
+比如,我现在定义的规则就是（命令,数据信息）,那么我的解析规则就为：
 ```
- function frameInitialized()
- {
-    // TODO: Implement frameInitialized() method.
-    Init::dispatcher();
- }
+function parser(Command $result, AbstractClient $client, $rawData)
+{
+     // TODO: Implement parser() method.
+     $data = trim($rawData);
+     $data = explode(',',$data);
+     $result->setCommand(array_shift($data));
+     $result->setMessage(array_shift($data));
+}
+```
+## 定义命令注册类
+```
+namespace App\Sock;
 
 
- function beforeWorkerStart(\swoole_server $server)
- {
-     // TODO: Implement beforeWorkerStart() method.
-     Init::listen($server);
- }
+use Core\Component\Socket\AbstractInterface\AbstractCommandRegister;
+use Core\Component\Socket\Common\CommandList;
+
+class Register extends AbstractCommandRegister
+{
+
+    function register(CommandList $commandList)
+    {
+        // TODO: Implement register() method.
+    }
+}
+```
+在AbstractCommandRegister接口中，我们必须实现register方法。举例，我们注册三个实验方法：
+```
+namespace App\Sock;
+
+
+use Core\Component\Logger;
+use Core\Component\Socket\AbstractInterface\AbstractCommandRegister;
+use Core\Component\Socket\Client\TcpClient;
+use Core\Component\Socket\Common\Command;
+use Core\Component\Socket\Common\CommandList;
+use Core\Component\Socket\Response;
+use Core\Swoole\AsyncTaskManager;
+use Core\Swoole\Server;
+
+class Register extends AbstractCommandRegister
+{
+
+    function register(CommandList $commandList)
+    {
+        // TODO: Implement register() method.
+        $commandList->addCommandHandler('hello',function (Command $request,TcpClient $client){
+            $message = $request->getMessage();
+            Logger::getInstance()->console('message is '.$message,false);
+            AsyncTaskManager::getInstance()->add(function ()use($client){
+                sleep(2);
+                Response::response($client,"this is delay message for hello\n");
+            });
+            return "response for hello\n";
+        });
+
+        $commandList->addCommandHandler('close',function (Command $request,TcpClient $client){
+            Response::response($client,"you are going to disconnect\n");
+            Server::getInstance()->getServer()->close($client->getFd(),$client->getReactorId());
+        });
+
+        $commandList->setDefaultHandler(function (){
+           return "unkown command\n";
+        });
+    }
+}
+```
+
+## 添加事件监听
+在EasySwoole的启动前事件中：
+```
+use App\Sock\Parser;
+use App\Sock\Register;
+use Core\Component\Socket\Dispatcher;
+
+
+function beforeWorkerStart(\swoole_server $server){
+    $listener = $server->addlistener('0.0.0.0',9502,SWOOLE_TCP);
+    $listener->set(array(
+        "open_eof_check"=>false,
+        "package_max_length"=>2048,
+    ));
+    $listener->on("receive",function(\swoole_server $server,$fd,$from_id,$data){
+         Dispatcher::getInstance(Register::class,Parser::class)->dispatchTCP($fd,$from_id,$data);
+    });
+}
+
 ```
 
 ## 测试
@@ -105,7 +122,8 @@ telnet 127.0.0.1 9501
 分别输入：
 - hello
 - hello,message
-- abc
+- abc，
+- close
 
 观察结果。
 
