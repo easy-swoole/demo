@@ -1,12 +1,20 @@
-# 服务启动前事件
+服务启动前事件
+------
+
+```
+function beforeWorkerStart(\swoole_server $server);
+```
+
 在执行beforeWorkerStart事件时，框架已经完成的工作有：
+
 - frameInitialize 事件内的全部事务
 - frameInitialized 事件内的全部事务
 - 错误处理函数的注册
 - swoole_http_server对象创建，且设置了启动参数。（未启动）
 
 在该回调事件内，依旧可以进行一些全局设置和对象创建,同时可以对Swoole Server进行一些个性化的需求挖掘。
-> 注意，此事件有别与框架初始化后事件，beforeWorkerStart尽在执行了服务启动才会被执行。
+
+> 注意，此事件有别与框架初始化后事件，beforeWorkerStart仅在执行了服务启动才会被执行。
 
 
 ## 例如为Swoole Http Server添加web Socket支持
@@ -117,36 +125,6 @@ $server->addProcess(new \swoole_process(function (){
             }
         })
      );
-```
-## 利用iNotify实现Server热重启
-```
-//请确定有inotify拓展
-        $a = function ($dir)use(&$a){
-            $data = array();
-            if(is_dir($dir)){
-                //是目录的话，先增当前目录进去
-                $data[] = $dir;
-                $files = array_diff(scandir($dir), array('.', '..'));
-                foreach ($files as $file){
-                    $data = array_merge($data ,$a($dir."/".$file));
-                }
-            }else{
-                $data[] = $dir;
-            }
-            return $data;
-        };
-        $list = $a(ROOT."/App");
-        $notify = inotify_init();
-        foreach ($list as $item){
-            inotify_add_watch($notify, $item,IN_CREATE | IN_DELETE|IN_MODIFY);
-        }
-        swoole_event_add($notify,function()use($notify){
-            $events = inotify_read($notify);
-            if(!empty($events)){
-                //注意更新多个文件的间隔时间处理,防止一次更新了10个文件，重启了10次，懒得做了，反正原理在这里
-                Server::getInstance()->getServer()->reload();
-            }
-        });
 ```
 
 <script>

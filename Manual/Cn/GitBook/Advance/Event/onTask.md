@@ -1,21 +1,18 @@
-# 框架初始化后事件
+执行任务事件
+------
 
 ```
-function frameInitialized();
+function onTask(\swoole_server $server, $taskId, $workerId,$callBackObj);
 ```
 
-执行完`frameInitialize`事件后，框架开始检查并处理运行环境，在执行frameInitialized事件时，框架已经完成的工作有：
+在`task_worker`进程内被调用，可以用以下方法向task_worker进程投递新的任务
 
-- frameInitialize事件
-- 系统运行目录的检查与创建
+```
+AsyncTaskManager::getInstance()->add(Runner::class);
+```
+当前的Task进程在调用onTask回调函数时会将进程状态切换为忙碌，这时将不再接收新的Task，当onTask函数返回时会将进程状态切换为空闲然后继续接收新的Task
 
-运行目录的检查与创建包括了以下工作：
-
-- 在`ROOT`目录下创建临时目录`Temp`
-- 在`Temp`目录下创建会话存放目录`Session`
-- 在`Temp`目录下创建日志存放目录`Log`
-
-在此事件中，可以进行一些启动前的预处理，比如对IOC容器进行内容注入等操作，需要使用到上述目录的逻辑也可以放在本事件中完成
+> 在onTask函数中 return字符串，表示将此内容返回给worker进程。worker进程中会触发onFinish函数，表示投递的task已完成。
 
 <script>
     var _hmt = _hmt || [];
