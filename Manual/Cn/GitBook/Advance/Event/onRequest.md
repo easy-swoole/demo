@@ -1,4 +1,10 @@
-# 请求事件
+收到请求事件
+------
+
+```
+function onRequest(Request $request,Response $response);
+```
+
 当easySwoole收到任何的HTTP请求时，均会执行该事件。该事件可以对HTTP请求全局拦截。
 ```
 $sec = new Security();

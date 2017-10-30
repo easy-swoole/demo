@@ -1,6 +1,11 @@
-# 响应事件
-在任何的控制器响应结束后，均会执行该事件,该事件预留于做分析记录。
-例如结合onRequest事件做慢日志记录。
+响应事件
+------
+
+```
+function onResponse(Request $request,Response $response);
+```
+
+在任何的控制器响应结束后，均会执行该事件,该事件预留于做分析记录。例如结合onRequest事件做慢日志记录。
 ```
 function onRequest(Request $request, Response $response)
 {
