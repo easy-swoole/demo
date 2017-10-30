@@ -69,6 +69,10 @@ $server->on("handshake",function (\swoole_http_request $request, \swoole_http_re
         }
 );
 ```
+### 连接验证
+WS的链接建立，其实是一个特殊的HTTP请求，因此，客户端在发起链接的时候，其实是像服务端发送了一个带有特殊标记的HTTP 请求，
+该请求会被handshake回调函数处理，在该回调函数中，可以根据request的cookie或者header进行判断，允许不允许该用户进行链接。
+
 
 > Swoole支持自定义WebSocket 握手规则。若对此握手规则有疑问的，请自行百度RFC规范，查看关于WebSocket的规定。
 
@@ -215,6 +219,7 @@ class WebSocket extends AbstractController
 ```
 
 > 注意：客户端断线问题要处理好，否则会遇见向一个不存在链接推送数据，导致底层发出waring的问题。此问题不会导致服务出错，但对于业务逻辑与保障数据送达方面，会有影响。
+
 
 <script>
     var _hmt = _hmt || [];
