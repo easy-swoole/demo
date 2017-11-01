@@ -29,7 +29,7 @@ $loader->requireFile('vendor/autoload.php');
 ### composer 测试
 在项目目录下执行：
 ```
-composer require phpdr.net/php-curlmulti
+composer require ares333/php-curl
 ```
 
 修改unitTest.php
@@ -37,7 +37,7 @@ composer require phpdr.net/php-curlmulti
 <?php
     require_once 'Core/Core.php';
     \Core\Core::getInstance()->frameWorkInitialize();
-    $test = new \Ares333\CurlMulti\Core();
+    $test = new Ares333\Curl\Curl();
 ```
 
 执行 php unitTest.php无致命报错，则说明已开始成功使用composer。
