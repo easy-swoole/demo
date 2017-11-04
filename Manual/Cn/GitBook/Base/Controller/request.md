@@ -1,4 +1,5 @@
-# Request对象
+#
+Request对象
 
 ## 生命周期
 Request对象在系统中以单例模式存在，自收到客户端HTTP请求时自动创建，直至请求结束自动销毁。Request对象完全符合[PSR7](psr-7.md)中的所有规范。
@@ -20,7 +21,7 @@ $orderId = $request->getRequestParam('orderId');
 var_dump($orderId);
 
 $keys = array(
-    "orderId","type"
+"orderId","type"
 );
 $mixData = $request->getRequestParam($keys);
 var_dump($mixData);
@@ -58,28 +59,65 @@ var_dump($data);
 ```
 $request()->session()->get("test");
 ```
+## 示例
+### 获得get内容
+```
+$get = \Core\Http\Request::getInstance()->getQueryParams();
+```
+### 获得post内容
+```
+$post = \Core\Http\Request::getInstance()->getParsedBody();
+```
+### 获得raw内容
+```
+$content = \Core\Http\Request::getInstance()->getBody()->__toString();
+$raw_array = json_decode($content, true);
+```
+
+### 获得头部
+```
+$header = \Core\Http\Request::getInstance()->getHeaders();
+$content_type = \Core\Http\Request::getInstance()->getHeader('content-type'); // 这里是数组 我一般是取$content_type[0]
+```
+### 获得server
+```
+$server = \Core\Http\Request::getInstance()->getServerParams();
+
+```
+### 获得cookie
+```
+$cookie = \Core\Http\Request::getInstance()->getCookieParams();
+
+```
+### 获得file
+```
+$files = \Core\Http\Request::getInstance()->getUploadedFiles();
+$image = $files['image'];
+```
+假如你提交的字段叫image
+$image是个\Core\Http\Message\UploadFile对象
+和传统的 `php` $_FILES['image']是不一样的，打印一下看看吧，当然如果你想用传统的写法可以利用\Core\Http\Request::getInstance()->getSwooleRequest() 里的files
 
 <script>
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-</script>  
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
+var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
 })();
 </script>
- 
+<script>
+(function(){
+var bp = document.createElement('script');
+var curProtocol = window.location.protocol.split(':')[0];
+if (curProtocol === 'https') {
+bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+}
+else {
+bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+}
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(bp, s);
+})();
+</script>
