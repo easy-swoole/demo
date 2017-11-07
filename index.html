@@ -22,7 +22,7 @@
 
 <div role="banner" id="top">
     <div class="container">
-        <a class="logo" href="#">EasySwoole&nbsp;&nbsp;<span>简洁、快速</span></a>
+        <a class="logo" href="#"><img src="/img/logo.png" width="20px">EasySwoole&nbsp;&nbsp;<span>简洁、快速</span></a>
         <div role="navigation">
             <ul>
                 <li>
@@ -127,8 +127,9 @@
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();
-    if(document.body.clientWidth<=440){
-       document.getElementById('install_info').style.width = '90%';
+    if(document.body.clientWidth<440)
+    {
+        document.getElementById('install_info').style.width="90%"
     }
 </script>
 </body>
