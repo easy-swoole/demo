@@ -81,6 +81,7 @@
 * 项目迁移
     * [前言](Transfer/introduction.md)
     * [项目初始化](Transfer/Initialization.md)
+    * [Composer集成](Transfer/composer.md)
 * [问题反馈](feedBack.md) 
 * [捐赠](donate.md)
     

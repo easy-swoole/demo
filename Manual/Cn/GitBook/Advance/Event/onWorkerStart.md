@@ -20,7 +20,7 @@ function onWorkerStart(\swoole_server $server,$workerId);
 
 ```
 //请确定有inotify拓展
-if ($workerid == 0) {
+if ($workerId == 0) {
     // 递归获取所有目录和文件
     $a = function ($dir) use (&$a) {
         $data = array();
