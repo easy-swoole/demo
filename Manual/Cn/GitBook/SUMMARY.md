@@ -84,6 +84,7 @@
     * [Composer集成](Transfer/composer.md)
     * 从ThinkPHP迁移项目
         * [迁移数据库ORM层](Transfer/ThinkPHP/orm.md)
+        * [迁移模板View层](Transfer/ThinkPHP/template.md)
 * [问题反馈](feedBack.md) 
 * [捐赠](donate.md)
     
