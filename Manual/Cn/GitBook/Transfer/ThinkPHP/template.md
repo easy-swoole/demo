@@ -40,7 +40,7 @@ private function userConf()
 			// 模板文件路径
 			'view_path'   => ROOT . '/Views/',
 			// 模板编译缓存文件夹
-			'cache_path'  => ROOT . '/Temp/TplCache',
+			'cache_path'  => ROOT . '/Temp/TplCache/',
 			// 模板文件后缀
 			'view_suffix' => 'html',
 		]
