@@ -79,7 +79,7 @@
     * [数据跨进程共享](Problem/share_data.md)
     * [CURL SSL错误](Problem/curl_ssl.md)   
     * [如何热更新调试](Problem/debug.md) 
-    * [CURL SSL错误](Problem/curl_ssl.md)    
+    * [QQ群网友问答](Problem/qqAsk)  
 * 项目迁移
     * [前言](Transfer/introduction.md)
     * [项目初始化](Transfer/Initialization.md)
