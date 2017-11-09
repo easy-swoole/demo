@@ -106,7 +106,10 @@ $routeCollector->addRoute('GET', '/users/{name}', 'handler');
 $routeCollector->addRoute('GET', '/users/to[/{name}]', 'handler');
 ```
 
-绑定了参数之后，Dispatch会将绑定的参数按顺序传给闭包，可以参考下面的例子直接使用这些参数，或者将参数放入Request对象并继续跳转给任何控制器进行处理
+获取路由中绑定的参数有两种情况
+
+1. `handler`传入了一个闭包，Dispatch会将绑定的参数按顺序传给闭包
+2. `handler`传入了一个控制器路径，Dispatch会将绑定的参数附加给Request对象
 
 利用该方法还可以实现请求`/router/fun1/{id:\d+}`但是符合一定条件的请求需要分发给`/router/fun2/{id:\d+}`处理的情况
 
@@ -117,6 +120,15 @@ $routeCollector->addRoute('GET', '/router/{id:\d+}', function ($id) {
 	$Response->write('Userid : ' . $id);
 	$Response->end();
 });
+
+// --------------------------------------------------------
+
+// 直接调用控制器方法
+$routeCollector->addRoute('POST', '/router/{id:\d+}', '/Index');
+// 此时可以在控制器中调用Request对象存放的参数
+$id = $this->request()->getQueryParam('id');
+
+// --------------------------------------------------------
 
 // 绑定参数并跳转到控制器
 $routeCollector->addRoute('GET', '/router2/{id:\d+}', function ($id) {
