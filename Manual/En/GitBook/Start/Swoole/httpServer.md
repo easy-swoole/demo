@@ -35,7 +35,7 @@ server {
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^(.*)$  http://127.0.0.1:9501/$1 [QSA,P,L]
-  #require proxy_mod proxy_http_mod requset_mod
+  #require proxy_mod proxy_http_mod request_mod
 </IfModule>
 ```
 
