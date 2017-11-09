@@ -57,6 +57,7 @@
     * [定时器](Advance/time.md)
     * [自定义错误处理器](Advance/errorHandler.md)
 * 示例代码
+    * [服务热重启](Example/hot_reload.md)
     * [控制器](Example/controller.md)
     * [Model与数据库](Example/db.md)
     * [redis封装示例](Example/redis.md)
