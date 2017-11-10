@@ -116,7 +116,7 @@ class Redis
 namespace App\Utility;
 
 
-class SysConst extends \Core\Component\Sys\SysConst
+class SysConst extends \Core\Component\SysConst
 {
     const TASK_RUNNING_NUM = 'TASK_RUNNING_NUM';
 }
