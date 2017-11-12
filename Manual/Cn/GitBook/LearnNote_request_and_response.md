@@ -3,6 +3,7 @@ request 有三个部分
         mesasge 文件夹里面的 request 和serverrequest（serverrequest继承自request）http里面的 request
 
 1.message里面的request：
+
 		函数 ：
 			__construct()：构造函数
 	       	getRequestTarget()：获得请求的路径
@@ -14,6 +15,7 @@ request 有三个部分
 	     	这里面的url是封装的类,利用pares_url()函数
 
 2.serverrequest类继承自上面的request类
+
 		变量：
 			$attribute 用于存取一些额外的信息，可以在控制器中往这个变量里面放信息，注意变量不能多进程共享
 			私有$cooikeParams 用于存放cookie数组，
@@ -26,6 +28,7 @@ request 有三个部分
 
 3.http下的request类继承自上面的serverrequest类
 此类用了单例模式所以每次请求只会初始化一次
+
 		函数：
 			__construct():在此函数传入了swoole扩展的request的对象，将request对象存入类变量
 			依次执行
@@ -47,6 +50,7 @@ response组建
 response有两个类
 		http的response类继承于message的response
 1.message的response
+
 		变量：
 			$statusCode 状态码
 			$responsePhare ’ok‘
@@ -60,6 +64,7 @@ response有两个类
 
 此类使用单例模式，用户每次请求只会实例化一次
 在构造函数的时候，会将swoole的response的对象复制过来
+
    		函数：
 			end() 将标志位设为1，意味着write结束了
 			isendresponse() 判断是否结束
