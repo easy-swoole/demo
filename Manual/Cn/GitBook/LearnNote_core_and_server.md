@@ -32,10 +32,7 @@ core.php 和 server.php 源码分析
       onworkerror事件
                 当work进程出错时会触发此函数
 
-
 下面我们来分析server.php
-
-
  server.php
             函数：
                    getInstance\(\):获得sever服务对象的实例，此类采用单例模式，当框架运行的时候，全局每个进程有且只有一个server对象，每个对象是相互独立的
@@ -62,7 +59,6 @@ core.php 和 server.php 源码分析
                            6 框架返回数据 response-&gt;end
 
 下面我们来分析core.php 框架的启动类 采用单例模式，当框架运行成功后，每个进程只会只有一个对象
-
  core.php
                 函数：
                        run（）：这里会调用server类启动框架
