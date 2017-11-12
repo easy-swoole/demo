@@ -1,12 +1,14 @@
 core.php 和 server.php 源码分析
 
 首先我扪要一些swoole的基础
+
       swoole 的整个进程种类是 manager进程，master进程，work进程，task进程
       maskter进程：Swoole的主进程，是一个多线程的程序。其中有一组很重要的线程，称之为Reactor线程。它就是真正处理TCP连接，收发数据的线程。把接受到的数据分配给worker进程
       mananger进程：负责管理work进程和task进程，如果有进程死了，就会重新开一个进程
       worker进程：正常处理业务逻辑的进程
       task进程：负责处理异步任务的进程，任务由work进程投递过来
 开启一个多进程swoole http服务器需要注册的函数：
+
       onstart事件
            在此事件之前Swoole Server已进行了如下操作
            已创建了manager进程
@@ -34,6 +36,7 @@ core.php 和 server.php 源码分析
 
 下面我们来分析server.php
  server.php
+ 
             函数：
                    getInstance\(\):获得sever服务对象的实例，此类采用单例模式，当框架运行的时候，全局每个进程有且只有一个server对象，每个对象是相互独立的
                    \_\_construct\(\):构造函数，这个函数只负责对server基本的配置
@@ -60,6 +63,7 @@ core.php 和 server.php 源码分析
 
 下面我们来分析core.php 框架的启动类 采用单例模式，当框架运行成功后，每个进程只会只有一个对象
  core.php
+ 
                 函数：
                        run（）：这里会调用server类启动框架
                        frameWorkInitIalize\(\):这里会进行框架的基本的初始化，判断php版本，注册自动加载，定义全局变量，建立文件夹，注册错误，调用event的frameInitialize和frameInitialized事件
