@@ -6,7 +6,7 @@ EasySwoole支持在三个地方进行请求拦截，当一个HTTP请求进来，
 
 > 在以上任意位置执行 $response->end(),均不会进入下一个流程。
 
-## 使用例子
+## 权限验证拦截
 例如我现在 /Api/Mobile 下的全部控制器，均需要做权限控制，那么我们先建立一个全局的抽象控制器。
 ```
 abstract class AbstractBase extends AbstractController
@@ -64,7 +64,58 @@ class Index extends AbstractBase
 }
 ```
 
-## 使用Session
+## 全局请求安全过滤拦截
+例如，项目上线后，由于前期开发未注意安全问题，没有做参数过滤，那么，可以在Event中的OnRequest事件，进行全局的请求参数过滤或者拦截。
+
+建立测试拦截类
+```
+namespace App\Utility;
+
+
+class Security
+{
+    /*
+     * 本注入脚本从网上流传的360 php防注入代码改版  仅供做参考
+     */
+    private $getFilter = "'|(and|or)\\b.+?(>|<|=|in|like)|\\/\\*.+?\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
+    private $postFilter = "\\b(and|or)\\b.{1,6}?(=|>|<|\\bin\\b|\\blike\\b)|\\/\\*.+?\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
+    private $cookieFilter = "\\b(and|or)\\b.{1,6}?(=|>|<|\\bin\\b|\\blike\\b)|\\/\\*.+?\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
+    function check(array $data){
+        foreach ($data as $item){
+            if (preg_match("/".$this->getFilter."/is",$item) == 1){
+                return true;
+            }
+            if (preg_match("/".$this->postFilter."/is",$item) == 1){
+                return true;
+            }
+            if (preg_match("/".$this->cookieFilter."/is",$item) == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+}
+```
+在onRequest事件中调用
+```
+function onRequest(Request $request, Response $response)
+{
+        // TODO: Implement onRequest() method.
+        $sec = new Security();
+        if($sec->check($request->getRequestParam())){
+            $response->write("do not attack");
+            $response->end();
+            return;
+        }
+        if($sec->check($request->getCookieParams())){
+            $response->write("do not attack");
+            $response->end();
+            return;
+        }
+}
+```
+
 EasySwoole也支持用户使用session。
 
 > 注意：以上代码仅仅做逻辑展示，请勿直接使用。

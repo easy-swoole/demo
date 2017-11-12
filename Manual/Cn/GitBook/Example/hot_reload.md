@@ -1,22 +1,11 @@
-服务启动事件
+服务热重启
 ------
 
-```
-function onWorkerStart(\swoole_server $server,$workerId);
-```
+在开发过程中经常需要更新文件，由于Swoole常驻内存的特性，文件在框架启动时已经载入了内存，当文件被修改时需要手动重启服务
 
-此事件在`Worker`进程/`Task`进程启动时发生。这里创建的对象可以在进程生命周期内使用，需要注意的是
+可以将以下代码添加到`Event.php`的`onWorkerStart`事件中，实现文件更新后自动reload服务，请确定安装了inotify拓展
 
-- Task进程也会触发此事件
-- 发生致命错误或者代码中主动调用`exit`时，`Worker`/`Task`进程会退出，管理进程会重新创建新的进程，也会触发本事件
-- `onWorkerStart`/`onStart`是并发执行的，没有先后顺序
-- 事件回调带有`$server`参数，可以通过`$server->taskworker`来判断当前是`Worker`进程还是`Task`进程
-
-> 注意: $workerId是一个从0-$worker_num之间的数字，表示这个Worker进程的ID，$workerId和进程PID没有任何关系
-
-可以在此事件中将自定义的逻辑添加到EventLoop以及向Task投递任务
-
-下面的示例利用`inotify`拓展实现当文件被修改时，自动Reload服务
+> 提醒: 在生产模式上线前一定要注意移除热重启，否则可能会造成不可预估的错误和异常
 
 ```
 //请确定有inotify拓展

@@ -1,6 +1,14 @@
-# 模板引擎
-EasySwoole虽说是专为API打造，但难免有些用户想一站全撸，本文以Smarty模板引擎为例，配合Apache或者是Nginx做静态服务器，构建全站开发示例。
-## 静态文件处理规则
+模板引擎
+=======
+EasySwoole虽说是专为API打造，但难免有些用户想一站全撸，本例介绍了如何集成模板引擎，配合Apache或者是Nginx做静态服务器，构建全站开发示例。
+
+本示例介绍两种模板引擎的集成，分别是[Smarty](#Smarty)引擎和来自`Laravel`的[Blade](#Blade)引擎
+
+集成前准备
+------
+
+由于`swoole_http_server`对Http协议的支持并不完整，建议仅将`easySwoole`作为后端服务，并且在前端增加`Nginx`或者`Apache`作为代理，参照下面的例子添加转发规则，将请求转发给`Swoole Server`处理
+
 ### Nginx转发规则
 ```
 server {
@@ -25,17 +33,25 @@ server {
   RewriteCond %{REQUEST_FILENAME} !-f
   #RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]  fcgi下无效
   RewriteRule ^(.*)$  http://127.0.0.1:9501/$1 [QSA,P,L]
-   #请开启 proxy_mod proxy_http_mod requset_mod
+   #请开启 proxy_mod proxy_http_mod request_mod
 </IfModule>
 ```
 
-## 支持库引入
+<span id="Smarty">集成Smarty引擎</span>
+------
+
+### 支持库引入
+
 下载Smarty，并将其全部项目文件放入App/Vendor/Smarty目录下。在框架初始化事件引入。
+
 ```
 $loader = AutoLoader::getInstance()->requireFile("App/Vendor/Smarty/Smarty.class.php");
 ```
 
-## 基础封装
+### 基础封装
+
+请注意下面的代码中设置了模板目录，请提前新建好模板目录并添加模版文件
+
 ```
 namespace App\Utility;
 
@@ -63,7 +79,9 @@ class Smarty extends \Smarty
     }
 }
 ```
-## 建立自定义控制器抽象类
+
+### 建立自定义控制器抽象类
+
 ```
 namespace App\Controller\Test;
 
@@ -83,7 +101,8 @@ abstract class Base extends AbstractController
 }
 ```
 
-## 建立测试控制器
+### 建立测试控制器
+
 ```
 namespace App\Controller\Test;
 
@@ -115,7 +134,50 @@ class Index extends Base
     }
 }
 ```
->请注意自己建立模板文件。
+
+<span id="Blade">集成Blade引擎</span>
+------
+
+对于从`Laravel`迁移到`easySwoole`的用户，可以选择集成熟悉的`Blade`引擎，以便快速上手，我们通过`Composer`进行集成以简化集成的难度，如果还没有为`easySwoole`添加`Composer`支持，请参照手册中的`自动加载`章节来配置，也可以用下面的方法集成任意一个通过`Composer`加载的第三方模板引擎
+
+### 安装引擎
+
+```
+composer require jenssegers/blade
+```
+
+### 建立视图控制器抽象类
+```
+<?php
+
+namespace App\Controller;
+
+use Core\AbstractInterface\AbstractController;
+use Jenssegers\Blade\Blade;
+
+abstract class ViewController extends AbstractController
+{
+    protected $TemplateViews = ROOT . '/Templates/';
+    protected $TemplateCache = ROOT . '/Temp/TplCache';
+
+    function View($tplName, $tplData = [])
+    {
+        $blade = new Blade([$this->TemplateViews], $this->TemplateCache);
+        $viewTemplate = $blade->render($tplName, $tplData);
+        $this->response()->write($viewTemplate);
+    }
+}
+```
+
+### 在控制器中使用
+
+控制器需要继承自`ViewController`,需要提前创建好模板文件，模板文件和laravel是一致的，如下面的例子模板文件是`Templates/Index/index.blade.php`
+
+```
+$this->View('Index/index', ['name' => 'easySwoole']);
+```
+
+关于`Blade`引擎的使用可以参考`laravel`文档: [http://laravel.com/docs/5.1/blade](http://laravel.com/docs/5.1/blade)
 
 <script>
     var _hmt = _hmt || [];

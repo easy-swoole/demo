@@ -34,7 +34,7 @@ class Test implements ErrorHandlerInterface
 ## IOC注入
 在框架初始化后事件注入：
 ```
-Di::getInstance()->set(SysConst::DI_ERROR_HANDLER,Test::class);
+Di::getInstance()->set(SysConst::ERROR_HANDLER,Test::class);
 ```
 
 > 注意，若在接下去的beforeWorker事件中有逻辑错误，则会导致在服务启动前，错误处理类立即被实例化，
