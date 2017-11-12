@@ -79,7 +79,7 @@
     * [数据跨进程共享](Problem/share_data.md)
     * [CURL SSL错误](Problem/curl_ssl.md)
 * 学习笔记
-   * [core和server学习](Problem/shareConnect.md)
+    * [core和server学习](Problem/shareConnect.md)
 * [问题反馈](feedBack.md) 
 * [捐赠](donate.md)
     
