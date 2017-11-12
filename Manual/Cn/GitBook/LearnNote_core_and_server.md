@@ -1,46 +1,48 @@
 core.php 和 server.php 源码分析
 
 首先我扪要一些swoole的基础
-   swoole 的整个进程种类是 manager进程，master进程，work进程，task进程
-   maskter进程：Swoole的主进程，是一个多线程的程序。其中有一组很重要的线程，称之为Reactor线程。它就是真正处理TCP连接，收发数据的线程。把接受到的数据分配给worker进程
-   mananger进程：负责管理work进程和task进程，如果有进程死了，就会重新开一个进程
-   worker进程：正常处理业务逻辑的进程
-   task进程：负责处理异步任务的进程，任务由work进程投递过来
+      swoole 的整个进程种类是 manager进程，master进程，work进程，task进程
+      maskter进程：Swoole的主进程，是一个多线程的程序。其中有一组很重要的线程，称之为Reactor线程。它就是真正处理TCP连接，收发数据的线程。把接受到的数据分配给worker进程
+      mananger进程：负责管理work进程和task进程，如果有进程死了，就会重新开一个进程
+      worker进程：正常处理业务逻辑的进程
+      task进程：负责处理异步任务的进程，任务由work进程投递过来
 开启一个多进程swoole http服务器需要注册的函数：
-   onstart事件
+      onstart事件
            在此事件之前Swoole Server已进行了如下操作
            已创建了manager进程
            已创建了worker子进程
            已监听所有TCP\/UDP端口
            已监听了定时器
-   onshutdown事件
+      onshutdown事件
                  在此之前Swoole Server已进行了如下操作
                  已关闭所有线程
                  已关闭所有worker进程
                  已close所有TCP\/UDP监听端口
                  已关闭主Rector
-  onworkerstart事件
+      onworkerstart事件
                  task进程和work进程开启时都会调用此函数
-  onworkerstop事件
+      onworkerstop事件
                  task进程和work进程结束都会调用此函数
-  onrequest事件
+      onrequest事件
                 用户发送请求会触发此函数，此函数会随机在一个work进程种
-  ontask事件
+      ontask事件
                 当系统投递task任务时会触发此函数（注意投递一次会就占用一个task进程，直到任务结束，task进程才会空闲，要是短时间投递任务数超过task进程数，任务就会进入队列排队）
-  onfinish事件
+      onfinish事件
                 当task任务结束时会触发此任务，注意想要开启task功能必须注册这两个事件
-  onworkerror事件
+      onworkerror事件
                 当work进程出错时会触发此函数
 
 
 下面我们来分析server.php
-   server.php
+
+
+ server.php
             函数：
-                    getInstance\(\):获得sever服务对象的实例，此类采用单例模式，当框架运行的时候，全局每个进程有且只有一个server对象，每个对象是相互独立的
-                    \_\_construct\(\):构造函数，这个函数只负责对server基本的配置
-                    is\_start\(\):判断服务是否已经启动
-                    stratServer（）：启动服务，在这个函数会调用很多其他函数，对server对象各个事件进行注册，
-                    getServer（）：获得swoole的server对象
+                   getInstance\(\):获得sever服务对象的实例，此类采用单例模式，当框架运行的时候，全局每个进程有且只有一个server对象，每个对象是相互独立的
+                   \_\_construct\(\):构造函数，这个函数只负责对server基本的配置
+                   is\_start\(\):判断服务是否已经启动
+                   stratServer（）：启动服务，在这个函数会调用很多其他函数，对server对象各个事件进行注册，
+                   getServer（）：获得swoole的server对象
                    私有workStartEvent\(\):在startserver（）被调用，实现了的功能是注册swoole服务器的onworksart事件，注册事件调用的是event里的onworkerstart函数，在这个事件里面一般是启动定时器等等，这个事件会在每个worker进程和task进程开启的时候被触发
                    私有workStopEvent\(\):在startServer（）被调用，实现的功能是注册了swoole服务器的onwrokstop事件，注册事件里面调用了event的onworkstop函数
                    私有onTaskEvent\(\):在startServer（）被调用，实现的功能是注册了swoole服务器的ontask事件，注册事件里面调用了event的ontask函数，
@@ -61,7 +63,8 @@ core.php 和 server.php 源码分析
 
 下面我们来分析core.php 框架的启动类 采用单例模式，当框架运行成功后，每个进程只会只有一个对象
 
-    core.php
+
+ core.php
                 函数：
                        run（）：这里会调用server类启动框架
                        frameWorkInitIalize\(\):这里会进行框架的基本的初始化，判断php版本，注册自动加载，定义全局变量，建立文件夹，注册错误，调用event的frameInitialize和frameInitialized事件
