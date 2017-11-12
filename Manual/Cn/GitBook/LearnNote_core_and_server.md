@@ -63,7 +63,6 @@ core.php 和 server.php 源码分析
 
 下面我们来分析core.php 框架的启动类 采用单例模式，当框架运行成功后，每个进程只会只有一个对象
 
-
  core.php
                 函数：
                        run（）：这里会调用server类启动框架
