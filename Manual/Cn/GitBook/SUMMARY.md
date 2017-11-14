@@ -98,7 +98,7 @@
 * 学习笔记
     * [core和server学习](learning/LearnNote_core_and_server.md)
     * [autoload和ioc学习](learning/LearnNote_autoload_and_ioc.md)
-    * [core和server学习](learning/LearnNote_request_and_response.md)
+    * [request和response学习](learning/LearnNote_request_and_response.md)
 >>>>>>> kiss291323003/master
 * [问题反馈](feedBack.md) 
 * [捐赠](donate.md)
