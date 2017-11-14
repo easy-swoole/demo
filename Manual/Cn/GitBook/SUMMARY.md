@@ -78,13 +78,11 @@
     * [为何不能共用数据库连接](Problem/shareConnect.md)
     * [数据库断线](Problem/mysql_disconnect.md)
     * [数据跨进程共享](Problem/share_data.md)
-<<<<<<< HEAD
     * [CURL SSL错误](Problem/curl_ssl.md)
 * 学习笔记
     * [core和server学习](LearnNote_core_and_server.md)
     * [autoload和ioc学习](LearnNote_autoload_and_ioc.md)
     * [core和server学习](LearnNote_request_and_response.md)
-=======
     * [CURL SSL错误](Problem/curl_ssl.md)   
     * [如何热更新调试](Problem/debug.md) 
     * [QQ群网友问答](Problem/qqAsk.md)  
@@ -99,7 +97,6 @@
     * [core和server学习](learning/LearnNote_core_and_server.md)
     * [autoload和ioc学习](learning/LearnNote_autoload_and_ioc.md)
     * [request和response学习](learning/LearnNote_request_and_response.md)
->>>>>>> kiss291323003/master
 * [问题反馈](feedBack.md) 
 * [捐赠](donate.md)
     
