@@ -29,7 +29,7 @@ $Conf->setCharset('123456ABCD');
 
 ```
 $Conf->setBackColor('#3A5FCD');
-$Conf->setBackColor('#333');
+$Conf->setBackColor('CCC');
 $Conf->setBackColor([30, 144, 255]);
 ```
 
@@ -38,7 +38,7 @@ $Conf->setBackColor([30, 144, 255]);
 
 ```
 $Conf->setFontColor('#3A5FCD');
-$Conf->setFontColor('#333');
+$Conf->setFontColor('CCC');
 $Conf->setFontColor([30, 144, 255]);
 ```
 
