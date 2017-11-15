@@ -97,6 +97,8 @@
     * [core和server学习](learning/LearnNote_core_and_server.md)
     * [autoload和ioc学习](learning/LearnNote_autoload_and_ioc.md)
     * [request和response学习](learning/LearnNote_request_and_response.md)
+* 扩展类库
+    * [验证码生成](Extend/verifycode.md)
 * [问题反馈](feedBack.md) 
 * [捐赠](donate.md)
     
