@@ -79,13 +79,7 @@
     * [数据库断线](Problem/mysql_disconnect.md)
     * [数据跨进程共享](Problem/share_data.md)
     * [CURL SSL错误](Problem/curl_ssl.md)
-* 学习笔记
-    * [core和server学习](LearnNote_core_and_server.md)
-    * [autoload和ioc学习](LearnNote_autoload_and_ioc.md)
-    * [core和server学习](LearnNote_request_and_response.md)
-    * [CURL SSL错误](Problem/curl_ssl.md)   
-    * [如何热更新调试](Problem/debug.md) 
-    * [QQ群网友问答](Problem/qqAsk.md)  
+    * [QQ群网友问答](Problem/qqAsk.md)    
 * 项目迁移
     * [前言](Transfer/introduction.md)
     * [项目初始化](Transfer/Initialization.md)
@@ -93,7 +87,7 @@
     * 从ThinkPHP迁移项目
         * [迁移数据库ORM层](Transfer/ThinkPHP/orm.md)
         * [迁移模板View层](Transfer/ThinkPHP/template.md)
-* 学习笔记
+* 群友学习笔记
     * [core和server学习](learning/LearnNote_core_and_server.md)
     * [autoload和ioc学习](learning/LearnNote_autoload_and_ioc.md)
     * [request和response学习](learning/LearnNote_request_and_response.md)

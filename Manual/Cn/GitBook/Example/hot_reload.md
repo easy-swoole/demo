@@ -41,7 +41,21 @@ if ($workerId == 0) {
     });
 }
 ```
-      
+
+# Mac下调试方式
+可以用brew安装fswatch去监听文件修改，利用php server reload命令来热更新代码。
+如：
+```
+fswatch -o /Volumes/dev/www/项目/App | xargs -n1 ~/script/脚本.sh
+```
+只要项目下的App里的文件修改了就会自动运行`脚本.sh`。脚本内容如下：
+```
+cd /Volumes/dev/www/项目 && php server stop && php server start --d
+echo "文件夹变动，已经执行 php server reload"
+```
+由于Mac下无法使用php的inotify.so，所以可以用以上介绍方法配合调试。
+
+
 <script>
     var _hmt = _hmt || [];
     (function() {
