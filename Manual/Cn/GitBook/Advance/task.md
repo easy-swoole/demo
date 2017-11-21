@@ -24,14 +24,21 @@ class Task extends AbstractAsyncTask{
 ## 添加一个异步任务
 ```
  //Core\Swoole\AsyncTaskManager
- AsyncTaskManager::getInstance()->add(f
-    unction (){
+ AsyncTaskManager::getInstance()->add(function (){
          sleep(1);
          Logger::getInstance()->console("async task run");
     }
  );
  //或者
  AsyncTaskManager::getInstance()->add(Task::class);
+ //执行回调
+ AsyncTaskManager::getInstance()->add(function (){
+        Logger::getInstance()->console("task");
+        return 'ret';//注意return
+     },-1,function (){
+        Logger::getInstance()->console("task finish");
+    }
+ );
 ```
 ## 多个任务并发执行
 Core\Component\Barrier 是对SWoole taskWaitMulti的封装实现。
