@@ -44,6 +44,7 @@
             * [SplBean](Advance/Component/Spl/splBean.md)
             * [SplString](Advance/Component/Spl/splString.md)
         * [API版本控制](Advance/Component/version.md)
+        * [Session](Advance/Component/session.md)
         * [容器服务](Advance/Component/di.md)
         * [日志](Advance/Component/log.md)
         * [系统常量](Advance/Component/const.md)
