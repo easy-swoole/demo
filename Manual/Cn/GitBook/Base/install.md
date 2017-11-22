@@ -38,7 +38,7 @@ php server start
 ## 服务启动
 easySwoole 不依赖 Apache/Nginx, 自带 HttpServer 功能，进入项目根目录，执行 php server start 就可以启动 easySwoole。easySwoole 只有四个命令参数 ： start(启动), stop(停止), reload(重载)，update(更新项目Core目录)
 
-在启动 easySwoole 的时候也可以指定一些配置参数。例如通过执行 php server start --help 可以查看所有参数和具体的参数含义。
+在启动 easySwoole 的时候也可以指定一些配置参数。例如通过执行 php server help --start 可以查看启动参数和具体的参数含义。
 
 > 这里注意一点，easySwoole 属于常驻内存的应用，当修改代码之后要重启 easySwoole 代码才能生效。
 
