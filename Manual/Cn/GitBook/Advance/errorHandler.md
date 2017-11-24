@@ -5,28 +5,24 @@ EasySwoole支持用户自定义error handler
 ```
 namespace App;
 
-
 use Core\AbstractInterface\ErrorHandlerInterface;
-use Core\Component\Spl\SplError;
 
 class Test implements ErrorHandlerInterface
 {
 
-    function handler(SplError $error)
+    function handler( $msg,$file = null,$line = null,$errorCode = null,$trace )
     {
-        // TODO: Implement handler() method.
-        echo 'error';
+        echo "文件{$file}的第{$line}行，错误：{$msg}";
+    }
+    
+    function display($msg,$file = null,$line = null,$errorCode = null,$trace )
+    {
+    }
+    
+    function log( $msg,$file = null,$line = null,$errorCode = null,$trace )
+    {
     }
 
-    function display(SplError $error)
-    {
-        // TODO: Implement display() method.
-    }
-
-    function log(SplError $error)
-    {
-        // TODO: Implement log() method.
-    }
 }
 ```
 > 当开启DEBUG.ENABLE的时候，则自定义错误处理有效。
@@ -65,3 +61,5 @@ Di::getInstance()->set(SysConst::ERROR_HANDLER,Test::class);
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
+
+
