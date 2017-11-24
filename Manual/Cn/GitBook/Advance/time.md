@@ -53,6 +53,12 @@ function onWorkerStart(\swoole_server $server, $workerId)
 }
 ```
 
+### 经典案例-订单状态超时监控
+场景说明：在很多抢购的场景中，订单下单完成后，需要限制其付款时间，或者是在棋牌游戏中，需要对房间状态进行监控。那么我们
+可以先把待监控的订单或者是房间压入redis队列中。那么利用定时器+异步进程，去实现对订单状态的循环监控。
+
+
+
 <script>
     var _hmt = _hmt || [];
     (function() {
