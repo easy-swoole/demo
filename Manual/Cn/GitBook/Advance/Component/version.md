@@ -9,7 +9,6 @@ Easyswoole 提供了高自由度的版本控制插件，版本控制的代码实
 <?php
 namespace App\Version;
 
-
 use Core\Component\Version\AbstractRegister;
 use Core\Component\Version\VersionList;
 use Core\Http\Request;
