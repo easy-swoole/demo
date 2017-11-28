@@ -1,47 +1,58 @@
 # 版本控制
-Easyswoole 提供了高自由度的版本控制插件，版本控制的代码实现在Core\Component\Version中;而版本控制的核心关键点在于对onRequest事件进行全局拦截，再做版本鉴定和请求重新分发。
+Easyswoole 提供了高自由度的版本控制插件，版本控制的代码实现主要文件均在Core\Component\Version目录中;
+而版本控制的核心关键点在于对onRequest事件进行全局拦截，再做版本鉴定和请求重新分发。
 
 ## 使用
-在Event.php文件中的frameInitialize事件中创建版本控制实例和设置对应的规则。
+首先，在App目录下建立Version目录，并在目录内建立如下示例Version类文件，该类主要进行版本设置等。
+
 ```php
-function frameInitialize(){
-   // TODO: Implement frameInitialize() method.
-   date_default_timezone_set('Asia/Shanghai');
-   $versionControl = new Control();
-   $versionControl->addVersion("v1",function (Request $request){
-   if($request->getRequestParam("version") == 1){
-          return true;
-        }
-   })->addPathMap("/v1",function (Request $request,Response $response){
-            $response->writeJson(200,"v1");
-   });
-   $versionControl->addVersion("v2",function (Request $request){
-       if($request->getRequestParam("version") == 2){
-           return true;
-       }
-   })->addPathMap("/v2",function (Request $request,Response $response){
-            $response->writeJson(200,"v2");
-   })->addPathMap("/v2","/test");
-   //注入容器
-   Di::getInstance()->set(SysConst::VERSION_CONTROL,$versionControl);
+<?php
+namespace App\Version;
+
+use Core\Component\Version\AbstractRegister;
+use Core\Component\Version\VersionList;
+use Core\Http\Request;
+use Core\Http\Response;
+
+class Version extends AbstractRegister
+{
+    function register(VersionList $versionList)
+    {
+        // 对v2版本的信息进行设置，验证字段为version（请求时必带version => 版本号）
+
+        $v2 = $versionList->add('v2', function () {
+            if (Request::getInstance()->getRequestParam('version') == '2') {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        
+        // 设置路径等信息同自定义路由功能一致
+        $v2->register()->addRoute(['GET', 'POST'], '/version', function () {
+            Response::getInstance()->write('this is test 1');
+            Response::getInstance()->end();
+        });
+
+        $v2->register()->addRoute(['GET', 'POST'], '/version/test', function () {
+            Response::getInstance()->write('this is test 2');
+            Response::getInstance()->end();
+        });
+    }
 }
 ```
 ###其中 ：
-一，v1和v2是版本字段,在url书写方式（例：www.easyswoole.com/v1）。
-二 ，("version") == 2 中的数字“2”是版本号，需要在每次的请求中带有 kye=>value 值 （例如：version=>2）。
-三，/test 为版本控制文件所在的目录文件夹（文件夹建立要在App\Contoller目录下）。
-
-在设置完以上版本控制规则后，在OnRequest事件中开启版本处理即可。
+在设置完以上版本控制规则后，在Event的OnRequest事件中开启版本处理。
 ```php
-function onRequest(Request $request, Response $response)
-{
-    // TODO: Implement onRequest() method.
-    Di::getInstance()->get(SysConst::VERSION_CONTROL)->startControl();
-}
+    
+    function onRequest(Request $request, Response $response)
+    {
+        // TODO: Implement onRequest() method.f
+        Controller::getInstance(Version::class)->startController();
+    }
 ```
 > 版本控制会先找到当前匹配version设置的回调结果进行处理，如果既不是路径字符串，也不是闭包，再找 control 实例的defaulthandler，也没有设置默认的再找 control 实例的defaulthandler，最后走dispatch直接解析 url 。
 
-最后在浏览其中访问 http://你的域名/版本字段
 
 <script>
     var _hmt = _hmt || [];
