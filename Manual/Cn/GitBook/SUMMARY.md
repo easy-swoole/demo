@@ -83,6 +83,7 @@
     * [CURL SSL错误](Problem/curl_ssl.md)
     * [QQ群网友问答](Problem/qqAsk.md)    
     * [系统内核优化](Problem/sys_optimize.md)
+    * [怎么用第三方easywechat](Problem/easywechat.md)
 * 项目迁移
     * [前言](Transfer/introduction.md)
     * [项目初始化](Transfer/Initialization.md)
