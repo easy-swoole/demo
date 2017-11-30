@@ -97,6 +97,7 @@
     * [request和response学习](learning/LearnNote_request_and_response.md)
 * 扩展类库
     * [验证码生成](Extend/verifycode.md)
+    * [缓存支持](Extend/cache.md)
 * [问题反馈](feedBack.md) 
 * [捐赠](donate.md)
     

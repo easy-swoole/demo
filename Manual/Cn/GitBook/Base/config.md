@@ -1,6 +1,7 @@
 # 配置文件
 
 所有的配置均在 Conf/Config.php 中以数组的形式表现。配置分为系统配置(sysConf)和用户自定义配置(userConf)两种。
+
 ## 系统配置项 
 ```
 array(
@@ -15,9 +16,7 @@ array(
                     'task_worker_num' => 8, //异步任务进程
                     "task_max_request"=>10,
                     'max_request'=>5000,//强烈建议设置此配置项
-                    'worker_num'=>8,
-                    "log_file"=>Di::getInstance()->get(SysConst::LOG_DIRECTORY)."/swoole.log",
-                    'pid_file'=>Di::getInstance()->get(SysConst::LOG_DIRECTORY)."/pid.pid",
+                    'worker_num'=>8
                 ),
             ),
     "DEBUG"=>array(
