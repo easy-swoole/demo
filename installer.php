@@ -178,7 +178,7 @@ class FileUtil {
 
 $zip = new ZipArchive();
 echo "start download easyswoole...\n";
-copy('https://codeload.github.com/easy-swoole/easyswoole/tar.gz/master','./easyswoole-master.zip');
+copy('https://codeload.github.com/easy-swoole/easyswoole/zip/master','./easyswoole-master.zip');
 echo "unzip...\n";
 $zip->open("easyswoole-master.zip");
 echo "extract....\n";
