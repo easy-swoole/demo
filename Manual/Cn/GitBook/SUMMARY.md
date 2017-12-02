@@ -91,6 +91,12 @@
     * 从ThinkPHP迁移项目
         * [迁移数据库ORM层](Transfer/ThinkPHP/orm.md)
         * [迁移模板View层](Transfer/ThinkPHP/template.md)
+    * 从Laravel迁移项目
+        * [迁移数据库ORM层](Transfer/Laravel/orm.md)
+        * [迁移模板Blade](Transfer/Laravel/blade.md)
+        * [迁移分页](Transfer/Laravel/pagination.md)
+        * [迁移验证器](Transfer/Laravel/validation.md)
+        * [迁移Cache](Transfer/Laravel/cache.md)
 * 群友学习笔记
     * [core和server学习](learning/LearnNote_core_and_server.md)
     * [autoload和ioc学习](learning/LearnNote_autoload_and_ioc.md)
