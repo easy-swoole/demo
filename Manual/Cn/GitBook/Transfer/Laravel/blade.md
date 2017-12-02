@@ -1,7 +1,7 @@
 迁移Blade视图层模板
 ------
 
-> 仓库地址: [Blade](https://github.com/top-think/think-template)
+> 仓库地址: [Blade](https://github.com/jenssegers/blade)
 
 
 安装
@@ -11,7 +11,7 @@
 composer require jenssegers/blade
 ```
 
-通过向其传递视图文件所在的文件夹和缓存文件夹来创建一个Blade实例。通过调用make方法来渲染一个模板。有关Blade模板引擎的更多信息可以在http://laravel.com/docs/5.1/blade上找到。
+通过向其传递视图文件所在的文件夹和缓存文件夹来创建一个Blade实例。通过调用make方法来渲染一个模板。有关Blade模板引擎的更多信息可以在http://laravel.com/docs/5.1/blade
 添加模板配置
 
 ------
