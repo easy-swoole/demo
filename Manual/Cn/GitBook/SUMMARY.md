@@ -8,6 +8,7 @@
     * Swoole Http Server 基础
         * [Swoole Http Server](Base/Swoole/server.md)
         * [基础事件回调](Base/Swoole/event.md)
+        * [内存管理机制](Base/Swoole/memory.md)
         * [异步进程](Base/Swoole/task.md)
         * [定时器](Base/Swoole/tick.md)
     * [框架安装与启动](Base/install.md)    
@@ -43,6 +44,7 @@
             * [SplBean](Advance/Component/Spl/splBean.md)
             * [SplString](Advance/Component/Spl/splString.md)
         * [API版本控制](Advance/Component/version.md)
+        * [Session](Advance/Component/session.md)
         * [容器服务](Advance/Component/di.md)
         * [日志](Advance/Component/log.md)
         * [系统常量](Advance/Component/const.md)
@@ -78,9 +80,10 @@
     * [为何不能共用数据库连接](Problem/shareConnect.md)
     * [数据库断线](Problem/mysql_disconnect.md)
     * [数据跨进程共享](Problem/share_data.md)
-    * [CURL SSL错误](Problem/curl_ssl.md)   
-    * [如何热更新调试](Problem/debug.md) 
-    * [QQ群网友问答](Problem/qqAsk.md)  
+    * [CURL SSL错误](Problem/curl_ssl.md)
+    * [QQ群网友问答](Problem/qqAsk.md)    
+    * [系统内核优化](Problem/sys_optimize.md)
+    * [怎么用第三方easywechat](Problem/easywechat.md)
 * 项目迁移
     * [前言](Transfer/introduction.md)
     * [项目初始化](Transfer/Initialization.md)
@@ -88,6 +91,19 @@
     * 从ThinkPHP迁移项目
         * [迁移数据库ORM层](Transfer/ThinkPHP/orm.md)
         * [迁移模板View层](Transfer/ThinkPHP/template.md)
+    * 从Laravel迁移项目
+        * [迁移数据库ORM层](Transfer/Laravel/orm.md)
+        * [迁移模板Blade](Transfer/Laravel/blade.md)
+        * [迁移分页](Transfer/Laravel/pagination.md)
+        * [迁移验证器](Transfer/Laravel/validation.md)
+        * [迁移Cache](Transfer/Laravel/cache.md)
+* 群友学习笔记
+    * [core和server学习](learning/LearnNote_core_and_server.md)
+    * [autoload和ioc学习](learning/LearnNote_autoload_and_ioc.md)
+    * [request和response学习](learning/LearnNote_request_and_response.md)
+* 扩展类库
+    * [验证码生成](Extend/verifycode.md)
+    * [缓存支持](Extend/cache.md)
 * [问题反馈](feedBack.md) 
 * [捐赠](donate.md)
     

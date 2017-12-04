@@ -12,6 +12,11 @@ http://127.0.0.1:9501/a/b/c/d/f
 如f为控制器名,执行的方法为:\App\Controller\A\B\C\D\F::index()
 如F为方法名,执行的方法为:\App\Controllers\A\B\C\D::f()
 
+### 路由层级
+EasySwoole理论上支持无限层级的URL=>控制器映射，但出于系统效率和防止恶意URL访问，
+系统默认为3级，若由于业务需求，需要更多层级的URL映射匹配，请于框架初始化事件中，进行对
+SysConst::CONTROLLER_MAX_DEPTH值的修改。
+
 <script>
     var _hmt = _hmt || [];
     (function() {
