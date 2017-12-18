@@ -74,6 +74,8 @@ Generating autoload files
 
 初始化完成后，我们再将Composer集成到框架中，这是非常简单的，只需要编辑你的`Conf/Event.php`文件，并在`框架初始化事件`中加入如下代码
 
+> 注意 AutoLoader 类是 **Core\AutoLoader** 命名空间下的，请一定记得引入命名空间
+
 ```
 use Core\AutoLoader;
 
@@ -84,7 +86,5 @@ function frameInitialize()
 	$loader->requireFile('vendor/autoload.php');
 }
 ```
-
-> 注意 AutoLoader 类是 Core\AutoLoader 命名空间下的
 
 干得漂亮！至此框架已支持Composer加载第三方类库，接下来的教程将开始集成第三方组件

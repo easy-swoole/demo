@@ -89,8 +89,10 @@
     * [项目初始化](Transfer/Initialization.md)
     * [Composer集成](Transfer/composer.md)
     * 从ThinkPHP迁移项目
-        * [迁移数据库ORM层](Transfer/ThinkPHP/orm.md)
-        * [迁移模板View层](Transfer/ThinkPHP/template.md)
+        * [数据库](Transfer/ThinkPHP/orm.md)
+        * [模板类](Transfer/ThinkPHP/template.md)
+        * [验证器](Transfer/ThinkPHP/validate.md)
+        * [缓存类](Transfer/ThinkPHP/cache.md)
     * 从Laravel迁移项目
         * [迁移数据库ORM层](Transfer/Laravel/orm.md)
         * [迁移模板Blade](Transfer/Laravel/blade.md)
