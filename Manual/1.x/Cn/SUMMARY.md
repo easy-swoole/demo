@@ -5,12 +5,6 @@
     * [环境要求](QianYan/environment.md)
     * [编程须知](QianYan/instruction.md)
 * 基础入门
-    * Swoole Http Server 基础
-        * [Swoole Http Server](Base/Swoole/server.md)
-        * [基础事件回调](Base/Swoole/event.md)
-        * [内存管理机制](Base/Swoole/memory.md)
-        * [异步进程](Base/Swoole/task.md)
-        * [定时器](Base/Swoole/tick.md)
     * [框架安装与启动](Base/install.md)    
     * [框架配置文件](Base/config.md)
     * URL与控制器
