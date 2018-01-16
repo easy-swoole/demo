@@ -31,7 +31,7 @@ pecl install swoole-1.9.23
 
 扩展自动安装完成后，还需要编辑 **php.ini** 文件，在文件的最后面加入以下内容
 
-```Ini
+```ini
 [swoole]
 extension=swoole.so
 ```
@@ -46,7 +46,7 @@ extension=swoole.so
 
 将下载到的源代码解压到任意目录，并且进入目录，分别执行以下命令进行编译
 
-```Bash
+```bash
 phpize
 ./configure
 make
@@ -55,7 +55,7 @@ make && install
 
 编译完成后，同样需要找到 **php.ini** 文件，在文件的最后面加入以下内容
 
-```Ini
+```ini
 [swoole]
 extension=swoole.so
 ```

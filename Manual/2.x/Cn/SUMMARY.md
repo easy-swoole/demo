@@ -7,4 +7,5 @@
 - 基础
   - [安装框架](Base/install.md)
   - [目录结构](Base/structure.md)
+  - [配置文件](Base/config.md)
 
