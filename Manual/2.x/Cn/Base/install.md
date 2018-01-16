@@ -8,7 +8,7 @@ easySwoole 使用 **Composer** 进行安装和作为依赖管理工具，所以�
 
 ```bash
 composer require easyswoole/easyswoole=2.x-dev
-php vendor/easyswoole/easyswoole/bin/easyswoole install
+php vendor/bin/easyswoole install
 php easyswoole start
 ```
 
@@ -56,4 +56,4 @@ class Index extends Controller
 
 ```
 
-执行 `composer update` 命令，此时框架已经可以自动加载 **Application **目录下的文件了，此时框架已经安装完毕，可以开始编写业务逻辑
+执行 `composer dumpautoload` 命令更新命名空间，框架已经可以自动加载 **Application **目录下的文件了，此时框架已经安装完毕，可以开始编写业务逻辑
