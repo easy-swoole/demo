@@ -20,7 +20,8 @@
         "search-plus",
         "expand-active-chapter",
         "expandable-chapters-interactive",
-        "versions-select"
+        "versions-select",
+        "styled-blockquotes"
     ],
     "pluginsConfig": {
         "edit-link": {
