@@ -11,7 +11,7 @@
   - [自动加载](Base/autoload.md)
 - 架构
   - [URL解析规则](Structure/dispatch.md)
-  - [多应用](Structure/multi_app.md)
+  - [多应用](Structure/multiapp.md)
 - 事件
   - [全局事件接口](Event/event.md)
 - 控制器
