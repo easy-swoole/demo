@@ -5,9 +5,14 @@
     "generator": "site",
     "language": "zh-hans",
     "gitbook": "3.x.x",
+    "styles": {
+        "website": "styles/website.css"
+    },
     "plugins": [
         "-lunr",
         "-search",
+        "-highlight",
+        "prism",
         "alerts",
         "edit-link",
         "anchors",
