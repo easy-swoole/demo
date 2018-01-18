@@ -2,7 +2,7 @@
 
 **easySwoole** 的目录结构是非常灵活的，基本上可以任意定制，没有太多的约束，但是仍然建议遵循下面的目录结构，方便开发
 
-```Tree
+```
 project                   项目部署目录
 ├─Application             应用目录(可以有多个)
 │  ├─Controller           控制器目录
@@ -21,7 +21,7 @@ project                   项目部署目录
 
 框架的核心代码包位于 **vendor/easyswoole/easyswoole** 目录，结构如下
 
-```tree
+```
 easyswoole                框架代码包
 ├─bin                     框架脚本目录
 │  └─easyswoole           框架管理脚本

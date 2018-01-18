@@ -1,7 +1,7 @@
 # CURL
 为了让开发者能更便捷的调用cURL，easySwoole对cURL进行了封装，先来个例子感受一下
 
-```PHP
+```php
 use Core\Utility\Curl\Request;
 
 // 获取快递100接口数据
