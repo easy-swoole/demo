@@ -1,0 +1,43 @@
+{
+    "title": "easySwoole 1.x",
+    "description": "easySwoole 1.x 使用手册",
+    "author": "YF",
+    "generator": "site",
+    "language": "zh-hans",
+    "gitbook": "3.x.x",
+    "plugins": [
+        "-lunr",
+        "-search",
+        "alerts",
+        "edit-link",
+        "anchors",
+        "github",
+        "search-plus",
+        "copy-code-button",
+        "toggle-chapters",
+        "collapsible-chapters",
+        "versions-select"
+    ],
+    "pluginsConfig": {
+        "edit-link": {
+            "base": "https://github.com/easy-swoole/doc/edit/master/Manual/1.x/Cn/",
+            "label": "编辑本页面"
+        },
+        "github": {
+            "url": "https://github.com/easy-swoole/easyswoole"
+        },
+        "versions": {
+            "gitbookConfigURL": "https://raw.githubusercontent.com/easy-swoole/doc/master/Manual/1.x/Cn/book.json",
+            "options": [
+                {
+                    "value": "https://www.easyswoole.com/Manual/1.x/Cn/_book/",
+                    "text": "easySwoole 1.x"
+                },
+                {
+                    "value": "https://www.easyswoole.com/Manual/2.x/Cn/_book/",
+                    "text": "easySwoole 2.x"
+                }
+            ]
+        }
+    }
+}
