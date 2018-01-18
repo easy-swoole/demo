@@ -50,6 +50,10 @@ return [
 
 配置操作类为 `EasySwoole\Config` 类，使用非常简单，见下面的代码例子，操作类还提供了 `toArray` 方法获取全部配置，`load` 方法重载全部配置，基于这两个方法，可以自己定制更多的高级操作
 
+> **success**
+>
+> 设置和获取配置项都支持点语法分隔，见下面获取配置的代码例子
+
 ```php
 <?php
 
@@ -73,7 +77,7 @@ $conf['DATABASE'] = [
 ];
 $instance->load($conf);
 ```
-
+> **danger**
 > 需要注意的是 由于进程隔离的原因 在Server启动后，动态新增修改的配置项，只对执行操作的进程生效，如果需要全局共享配置需要自己进行扩展
 
 ## 添加用户配置项
@@ -107,5 +111,57 @@ return [
         'auto_close' => true
     ]
 ];
+```
+
+## 批量载入配置
+
+有时候配置文件比较多，比如说数据库(databse)的配置和缓存(cache)的配置需要分开存放，easySwoole 虽然没有直接提供额外加载配置的目录，但是可以自己实现批量载入配置，这也是非常简单的
+
+### 新建配置文件
+
+以数据库配置为例，首先创建一个存放配置的文件夹，可以在任意位置，如在根目录创建`Conf`文件夹用于存放配置文件
+
+在配置文件夹中新建一个配置文件`database.php`存放数据库配置，配置文件直接返回一个数组，如下面的样例
+
+```php
+return [
+  'host'     => '127.0.0.1',
+  'password' => '123456',
+  'dbname'   => 'easyswoole'
+];
+```
+
+### 自动加载配置
+
+在项目的全局事件文件`EasySwooleEvent`中参照下面的例子添加代码，完成自动加载
+
+```php
+<?php
+
+namespace EasySwoole;
+
+use \EasySwoole\Core\AbstractInterface\EventInterface;
+use EasySwoole\Core\Utility\File;
+
+Class EasySwooleEvent implements EventInterface
+{
+
+    public function frameInitialize(): void
+    {
+        date_default_timezone_set('Asia/Shanghai');
+        // 载入项目 Conf 文件夹中所有的配置文件
+        $this->loadConf(EASYSWOOLE_ROOT . '/Conf');
+    }
+
+    function loadConf($ConfPath)
+    {
+        $Conf  = Config::getInstance();
+        $files = File::scanDir($ConfPath);
+        foreach ($files as $file) {
+            $data = require_once $file;
+            $Conf->setConf(strtolower(basename($file, '.php')), (array)$data);
+        }
+    }
+}
 ```
 
