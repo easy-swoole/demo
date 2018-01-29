@@ -57,3 +57,12 @@ class Index extends Controller
 ```
 
 执行 `composer dumpautoload` 命令更新命名空间，框架已经可以自动加载 **Application **目录下的文件了，此时框架已经安装完毕，可以开始编写业务逻辑
+
+## 关于IDE助手
+
+由于 Swoole 的函数并不是PHP标准函数，IDE无法进行自动补全，为了方便开发，可以执行以下命令引入IDE助手，在IDE下即可自动补全 Swoole 相关的函数
+
+```bash
+composer require easyswoole/swoole-ide-helper
+```
+
