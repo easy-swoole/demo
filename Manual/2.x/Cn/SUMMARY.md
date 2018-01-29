@@ -1,27 +1,62 @@
 # EasySwole
 
-- 前言
-  - [项目简介](README.md)
-  - [环境要求](QianYan/environment.md)
-  - [编程须知](QianYan/instruction.md)
-- 基础
-  - [安装框架](Base/install.md)
-  - [目录结构](Base/structure.md)
-  - [配置文件](Base/config.md)
-  - [自动加载](Base/autoload.md)
-- 架构
-  - [URL解析规则](Structure/dispatch.md)
-  - [多应用](Structure/multiapp.md)
-- 事件
-  - [全局事件接口](Event/event.md)
-- 控制器
-  - [控制器定义](Controller/definition.md)
-  - [基础控制器](Controller/base_controller.md)
-  - [REST控制器](Controller/rest_controller.md)
-  - [TCP控制器](Controller/tcp_controller.md)
-  - [UDP控制器](Controller/udp_controller.md)
-  - [WebSocket控制器](Controller/websocket_controller.md)
-- 请求
-  - [Request对象](Request/request.md)
-- 响应
-  - [Response对象](Response/response.md)
+- [基础入门](README.md)
+    - [环境要求](Introduction/environment.md)
+    - [框架安装](Introduction/install.md)
+    - [目录结构](Introduction/structure.md)
+    - [配置文件](Introduction/config.md)
+    - [服务管理](Introduction/server.md)
+    - [自动加载](Introduction/autoload.md)
+- HTTP基础应用
+    - [HTTP控制器](Base/http_controller.md)
+    - [REST控制器](Base/rest_controller.md)
+    - [URL解析规则](Base/dispatch.md)
+    - [权限验证](Base/authorization.md)
+    - [Request对象](Base/request.md)
+    - [Response对象](Base/response.md)
+    - [错误与异常拦截](Base/exception.md)
+    - [自定义路由](Base/router.md)
+    - [常见问题](Base/problem.md)
+- Sock基础应用
+    - [Sock控制器解析](Sock/sock_controller.md)
+    - [TCP](Sock/tcp.md)
+    - [WEBSOCK](Sock/websocket.md)
+    - [UDP](Sock/udp.md)
+- 基础全局事件注册
+    - [frameInitialize](Event/frame_initialize.md)
+    - [mainServerCreate](Event/main_server_create.md)
+    - [onRequest](Event/on_request.md)
+    - [afterAction](Event/after_action.md)
+- 数据库
+    - [MysqliDb](Database/mysqli_db.md)
+    - [TP ORM](Database/think_orm.md)
+    - [Laravel ORM](Database/laravel_orm.md)
+    - [断线重连问题](Database/re_connect.md)
+- 基础进阶
+    - 共享内存
+        - [ChannelManager](Advanced/ShareMemory/channel_manager.md)
+        - [TableManager](Advanced/ShareMemory/table_manager.md)
+    - [自定义进程](Advanced/process.md)
+    - [异步任务](Advanced/async_task.md)
+    - [定时器](Advanced/timer.md)
+    - [ServerManager](Advanced/server_manager.md)
+- 系统组件
+    - [Cache](Component/cache.md)
+    - [RPC](Component/rpc.md)
+    - [Cluster](Component/cluster.md)
+    - SPl库
+        - [SPlArray](Component/Spl/array.md)
+        - [SPlBean](Component/Spl/bean.md)
+        - [SPlStream](Component/Spl/stream.md)
+        - [SPlString](Component/Spl/string.md)
+    - [DI](Component/di.md)
+    - [Invoker](Component/invoker.md)
+    - [Logger](Component/logger.md)
+- 系统工具
+    - [Curl](Tools/curl.md)
+    - [Validate](Tools/validate.md)
+    - [File](Tools/validate.md)
+    - [Random](Tools/random.md)
+- 其他
+    - [错误处理与拦截](Other/exception.md)
+- [捐赠](donate.md)
