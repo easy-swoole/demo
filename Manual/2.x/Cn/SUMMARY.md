@@ -6,7 +6,6 @@
     - [目录结构](Introduction/structure.md)
     - [配置文件](Introduction/config.md)
     - [服务管理](Introduction/server.md)
-    - [自动加载](Introduction/autoload.md)
 - HTTP基础应用
     - [HTTP控制器](Base/http_controller.md)
     - [REST控制器](Base/rest_controller.md)

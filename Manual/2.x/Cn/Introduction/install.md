@@ -14,7 +14,7 @@ php easyswoole start
 
 中途没有报错的话，框架就安装完成了，此时可以访问 `http://localhost:9501/` 看到框架的欢迎页面，表示框架已经安装成功
 
-## 创建APP
+## 我的HELLO WORLD
 
 在项目根目录下创建如下的目录结构，这个目录是编写业务逻辑的应用目录，编辑 `Index.php` 文件，添加基础控制器的代码
 
@@ -36,6 +36,7 @@ class Index extends Controller
     function index()
     {
         // TODO: Implement index() method.
+        $this->write('hello world');
     }
 }
 ```
