@@ -29,7 +29,7 @@ project              项目部署目录
 
 ```php
 <?php
-namespace App\Controller;
+namespace App\HttpController;
 use EasySwoole\Core\Http\AbstractInterface\Controller;
 class Index extends Controller
 {
