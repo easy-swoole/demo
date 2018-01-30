@@ -7,31 +7,9 @@
 ![捐赠](Resource/donate.png)
 
 ## 捐赠者列表
-* *建民
-* *强
-* *新红
-* *雏清
-* *欣怡
-* *奇昊
-* *顺
-* *栋
-* *文博
-* *金旺
-* *德泽
-* *展
-* *龙
-* *凯
-* *政明
-* 古之不道
-* *俊宏
-* *晨
-* *恩泽
-<script>
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-</script>   
+* *远东
+* *梦炫
+* *国峰
+* *佳辉
+
+> 如果
