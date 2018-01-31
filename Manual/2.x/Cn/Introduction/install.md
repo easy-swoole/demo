@@ -67,3 +67,27 @@ class Index extends Controller
 composer require easyswoole/swoole-ide-helper
 ```
 
+## 关于composer报错
+在一些环境中，特别是使用集成面板安装的php环境，会出现以下报错：
+```
+dir=$(d=${0%[/\\]*}; cd "$d" > /dev/null; cd '../easyswoole/easyswoole/bin' && pwd)
+
+# See if we are running in Cygwin by checking for cygpath program
+if command -v 'cygpath' >/dev/null 2>&1; then
+	# Cygwin paths start with /cygdrive/ which will break windows PHP,
+	# so we need to translate the dir path to windows format. However
+	# we could be using cygwin PHP which does not require this, so we
+	# test if the path to PHP starts with /cygdrive/ rather than /usr/bin
+	if [[ $(which php) == /cygdrive/* ]]; then
+		dir=$(cygpath -m "$dir");
+	fi
+fi
+
+dir=$(echo $dir | sed 's/ /\ /g')
+"${dir}/easyswoole" "$@"
+```
+关于该问题，搜索了几回谷歌，都说是composer问题。不信执行以下代码也有同样问题。
+```
+> php vendor/bin/php-parser
+```
+暂时解决方案就是用yum或者是以手动编译的形式重新安装你的php环境，若有解决该报错的方案，请与我联系。
