@@ -33,7 +33,7 @@ EasySwoole 是一款基于Swoole Server 开发的常驻内存型PHP框架，专�
 ```php
 <?php
 
-namespace App\Controller;
+namespace App\HttpController;
 
 use EasySwoole\Core\Http\AbstractInterface\Controller;
 
@@ -42,16 +42,6 @@ class Index extends Controller
     function index()
     {
         $this->response()->write('Hello World');
-    }
-
-    function actionNotFound($action = null): void
-    {
-        // TODO: Implement actionNotFound() method.
-    }
-
-    function afterAction($actionName): void
-    {
-        // TODO: Implement afterAction() method.
     }
 }
 ```
