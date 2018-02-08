@@ -80,6 +80,11 @@ class Test extends TcpController
             ServerManager::getInstance()->getServer()->close($client->getFd());
         });
     }
+    
+    function who()
+    {
+        $this->response()->write('you fd is '.$this->client()->getFd());
+    }
 }
 ```
 
@@ -121,3 +126,43 @@ TARGET_CONTROLLER_NOT_FOUND and going to close
 ByeConnection closed by foreign host.
 
 ```
+
+## HTTP往TCP推送
+HTTP控制器
+```
+
+namespace App\HttpController;
+
+
+use EasySwoole\Core\Http\AbstractInterface\Controller;
+use EasySwoole\Core\Swoole\ServerManager;
+
+class Tcp extends Controller
+{
+
+    function index()
+    {
+        // TODO: Implement index() method.
+        $this->actionNotFound(null);
+    }
+
+    /*
+     * 请调用who，获取fd
+     * http://ip:9501/tpc/push/index.html?fd=xxxx
+     */
+    function push()
+    {
+        $fd = intval($this->request()->getRequestParam('fd'));
+        $info = ServerManager::getInstance()->getServer()->connection_info($fd);
+        if(is_array($info)){
+            ServerManager::getInstance()->getServer()->send($fd,'push in http at '.time());
+        }else{
+            $this->response()->write("fd {$fd} not exist");
+        }
+    }
+}
+```
+
+> 实际生产中，一般是用户TCP连接上来后，做验证，然后以userName=>fd的格式，存在redis中，需要http，或者是其他地方，
+比如定时器往某个连接推送的时候，就是以userName去redis中取得对应的fd，再send。注意，通过addServer形式创建的子服务器，
+可以再完全注册自己的网络事件，你可以注册onclose事件，然后在连接断开的时候，删除userName=>fd对应。
