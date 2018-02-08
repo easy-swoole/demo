@@ -91,3 +91,7 @@ dir=$(echo $dir | sed 's/ /\ /g')
 > php vendor/bin/php-parser
 ```
 暂时解决方案就是用yum或者是以手动编译的形式重新安装你的php环境，若有解决该报错的方案，请与我联系。
+或者也可以直接指向easySwoole的脚本
+```
+php vendor/easyswoole/easyswoole/bin/easyswoole install
+```
