@@ -22,7 +22,7 @@ php easyswoole start
 project              项目部署目录
 ----------------------------------
 ├─Application        应用目录
-│  └─Controller      应用的控制器目录
+│  └─HttpController      应用的控制器目录
 │     └─Index.php    默认控制器文件
 ----------------------------------
 ```
