@@ -8,7 +8,6 @@
     - [服务管理](Introduction/server.md)
 - HTTP基础应用
     - [HTTP控制器](Base/http_controller.md)
-    - [REST控制器](Base/rest_controller.md)
     - [URL解析规则](Base/dispatch.md)
     - [权限验证](Base/authorization.md)
     - [Request对象](Base/request.md)

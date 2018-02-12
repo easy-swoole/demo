@@ -1,5 +1,4 @@
-#
-Request对象
+#Request对象
 
 ## 生命周期
 Request对象在系统中以单例模式存在，自收到客户端HTTP请求时自动创建，直至请求结束自动销毁。Request对象完全符合[PSR7](psr-7.md)中的所有规范。
