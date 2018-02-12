@@ -1,4 +1,5 @@
 # 主服务创建事件
+
 ## 函数原型
 ```
 @param \EasySwoole\Core\Swoole\ServerManager $server
@@ -12,7 +13,9 @@ public function mainServerCreate(ServerManager $server,EventRegister $register):
 - 框架初始化事件
 - 主Swoole Server创建成功
 - 主Swoole Server 注册了默认的onTask和onFinish事件。
+
 ## 可处理内容
+
 ### 注册主服务回调事件
 例如为主服务注册onWorkerStart事件
 ```
