@@ -16,12 +16,15 @@
     - [错误与异常拦截](Base/exception.md)
     - [自定义路由](Base/router.md)
     - [常见问题](Base/problem.md)
+- 核心类讲解
+    - ServerManager
+    - EventRegister
 - Sock基础应用
     - [Sock控制器解析](Sock/sock_controller.md)
     - [TCP](Sock/tcp.md)
     - [WEBSOCK](Sock/websocket.md)
     - [UDP](Sock/udp.md)
-- 基础全局事件注册
+- [全局事件注册](Event/event.md)
     - [frameInitialize](Event/frame_initialize.md)
     - [mainServerCreate](Event/main_server_create.md)
     - [onRequest](Event/on_request.md)
