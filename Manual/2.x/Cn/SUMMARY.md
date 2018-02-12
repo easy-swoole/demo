@@ -18,16 +18,16 @@
 - 核心类讲解
     - ServerManager
     - EventRegister
+- [全局事件注册](Event/event.md)
+    - [frameInitialize](Event/frame_initialize.md)
+    - [mainServerCreate](Event/main_server_create.md)
+    - [onRequest](Event/on_request.md)
+    - [afterAction](Event/after_action.md)    
 - Sock基础应用
     - [Sock控制器解析](Sock/sock_controller.md)
     - [TCP](Sock/tcp.md)
     - [WEBSOCK](Sock/websocket.md)
     - [UDP](Sock/udp.md)
-- [全局事件注册](Event/event.md)
-    - [frameInitialize](Event/frame_initialize.md)
-    - [mainServerCreate](Event/main_server_create.md)
-    - [onRequest](Event/on_request.md)
-    - [afterAction](Event/after_action.md)
 - 数据库
     - [MysqliDb](Database/mysqli_db.md)
     - [TP ORM](Database/think_orm.md)
