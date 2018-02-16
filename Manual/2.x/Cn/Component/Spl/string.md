@@ -6,8 +6,6 @@ EasySwoole 提供了一些常用，方便开发者的基础方法，示例：
 $string = new \EasySwoole\Core\Component\Spl\SplString("Hello World");
 ```
 
-
-
 切割字符串为指定长度的数组：
 
 ```php
@@ -33,8 +31,6 @@ array(5) {
 */
 ```
 
-
-
 间隔符拆分：
 
 ```php 
@@ -53,8 +49,6 @@ var_dump($string->explode(','));
   }
 */
 ```
-
-
 
 截取：
 
@@ -82,8 +76,6 @@ array(2) {
 // 也可以 $string->subString(0,4)->split(2);
 ```
 
-
-
 编码转换：
 
 ```php
@@ -99,15 +91,11 @@ function encodingConvert( string $desEncoding, $detectList
 	] ) : SplString
 ```
 
-
-
 UTF8转换便捷方法：
 
 ```php
 function utf8() : SplString
 ```
-
-
 
 Unicode转成UTF8：
 
@@ -115,15 +103,11 @@ Unicode转成UTF8：
 function unicodeToUtf8() : SplString
 ```
 
-
-
 转成Unicode：
 
 ```php
 function toUnicode() : SplString
 ```
-
-
 
 对比：
 
@@ -137,15 +121,11 @@ var_dump($string->compare('EasySwool'));
 // 结果：1
 ```
 
-
-
 移除字符串左边的字符：
 
 ```php
 function lTrim( string $charList = " \t\n\r\0\x0B" ) : SplString
 ```
-
-
 
 移除字符串右边的字符：
 
@@ -153,15 +133,11 @@ function lTrim( string $charList = " \t\n\r\0\x0B" ) : SplString
 function rTrim( string $charList = " \t\n\r\0\x0B" ) : SplString
 ```
 
-
-
 移除字符串两侧的字符：
 
 ```php
 function trim( string $charList = " \t\n\r\0\x0B" ) : SplString
 ```
-
-
 
 填充：
 
@@ -175,8 +151,6 @@ var_dump($string->pad(20,'.')->__toString());
 // 结果：EasySwoole..........
 ```
 
-
-
 重复：
 
 ```php
@@ -188,8 +162,6 @@ function repeat( int $times ) : SplString
 var_dump($string->repeat(2)->__toString());
 // 结果：EasySwooleEasySwoole
 ```
-
-
 
 字符串长度：
 
@@ -203,8 +175,6 @@ var_dump($string->length());
 // 结果：10
 ```
 
-
-
 全转成大写：
 
 ```php
@@ -216,8 +186,6 @@ function upper() : SplString
 var_dump($string->upper()->__toString());
 // 结果：EASYSWOOLE
 ```
-
-
 
 全转成小写：
 
@@ -231,8 +199,6 @@ var_dump($string->lower()->__toString());
 // 结果：easyswoole
 ```
 
-
-
 剥去字符串中的 HTML 标签：
 
 ```php
@@ -244,8 +210,6 @@ function stripTags( string $allowable_tags = null ) : SplString
 var_dump($string->stripTags()->__toString());
 // 结果：EasySwoole
 ```
-
-
 
 替换：
 
@@ -259,8 +223,6 @@ var_dump($string->replace("Easy","2018年2月16日，新年快乐Easy")->__toStr
 // 结果：2018年2月16日，新年快乐EasySwoole
 ```
 
-
-
 两者之间的：
 
 ```php
@@ -272,8 +234,6 @@ function between( string $startStr, string $endStr ) : SplString
 var_dump($string->between("Ea","le")->__toString());
 // 结果：sySwoo
 ```
-
-
 
 正则匹配：
 
@@ -287,8 +247,6 @@ var_dump($string->regex("@^(?:http://)?([^/]+)@i"));
 // 结果：http://www.easyswoole.com
 ```
 
-
-
 是否存在：
 
 ```php
@@ -300,8 +258,6 @@ function exist( string $find, bool $ignoreCase = true ) : bool
 var_dump($string->exist("easyswoole"));
 // 结果：true
 ```
-
-
 
 可以撸的烤串：
 
@@ -315,8 +271,6 @@ var_dump($string->kebab()->__toString());
 // 结果：kao-chuan-kao-chuan-kao-chuan
 ```
 
-
-
 扭一扭：
 
 ```php
@@ -328,8 +282,6 @@ function snake( string $delimiter = '_' ) : SplString
 var_dump($string->snake('_')->__toString());
 // 结果：pi_gu_niu_yi_niu
 ```
-
-
 
 起起伏伏：
 
@@ -343,8 +295,6 @@ var_dump($string->studly()->__toString());
 // 结果：UserInfoProfileGoodsMessage
 ```
 
-
-
 驼峰：
 
 ```Php
@@ -356,8 +306,6 @@ function camel() : SplString
 var_dump($string->camel()->__toString());
 // 结果：userInfoProfileGoodsMessage
 ```
-
-
 
 用数组逐个字符：
 
@@ -371,8 +319,6 @@ var_dump($string->replaceArray('你',['我','他'])->__toString());
 // 结果：我好啊，他在吗
 ```
 
-
-
 替换字符串中给定值的第一次出现：
 
 ```php
@@ -384,8 +330,6 @@ function replaceFirst( string $search, string $replace ) : SplString
 var_dump($string->replaceArray('你','我')->__toString());
 // 结果：我好啊，你在吗
 ```
-
-
 
 替换字符串中给定值的最后一次出现：
 
@@ -399,8 +343,6 @@ var_dump($string->replaceLast('你','他')->__toString());
 // 结果：你好啊，你在吗，他在吗
 ```
 
-
-
 以一个给定值的单一实例开始一个字符串：
 
 ```php
@@ -412,8 +354,6 @@ function start( string $prefix ) : SplString
 var_dump($string->start('easyswoole_')->__toString());
 // 结果：easyswoole_user_table
 ```
-
-
 
 在给定的值之后返回字符串的其余部分：
 
@@ -427,8 +367,6 @@ var_dump($string->after('.')->__toString());
 // 结果：user.png
 ```
 
-
-
 在给定的值之前获取字符串的一部分：
 
 ```php
@@ -440,8 +378,6 @@ function before( string $search ) : SplString
 var_dump($string->before('.')->__toString());
 // 结果：easyswoole
 ```
-
-
 
 确定给定的字符串是否以给定的子字符串结束：
 
@@ -455,8 +391,6 @@ var_dump($string->endsWith(['png','gif','jpg']));
 // 结果：true
 ```
 
-
-
 确定给定的字符串是否从给定的子字符串开始
 
 ```php
@@ -468,4 +402,3 @@ function startsWith( $needles ) : bool
 var_dump($string->startsWith(['e','easyswoole','es']));
 // 结果：true
 ```
-

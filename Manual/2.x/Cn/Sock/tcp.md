@@ -1,11 +1,11 @@
 # TCP控制器
 ## 协议规则与解析
 假定，客户端与服务端都是明文传输。控制格式为
-```
+```php
 sericeName:actionName:args
 ```
 ## 实现解析器
-```
+```php
 namespace Tcp;
 
 use EasySwoole\Core\Socket\AbstractInterface\ParserInterface;
@@ -36,7 +36,7 @@ class Parser implements ParserInterface
 }
 ```
 ## 实现一个控制服务
-```
+```php
 namespace Tcp;
 
 
@@ -90,7 +90,7 @@ class Test extends TcpController
 
 ## 开启子服务
 在EasySwooleEvent中注册。
-```
+```php
   public function mainServerCreate(ServerManager $server,EventRegister $register): void
     {
         // TODO: Implement mainServerCreate() method.
@@ -129,7 +129,7 @@ ByeConnection closed by foreign host.
 
 ## HTTP往TCP推送
 HTTP控制器
-```
+```php
 
 namespace App\HttpController;
 
@@ -165,4 +165,4 @@ class Tcp extends Controller
 
 > 实际生产中，一般是用户TCP连接上来后，做验证，然后以userName=>fd的格式，存在redis中，需要http，或者是其他地方，
 比如定时器往某个连接推送的时候，就是以userName去redis中取得对应的fd，再send。注意，通过addServer形式创建的子服务器，
-可以再完全注册自己的网络事件，你可以注册onclose事件，然后在连接断开的时候，删除userName=>fd对应。
+>以再完全注册自己的网络事件，你可以注册onclose事件，然后在连接断开的时候，删除userName=>fd对应。
