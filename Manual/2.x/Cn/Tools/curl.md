@@ -1,5 +1,9 @@
 ## Curl
 
+#### 命名空间地址
+
+EasySwoole\Core\Utility\Curl\Request
+
 #### 方法列表
 
 初始化：

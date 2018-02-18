@@ -1,5 +1,11 @@
 ## File
 
+#### 命名空间地址
+
+EasySwoole\Core\Utility\File
+
+#### 方法列表
+
 创建目录：
 
 - string `dirPath` 目录名
