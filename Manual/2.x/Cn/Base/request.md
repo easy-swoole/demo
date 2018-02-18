@@ -44,6 +44,7 @@ var_dump($data);
 $get = $request->getQueryParams();
 ```
 ### 获得post内容
+
 ```
 $post = $request->getParsedBody();
 ```
@@ -60,8 +61,8 @@ $header = $request->getHeaders();
 ### 获得server
 ```
 $server = $request->getServerParams();
-
 ```
 ### 获得cookie
 ```
 $cookie = $request->getCookieParams();
+```

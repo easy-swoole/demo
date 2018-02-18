@@ -3,12 +3,12 @@
 EasySwoole 2.x支持以控制器模式来开发你的代码。
 
 首先，修改配置文件，确认SERVER_TYPE为:
-```
+```php
 \EasySwoole\Core\Swoole\ServerManager::TYPE_WEB_SOCKET_SERVER
 ```
 
 ## 实现命令解析
-```
+```php
 namespace App;
 
 
@@ -40,7 +40,7 @@ class Parser implements ParserInterface
 > 注意，请按照你实际的规则实现，本测试代码与前端代码对应。
 
 ## 测试前端代码
-```
+```Html
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -103,7 +103,8 @@ class Parser implements ParserInterface
 ```
 
 ## 测试HTTP 视图控制器
-```
+
+```php
 namespace App\HttpController;
 
 
@@ -141,7 +142,7 @@ class Index extends Controller
 
 ## WebSocket 控制器
 
-```
+```php
 namespace App\WebSocket;
 
 
@@ -182,7 +183,7 @@ class Test extends WebSocketController
 
 ## 注册服务
 
-```
+```php
 
 use App\Parser;
 
