@@ -1,4 +1,4 @@
-# 数据库与模型
+# think ORM
 
 
 > Github : [ThinkORM](https://github.com/top-think/think-orm) - 从ThinkPHP5.1独立出来的数据库ORM类库

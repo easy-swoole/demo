@@ -1,9 +1,8 @@
 # RPC服务
 ## 服务端
 服务A
-```
+```php
 namespace Rpc;
-
 
 use EasySwoole\Core\Component\Rpc\AbstractInterface\AbstractRpcService;
 
@@ -16,7 +15,7 @@ class A extends AbstractRpcService
 ```
 
 服务Hello
-```
+```php
 namespace Rpc;
 
 
@@ -40,7 +39,7 @@ class Hello extends AbstractRpcService
 
 服务绑定
 
-```
+```php
 public function mainServerCreate(ServerManager $server,EventRegister $register): void
 {
     // TODO: Implement mainServerCreate() method.
@@ -53,7 +52,7 @@ public function mainServerCreate(ServerManager $server,EventRegister $register):
 
 ## 客户端
 客户端测试代码
-```
+```php
 //注册默认服务
 $node = new \EasySwoole\Core\Component\Rpc\Server\ServiceNode();
 $node->setServiceName('hello');
