@@ -14,7 +14,7 @@ EasySwoole实现了简单版的IOC，使用 IOC 容器可以很方便的存储/�
 
 ### getInstance
 
-```
+```php
 $di = Di::getInstance();
 ```
 
@@ -28,23 +28,22 @@ $di = Di::getInstance();
 
 - $arg:若注入的内容为is_callable，则可以设置该参数以供callable执行时传入。
 
-  ```
+  ```php
   $di->set('db',new DbClass());
   $di->set('db',DbClass::class);
-
   ```
 
 > Di的set方法为懒惰加载模式，若set一个对象名或者闭包，则该对象不会马上被创建。
 
 ### get
 
-```
+```php
 $db = $db->get('db');
 ```
 
 ### delete
 
-```
+```php
 $di->delete('db');
 ```
 
