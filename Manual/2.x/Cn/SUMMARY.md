@@ -56,7 +56,7 @@
 - 系统工具
     - [Curl](Tools/curl.md)
     - [Validate](Tools/validate.md)
-    - [File](Tools/validate.md)
+    - [File](Tools/file.md)
     - [Random](Tools/random.md)
 - 其他
     - [错误处理与拦截](Other/exception.md)
