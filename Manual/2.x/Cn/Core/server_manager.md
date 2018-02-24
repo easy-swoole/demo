@@ -1,16 +1,17 @@
-## 服务管理者
-
+# 服务管理者
+```EasySwoole\Core\Swoole\ServerManager```
 在EasySwoole框架初始化后会执行ServerManager::start()来创建主服务、开启缓存、创建要监听的端口列表。
+## 执行流程
+```sequence
+ServerManager实例化->创建主服务:读取主配置
+创建主服务->事件注册:调用全局mainServerCreate
+事件注册->服务启动：添加Cache、Cluster服务并开始监听端口
+ ```
+## 方法列表
 
-#### 命名空间地址
+获得ServerManager实例：
 
-EasySwoole\Core\Swoole\ServerManager
-
-### 方法列表
-
-获得ServerManager单例：
-
-```Php
+```
 public static function getInstance():ServerManager
 ```
 
