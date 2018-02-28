@@ -30,7 +30,7 @@ class Parser implements ParserInterface
 
     }
 
-    public function encode(string $raw, $client): ?string
+    public function encode(string $raw, $client, $commandBean): ?string
     {
         // TODO: Implement encode() method.
         return $raw;
@@ -152,7 +152,7 @@ use EasySwoole\Core\Swoole\Task\TaskManager;
 
 class Test extends WebSocketController
 {
-    function actionNotFound(string $actionName)
+    function actionNotFound(?string $actionName)
     {
         $this->response()->write("action call {$actionName} not found");
     }
