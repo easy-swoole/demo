@@ -24,7 +24,6 @@
     - [onRequest](Event/on_request.md)
     - [afterAction](Event/after_action.md)    
 - Sock基础应用
-    - [Sock控制器解析](Sock/sock_controller.md)
     - [TCP](Sock/tcp.md)
     - [WEBSOCK](Sock/websocket.md)
     - [UDP](Sock/udp.md)
