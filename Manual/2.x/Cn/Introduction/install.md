@@ -95,3 +95,7 @@ dir=$(echo $dir | sed 's/ /\ /g')
 ```
 php vendor/easyswoole/easyswoole/bin/easyswoole install
 ```
+
+## 关于demo
+EasySwoole有提交简单的HTTP 应用demo,git克隆到本地并安装对应的拓展包即可使用。
+demo地址:https://github.com/easy-swoole/demo
