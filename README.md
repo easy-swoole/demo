@@ -18,6 +18,8 @@ CREATE TABLE `user_list` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 ## 其他
+- [项目主仓库](https://github.com/easy-swoole/easyswoole)
+- [项目官网](https://www.easyswoole.com/)
 - 官方QQ交流群 : **633921431**
 
 - [捐赠](https://www.easyswoole.com/Manual/2.x/Cn/_book/donate.html)
