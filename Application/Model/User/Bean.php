@@ -104,5 +104,9 @@ class Bean extends SplBean
         if(empty($this->addTime)){
             $this->addTime = time();
         }
+        //默认md5是32 位，当从数据库中读出数据恢复为bean的时候，不对密码做md5
+        if(strlen($this->password) == 32){
+            $this->password = md5($this->password);
+        }
     }
 }
