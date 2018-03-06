@@ -30,6 +30,7 @@ CREATE TABLE `user_list` (
 - 自带跨进程Cache使用
 - inotify监控应用实现自动重启
 - webSocket控制器基础使用例子
+- 控制器异常处理
 
 ## 其他
 - [项目主仓库](https://github.com/easy-swoole/easyswoole)
