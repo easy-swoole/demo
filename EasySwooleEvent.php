@@ -10,6 +10,7 @@ namespace EasySwoole;
 
 use App\Process\Inotify;
 use App\Process\Test;
+use App\Sock\Parser\WebSock;
 use \EasySwoole\Core\AbstractInterface\EventInterface;
 use EasySwoole\Core\Component\Logger;
 use EasySwoole\Core\Swoole\Process\ProcessManager;
@@ -44,6 +45,8 @@ Class EasySwooleEvent implements EventInterface {
         ProcessManager::getInstance()->addProcess('test',Test::class);
 
         ProcessManager::getInstance()->addProcess('autoReload',Inotify::class);
+
+        $register->registerDefaultOnMessage(new WebSock());
     }
 
     public function onRequest(Request $request,Response $response): void

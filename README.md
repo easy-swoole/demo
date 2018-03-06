@@ -4,7 +4,7 @@
 - 安装easySwoole（安装easyswoole教程请看文档）
 
 ## 使用前准备
-请确保数修改好数据库配置，并存在以下表
+若测试数据库部分，请确保数修改好数据库配置，并存在以下表
 ```
 CREATE TABLE `user_list` (
   `userId` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,6 +29,7 @@ CREATE TABLE `user_list` (
 - 自定义进程使用
 - 自带跨进程Cache使用
 - inotify监控应用实现自动重启
+- webSocket控制器基础使用例子
 
 ## 其他
 - [项目主仓库](https://github.com/easy-swoole/easyswoole)
