@@ -8,8 +8,11 @@
 
 namespace EasySwoole;
 
+use App\Process\Inotify;
+use App\Process\Test;
 use \EasySwoole\Core\AbstractInterface\EventInterface;
 use EasySwoole\Core\Component\Logger;
+use EasySwoole\Core\Swoole\Process\ProcessManager;
 use \EasySwoole\Core\Swoole\ServerManager;
 use \EasySwoole\Core\Swoole\EventRegister;
 use \EasySwoole\Core\Http\Request;
@@ -30,11 +33,17 @@ Class EasySwooleEvent implements EventInterface {
         $register->add($register::onWorkerStart,function (\swoole_server $server,$workerId){
             //为workerId为0的进程添加定时器
             if($workerId == 0){
-               Core\Swoole\Time\Timer::loop(1000,function (){
-                   Logger::getInstance()->consoleWithTrace('timer run');
+               Core\Swoole\Time\Timer::loop(2000,function (){
+                   Logger::getInstance()->console('timer run');
+                   //给自定义进程发送数据
+                   ProcessManager::getInstance()->writeByProcessName('test',time());
                });
             }
         });
+
+        ProcessManager::getInstance()->addProcess('test',Test::class);
+
+        ProcessManager::getInstance()->addProcess('autoReload',Inotify::class);
     }
 
     public function onRequest(Request $request,Response $response): void

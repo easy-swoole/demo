@@ -7,3 +7,5 @@
  */
 require 'vendor/autoload.php';
 \EasySwoole\Core\Core::getInstance()->initialize();
+
+$model = new \App\Model\User\User();

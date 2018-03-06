@@ -26,6 +26,9 @@ CREATE TABLE `user_list` (
 - Es的Validate使用
 - 系统事件注册
 - 定时器添加
+- 自定义进程使用
+- 自带跨进程Cache使用
+- inotify监控应用实现自动重启
 
 ## 其他
 - [项目主仓库](https://github.com/easy-swoole/easyswoole)
