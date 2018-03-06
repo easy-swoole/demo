@@ -41,4 +41,18 @@ class Index extends Controller
         $this->response()->withStatus(Status::CODE_NOT_FOUND);
         $this->response()->write("{$action} is not exist");
     }
+
+    function a()
+    {
+        $this->response()->write('index controller router');
+    }
+
+    function a2()
+    {
+        $this->response()->write('index controller router2');
+    }
+
+    function test2(){
+        $this->response()->write('this is controller test2 and your id is '.$this->request()->getRequestParam('id'));
+    }
 }

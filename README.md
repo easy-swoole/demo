@@ -17,6 +17,16 @@ CREATE TABLE `user_list` (
   UNIQUE KEY `account_UNIQUE` (`account`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
+
+## DEMO内容
+- URL与控制器关系
+- 自定义路由
+- 异步任务投递
+- 数据库与model使用
+- Es的Validate使用
+- 系统事件注册
+- 定时器添加
+
 ## 其他
 - [项目主仓库](https://github.com/easy-swoole/easyswoole)
 - [项目官网](https://www.easyswoole.com/)
