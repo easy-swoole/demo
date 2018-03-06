@@ -11,6 +11,7 @@ namespace App\HttpController;
 
 use EasySwoole\Core\Http\AbstractInterface\Controller;
 use EasySwoole\Core\Http\Message\Status;
+use EasySwoole\Core\Swoole\ServerManager;
 
 class Index extends Controller
 {
@@ -24,6 +25,10 @@ class Index extends Controller
     //测试路径 /test/index.html
     function test()
     {
+        $ip = ServerManager::getInstance()->getServer()->connection_info($this->request()->getSwooleRequest()->fd);
+        var_dump($ip);
+        $ip2 = $this->request()->getHeaders();
+        var_dump($ip2);
         $this->response()->write('index controller test');
     }
 

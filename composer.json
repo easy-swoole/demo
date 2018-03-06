@@ -8,7 +8,8 @@
     ],
     "require": {
         "easyswoole/easyswoole": "2.x-dev",
-        "joshcam/mysqli-database-class": "dev-master"
+        "joshcam/mysqli-database-class": "dev-master",
+        "easyswoole/swoole-ide-helper": "^1.0"
     },
     "autoload": {
         "psr-4": {
