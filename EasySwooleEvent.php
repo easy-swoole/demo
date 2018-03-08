@@ -13,6 +13,7 @@ use App\Process\Test;
 use App\Sock\Parser\WebSock;
 use \EasySwoole\Core\AbstractInterface\EventInterface;
 use EasySwoole\Core\Component\Logger;
+use EasySwoole\Core\Swoole\EventHelper;
 use EasySwoole\Core\Swoole\Process\ProcessManager;
 use \EasySwoole\Core\Swoole\ServerManager;
 use \EasySwoole\Core\Swoole\EventRegister;
@@ -46,7 +47,7 @@ Class EasySwooleEvent implements EventInterface {
 
         ProcessManager::getInstance()->addProcess('autoReload',Inotify::class);
 
-        $register->registerDefaultOnMessage(new WebSock());
+        EventHelper::registerDefaultOnMessage($register,new WebSock());;
     }
 
     public function onRequest(Request $request,Response $response): void
