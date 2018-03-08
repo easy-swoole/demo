@@ -190,7 +190,7 @@ use App\Parser;
 public function mainServerCreate(ServerManager $server,EventRegister $register): void
 {
     // TODO: Implement mainServerCreate() method.
-    $register->registerDefaultOnMessage(new Parser());
+    EventHelper::registerDefaultOnMessage($register,new Parser());
 }
 ```
 
