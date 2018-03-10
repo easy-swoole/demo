@@ -9,7 +9,7 @@
     "require": {
         "easyswoole/easyswoole": "2.x-dev",
         "joshcam/mysqli-database-class": "dev-master",
-        "easyswoole/swoole-ide-helper": "^1.0"
+        "easyswoole/swoole-ide-helper": "dev-master"
     },
     "autoload": {
         "psr-4": {
