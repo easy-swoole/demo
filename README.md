@@ -31,6 +31,7 @@ CREATE TABLE `user_list` (
 - inotify监控应用实现自动重启
 - webSocket控制器基础使用例子
 - 控制器异常处理
+- 同步mysql/协程mysql对象池
 
 ## 其他
 - [项目主仓库](https://github.com/easy-swoole/easyswoole)
