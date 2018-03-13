@@ -60,6 +60,7 @@
 - 其他
     - [错误处理与拦截](Other/exception.md)
     - [异步客户端](Other/asyncClient.md)
+    - [HTTP中使用Protobuf](Protobuf/http.md)
 - PHP需注意
     - [Trait与单例](PhpProblem/traitSingleTon.md)
 - [捐赠](donate.md)
