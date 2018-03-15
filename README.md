@@ -29,7 +29,7 @@ CREATE TABLE `user_list` (
 - 自定义进程使用
 - 自带跨进程Cache使用
 - inotify监控应用实现自动重启
-- webSocket控制器基础使用例子
+- webSocket控制器基础使用例子（包含连接验证）
 - 控制器异常处理
 - 同步mysql/协程mysql对象池
 
