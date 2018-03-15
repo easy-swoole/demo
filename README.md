@@ -30,6 +30,7 @@ CREATE TABLE `user_list` (
 - 自带跨进程Cache使用
 - inotify监控应用实现自动重启
 - webSocket控制器基础使用例子（包含连接验证）
+- tcp控制器基础使用（测试方法请看文档的sock tcp章节）
 - 控制器异常处理
 - 同步mysql/协程mysql对象池
 

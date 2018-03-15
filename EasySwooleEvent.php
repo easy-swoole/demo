@@ -10,6 +10,7 @@ namespace EasySwoole;
 
 use App\Process\Inotify;
 use App\Process\Test;
+use App\Sock\Parser\Tcp;
 use App\Sock\Parser\WebSock;
 use \EasySwoole\Core\AbstractInterface\EventInterface;
 use EasySwoole\Core\Component\Logger;
@@ -19,6 +20,7 @@ use \EasySwoole\Core\Swoole\ServerManager;
 use \EasySwoole\Core\Swoole\EventRegister;
 use \EasySwoole\Core\Http\Request;
 use \EasySwoole\Core\Http\Response;
+use EasySwoole\Core\Swoole\Task\TaskManager;
 
 Class EasySwooleEvent implements EventInterface {
 
@@ -48,6 +50,17 @@ Class EasySwooleEvent implements EventInterface {
         ProcessManager::getInstance()->addProcess('autoReload',Inotify::class);
 
         EventHelper::registerDefaultOnMessage($register,new WebSock());
+
+        $tcp = $server->addServer('tcp',9502);
+        EventHelper::registerDefaultOnReceive($tcp,new Tcp(),function($errorType,$clientData,$client){
+            //第二个回调是可有可无的，当无法正确解析，或者是解析出来的控制器不在的时候会调用
+            TaskManager::async(function ()use($client){
+                sleep(3);
+                \EasySwoole\Core\Socket\Response::response($client,"Bye");
+                ServerManager::getInstance()->getServer()->close($client->getFd());
+            });
+            return "{$errorType} and going to close";
+        });
 
         //注册ws  握手回调，可以实现在握手的时候，鉴定用户身份
         $register->add($register::onHandShake,function (\swoole_http_request $request, \swoole_http_response $response){
