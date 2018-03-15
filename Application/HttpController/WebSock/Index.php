@@ -20,6 +20,7 @@ class Index extends Controller
         // TODO: Implement index() method.
         $content = file_get_contents(__DIR__.'/client.html');
         $this->response()->write($content);
+        $this->response()->setCookie('token','123',time()+3600);
     }
 
     /*
