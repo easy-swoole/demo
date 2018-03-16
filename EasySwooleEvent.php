@@ -12,8 +12,11 @@ use App\Process\Inotify;
 use App\Process\Test;
 use App\Sock\Parser\Tcp;
 use App\Sock\Parser\WebSock;
+use App\Utility\MysqlPool2;
 use \EasySwoole\Core\AbstractInterface\EventInterface;
+use EasySwoole\Core\Component\Di;
 use EasySwoole\Core\Component\Logger;
+use EasySwoole\Core\Swoole\Coroutine\PoolManager;
 use EasySwoole\Core\Swoole\EventHelper;
 use EasySwoole\Core\Swoole\Process\ProcessManager;
 use \EasySwoole\Core\Swoole\ServerManager;
@@ -33,10 +36,11 @@ Class EasySwooleEvent implements EventInterface {
     public function mainServerCreate(ServerManager $server,EventRegister $register): void
     {
         // TODO: Implement mainServerCreate() method.
+        PoolManager::getInstance()->addPool(MysqlPool2::class,3,10);
         //注册worker start 事件
         $register->add($register::onWorkerStart,function (\swoole_server $server,$workerId){
             //为workerId为0的进程添加定时器
-            if($workerId == 0){
+            if($workerId <= 3){
                Core\Swoole\Time\Timer::loop(2000,function (){
                    Logger::getInstance()->console('timer run');
                    //给自定义进程发送数据
@@ -44,9 +48,9 @@ Class EasySwooleEvent implements EventInterface {
                });
             }
         });
-
+//
         ProcessManager::getInstance()->addProcess('test',Test::class);
-
+//
         ProcessManager::getInstance()->addProcess('autoReload',Inotify::class);
 
         EventHelper::registerDefaultOnMessage($register,new WebSock());

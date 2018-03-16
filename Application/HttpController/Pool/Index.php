@@ -9,9 +9,10 @@
 namespace App\HttpController\Pool;
 
 
-use App\Utility\MysqlPool;
 use App\Utility\MysqlPool2;
+use EasySwoole\Core\Component\Di;
 use EasySwoole\Core\Http\AbstractInterface\Controller;
+use EasySwoole\Core\Swoole\Coroutine\PoolManager;
 
 class Index extends Controller
 {
@@ -19,49 +20,31 @@ class Index extends Controller
     function index()
     {
         // TODO: Implement index() method.
-        \go(function (){
-            $db = MysqlPool::getInstance()->getObj();
-            \go(function (){
-                $db = MysqlPool::getInstance()->getObj();
-                if($db){
-                    $db->query('select sleep(1)');
-                    MysqlPool::getInstance()->freeObj($db);
-                }else{
-                    var_dump('db not available');
-                }
-                var_dump('finish at'.time());
-            });
-            if($db){
-                $db->query('select sleep(1)');
-                MysqlPool::getInstance()->freeObj($db);
-            }else{
-                var_dump('db not available');
-            }
-            var_dump('finish at'.time());
-        });
-
         $this->response()->write('request over');
     }
 
     function test()
     {
-        \go(function (){
-            $db = MysqlPool2::getInstance()->getObj();
+        /*
+         * Pool已经在在Event中注册了
+         */
+        $pool = PoolManager::getInstance()->getPool(MysqlPool2::class);
+        \go(function ()use($pool){
+            $db = $pool->getObj();
             if($db){
-                $ret = $db->where('account','%s%','LIKE')->get('user_list');
-                MysqlPool2::getInstance()->freeObj($db);
-                var_dump($ret);
+                $ret = $db->rawQuery('select sleep(1)');
+                $pool->freeObj($db);
+                var_dump('1 finish at '.time());
             }else{
                 var_dump('db not available');
             }
         });
-
-        \go(function (){
-            $db = MysqlPool2::getInstance()->getObj();
+        \go(function ()use($pool){
+            $db = $pool->getObj();
             if($db){
                 $ret = $db->where('account','test2')->get('user_list');
-                MysqlPool2::getInstance()->freeObj($db);
-                var_dump($ret);
+                $pool->freeObj($db);
+                var_dump('2 finish at '.time());
             }else{
                 var_dump('db not available');
             }
@@ -76,11 +59,11 @@ class Index extends Controller
     {
         //协程同步调用（优化worker 利用时间，让一个worker可以同时处理多个用户请求）
         $ret = null;
-        $db = MysqlPool2::getInstance()->getObj();
-
+        $pool = PoolManager::getInstance()->getPool(MysqlPool2::class);
+        $db = $pool->getObj();
         if($db){
-            var_dump($db->get('user_list'));
-            MysqlPool2::getInstance()->freeObj($db);
+            $ret = $db->getOne('user_list');
+            $pool->freeObj($db);
         }else{
             var_dump('db not available');
         }
