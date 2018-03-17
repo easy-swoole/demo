@@ -1,6 +1,9 @@
 # 常见问题
 ## 如何获取$HTTP_RAW_POST_DATA
-## 如何结束响应
+```
+$content = $this->request()->getBody()->__toString();
+$raw_array = json_decode($content, true);
+```
 ## 如何获取客户端IP
 举例，如何在控制器中获取客户端IP
 ```

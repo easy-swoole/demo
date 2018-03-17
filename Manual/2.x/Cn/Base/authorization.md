@@ -11,4 +11,5 @@ protected function onRequest($action): ?bool
     }
 }
 ```
-> 该函数一定要有返回值，仅当返回false的时候为拦截请求，不再响应后续的action行为。
+> 该函数一定要有返回值，仅当返回false的时候为拦截请求，不再响应后续的action行为。可以参考
+https://github.com/easy-swoole/demo/blob/master/Application/HttpController/Api/User.php

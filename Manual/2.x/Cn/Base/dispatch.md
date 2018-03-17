@@ -10,13 +10,13 @@
 >
 > <http://serverName/api/auth/login>
 >
-> 对应执行的方法为 \App\Controller\Api\Auth::login()
+> 对应执行的方法为 \App\HttpController\Api\Auth::login()
 >
 > <http://serverName/a/b/c/d/f>
 >
-> 如果 f 为控制器名，则执行的方法为 \App\Controller\A\B\C\D\F::index()
+> 如果 f 为控制器名，则执行的方法为 \App\HttpController\A\B\C\D\F::index()
 >
-> 如果 f 为方法名，则执行的方法为 \App\Controllers\A\B\C\D::f()
+> 如果 f 为方法名，则执行的方法为 \App\HttpControllers\A\B\C\D::f()
 
 ## 解析层级
 
@@ -28,4 +28,6 @@ public function frameInitialize(): void
 	Di::getInstance()->set(SysConst::CONTROLLER_MAX_DEPTH, 5);
 }
 ```
+
+> 注意，EasySwoole的URL路径区分大小写
 

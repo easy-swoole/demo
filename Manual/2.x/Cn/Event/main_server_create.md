@@ -36,3 +36,5 @@ $tcp = $server->addServer('tcp',9502);
    var_dump('rec'.$data);
 });
 ```
+
+> 使用参考：https://github.com/easy-swoole/demo/blob/master/EasySwooleEvent.php
