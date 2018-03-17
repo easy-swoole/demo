@@ -96,6 +96,12 @@ dir=$(echo $dir | sed 's/ /\ /g')
 php vendor/easyswoole/easyswoole/bin/easyswoole install
 ```
 
-## 关于demo
+## 安装后第一次启动,报错协程id只能为int或null
+
+- 1、请确保swoole版本大于1.9.23或者是大于2.1.0
+- 2、使用的ide helper 为easyswoole/swoole-ide-helper:dev-master,原因在于其他仓库的
+ide helper未及时更近，协程函数默认返回1，实际上应该是-1
+
+## Demo
 EasySwoole有提交简单的HTTP 应用demo,git克隆到本地并安装对应的拓展包即可使用。
 demo地址:https://github.com/easy-swoole/demo
