@@ -22,8 +22,7 @@ class Index extends Controller
         // TODO: Implement index() method.
         $post = $this->request()->getParsedBody();
         $get = $this->request()->getQueryParams();
-        var_dump($post,$get);
-        $this->response()->write('success');
+        $this->response()->write('success'.$this->request()->getQueryParam('id'));
     }
 
     function test()
@@ -70,6 +69,28 @@ class Index extends Controller
 
         var_dump($c1->body);
         var_dump($c2->body);
+
+        $time = round(microtime(true) - $micro,3);
+        $this->response()->write($time);
+
+    }
+
+    function concurrent2()
+    {
+        //以下流程网络IO的时间就接近于 MAX(q1网络IO时间, q2网络IO时间)。
+        $micro = microtime(true);
+
+        $ret = [];
+        for($i=0;$i<1000;$i++){
+            $ret[$i] = (new Http('http://127.0.0.1:9501/curl/index.html?id='.$i))->exec(true);
+        }
+
+        for($i=0;$i<1000;$i++){
+            $ret[$i]->recv();
+            $ret[$i]->close();
+            $ret[$i] = $ret[$i]->body;
+        }
+        var_dump($ret);
 
         $time = round(microtime(true) - $micro,3);
         $this->response()->write($time);
