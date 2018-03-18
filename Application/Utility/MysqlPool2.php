@@ -11,18 +11,17 @@ namespace App\Utility;
 
 use EasySwoole\Config;
 use EasySwoole\Core\AbstractInterface\AbstractCoroutinePool;
-use EasySwoole\Core\AbstractInterface\Singleton;
-use EasySwoole\Core\Component\Logger;
 use EasySwoole\Core\Swoole\Coroutine\Client\Mysql;
 
 
 class MysqlPool2 extends AbstractCoroutinePool
 {
 
-    function __construct(int $min = 3, int $max = 20)
+    function __construct()
     {
-        $max = 5;
-        $min = 2;
+        $conf = Config::getInstance()->getConf('MYSQL');
+        $max = $conf['MAX'];
+        $min = $conf['MIN'];
 
         parent::__construct($min, $max);
     }
@@ -38,7 +37,7 @@ class MysqlPool2 extends AbstractCoroutinePool
         $conf = Config::getInstance()->getConf('MYSQL');
         $db = new Mysql([
             'host' => $conf['HOST'],
-            'port' => 3306,
+            'port' => $conf['PORT'],
             'username' => $conf['USER'],
             'password' => $conf['PASSWORD'],
             'db' => $conf['DB_NAME']
