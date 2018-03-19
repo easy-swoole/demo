@@ -56,7 +56,7 @@ class Smarty extends \Smarty
 {
     function __construct()
     {
-        $tempDir = Di::getInstance()->get(SysConst::TEMP_DIRECTORY);
+        $tempDir = Di::getInstance()->get(SysConst::DIR_TEMP);
         parent::__construct();
         $this->setCompileDir("{$tempDir}/templates_c/");
         $this->setCacheDir("{$tempDir}/cache/");
