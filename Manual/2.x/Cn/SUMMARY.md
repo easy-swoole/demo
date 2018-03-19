@@ -15,6 +15,7 @@
     - [错误与异常拦截](Base/exception.md)
     - [自定义路由](Base/router.md)
     - [常见问题](Base/problem.md)
+    - [使用模板引擎](Base/template.md)
 - 核心类讲解
     - [ServerManager](Core/server_manager.md)
     - [EventRegister](Core/event_register.md)
