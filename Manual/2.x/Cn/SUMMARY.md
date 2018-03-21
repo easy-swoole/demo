@@ -34,6 +34,9 @@
     - [Laravel ORM](Database/laravel_orm.md)
     - [断线重连问题](Database/re_connect.md)
 - 基础进阶
+    - 协程连接池
+        - [Mysql](CoroutinePool/mysql_pool.md)
+        - [Redis](CoroutinePool/redis_pool.md)
     - 共享内存
         - [ChannelManager](Advanced/ShareMemory/channel_manager.md)
         - [TableManager](Advanced/ShareMemory/table_manager.md)
