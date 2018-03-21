@@ -10,11 +10,11 @@ namespace App\Utility;
 
 
 use EasySwoole\Config;
-use EasySwoole\Core\AbstractInterface\AbstractCoroutinePool;
+use EasySwoole\Core\Swoole\Coroutine\AbstractInterface\CoroutinePool;
 use EasySwoole\Core\Swoole\Coroutine\Client\Mysql;
 
 
-class MysqlPool2 extends AbstractCoroutinePool
+class MysqlPool2 extends CoroutinePool
 {
 
     function __construct()
