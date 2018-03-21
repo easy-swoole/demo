@@ -8,10 +8,10 @@
 
 namespace App\Utility;
 use EasySwoole\Config;
-use EasySwoole\Core\AbstractInterface\AbstractCoroutinePool;
+use EasySwoole\Core\Swoole\Coroutine\AbstractInterface\CoroutinePool;
 use EasySwoole\Core\Swoole\Coroutine\Client\Redis;
 
-class RedisPool extends AbstractCoroutinePool
+class RedisPool extends CoroutinePool
 {
     public function __construct()
     {
