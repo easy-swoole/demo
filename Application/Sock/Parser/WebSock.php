@@ -31,7 +31,7 @@ class WebSock implements ParserInterface
     {
         // TODO: Implement encode() method.
         /*
-         * 注意，return ''与return null一样，空字符串一样会回复给客户端，比如在服务端主动心跳测试的场景
+         * 注意，return ''与return null不一样，空字符串一样会回复给客户端，比如在服务端主动心跳测试的场景
          */
         if(strlen($raw) == 0){
             return null;
