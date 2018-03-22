@@ -42,7 +42,6 @@
     - [自定义进程](Advanced/process.md)
     - [异步任务](Advanced/async_task.md)
     - [定时器](Advanced/timer.md)
-    - [ServerManager](Advanced/server_manager.md)
 - 系统组件
     - [Cache](Component/cache.md)
     - [RPC](Component/rpc.md)
