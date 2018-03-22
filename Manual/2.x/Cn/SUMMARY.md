@@ -38,7 +38,6 @@
         - [Mysql](CoroutinePool/mysql_pool.md)
         - [Redis](CoroutinePool/redis_pool.md)
     - 共享内存
-        - [ChannelManager](Advanced/ShareMemory/channel_manager.md)
         - [TableManager](Advanced/ShareMemory/table_manager.md)
     - [自定义进程](Advanced/process.md)
     - [异步任务](Advanced/async_task.md)
