@@ -64,6 +64,7 @@
     - [异步客户端](Other/asyncClient.md)
     - [HTTP中使用Protobuf](Protobuf/http.md)
     - [如何实现分布式](Other/distribute.md)
+    - [如何实现队列消费/自定义进程](Other/process.md)
 - PHP需注意
     - [Trait与单例](PhpProblem/traitSingleTon.md)
 - [捐赠](donate.md)
