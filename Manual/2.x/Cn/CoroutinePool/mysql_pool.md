@@ -24,7 +24,7 @@ demo中有封装好的mysql连接池，[MysqlPool2.php](https://github.com/easy-
 $pool = PoolManager::getInstance()->getPool('App\Utility\MysqlPool'); // 获取连接池对象
 $db = $pool->getObj();
 ```
-获得对象。协程的ORM是从[MysqliDb](Database/mysqli_db.md)移植的，操作与[MysqliDb](Database/mysqli_db.md)一致。
+获得对象。协程的ORM是从[MysqliDb](/Manual/2.x/Cn/_book/Database/mysqli_db.html)移植的，操作与[MysqliDb](/Manual/2.x/Cn/_book/Database/mysqli_db.html)一致。
 
 ### 连接池基本方法
 

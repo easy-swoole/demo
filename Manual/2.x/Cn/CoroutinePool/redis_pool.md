@@ -30,4 +30,4 @@ $pool->freeObj($redis);
 
 ### 注意
 尚未实现的方法```scan object sort migrate hscan sscan zscan```
-其他说明详见[Mysql协程连接池](CoroutinePool/mysql_pool.md)
+其他说明详见[Mysql协程连接池](mysql_pool.md)
