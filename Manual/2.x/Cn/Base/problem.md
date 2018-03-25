@@ -54,4 +54,5 @@ public function onRequest(Request $request, Response $response): void
 	$response->autoEnd(true);
 }
 ```
+> 已确认  **1.10.x** 和 **2.1.x** 版本存在此问题，在此之前的版本不受影响
 
