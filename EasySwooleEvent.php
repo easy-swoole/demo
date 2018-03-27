@@ -108,15 +108,18 @@ Class EasySwooleEvent implements EventInterface {
                     $response->status(101);
                     var_dump('shake success at fd :'.$request->fd);
                     $response->end();
+                    return true;
                 }else{
 //                 //不接受握手
                     var_dump('shake fail 2');
                     $response->end();
+                    return false;
                 }
             }else{
                 //不接受握手
                  var_dump('shake fai1 1');
                 $response->end();
+                 return false;
             }
         });
     }
