@@ -16,9 +16,8 @@
     - [自定义路由](Base/router.md)
     - [常见问题](Base/problem.md)
     - [使用模板引擎](Base/template.md)
-- 核心类讲解
-    - [ServerManager](Core/server_manager.md)
-    - [EventRegister](Core/event_register.md)
+- 核心讲解
+    - [设计流程](Core/design.md)
 - [全局事件注册](Event/event.md)
     - [frameInitialize](Event/frame_initialize.md)
     - [mainServerCreate](Event/main_server_create.md)
