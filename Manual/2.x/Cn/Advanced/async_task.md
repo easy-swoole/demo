@@ -124,7 +124,6 @@ static function async($task,$finishCallback = null,$taskWorkerId = -1)
  * @param mixed $task         需要投递的异步任务
  * @param float $timeout      任务超时时间
  * @param int   $taskWorkerId 指定投递的Task进程编号 (默认随机投递给空闲进程)
- * @author : evalor <master@evalor.cn>
  * @return bool|string 投递成功 返回整数 $task_id 投递失败 返回 false
  */
 static function sync($task, $timeout = 0.5, $taskWorkerId = -1)
@@ -135,7 +134,6 @@ static function sync($task, $timeout = 0.5, $taskWorkerId = -1)
  * 并发执行多个任务
  * @param array $taskList 需要执行的任务列表
  * @param float $timeout  任务执行超时
- * @author : evalor <master@evalor.cn>
  * @return array|bool 每个任务的执行结果
  */
 static function barrier(array $taskList, $timeout = 0.5)
