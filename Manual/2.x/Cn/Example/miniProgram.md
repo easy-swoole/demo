@@ -209,7 +209,7 @@ App({
 接下来看服务端
 
 我们可以用一个第三方的微信开发SDK来简化我们与微信服务器的交互，在工作目录执行命令 `composer require overtrue/wechat:~4.0` 安装`easywechat`，或者
-打开`composer.json` 在之前的基础的`require`里追加内容 `overtrue/wechat": "~4.0` 注意如果是两行内容，第一行json需要增加逗号。
+打开`composer.json` 在之前的`require`基础上追加内容 `overtrue/wechat": "~4.0` 注意如果是两行内容，第一行json需要增加逗号。
 
 ```json
 {
