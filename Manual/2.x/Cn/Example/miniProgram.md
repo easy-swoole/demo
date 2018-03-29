@@ -11,11 +11,11 @@
 ```
 project              项目部署目录
 ----------------------------------
-├─Log        日志目录
-├─Temp     缓存目录
-├─vendor   框架及库目录
+├─Log          日志目录
+├─Temp         缓存目录
+├─vendor       框架及库目录
 ├─config.php   配置文件
-├─easyswoole  命令行
+├─easyswoole   命令行
 ├─easyswoole.install  命令行安装表示
 ├─EasySwooleEvent.php 主事件配置文件
 ----------------------------------
@@ -29,9 +29,9 @@ project              项目部署目录
 ```
 project              项目部署目录
 ----------------------------------
-├─Application     应用程序目录
-│  └─HttpController      WEB应用的控制器目录
-│  └─Utility             应用相关工具类目录
+├─Application         应用程序目录
+│  └─HttpController   WEB应用的控制器目录
+│  └─Utility          应用相关工具类目录
 ├─Log          日志目录
 ├─Temp         缓存目录
 ├─vendor       框架及库目录
