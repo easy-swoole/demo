@@ -648,15 +648,23 @@ use EasySwoole\Config;
 
 class Db
 {
+    
     private $db;
     function __construct()
     {
         //读取配置文件
-        $c = Config::getInstance()->getConf('MYSQL');
-        $this->db = new \MysqliDb($c['host'], $c['username'], $c['password'], $c['db'], $c['port'], $c['charset']);
-        //如果要添加主从配置可以使用下面方法继续添加配置
-        //$this->db->addConnection('slave', $c);
-        $this->db->setTrace($c['trace']);
+        
+        if(!$this->db = Di::getInstance()->get('MYSQL')){
+            $config = Config::getInstance()->getConf('MYSQL');
+            $this->db = Di::getInstance()->set('MYSQL',\MysqliDb::class, $config);
+            $this->db->setTrace($config['trace']);
+            
+            //如果要添加主从配置可以使用下面方法继续添加配置
+            //$this->db->addConnection('slave', $c);
+        }
+
+        
+        
     }
     //返回实例化的对象
     function link()
