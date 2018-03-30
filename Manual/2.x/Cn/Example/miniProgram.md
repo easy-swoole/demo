@@ -2,6 +2,7 @@
 
 本示例将演示如何使用 `easyswoole` 进行小程序开发，使用 http web server 模式。阅读本教程前，请先完成文档的阅读工作。
 
+# 第一章 控制器、方法与请求
 ## 准备阶段
 
 请先完成 [框架安装](Introduction/install.md) 的步骤。在本示例中，请先运行 `php easyswoole install`
@@ -576,5 +577,261 @@ class Wechat extends Base
 
 }
 ```
+# 第二章 数据库交互
 
-如果有任何疑问，可以在群里联系我，我会不断更新该示例。
+
+## 创建数据模型
+
+在第一章演示了如何创建控制器，如何请求微信小程序的接口获取用户信息，但是还没有执行数据库保存的操作，本章示例将演示如何创建数据模型来进行数据保存。
+
+本示例使用了文档中提供的 `MysqliDb` 库，下面先进行安装。
+
+安装方法：
+
+```shell
+
+composer require joshcam/mysqli-database-class:dev-master
+
+```
+或者修改 `composer.json` 文件，在对应的结构中添加如下内容，然后执行 `composer update` 下载库文件并自动创建加载
+
+```
+"autoload": {
+       "psr-4": {
+           "MysqliDb" : "App/Vendor/Db/MysqliDb.php"
+       }
+   }
+```
+
+
+接下来对配置文件进行扩充，需要增加 Mysql 的配置文件：
+```php
+
+<?php
+/**
+ * Created by PhpStorm.
+ * User: yf
+ * Date: 2017/12/30
+ * Time: 下午10:59
+ */
+return [
+   //...
+    'MYSQL'=>[
+        'host'     => '127.0.0.1',
+        'username' => 'root',
+        'password' => '123456',
+        'db'       => 'test',
+        'port'     => 3306,
+        'charset'  => 'utf8',
+        'trace'   => true,
+    ]
+    //...
+];
+```
+
+
+然后在 `Application/Utility` 文件夹创建文件 `Db.php` 用来对数据库相关的操作做初始化，请看代码：
+
+
+```php
+<?php
+/**
+ * Created by PhpStorm.
+ * User: anythink
+ * Date: 2018/3/29
+ * Time: 下午3:30
+ */
+namespace App\Utility;
+//加载配置文件
+use EasySwoole\Config;
+
+
+class Db
+{
+    
+    private $db;
+    function __construct()
+    {
+        //读取配置文件
+        
+        if(!$this->db = Di::getInstance()->get('MYSQL')){
+            $config = Config::getInstance()->getConf('MYSQL');
+            $this->db = Di::getInstance()->set('MYSQL',\MysqliDb::class, $config);
+            $this->db->setTrace($config['trace']);
+            
+            //如果要添加主从配置可以使用下面方法继续添加配置
+            //$this->db->addConnection('slave', $c);
+        }
+
+        
+        
+    }
+    //返回实例化的对象
+    function link()
+    {
+        return $this->db;
+    }
+}
+```
+
+下一步我们需要创建模型，并且让模型继承该类以便直接使用数据库连接。
+
+在 `Application` 目录下创建 `Model` 目录，或根据自己喜好创建存放模型的对应目录。
+
+在 `Model` 目录创建 `Profile.php` 文件，用来保存用户信息。
+
+```php
+<?php
+/**
+ * Created by PhpStorm.
+ * User: anythink
+ * Date: 2018/3/29
+ * Time: 下午3:33
+ */
+namespace App\Model;
+use EasySwoole\Core\Component\Di;
+Use EasySwoole\Core\Component\logger;
+
+//需要在这里引入Db类，它负责创建数据库的连接和执行一些通用的数据库操作
+use App\Utility\Db;
+
+class Profile extends Db
+{
+    //设置表名称
+    private  $table = 'profile';
+
+    //获取或新增数据，这里我们传了两个参数 openid 和 data， data是微信接口返回的我们解密后的数据
+    function getOrInsert($openid, $data){
+        
+        if($uid = $this->getUserByOpenID($openid)){
+            logger::getInstance()->console('getUserByOpenID : ' . $uid);
+            return $uid;
+        }
+
+
+        //格式化需要插入的数据
+        $row = $this->buildInsertData($data);
+        //获取数据库连接，并执行插入，如果插入成功则返回自增id，没有自增id返回true。
+        $insertId = $this->link()->insert($this->table, $row);
+        logger::getInstance()->console('getOrInsert : ' . $insertId);
+        return $insertId;
+    }
+
+    //检查openid 是否已经创建，如果创建直接返回ui都给用户
+    private function getUserByOpenID($openid){
+        logger::getInstance()->console('getUserByOpenID : ' . $openid);
+        $res = $this->link()->where ('openId', $openid)->get($this->table, null, 'uid');
+        return !empty($res) ?: $res['uid'];
+    }
+
+    //格式化一下要插入的数据不要让不存在的字段加入数组
+    private function buildInsertData($params){
+        return [
+            'openId'    => $params['openId'],
+            'nickName'  => $params['nickName'],
+            'gender'    => $params['gender'],
+            'language'  => $params['language'],
+            'city'      => $params['city'],
+            'province'  => $params['province'],
+            'country'   => $params['country'],
+            'avatarUrl' => $params['avatarUrl'],
+        ];
+    }
+}
+```
+
+最后我们需要修改一下之前 `HttpController` 目录下文件 `Wechat.php` 的 `login` 方法。
+
+
+
+```php
+
+    //找到
+    $this->success(['session_id' => Tools::sessionTokenBuild($res['openId'])]);
+    
+    
+    //替换成
+    if( $uid = (new Profile())->getOrInsert($res['openId'], $res)){
+        $this->success(['session_id' => Tools::sessionTokenBuild($uid)]);
+    }
+```
+
+
+数据表：
+
+```sql
+-- phpMyAdmin SQL Dump
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: 2018-03-30 02:47:14
+-- 服务器版本： 5.7.17
+-- PHP Version: 7.2.3
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+--
+-- 表的结构 `profile`
+--
+
+CREATE TABLE `profile` (
+  `uid` int(10) NOT NULL,
+  `openId` varchar(50) NOT NULL,
+  `nickName` varchar(50) DEFAULT NULL,
+  `gender` tinyint(1) NOT NULL,
+  `language` varchar(20) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `province` varchar(20) NOT NULL,
+  `country` varchar(20) NOT NULL,
+  `avatarUrl` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户信息';
+
+--
+-- 转存表中的数据 `profile`
+--
+
+INSERT INTO `profile` (`uid`, `openId`, `nickName`, `gender`, `language`, `city`, `province`, `country`, `avatarUrl`) VALUES
+(1, 'oKc4D5vJFxJZd7CDuPLcDoeq-W2s', '幻之羽翼', 1, 'zh_CN', 'Chaoyang', 'Beijing', 'China', 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqJKSzUQ5nlbna7910sL06Ea7UgcK5iaUl95hlucibhic5LuP1SQPYEcF23KmvToU3a2HLzXOhibcuPdA/0');
+
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `profile`
+--
+ALTER TABLE `profile`
+  ADD PRIMARY KEY (`uid`),
+  ADD KEY `open_id` (`openId`);
+
+--
+-- Indexes for table `question`
+--
+ALTER TABLE `question`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `is_public` (`is_public`),
+  ADD KEY `title` (`title`);
+
+--
+-- 在导出的表使用AUTO_INCREMENT
+--
+
+--
+-- 使用表AUTO_INCREMENT `profile`
+--
+ALTER TABLE `profile`
+  MODIFY `uid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+```
+
+OK，看起来我们成功的完成了数据库的保存，本章示例到此就结束了。
+
+
+如果有任何疑问，可以在群里联系幻の羽翼，我会收集大家的疑问不断更新该示例。
