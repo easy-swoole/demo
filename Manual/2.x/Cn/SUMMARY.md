@@ -68,7 +68,8 @@
     - [Redis订阅](Other/redisSubscribe.md)
 - 开发示例
     - [微信小程序](Example/miniProgram.md)
-- PHP需注意
-    - [Trait与单例](PhpProblem/traitSingleTon.md)
+- 其他问题
+    - [Trait与单例](Problem/traitSingleTon.md)
+    - [Mysql索引降维](Problem/mysqlIndexReduce.md)
 - [项目案例](example.md)
 - [捐赠](donate.md)
