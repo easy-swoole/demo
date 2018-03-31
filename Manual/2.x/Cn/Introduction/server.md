@@ -57,6 +57,8 @@ php easyswoole reload
 
 # 热加载
 
+热加载在开发阶段是非常有必要使用的，否则调试代码需要不停的重启服务，下面的脚本可以让我们只专注与开发，而不用去重启服务。
+
 ## mac OS
 
 MacOS 下使用 `fswatch` 命令监听文件变更，然后重启服务器，需要先安装命令行工具 `brew install fswatch`
