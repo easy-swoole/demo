@@ -17,12 +17,8 @@ use EasySwoole\Core\Swoole\Coroutine\Client\Mysql;
 class MysqlPool2 extends CoroutinePool
 {
 
-    function __construct()
+    function __construct($min, $max)
     {
-        $conf = Config::getInstance()->getConf('MYSQL');
-        $max = $conf['MAX'];
-        $min = $conf['MIN'];
-
         parent::__construct($min, $max);
     }
 
@@ -37,7 +33,6 @@ class MysqlPool2 extends CoroutinePool
         $conf = Config::getInstance()->getConf('MYSQL');
         $db = new Mysql([
             'host' => $conf['HOST'],
-            'port' => $conf['PORT'],
             'username' => $conf['USER'],
             'password' => $conf['PASSWORD'],
             'db' => $conf['DB_NAME']
