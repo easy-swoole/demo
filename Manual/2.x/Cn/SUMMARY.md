@@ -6,6 +6,7 @@
     - [目录结构](Introduction/structure.md)
     - [配置文件](Introduction/config.md)
     - [服务管理](Introduction/server.md)
+    - [开发者必读!!!](Introduction/remind.md)
 - HTTP基础应用
     - [HTTP控制器](Base/http_controller.md)
     - [URL解析规则](Base/dispatch.md)
