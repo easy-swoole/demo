@@ -10,7 +10,7 @@ namespace App\Sock\Controller;
 
 
 use EasySwoole\Core\Socket\Response;
-use EasySwoole\Core\Socket\WebSocketController;
+use EasySwoole\Core\Socket\AbstractInterface\WebSocketController;
 use EasySwoole\Core\Swoole\ServerManager;
 use EasySwoole\Core\Swoole\Task\TaskManager;
 
