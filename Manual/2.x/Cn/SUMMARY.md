@@ -6,6 +6,7 @@
     - [目录结构](Introduction/structure.md)
     - [配置文件](Introduction/config.md)
     - [服务管理](Introduction/server.md)
+    - [开发者必读!!!](Introduction/remind.md)
 - HTTP基础应用
     - [HTTP控制器](Base/http_controller.md)
     - [URL解析规则](Base/dispatch.md)
@@ -27,6 +28,7 @@
     - [TCP](Sock/tcp.md)
     - [WEBSOCK](Sock/websocket.md)
     - [UDP](Sock/udp.md)
+    - [SOCK开发场景问题](Sock/problem.md)
 - 数据库
     - [MysqliDb](Database/mysqli_db.md)
     - [TP ORM](Database/think_orm.md)
@@ -65,8 +67,10 @@
     - [如何实现分布式](Other/distribute.md)
     - [如何实现队列消费/自定义进程](Other/process.md)
     - [Redis订阅](Other/redisSubscribe.md)
-- 开发案例
+- 开发示例
     - [微信小程序](Example/miniProgram.md)
-- PHP需注意
-    - [Trait与单例](PhpProblem/traitSingleTon.md)
+- 其他问题
+    - [Trait与单例](Problem/traitSingleTon.md)
+    - [Mysql索引降维](Problem/mysqlIndexReduce.md)
+- [项目案例](example.md)
 - [捐赠](donate.md)
