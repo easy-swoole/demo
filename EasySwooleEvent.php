@@ -48,7 +48,9 @@ Class EasySwooleEvent implements EventInterface
         // 数据库协程连接池
         // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/CoroutinePool/mysql_pool.html?h=pool
         // ------------------------------------------------------------------------------------------
-        PoolManager::getInstance()->addPool(MysqlPool2::class, 3, 10);
+        if (version_compare(phpversion('swoole'), '2.1.0', '>=')) {
+            PoolManager::getInstance()->addPool(MysqlPool2::class, 3, 10);
+        }
 
         // 普通事件注册 swoole 中的各种事件都可以按这个例子来进行注册
         // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/Core/event_register.html
@@ -148,14 +150,14 @@ Class EasySwooleEvent implements EventInterface
     public function onRequest(Request $request, Response $response): void
     {
         // 每个请求进来都先执行这个方法 可以作为权限验证 前置请求记录等
-        $request->withAttribute('requestTime',microtime(true));
+        $request->withAttribute('requestTime', microtime(true));
     }
 
     public function afterAction(Request $request, Response $response): void
     {
         // 每个请求结束后都执行这个方法 可以作为后置日志等
         $start = $request->getAttribute('requestTime');
-        $spend = round(microtime(true)-$start,3);
+        $spend = round(microtime(true) - $start, 3);
         Logger::getInstance()->console("request :{$request->getUri()->getPath()} take {$spend}");
     }
 }
