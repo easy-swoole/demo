@@ -41,7 +41,7 @@ namespace Tcp;
 
 
 use EasySwoole\Core\Socket\Response;
-use EasySwoole\Core\Socket\TcpController;
+use EasySwoole\Core\Socket\AbstractInterface\TcpController;
 use EasySwoole\Core\Swoole\ServerManager;
 use EasySwoole\Core\Swoole\Task\TaskManager;
 
