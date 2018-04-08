@@ -138,10 +138,10 @@ abstract class ViewController extends Controller
     function __construct(string $actionName, Request $request, Response $response)
     {
         $this->view = new Template();
-        $tempPath   = Di::getInstance()->get(SysConst::DIR_TEMP);    # 临时文件目录
+        $tempPath   = Di::getInstance()->get(SysConst::DIR_TEMP);     # 临时文件目录
         $this->view->config([
-            'view_path'  => "{$tempPath}/templates_c/",              # 模板编译目录
-            'cache_path' => EASYSWOOLE_ROOT . '/Views/',             # 模板文件目录
+            'view_path'  => EASYSWOOLE_ROOT . '/Views/',              # 模板编译目录
+            'cache_path' => "{$tempPath}/templates_c/",               # 模板文件目录
         ]);
       
         parent::__construct($actionName, $request, $response);
