@@ -2,12 +2,28 @@
 
 EasySwoole 2.x支持以控制器模式来开发你的代码。
 
-首先，修改配置文件，确认SERVER_TYPE为:
+首先，修改项目根目录下配置文件Config.php，修改SERVER_TYPE为:
 ```php
 \EasySwoole\Core\Swoole\ServerManager::TYPE_WEB_SOCKET_SERVER
 ```
 
+## 新人帮助
+
+* 本文遵循PSR-4自动加载类规范，如果你还不了解这个规范，请先学习相关规则。
+* 本节基础命名空间App 默认指项目根目录下Application文件夹，如果你的App指向不同，请自行替换。
+* 只要遵循PSR-4规范，无论你怎么组织文件结构都没问题，本节只做简单示例。
+
 ## 实现命令解析
+
+**新人提示**
+> 这里的命令解析，其意思为根据请求信息解析为具体的执行命令;
+>
+> 在easyswoole中，可以让WebSocket像传统框架那样按照控制器->方法这样去解析请求;
+>
+> 需要实现EasySwoole\Core\Socket\AbstractInterface\ParserInterface接口中的decode 和encode方法;
+
+**创建Application/Parser.php文件，写入以下代码**
+
 ```php
 namespace App;
 
@@ -37,9 +53,37 @@ class Parser implements ParserInterface
     }
 }
 ```
-> 注意，请按照你实际的规则实现，本测试代码与前端代码对应。
+> *注意，请按照你实际的规则实现，本测试代码与前端代码对应。*
+
+## 注册服务
+
+**新人提示**
+> 如果你尚未明白easyswoole运行机制，那么这里你简单理解为，当easyswoole运行到一定时刻，会执行以下方法。
+> 
+> 这里是指注册你上面实现的解析器。
+
+**在根目录下EasySwooleEvent.php文件mainServerCreate方法下加入以下代码**
+
+```php
+//注意：在此文件引入以下命名空间
+use \EasySwoole\Core\Swoole\EventHelper;
+
+public function mainServerCreate(ServerManager $server,EventRegister $register): void
+{
+    // TODO: Implement mainServerCreate() method.
+    EventHelper::registerDefaultOnMessage($register,new \App\Parser());
+}
+```
+
+> 在EasySwooleEvent中注册该服务。
 
 ## 测试前端代码
+
+**友情提示**
+> easyswoole 提供了更强大的WebSocket调试工具，[foo]: http://www.evalor.cn/websocket.html  'WEBSOCKET CLIENT'；
+
+**创建Application/HttpController/websocket.html文件，写入以下代码**
+
 ```Html
 <html>
 <head>
@@ -102,7 +146,12 @@ class Parser implements ParserInterface
 </html>
 ```
 
-## 测试HTTP 视图控制器
+## 测试用HttpController 视图控制器
+
+**新人提示**
+> 这里仅提供了前端基本的示例代码，更多需求根据自己业务逻辑设计
+
+**创建Application/HttpController/Index.php文件，写入以下代码**
 
 ```php
 namespace App\HttpController;
@@ -142,6 +191,13 @@ class Index extends Controller
 
 ## WebSocket 控制器
 
+**新人提示**
+> WebSocket控制器必须继承EasySwoole\Core\Socket\AbstractInterface\WebSocketController;
+>
+> actionNotFound方法提供了当找不到该方法时的返回信息，默认会传入本次请求的actionName。
+
+**创建Application/WebSocket/Test.php文件，写入以下内容**
+
 ```php
 namespace App\WebSocket;
 
@@ -179,19 +235,25 @@ class Test extends WebSocketController
     }
 }
 ```
+##测试
 
+*如果你按照本文配置，那么你的文件结构应该是以下形式*
 
-## 注册服务
+Application  
+|---|HttpController  
+|---|---|Index.php  
+|---|---|websocket.html  
+|---|WebSocket  
+|---|---|Test.php  
+|---|Parser.php  
 
-```php
+> 首先在根目录运行easyswoole
+>
+> > *php easyswoole start*
+> 
+> 如果没有错误此时已经启动了easyswoole服务;  
+> 访问127.0.0.1:9501/Index/index 可以看到之前写的测试html文件;
+> *新人提示：这种访问方式会请求HttpController控制器下Index.php中的index方法*  
 
-use App\Parser;
-
-public function mainServerCreate(ServerManager $server,EventRegister $register): void
-{
-    // TODO: Implement mainServerCreate() method.
-    EventHelper::registerDefaultOnMessage($register,new Parser());
-}
-```
-
-在EasySwooleEvent中注册该服务。
+##扩展
+*鸽一下，2018年4月11日前完成*
