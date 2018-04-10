@@ -21,7 +21,7 @@ php easyswoole start
 ```
 project              项目部署目录
 ----------------------------------
-├─Application        应用目录
+├─App        应用目录
 │  └─HttpController      应用的控制器目录
 │     └─Index.php    默认控制器文件
 ----------------------------------
@@ -47,7 +47,7 @@ class Index extends Controller
 {
     "autoload": {
         "psr-4": {
-            "App\\": "Application/"
+            "App\\": "App/"
         }
     },
     "require": {
@@ -99,8 +99,7 @@ php vendor/easyswoole/easyswoole/bin/easyswoole install
 ## 安装后第一次启动,报错协程id只能为int或null
 
 - 1、请确保swoole版本大于1.9.23或者是大于2.1.0
-- 2、使用的ide helper 为easyswoole/swoole-ide-helper:dev-master,原因在于其他仓库的
-ide helper未及时更近，协程函数默认返回1，实际上应该是-1
+- 2、使用的ide helper 为easyswoole/swoole-ide-helper:dev-master,原因在于其他仓库的 ide helper 未及时更新，协程函数默认返回1，实际上应该是-1
 
 ## Demo
 EasySwoole有提交简单的HTTP 应用demo,git克隆到本地并安装对应的拓展包即可使用。
