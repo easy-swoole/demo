@@ -18,7 +18,7 @@ class Test extends AbstractProcess
     public function run(Process $process)
     {
         // TODO: Implement run() method.
-        $this->addTick(2000,function (){
+        $this->addTick(30000,function (){
             var_dump('this is '.$this->getProcessName().' process tick');
         });
     }

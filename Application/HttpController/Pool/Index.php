@@ -23,6 +23,9 @@ class Index extends Controller
         $this->response()->write('request over');
     }
 
+    /*
+     * 需要测试协程连接池的请在easySwooleEvent.php取消协程连接池的注释
+     */
     function test()
     {
         /*

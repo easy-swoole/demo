@@ -33,6 +33,7 @@ class RedisPool extends CoroutinePool
         if (is_callable($conf['errorHandler'])) {
             $redis->setErrorHandler($conf['errorHandler']);
         }
+        $redis->exec('select', $conf['db_name']);
         return $redis;
     }
 }
