@@ -49,16 +49,18 @@ Class EasySwooleEvent implements EventInterface
         // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/CoroutinePool/mysql_pool.html?h=pool
         // ------------------------------------------------------------------------------------------
         if (version_compare(phpversion('swoole'), '2.1.0', '>=')) {
-            PoolManager::getInstance()->addPool(MysqlPool2::class, 3, 10);
+
+//            PoolManager::getInstance()->addPool(MysqlPool2::class, 3, 10);
         }
 
         // 普通事件注册 swoole 中的各种事件都可以按这个例子来进行注册
         // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/Core/event_register.html
         // ------------------------------------------------------------------------------------------
         $register->add($register::onWorkerStart, function (\swoole_server $server, $workerId) {
-            if ($workerId <= 3) {
+            //为第一个进程添加定时器
+            if ($workerId == 0) {
                 # 启动定时器
-                Timer::loop(2000, function () {
+                Timer::loop(10000, function () {
                     Logger::getInstance()->console('timer run');  # 写日志到控制台
                     ProcessManager::getInstance()->writeByProcessName('test', time());  # 向自定义进程发消息
                 });
