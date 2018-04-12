@@ -31,7 +31,7 @@ Class EasySwooleEvent implements EventInterface
      * 框架初始化事件
      * 在Swoole没有启动之前 会先执行这里的代码
      */
-    public function frameInitialize(): void
+    public static function frameInitialize(): void
     {
         date_default_timezone_set('Asia/Shanghai');
     }
@@ -42,7 +42,7 @@ Class EasySwooleEvent implements EventInterface
      * @param ServerManager $server
      * @param EventRegister $register
      */
-    public function mainServerCreate(ServerManager $server, EventRegister $register): void
+    public static function mainServerCreate(ServerManager $server, EventRegister $register): void
     {
 
         // 数据库协程连接池
@@ -149,13 +149,13 @@ Class EasySwooleEvent implements EventInterface
         });
     }
 
-    public function onRequest(Request $request, Response $response): void
+    public static function onRequest(Request $request, Response $response): void
     {
         // 每个请求进来都先执行这个方法 可以作为权限验证 前置请求记录等
         $request->withAttribute('requestTime', microtime(true));
     }
 
-    public function afterAction(Request $request, Response $response): void
+    public static function afterAction(Request $request, Response $response): void
     {
         // 每个请求结束后都执行这个方法 可以作为后置日志等
         $start = $request->getAttribute('requestTime');
