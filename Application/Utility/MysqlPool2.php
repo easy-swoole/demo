@@ -37,6 +37,9 @@ class MysqlPool2 extends CoroutinePool
             'password' => $conf['PASSWORD'],
             'db' => $conf['DB_NAME']
         ]);
+        if (isset($conf['names'])) {
+            $db->rawQuery('SET NAMES ' . $conf['names']);
+        }
         return $db;
     }
 }
