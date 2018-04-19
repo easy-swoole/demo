@@ -11,6 +11,7 @@ namespace App\HttpController\WebSock;
 
 use EasySwoole\Core\Http\AbstractInterface\Controller;
 use EasySwoole\Core\Swoole\ServerManager;
+use EasySwoole\Core\Swoole\Task\TaskManager;
 
 class Index extends Controller
 {
@@ -25,7 +26,7 @@ class Index extends Controller
 
     /*
      * 请调用who，获取fd
-     * http://ip:9501/push/index.html?fd=xxxx
+     * http://ip:9501/webSock/push/index.html?fd=xxxx
      */
     function push()
     {
@@ -36,5 +37,23 @@ class Index extends Controller
         }else{
             $this->response()->write("fd {$fd} not exist");
         }
+    }
+
+
+    function broadcast(){
+        TaskManager::async(function (){
+            //注意  connection_list是分页的
+            //https://wiki.swoole.com/wiki/page/p-connection_list.html
+           $list = ServerManager::getInstance()->getServer()->connection_list();
+           foreach ($list as $fd){
+               $info = ServerManager::getInstance()->getServer()->connection_info($fd);
+               //注意
+               if(is_array($info) && $info['websocket_status']){
+                   ServerManager::getInstance()->getServer()->push($fd,'push in http at '.time());
+               }else{
+                   $this->response()->write("fd {$fd} not exist");
+               }
+           }
+        });
     }
 }
