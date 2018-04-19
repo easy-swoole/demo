@@ -42,16 +42,14 @@ class Index extends Controller
 
     function broadcast(){
         TaskManager::async(function (){
-            //注意  connection_list是分页的
-            //https://wiki.swoole.com/wiki/page/p-connection_list.html
+           //注意  connection_list是分页的
+           //https://wiki.swoole.com/wiki/page/p-connection_list.html
            $list = ServerManager::getInstance()->getServer()->connection_list();
            foreach ($list as $fd){
                $info = ServerManager::getInstance()->getServer()->connection_info($fd);
                //注意
                if(is_array($info) && $info['websocket_status']){
                    ServerManager::getInstance()->getServer()->push($fd,'push in http at '.time());
-               }else{
-                   $this->response()->write("fd {$fd} not exist");
                }
            }
         });
