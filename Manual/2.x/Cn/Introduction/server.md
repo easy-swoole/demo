@@ -40,7 +40,7 @@ php easyswoole start
 ```
 php easyswoole start --d
 ```
-> 注意是两个-
+> 注意是两个 ***-***
 
 ## 服务停止
 ```
@@ -48,12 +48,17 @@ php easyswoole stop
 ```
 > 注意，守护模式下才需要stop，不然control+c或者是终端断开就退出进程了
 
-## 服务重启
-## 服务停止
+## 服务热重启
 ```
 php easyswoole reload
 ```
-> 注意，守护模式下才需要reload，不然control+c或者是终端断开就退出进程了
+> 注意，守护模式下才需要reload，不然control+c或者是终端断开就退出进程了，此处为热重启，可以用于更新worker start后才加载的文件（业务逻辑），主进程（如配置文件）不会被重启。
+
+## 服务重新启动
+```
+php easyswoole restart
+```
+> 此处逻辑为，先stop，再启动服务。
 
 # 热加载
 
