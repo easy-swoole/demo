@@ -97,3 +97,25 @@ done
  
  
 如果需要将热加载脚本也放入后台则使用命令 <code> nohup ./start.sh ./Application &</code> 即可(注意最后有个and符号)。  
+
+## Linux
+
+**Linux和Mac Os 可以使用相同脚本，不过需要额外安装fswatch。**
+
+*安装fswatch*  
+> wget https://github.com/emcrisostomo/fswatch/releases/download/1.11.2/fswatch-1.11.2.tar.gz  
+> tar -xvzf fswatch-1.11.2.tar.gz  
+> cd fswatch-1.11.2  
+> sudo ./configure  
+> sudo make  
+> sudo make install
+> sudo ldconfig  
+
+**确保动态库的安装目录($PREFIX/lib)包含在您的操作系统的动态链接器的查找路径中。默认路径/usr/local/lib.  
+刷新链接和缓存到动态库是必需的。在GNU/Linux系统中，您可能需要运行 $ ldconfig**
+
+脚本和上面的Mac OS的相同
+
+**如果你运行脚本提示
+> PID file does not exist, please check whether to run in the daemon mode!  
+不必担心， 这个是脚本会先执行php easyswoole stop的缘故(因为你并没有启动easyswoole)**
