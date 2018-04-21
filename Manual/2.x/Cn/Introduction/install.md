@@ -14,6 +14,35 @@ php easyswoole start
 
 中途没有报错的话，框架就安装完成了，此时可以访问 `http://localhost:9501/` 看到框架的欢迎页面，表示框架已经安装成功
 
+## 关于composer报错
+在一些环境中，特别是使用集成面板安装的php环境，会出现以下报错：
+```
+dir=$(d=${0%[/\\]*}; cd "$d" > /dev/null; cd '../easyswoole/easyswoole/bin' && pwd)
+
+# See if we are running in Cygwin by checking for cygpath program
+if command -v 'cygpath' >/dev/null 2>&1; then
+	# Cygwin paths start with /cygdrive/ which will break windows PHP,
+	# so we need to translate the dir path to windows format. However
+	# we could be using cygwin PHP which does not require this, so we
+	# test if the path to PHP starts with /cygdrive/ rather than /usr/bin
+	if [[ $(which php) == /cygdrive/* ]]; then
+		dir=$(cygpath -m "$dir");
+	fi
+fi
+
+dir=$(echo $dir | sed 's/ /\ /g')
+"${dir}/easyswoole" "$@"
+```
+关于该问题，搜索了几回谷歌，都说是composer问题。不信执行以下代码也有同样问题。
+```
+> php vendor/bin/php-parser
+```
+暂时解决方案就是用yum或者是以手动编译的形式重新安装你的php环境，若有解决该报错的方案，请与我联系。
+或者也可以直接指向easySwoole的脚本
+```
+php vendor/easyswoole/easyswoole/bin/easyswoole install
+```
+
 ## 我的HELLO WORLD
 
 在项目根目录下创建如下的目录结构，这个目录是编写业务逻辑的应用目录，编辑 `Index.php` 文件，添加基础控制器的代码
@@ -56,8 +85,8 @@ class Index extends Controller
 }
 
 ```
-
-执行 `composer dumpautoload` 命令更新命名空间，框架已经可以自动加载 **Application **目录下的文件了，此时框架已经安装完毕，可以开始编写业务逻辑
+## 名称空间一定要更新！！！！！
+执行 `composer dumpautoload` 命令更新命名空间，框架已经可以自动加载 **App **目录下的文件了，此时框架已经安装完毕，可以开始编写业务逻辑
 
 ## 关于IDE助手
 
@@ -65,35 +94,6 @@ class Index extends Controller
 
 ```bash
 composer require easyswoole/swoole-ide-helper
-```
-
-## 关于composer报错
-在一些环境中，特别是使用集成面板安装的php环境，会出现以下报错：
-```
-dir=$(d=${0%[/\\]*}; cd "$d" > /dev/null; cd '../easyswoole/easyswoole/bin' && pwd)
-
-# See if we are running in Cygwin by checking for cygpath program
-if command -v 'cygpath' >/dev/null 2>&1; then
-	# Cygwin paths start with /cygdrive/ which will break windows PHP,
-	# so we need to translate the dir path to windows format. However
-	# we could be using cygwin PHP which does not require this, so we
-	# test if the path to PHP starts with /cygdrive/ rather than /usr/bin
-	if [[ $(which php) == /cygdrive/* ]]; then
-		dir=$(cygpath -m "$dir");
-	fi
-fi
-
-dir=$(echo $dir | sed 's/ /\ /g')
-"${dir}/easyswoole" "$@"
-```
-关于该问题，搜索了几回谷歌，都说是composer问题。不信执行以下代码也有同样问题。
-```
-> php vendor/bin/php-parser
-```
-暂时解决方案就是用yum或者是以手动编译的形式重新安装你的php环境，若有解决该报错的方案，请与我联系。
-或者也可以直接指向easySwoole的脚本
-```
-php vendor/easyswoole/easyswoole/bin/easyswoole install
 ```
 
 ## 安装后第一次启动,报错协程id只能为int或null
