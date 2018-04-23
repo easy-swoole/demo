@@ -40,7 +40,7 @@ php easyswoole start
 ```
 php easyswoole start --d
 ```
-> 注意是两个-
+> 注意是两个 ***-***
 
 ## 服务停止
 ```
@@ -48,12 +48,17 @@ php easyswoole stop
 ```
 > 注意，守护模式下才需要stop，不然control+c或者是终端断开就退出进程了
 
-## 服务重启
-## 服务停止
+## 服务热重启
 ```
 php easyswoole reload
 ```
-> 注意，守护模式下才需要reload，不然control+c或者是终端断开就退出进程了
+> 注意，守护模式下才需要reload，不然control+c或者是终端断开就退出进程了，此处为热重启，可以用于更新worker start后才加载的文件（业务逻辑），主进程（如配置文件）不会被重启。
+
+## 服务重新启动
+```
+php easyswoole restart
+```
+> 此处逻辑为，先stop，再启动服务。
 
 # 热加载
 
@@ -97,3 +102,25 @@ done
  
  
 如果需要将热加载脚本也放入后台则使用命令 <code> nohup ./start.sh ./Application &</code> 即可(注意最后有个and符号)。  
+
+## Linux
+
+**Linux和Mac Os 可以使用相同脚本，不过需要额外安装fswatch。**
+
+*安装fswatch*  
+> wget https://github.com/emcrisostomo/fswatch/releases/download/1.11.2/fswatch-1.11.2.tar.gz  
+> tar -xvzf fswatch-1.11.2.tar.gz  
+> cd fswatch-1.11.2  
+> sudo ./configure  
+> sudo make  
+> sudo make install
+> sudo ldconfig  
+
+**确保动态库的安装目录($PREFIX/lib)包含在您的操作系统的动态链接器的查找路径中。默认路径/usr/local/lib.  
+刷新链接和缓存到动态库是必需的。在GNU/Linux系统中，您可能需要运行 $ ldconfig**
+
+脚本和上面的Mac OS的相同
+
+**如果你运行脚本提示
+> PID file does not exist, please check whether to run in the daemon mode!  
+不必担心， 这个是脚本会先执行php easyswoole stop的缘故(因为你并没有启动easyswoole)**
