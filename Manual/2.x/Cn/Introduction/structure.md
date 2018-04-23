@@ -4,8 +4,8 @@
 
 ```
 project                   项目部署目录
-├─Application             应用目录(可以有多个)
-│  ├─HttpController           控制器目录
+├─App                     应用目录(可以有多个)
+│  ├─HttpController       控制器目录
 │  │  └─Index.php         默认控制器
 │  └─Model                模型文件目录
 ├─Log                     日志文件目录
