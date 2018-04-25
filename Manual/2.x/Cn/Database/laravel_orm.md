@@ -37,7 +37,7 @@ composer require illuminate/database
 ```Php
 use Illuminate\Database\Capsule\Manager as Capsule;//如果你不喜欢这个名称，as DB;就好 
 // 初始化完成
-function frameInitialized()
+function static frameInitialized()
 {
     // 初始化数据库
     $dbConf = Config::getInstance()->getConf('database');

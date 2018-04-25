@@ -40,7 +40,7 @@ class Hello extends AbstractRpcService
 服务绑定
 
 ```php
-public function mainServerCreate(ServerManager $server,EventRegister $register): void
+public static function mainServerCreate(ServerManager $server,EventRegister $register): void
 {
     // TODO: Implement mainServerCreate() method.
     $server = Server::getInstance();

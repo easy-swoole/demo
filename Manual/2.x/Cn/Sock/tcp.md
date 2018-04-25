@@ -14,7 +14,7 @@ use EasySwoole\Core\Socket\Common\CommandBean;
 class Parser implements ParserInterface
 {
 
-    public function decode($raw, $client): ?CommandBean
+    public static function decode($raw, $client): ?CommandBean
     {
         // TODO: Implement decode() method.
         $list = explode(":",trim($raw));
@@ -28,7 +28,7 @@ class Parser implements ParserInterface
         return $bean;
     }
 
-    public function encode(string $raw, $client, $commandBean): ?string
+    public static function encode(string $raw, $client, $commandBean): ?string
     {
         // TODO: Implement encode() method.
         return $raw."\n";
@@ -91,11 +91,11 @@ class Test extends TcpController
 ## 开启子服务
 在EasySwooleEvent中注册。
 ```php
-  public function mainServerCreate(ServerManager $server,EventRegister $register): void
+  public static function mainServerCreate(ServerManager $server,EventRegister $register): void
     {
         // TODO: Implement mainServerCreate() method.
         $tcp = $server->addServer('tcp',9502);
-        EventHelper::registerDefaultOnReceive($register,new \Tcp\Parser(),function($errorType,$clientData,$client){
+        EventHelper::registerDefaultOnReceive($register,new \Tcp\Parser::class,function($errorType,$clientData,$client){
             //第二个回调是可有可无的，当无法正确解析，或者是解析出来的控制器不在的时候会调用
             TaskManager::async(function ()use($client){
                 sleep(3);

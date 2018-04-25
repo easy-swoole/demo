@@ -4,7 +4,7 @@
 ```php
 @param \EasySwoole\Core\Swoole\ServerManager $server
 @param \EasySwoole\Core\Swoole\EventRegister $register
-public function mainServerCreate(ServerManager $server,EventRegister $register): void
+public static function mainServerCreate(ServerManager $server,EventRegister $register): void
 {
 }
 ```

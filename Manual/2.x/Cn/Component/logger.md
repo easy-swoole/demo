@@ -52,9 +52,9 @@ class Handler implements LoggerWriterInterface
 在框架初始化事件里注入日志存储处理
 
 ```Php
-function frameInitialize()
+function static frameInitialize()
 {
-    // TODO: Implement frameInitialized() method.
+    // TODO: Implement frameInitialize() method.
     Di::getInstance()->set(SysConst::LOGGER_WRITER,Handler::class);
 }
 ```

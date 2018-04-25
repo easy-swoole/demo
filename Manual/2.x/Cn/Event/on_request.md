@@ -1,6 +1,6 @@
 ## 收到请求事件
 
-```Php
+```php
 protected function onRequest($actionName): ?bool
 ```
 

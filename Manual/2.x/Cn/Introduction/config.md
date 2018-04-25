@@ -161,7 +161,7 @@ use EasySwoole\Core\Utility\File;
 Class EasySwooleEvent implements EventInterface
 {
 
-    public function frameInitialize(): void
+    public static function frameInitialize(): void
     {
         date_default_timezone_set('Asia/Shanghai');
         // 载入项目 Conf 文件夹中所有的配置文件

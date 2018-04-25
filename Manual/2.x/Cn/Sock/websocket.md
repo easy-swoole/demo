@@ -34,7 +34,7 @@ use EasySwoole\Core\Socket\Common\CommandBean;
 class Parser implements ParserInterface
 {
 
-    public function decode($raw, $client)
+    public static function decode($raw, $client)
     {
         // TODO: Implement decode() method.
         $command = new CommandBean();
@@ -46,7 +46,7 @@ class Parser implements ParserInterface
 
     }
 
-    public function encode(string $raw, $client, $commandBean): ?string
+    public static function encode(string $raw, $client, $commandBean): ?string
     {
         // TODO: Implement encode() method.
         return $raw;
@@ -68,10 +68,10 @@ class Parser implements ParserInterface
 //注意：在此文件引入以下命名空间
 use \EasySwoole\Core\Swoole\EventHelper;
 
-public function mainServerCreate(ServerManager $server,EventRegister $register): void
+public static function mainServerCreate(ServerManager $server,EventRegister $register): void
 {
     // TODO: Implement mainServerCreate() method.
-    EventHelper::registerDefaultOnMessage($register,new \App\Parser());
+    EventHelper::registerDefaultOnMessage($register,\App\Parser::class);
 }
 ```
 

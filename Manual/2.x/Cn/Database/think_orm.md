@@ -41,7 +41,7 @@ composer require topthink/think-orm
 在 `\EasySwoole\EasySwooleEvent` 的 `框架初始化完成 ` 事件中初始化数据库类配置，初始化完成后，即可在全局任意位置使用Db类以及使用模型类进行操作
 
 ```Php
-function frameInitialize()
+function static frameInitialize()
 {
     // 获得数据库配置
     $dbConf = Config::getInstance()->getConf('database');

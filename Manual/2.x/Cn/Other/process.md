@@ -58,7 +58,7 @@ use App\Consumer;
 use EasySwoole\Core\Swoole\Process\ProcessManager;
 use \EasySwoole\Core\Swoole\ServerManager;
 
-public function mainServerCreate(ServerManager $server,EventRegister $register): void
+public static function mainServerCreate(ServerManager $server,EventRegister $register): void
 {
     // TODO: Implement mainServerCreate() method.
     $allNum = 3;
