@@ -5,7 +5,7 @@ Core\Swoole\AsyncTaskManager是对Swoole Task的封装实现。
 Core\AbstractInterface\AbstractAsyncTask 定义了异步任务的接口实现，一个异步任务对象都应当基础AbstractAsyncTask。
 ```
 class Task extends AbstractAsyncTask{
-    function handler(\swoole_http_server $server, $taskId, $fromId)
+    function handler(\swoole_server $server, $taskId, $fromId)
     {
         // TODO: Implement handler() method.
         for($i=0;$i<=5;$i++){
@@ -14,7 +14,7 @@ class Task extends AbstractAsyncTask{
         Logger::getInstance()->log('task finish');   
     }
 
-    function finishCallBack(\swoole_http_server $server, $task_id, $resultData)
+    function finishCallBack(\swoole_server $server, $task_id, $resultData)
     {
         // TODO: Implement finishCallBack() method.
     }
