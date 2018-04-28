@@ -8,7 +8,7 @@
 
 2、EasySwoole的socket控制器ParserInterface全部变更为静态方法，老代码请新增static关键字在协议解析器的各个方法，并修改注册的事件回调函数的第二个参数为解析器的名称:yourparser::class
 
-## EasySwoole 2.2.1
+## EasySwoole 2.1.1
 
 相对于2.0.1而言，默认主配置项变动为
 ```
