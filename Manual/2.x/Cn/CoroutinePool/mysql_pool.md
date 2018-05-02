@@ -3,7 +3,7 @@ demo中有封装好的mysql连接池，[MysqlPool2.php](https://github.com/easy-
 
 ### 添加数据库配置
 在Config中添加配置信息：
-```Json
+```php
 'MYSQL' => [
     'HOST' => '127.0.0.1', // 数据库地址
     'PORT' => 3306, // 数据库端口

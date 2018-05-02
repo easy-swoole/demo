@@ -11,7 +11,7 @@ EasySwoole\Core\Component\Cache\Cache
 - string `key` 缓存的键
 - float `timeOut` 调度等待时间，默认等待0.01秒
 
-```Php
+```php
 public function get($key,$timeOut = 0.01)
 ```
 
@@ -20,7 +20,7 @@ public function get($key,$timeOut = 0.01)
 - string `key` 缓存的键
 - mixed `data` 缓存的数据
 
-```Php
+```php
 public function set($key,$data)
 ```
 
@@ -28,7 +28,7 @@ public function set($key,$data)
 
 - string `key` 缓存的键
 
-```Php
+```php
 function del($key)
 ```
 

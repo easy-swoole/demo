@@ -12,18 +12,20 @@
 
 - Class引入。在composer中引入MysqliDb.php。
 
-  ```Json
-  "autoload": {
-      "psr-4": {
-          "MysqliDb" : "App/Vendor/Db/MysqliDb.php"
-      }
+```json
+{
+  "autoload":{
+    "psr-4":{
+      "MysqliDb" : "App/Vendor/Db/MysqliDb.php"
+    }
   }
-  ```
+}
+```
 
 
 方法二：
 
-```json
+```bash
 composer require joshcam/mysqli-database-class:dev-master
 ```
 
@@ -33,7 +35,7 @@ composer require joshcam/mysqli-database-class:dev-master
 
 在框架的\EasySwoole\EasySwooleEvent::mainServerCreate中，引入了MysqliDb.php后，即可进行IOC注入。
 
-```Php
+```php
 Di::getInstance()->set('MYSQL',\MysqliDb::class,Array (
             'host' => 'host',
             'username' => 'username',

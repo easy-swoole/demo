@@ -73,7 +73,7 @@ class UserBean extends \Core\Component\Spl\SplBean {
 
 ## 使用
 
-```Php
+```php
 $bean = new UserBean(
     array(
         'account'=>"account",
@@ -124,7 +124,7 @@ array(3) {
 
 - 成员变量请确保全部为protected，并实现其get/set方法。
 
-```Php
+```php
 $bean->setSex(null);
 var_dump($bean->toArray(false,['account','sex']));
 array(2) {
@@ -155,7 +155,7 @@ array(2) {
 
 ## 方法介绍
 
-```Php
+```php
 const FILTER_NOT_NULL = 1;// 过滤不为NULL的属性
 const FILTER_NOT_EMPTY = 2;//0 过滤不为空的属性，不算empty
 ```

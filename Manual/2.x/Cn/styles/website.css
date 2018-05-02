@@ -1,1 +1,31 @@
-:not(pre)>code[class*=language-],pre[class*=language-]{background:#f6f8fa}code[class*=language-],pre[class*=language-]{text-shadow:none}.language-css .token.string,.style .token.string,.token.atrule,.token.entity,.token.keyword,.token.operator,.token.url{color:#d73a49;background:0 0}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#6a737d}.token.important,.token.regex,.token.variable{color:#24292e}.token.function,.token.package{color:#005cc5}.token.class-name{color:#6f42c1}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#22863a}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string{color:#6f42c1}.markdown-section{color:#24292e}.markdown-section code{padding:.2em .4rem;background-color:#f7f7f7;font-weight:700}.markdown-section pre>code{font-weight:400}.markdown-section a{color:#0366d6}.versions-select select{display:block;width:100%;padding:.5em 1rem;font-size:1.2rem;line-height:1.2;color:#333;vertical-align:middle;border:1px solid #ccc;border-radius:0;font-weight:700;-webkit-appearance:none;-webkit-transition:border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;-moz-appearance:none!important;-webkit-border-radius:0;background:#fff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMTJweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIzcHgiIHZpZXdCb3g9IjAgMCA2IDMiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDYgMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBvbHlnb24gcG9pbnRzPSI1Ljk5MiwwIDIuOTkyLDMgLTAuMDA4LDAgIi8+PC9zdmc+) no-repeat 100% center}.book .book-summary ul.summary li a,.book .book-summary ul.summary li span{text-decoration:none}.custom-link{padding:10px!important}
+:not(pre) > code[class*=language-], pre[class*=language-] {background: #f6f8fa}
+
+code[class*=language-], pre[class*=language-] {text-shadow: none}
+
+.language-css .token.string, .style .token.string, .token.atrule, .token.entity, .token.keyword, .token.operator, .token.url {color: #d73a49;background: 0 0}
+
+.token.cdata, .token.comment, .token.doctype, .token.prolog {color: #6a737d}
+
+.token.important, .token.regex, .token.variable {color: #24292e}
+
+.token.function, .token.package {color: #005cc5}
+
+.token.class-name {color: #6f42c1}
+
+.token.boolean, .token.constant, .token.deleted, .token.number, .token.property, .token.symbol, .token.tag {color: #22863a}
+
+.token.attr-name, .token.builtin, .token.char, .token.inserted, .token.selector, .token.string {color: #6f42c1}
+
+.markdown-section {color: #24292e}
+
+.markdown-section code {padding: .2em .4rem;background-color: #f7f7f7;font-weight: 700}
+
+.markdown-section pre > code {font-weight: 400}
+
+.markdown-section a {color: #0366d6}
+
+.versions-select select {display: block;width: 100%;padding: .5em 1rem;font-size: 1.2rem;line-height: 1.2;color: #333;vertical-align: middle;border: 1px solid #ccc;border-radius: 0;font-weight: 700;-webkit-appearance: none;-webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;-moz-appearance: none !important;-webkit-border-radius: 0;background: #fff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMTJweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIzcHgiIHZpZXdCb3g9IjAgMCA2IDMiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDYgMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBvbHlnb24gcG9pbnRzPSI1Ljk5MiwwIDIuOTkyLDMgLTAuMDA4LDAgIi8+PC9zdmc+) no-repeat 100% center}
+
+.book .book-summary ul.summary li a, .book .book-summary ul.summary li span {text-decoration: none}
+
+.custom-link {padding: 10px !important}

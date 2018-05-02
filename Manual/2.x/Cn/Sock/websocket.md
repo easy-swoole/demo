@@ -84,7 +84,7 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
 
 **创建Application/HttpController/websocket.html文件，写入以下代码**
 
-```Html
+```html
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

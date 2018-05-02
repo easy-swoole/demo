@@ -3,7 +3,7 @@ demo中有封装好的redis连接池，[RedisPool.php](https://github.com/easy-s
 
 ### 添加数据库配置
 在Config中添加配置信息：
-```Json
+```php
 'REDIS' => [
     'host' => '127.0.0.1', // redis主机地址
     'port' => 6379, // 端口
