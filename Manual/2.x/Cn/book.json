@@ -17,7 +17,9 @@
         "-lunr",
         "-search",
         "-highlight",
+        "-fontsettings",
         "prism",
+        "prism-themes",
         "edit-link",
         "anchors",
         "github",
@@ -46,6 +48,11 @@
                     "value": "https://www.easyswoole.com/Manual/2.x/Cn/_book/",
                     "text": "easySwoole 2.x"
                 }
+            ]
+        },
+        "prism": {
+            "css": [
+                "prism-themes/themes/prism-vs.css"
             ]
         }
     }
