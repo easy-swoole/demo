@@ -43,3 +43,6 @@ server {
     }
 }
 ```
+# HTTP 状态码总为500
+自 swoole **1.10.x** 和 **2.1.x** 版本存起，未执行http server回调中，若未执行response->end(),则全部返回500状态码
+

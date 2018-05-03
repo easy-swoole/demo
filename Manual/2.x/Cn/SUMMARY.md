@@ -6,6 +6,7 @@
     - [目录结构](Introduction/structure.md)
     - [配置文件](Introduction/config.md)
     - [服务管理](Introduction/server.md)
+    - [开发者必读!!!](Introduction/remind.md)
 - HTTP基础应用
     - [HTTP控制器](Base/http_controller.md)
     - [URL解析规则](Base/dispatch.md)
@@ -16,9 +17,8 @@
     - [自定义路由](Base/router.md)
     - [常见问题](Base/problem.md)
     - [使用模板引擎](Base/template.md)
-- 核心类讲解
-    - [ServerManager](Core/server_manager.md)
-    - [EventRegister](Core/event_register.md)
+- 核心讲解
+    - [设计流程](Core/design.md)
 - [全局事件注册](Event/event.md)
     - [frameInitialize](Event/frame_initialize.md)
     - [mainServerCreate](Event/main_server_create.md)
@@ -28,6 +28,7 @@
     - [TCP](Sock/tcp.md)
     - [WEBSOCK](Sock/websocket.md)
     - [UDP](Sock/udp.md)
+    - [SOCK开发场景问题](Sock/problem.md)
 - 数据库
     - [MysqliDb](Database/mysqli_db.md)
     - [TP ORM](Database/think_orm.md)
@@ -38,16 +39,15 @@
         - [Mysql](CoroutinePool/mysql_pool.md)
         - [Redis](CoroutinePool/redis_pool.md)
     - 共享内存
-        - [ChannelManager](Advanced/ShareMemory/channel_manager.md)
         - [TableManager](Advanced/ShareMemory/table_manager.md)
     - [自定义进程](Advanced/process.md)
     - [异步任务](Advanced/async_task.md)
     - [定时器](Advanced/timer.md)
-    - [ServerManager](Advanced/server_manager.md)
 - 系统组件
     - [Cache](Component/cache.md)
     - [RPC](Component/rpc.md)
     - [Cluster](Component/cluster.md)
+    - [Crontab](Component/crontab.md)
     - SPl库
         - [SPlArray](Component/Spl/array.md)
         - [SPlBean](Component/Spl/bean.md)
@@ -65,6 +65,15 @@
     - [错误处理与拦截](Other/exception.md)
     - [异步客户端](Other/asyncClient.md)
     - [HTTP中使用Protobuf](Protobuf/http.md)
-- PHP需注意
-    - [Trait与单例](PhpProblem/traitSingleTon.md)
+    - [如何实现分布式](Other/distribute.md)
+    - [如何实现队列消费/自定义进程](Other/process.md)
+    - [Redis\Kafka订阅](Other/redisSubscribe.md)
+- [版本升级细微差异](version.md)
+- 开发示例
+    - [微信小程序](Example/miniProgram.md)
+    - [抢红包问题](Example/readPacket.md)
+- 其他问题
+    - [Trait与单例](Problem/traitSingleTon.md)
+    - [Mysql索引降维](Problem/mysqlIndexReduce.md)
+- [项目案例](example.md)
 - [捐赠](donate.md)

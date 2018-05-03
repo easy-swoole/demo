@@ -18,7 +18,7 @@ use EasySwoole\Core\AbstractInterface\EventInterface;
 
 class EasySwooleEvent implements EventInterface
 {
-	public function frameInitialize() : void
+	public static function frameInitialize() : void
 	{
 		Di::getInstance()->set( SysConst::HTTP_EXCEPTION_HANDLER, \App\ExceptionHandler::class );
 	}

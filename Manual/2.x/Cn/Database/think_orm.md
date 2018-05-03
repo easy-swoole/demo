@@ -5,7 +5,7 @@
 
 ## 安装
 
-```Json
+```bash
 composer require topthink/think-orm
 ```
 
@@ -40,8 +40,8 @@ composer require topthink/think-orm
 
 在 `\EasySwoole\EasySwooleEvent` 的 `框架初始化完成 ` 事件中初始化数据库类配置，初始化完成后，即可在全局任意位置使用Db类以及使用模型类进行操作
 
-```Php
-function frameInitialized()
+```php
+function static frameInitialize()
 {
     // 获得数据库配置
     $dbConf = Config::getInstance()->getConf('database');
@@ -54,7 +54,7 @@ function frameInitialized()
 
 和`ThinkPHP`的使用方法一样，可以直接使用Db类进行数据库查询，支持链式操作
 
-```Php
+```php
 Db::table('user')
     ->data(['name'=>'thinkphp','email'=>'thinkphp@qq.com'])
     ->insert();    
@@ -79,7 +79,7 @@ Db::table('user')
 
 同样的我们需要新建一个模型才能进行查询，模型直接继承自`think\Model`类，和`ThinkPHP`的定义方法是一样的
 
-```Php
+```php
 <?php
 
 namespace App\Model;
@@ -95,7 +95,7 @@ class Member extends Model
 
 定义完模型类后，即可进行模型的查询，同样也支持关联查询的定义
 
-```Php
+```php
 use App\Model\Member;
 
 function index(){

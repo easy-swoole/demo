@@ -1,7 +1,7 @@
 # 框架初始化事件
 ## 函数原型
 ```
-public function frameInitialize(): void
+public static function frameInitialize(): void
 {
 }
 ```

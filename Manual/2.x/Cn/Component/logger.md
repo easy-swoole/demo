@@ -5,7 +5,7 @@
 - string `$str` 日志内容
 - string `$category` 日志分类名 
 
-```Php
+```php
 $log->log('message1');
 $log2->log('message2');
 ```
@@ -15,7 +15,7 @@ $log2->log('message2');
 - string `$str` 调试内容
 - int `$saveLog`  是否保存
 
-```Php
+```php
 $log->console("message",false);
 ```
 
@@ -35,7 +35,7 @@ $log->console("message",false);
 
 实现LoggerWriterInterface接口
 
-```Php
+```php
 namespace App\Model;
 
 use EasySwoole\Core\AbstractInterface\LoggerWriterInterface;
@@ -51,10 +51,10 @@ class Handler implements LoggerWriterInterface
 
 在框架初始化事件里注入日志存储处理
 
-```Php
-function frameInitialize()
+```php
+function static frameInitialize()
 {
-    // TODO: Implement frameInitialized() method.
+    // TODO: Implement frameInitialize() method.
     Di::getInstance()->set(SysConst::LOGGER_WRITER,Handler::class);
 }
 ```

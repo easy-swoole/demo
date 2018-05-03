@@ -297,7 +297,7 @@ var_dump($string->studly()->__toString());
 
 驼峰：
 
-```Php
+```php
 function camel() : SplString
 ```
 
@@ -361,7 +361,7 @@ var_dump($string->start('easyswoole_')->__toString());
 function after( string $search ) : SplString
 ```
 
-```Php
+```php
 // 字符串 easyswoole.user.png	
 var_dump($string->after('.')->__toString());
 // 结果：user.png

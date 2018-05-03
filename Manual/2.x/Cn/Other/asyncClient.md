@@ -2,7 +2,7 @@
 为方便测试，我们以RPC中的例子来实现服务端，具体请看文档RPC章节。
 ## 纯原生异步
 ```php
-    public function mainServerCreate(ServerManager $server,EventRegister $register): void
+    public static function mainServerCreate(ServerManager $server,EventRegister $register): void
     {
         // TODO: Implement mainServerCreate() method.
         $tcp = $server->addServer('tcp',9502);
@@ -34,7 +34,7 @@
 利用swoole自带的事件循环，实现异步
 ```php
 
-    public function mainServerCreate(ServerManager $server,EventRegister $register): void
+    public static function mainServerCreate(ServerManager $server,EventRegister $register): void
     {
         // TODO: Implement mainServerCreate() method.
         $tcp = $server->addServer('tcp',9502);
@@ -60,7 +60,7 @@
 ## 伪异步-socket select
 
 ```php
-    public function mainServerCreate(ServerManager $server,EventRegister $register): void
+    public static function mainServerCreate(ServerManager $server,EventRegister $register): void
     {
         // TODO: Implement mainServerCreate() method.
         $tcp = $server->addServer('tcp',9502);
