@@ -133,7 +133,9 @@ var Vm = new Vue({
             });
 
             this.$nextTick(function () {
-                Vm.scrollOver(document.getElementById('message-box'));
+                if (!Vm.recvClean) {
+                    Vm.scrollOver(document.getElementById('message-box'));
+                }
             })
         },
         writeAlert: function (className, content) {
