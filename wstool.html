@@ -123,6 +123,10 @@
                                                 <input type="checkbox" class="custom-control-input" id="recvDecode" v-model="recvDecode" :disabled="!connected">
                                                 <label class="custom-control-label" for="recvDecode">收包JSON解码</label>
                                             </div>
+                                            <div class="custom-control custom-checkbox inline-flex mt-2">
+                                                <input type="checkbox" class="custom-control-input" id="recvPause" v-model="recvPause" :disabled="!connected">
+                                                <label class="custom-control-label" for="recvPause">暂停接收</label>
+                                            </div>
                                         </div>
                                         <hr class="divider divider-dashed">
                                         <div class="card-text message-box" id="message-box">

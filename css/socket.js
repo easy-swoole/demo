@@ -24,7 +24,8 @@ var Vm = new Vue({
         sendClean: false,
         recvClean: false,
         recvDecode: false,
-        connected: false
+        connected: false,
+        recvPause: false
     },
     created: function created () {
         this.canUseH5WebSocket()
@@ -85,9 +86,11 @@ var Vm = new Vue({
                     }
                     wsInstance.onmessage = function (ev) {
                         console.warn(ev)
-                        var data = ev.data
-                        if (_this.recvClean) _this.messageData = [];
-                        _this.writeNews(0, data);
+                        if (!_this.recvPause) {
+                            var data = ev.data
+                            if (_this.recvClean) _this.messageData = [];
+                            _this.writeNews(0, data);
+                        }
                     }
                     this.instance        = wsInstance;
                 } else {
@@ -126,6 +129,7 @@ var Vm = new Vue({
             if (typeof callback === 'function') {
                 content = callback(content);
             }
+
             this.messageData.push({
                 direction: direction,
                 content: content,
