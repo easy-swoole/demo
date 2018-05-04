@@ -142,7 +142,7 @@ class Curl
 
 发起请求：
 
-```Php
+```php
 <?php 
 
 namespace yourapp;

@@ -588,7 +588,7 @@ class Wechat extends Base
 
 安装方法：
 
-```shell
+```bash
 
 composer require joshcam/mysqli-database-class:dev-master
 

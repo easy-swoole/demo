@@ -4,7 +4,7 @@
 
 ### 安装
 
-```json
+```bash
 composer require illuminate/database
 ```
 
@@ -16,7 +16,7 @@ composer require illuminate/database
 
 在 `\EasySwoole\Config` 中添加配置信息：
 
-```Json
+```php
 'database' => [ 
      'driver'    => 'mysql',
      'host'      => '',
@@ -34,7 +34,7 @@ composer require illuminate/database
 
 在 `\EasySwoole\EasySwooleEvent` 的 `框架初始化完成 ` 事件中初始化数据库类配置
 
-```Php
+```php
 use Illuminate\Database\Capsule\Manager as Capsule;//如果你不喜欢这个名称，as DB;就好 
 // 初始化完成
 function static frameInitialized()
@@ -56,7 +56,7 @@ function static frameInitialized()
 
 数据库初始化完成后即可在控制器内使用，让我们先确认一下Eloquent是否能正常工作
 
-```Php
+```php
 // 在Index控制器类添加以下方法
 function index()
 {
@@ -72,13 +72,13 @@ function index()
 
 数据库操作和Laravel是一致的，主要由Capsule访问数据库的，可以使用常规的链式方法查询，如
 
-```Php
+```php
 $users = Capsule::table('users')->where('votes', '>', 100)->get();
 ```
 
 也可以直接执行查询语句
 
-```Php
+```php
 $results = Capsule::select('select * from users where id = ?', array(1));
 ```
 
@@ -92,7 +92,7 @@ $results = Capsule::select('select * from users where id = ?', array(1));
 
 创建table.php文件
 
-```Php
+```php
 <?php
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -132,7 +132,7 @@ function index()
 
 ------
 
-```Php
+```php
 use  Illuminate\Database\Eloquent\Model  as Eloquent; 
 
 class User extends  Eloquent 

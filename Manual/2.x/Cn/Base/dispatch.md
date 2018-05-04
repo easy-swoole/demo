@@ -6,8 +6,6 @@
 
 在没有路由干预的情况下，内置的解析规则支持无限级嵌套目录，如下方两个例子所示
 
-> **info no-icon**
->
 > <http://serverName/api/auth/login>
 >
 > 对应执行的方法为 \App\HttpController\Api\Auth::login()
