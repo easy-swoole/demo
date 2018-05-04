@@ -451,4 +451,41 @@ if(strlen($data) != $len[1]){
 fclose($fp);
 ```
 
-> 如何在其他PHP框架或者代码中调用es的RPC
+
+### NodeJs 示例代码
+```
+var net = require('net');
+var pack = require('php-pack').pack;
+var unpack = require('php-pack').unpack;
+var json = {
+    serviceName:'A',
+    serviceGroup:'G',
+    serviceAction:'index',
+    args:[]
+};
+
+var send = JSON.stringify(json);
+
+send = Buffer.concat([pack("N",send.length), Buffer.from(send)]);
+
+var client = new net.Socket();
+client.connect(9502, '127.0.0.1', function() {
+    console.log('Connected');
+    client.write(send);
+
+});
+
+client.on('data', function(data) {
+    console.log('Received: ' + data);
+    var ret = JSON.parse(data.toString().substr(4));
+    console.log('status: ' +  ret.status);
+    client.destroy()
+});
+
+client.on('close', function() {
+    console.log('Connection closed');
+});
+client.on('error',function (error) {
+    console.log(error);
+});
+```
