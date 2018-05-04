@@ -14,6 +14,17 @@ demo中有封装好的mysql连接池，[MysqlPool2.php](https://github.com/easy-
     'MAX' => 100 // 最大连接数
 ]
 ```
+并在Config的COROUTINE_POOL中新增该连接池
+```php
+COROUTINE_POOL => [
+    [
+        'class' => 'App\Utility\MysqlPool2',
+        'min' => 5,
+        'max' => 100,
+        'type' => 1
+    ]
+]
+```
 
 ### 注意
 连接池不是跨进程的，也就是说一个进程有一个连接池，配置中的MAX为100，开了4个worker，最大连接数可能达到400。
