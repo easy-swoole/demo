@@ -62,14 +62,14 @@ require_once 'vendor/autoload.php';
 //注册服务，让RPC服务管理中心知道当前系统中存在哪些服务
 
 $ServiceManager = \EasySwoole\Core\Component\Rpc\Server::getInstance();
-$ServiceManager->updateService(new \EasySwoole\Core\Component\Rpc\Common\ServiceNode(
+$ServiceManager->updateServiceNode(new \EasySwoole\Core\Component\Rpc\Common\ServiceNode(
     [
         'serviceName'=>'A',
         'port'=>9502
     ]
 ));
 
-$ServiceManager->updateService(new \EasySwoole\Core\Component\Rpc\Common\ServiceNode(
+$ServiceManager->updateServiceNode(new \EasySwoole\Core\Component\Rpc\Common\ServiceNode(
     [
         'serviceName'=>'B',
         'port'=>9503,
