@@ -10,17 +10,12 @@ namespace App\Utility;
 
 
 use EasySwoole\Config;
-use EasySwoole\Core\Swoole\Coroutine\AbstractInterface\CoroutinePool;
+use EasySwoole\Core\Component\Pool\AbstractInterface\Pool;
 use EasySwoole\Core\Swoole\Coroutine\Client\Mysql;
 
 
-class MysqlPool2 extends CoroutinePool
+class MysqlPool2 extends Pool
 {
-
-    function __construct($min, $max)
-    {
-        parent::__construct($min, $max);
-    }
 
     function getObj($timeOut = 0.1):?Mysql
     {
