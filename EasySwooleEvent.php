@@ -31,7 +31,7 @@ Class EasySwooleEvent implements EventInterface
      * 框架初始化事件
      * 在Swoole没有启动之前 会先执行这里的代码
      */
-    public function frameInitialize(): void
+    public static function frameInitialize(): void
     {
         date_default_timezone_set('Asia/Shanghai');
     }
@@ -42,7 +42,7 @@ Class EasySwooleEvent implements EventInterface
      * @param ServerManager $server
      * @param EventRegister $register
      */
-    public function mainServerCreate(ServerManager $server, EventRegister $register): void
+    public static function mainServerCreate(ServerManager $server, EventRegister $register): void
     {
 
         // 数据库协程连接池
@@ -79,7 +79,7 @@ Class EasySwooleEvent implements EventInterface
         // WebSocket 以控制器的方式处理业务逻辑
         // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/Sock/websocket.html
         // ------------------------------------------------------------------------------------------
-        EventHelper::registerDefaultOnMessage($register, new WebSock());
+        EventHelper::registerDefaultOnMessage($register, WebSock::class);
 
         // 多端口混合监听
         // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/Event/main_server_create.html
@@ -89,7 +89,7 @@ Class EasySwooleEvent implements EventInterface
 
         # 第二参数为TCP控制器 和WS一样 都可以使用控制器方式来解析收到的报文并处理
         # 第三参数为错误回调 可以不传入 当无法正确解析 或者是解析出来的控制器不在的时候会调用
-        EventHelper::registerDefaultOnReceive($tcp, new Tcp(), function ($errorType, $clientData, \EasySwoole\Core\Socket\Client\Tcp $client) {
+        EventHelper::registerDefaultOnReceive($tcp, Tcp::class, function ($errorType, $clientData, \EasySwoole\Core\Socket\Client\Tcp $client) {
             TaskManager::async(function () use ($client) {
                 sleep(3);
                 \EasySwoole\Core\Socket\Response::response($client, "Bye");
@@ -149,13 +149,13 @@ Class EasySwooleEvent implements EventInterface
         });
     }
 
-    public function onRequest(Request $request, Response $response): void
+    public static function onRequest(Request $request, Response $response): void
     {
         // 每个请求进来都先执行这个方法 可以作为权限验证 前置请求记录等
         $request->withAttribute('requestTime', microtime(true));
     }
 
-    public function afterAction(Request $request, Response $response): void
+    public static function afterAction(Request $request, Response $response): void
     {
         // 每个请求结束后都执行这个方法 可以作为后置日志等
         $start = $request->getAttribute('requestTime');

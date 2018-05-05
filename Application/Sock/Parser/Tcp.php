@@ -18,7 +18,7 @@ class Tcp implements ParserInterface
     /*
      * 假定，客户端与服务端都是明文传输。控制格式为 sericeName:actionName:args
      */
-    public function decode($raw, $client)
+    public static function decode($raw, $client)
     {
         // TODO: Implement decode() method.
         $list = explode(":",trim($raw));
@@ -33,7 +33,7 @@ class Tcp implements ParserInterface
         return $bean;
     }
 
-    public function encode(string $raw, $client, $commandBean): ?string
+    public static function encode(string $raw, $client, $commandBean): ?string
     {
         // TODO: Implement encode() method.
         return $raw."\n";
