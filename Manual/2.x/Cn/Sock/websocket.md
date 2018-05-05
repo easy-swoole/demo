@@ -22,7 +22,7 @@ EasySwoole 2.x支持以控制器模式来开发你的代码。
 >
 > 需要实现EasySwoole\Core\Socket\AbstractInterface\ParserInterface接口中的decode 和encode方法;
 
-**创建Application/Parser.php文件，写入以下代码**
+**创建App/Parser.php文件，写入以下代码**
 
 ```php
 namespace App;
