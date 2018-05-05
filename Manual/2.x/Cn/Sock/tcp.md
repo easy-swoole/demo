@@ -28,7 +28,7 @@ class Parser implements ParserInterface
         return $bean;
     }
 
-    public static function encode(string $raw, $client, $commandBean): ?string
+    public static function encode(string $raw, $client): ?string
     {
         // TODO: Implement encode() method.
         return $raw."\n";
@@ -95,7 +95,7 @@ class Test extends TcpController
     {
         // TODO: Implement mainServerCreate() method.
         $tcp = $server->addServer('tcp',9502);
-        EventHelper::registerDefaultOnReceive($register,new \Tcp\Parser::class,function($errorType,$clientData,$client){
+        EventHelper::registerDefaultOnReceive($register,\Tcp\Parser::class,function($errorType,$clientData,$client){
             //第二个回调是可有可无的，当无法正确解析，或者是解析出来的控制器不在的时候会调用
             TaskManager::async(function ()use($client){
                 sleep(3);
