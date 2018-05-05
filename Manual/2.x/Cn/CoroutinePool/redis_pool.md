@@ -18,6 +18,17 @@ demo中有封装好的redis连接池，[RedisPool.php](https://github.com/easy-s
     } // 如果Redis重连失败，会判断errorHandler是否callable，如果是，则会调用，否则会抛出异常，请自行try
 ]
 ```
+并在Config的COROUTINE_POOL中新增该连接池
+```php
+COROUTINE_POOL => [
+    [
+        'class' => 'App\Utility\RedisPool',
+        'min' => 5,
+        'max' => 100,
+        'type' => 1
+    ]
+]
+```
 
 ### 使用
 获取到对象后，可以使用exec方法来执行任何命令，例如：

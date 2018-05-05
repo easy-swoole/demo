@@ -62,14 +62,14 @@ require_once 'vendor/autoload.php';
 //注册服务，让RPC服务管理中心知道当前系统中存在哪些服务
 
 $ServiceManager = \EasySwoole\Core\Component\Rpc\Server::getInstance();
-$ServiceManager->updateService(new \EasySwoole\Core\Component\Rpc\Common\ServiceNode(
+$ServiceManager->updateServiceNode(new \EasySwoole\Core\Component\Rpc\Common\ServiceNode(
     [
         'serviceName'=>'A',
         'port'=>9502
     ]
 ));
 
-$ServiceManager->updateService(new \EasySwoole\Core\Component\Rpc\Common\ServiceNode(
+$ServiceManager->updateServiceNode(new \EasySwoole\Core\Component\Rpc\Common\ServiceNode(
     [
         'serviceName'=>'B',
         'port'=>9503,
@@ -409,4 +409,83 @@ class Status
 ]
 ```
 
-> 自定义包体解析规则框架设计有预留，后续会补充完善。
+### PHP示例代码
+```
+$opensslKey = null;
+$opensslMethod = 'DES-EDE3';
+
+//构造服务调用
+$data = [
+     'serviceName'=>'A',//服务名称
+     'serviceGroup'=>'G',//服务组（RPC服务控制器名称）
+     'serviceAction'=>'index',//服务行为名（RPC服务控制器action名称）
+     'args'=>[
+         'a'=>1,
+         'b'=>2
+     ]
+];
+$fp = stream_socket_client('tcp://127.0.0.1:9502');
+//数据打包
+$sendStr = json_encode($data,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+
+if($opensslKey){
+    $sendStr = openssl_encrypt($sendStr,$opensslMethod,$opensslKey);
+}
+
+fwrite($fp,pack('N', strlen($sendStr)).$sendStr);
+//需要超时机制的请自己用sock time out
+$data = fread($fp,65533);
+//做长度头部校验
+$len = unpack('N',$data);
+$data = substr($data,'4');
+if(strlen($data) != $len[1]){
+    echo 'data error';
+}else{
+    if($opensslKey){
+        $data = openssl_decrypt($data,$opensslMethod,$opensslKey);
+    }
+    $json = json_decode($data,true);
+    //这就是服务端返回的结果，
+    var_dump($json);
+}
+fclose($fp);
+```
+
+
+### NodeJs 示例代码
+```
+var net = require('net');
+var pack = require('php-pack').pack;
+var unpack = require('php-pack').unpack;
+var json = {
+    serviceName:'A',
+    serviceGroup:'G',
+    serviceAction:'index',
+    args:[]
+};
+
+var send = JSON.stringify(json);
+
+send = Buffer.concat([pack("N",send.length), Buffer.from(send)]);
+
+var client = new net.Socket();
+client.connect(9502, '127.0.0.1', function() {
+    console.log('Connected');
+    client.write(send);
+
+});
+
+client.on('data', function(data) {
+    console.log('Received: ' + data);
+    var ret = JSON.parse(data.toString().substr(4));
+    console.log('status: ' +  ret.status);
+    client.destroy()
+});
+
+client.on('close', function() {
+    console.log('Connection closed');
+});
+client.on('error',function (error) {
+    console.log(error);
+});
+```
