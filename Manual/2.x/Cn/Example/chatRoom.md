@@ -375,7 +375,7 @@ Hash允许你通过key只查询field列或者只查询value列，这样你就可
 
 **注意：以下代码均是基本逻辑，业务使用需要根据自己业务场景丰富**
 
-*Room基本逻辑*
+### Room基本逻辑
 
 ```php
 <?php
@@ -466,12 +466,12 @@ class Room
      * @param  int    $fd     fd
      * @return
      */
-    public static function exitRoom(int $roomId, int $fd)
-    {
-        $userId = self::getUserId($fd);
-        self::getRedis()->handler()->hDel("room:{$roomId}", $userId);
-        self::getRedis()->handler()->zRem('rfMap', $fd);
-    }
+     public static function exitRoom(int $roomId, int $fd)
+     {
+         $userId = self::getUserId($fd);
+         self::getRedis()->hDel("room:{$roomId}", $userId);
+         self::getRedis()->zRem('rfMap', $fd);
+     }
 
     /**
      * 关闭连接
@@ -487,7 +487,7 @@ class Room
 
 ```
 
-*Test测试用控制器*
+### Test测试用控制器
 
 ```php
 <?php
@@ -569,5 +569,34 @@ class Test extends WebSocketController
             }
         });
     }
+}
+```
+
+### 注册连接关闭事件
+
+```php
+// 引入EventHelper
+use \EasySwoole\Core\Swoole\EventHelper;
+// 引入Di
+use \EasySwoole\Core\Component\Di;
+// 注意这里是指额外引入我们上文实现的解析器
+use \App\Socket\Parser\WebSocket;
+// 引入上文Redis连接
+use \App\Utility\Redis;
+// 引入上文Room文件
+use \App\Socket\Logic\Room;
+
+// ...省略
+public static function mainServerCreate(ServerManager $server,EventRegister $register): void
+{
+    // 注册WebSocket解析器
+    EventHelper::registerDefaultOnMessage($register, WebSocket::class);
+    //注册onClose事件
+    $register->add($register::onClose, function (\swoole_server $server, $fd, $reactorId) {
+        //清除Redis fd的全部关联
+        Room::close($fd);
+    });
+    // 注册Redis
+    Di::getInstance()->set('REDIS', new Redis(Config::getInstance()->getConf('REDIS')));
 }
 ```
