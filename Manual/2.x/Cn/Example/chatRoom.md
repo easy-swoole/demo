@@ -600,3 +600,14 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
     Di::getInstance()->set('REDIS', new Redis(Config::getInstance()->getConf('REDIS')));
 }
 ```
+
+现在可以启动Server了，如果没有任何错误，请使用<a href="http://evalor.cn/websocket.html">WEBSOCKET CLIENT
+</a>测试以下内容。
+
+- 用多个浏览器标签打开WEBSOCKET CLIENT页面
+- 第一个标签开启连接时发送{"controller": "Test","action": "intoRoom","data":{"userId":"1","roomId":"1000"}}
+- 第二个标签开启连接时发送{"controller": "Test","action": "intoRoom","data":{"userId":"2","roomId":"1000"}}
+- 发送{"controller": "Test","action": "sendToRoom","data":{"roomId":"1000","message":"发送房间消息"}}，此时多个标签连接都会收到该消息
+- 第二个标签发送 {"controller": "Test","action": "sendToUser","data":{"userId":"1","message":"发送私聊消息"}}，此时第一个标签连接会收到消息
+
+_至此已经完成了Room的基本逻辑，下面将介绍如何实现js消息处理_
