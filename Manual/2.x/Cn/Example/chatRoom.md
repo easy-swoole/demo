@@ -144,7 +144,7 @@ class Test extends WebSocketController
 现在可以启动我们的Server了，在easySwoole根目录中输入以下命令启动。  
 > php easyswoole start  
 
-如果没有任何报错，那么已经启动了Server；这里我推荐<a href="http://www.evalor.cn/websocket.html">WEBSOCKET CLIENT
+如果没有任何报错，那么已经启动了Server；这里我推荐<a href="http://evalor.cn/websocket.html">WEBSOCKET CLIENT
 </a>测试工具来测试我们的Server。
 
 - 如果能正常连接服务器，说明Server已经启动
@@ -157,6 +157,7 @@ class Test extends WebSocketController
 ## 建立Redis连接
 
 *easySwoole中提供了Redis连接池，但是本示例不使用此方案，有能力的请自行选择。*
+
 php Redis连接示例
 
 ```php
@@ -303,7 +304,7 @@ class Test extends WebSocketController
 }
 ```
 
-现在可以启动Server了，如果没有任何错误，请使用<a href="http://www.evalor.cn/websocket.html">WEBSOCKET CLIENT
+现在可以启动Server了，如果没有任何错误，请使用<a href="http://evalor.cn/websocket.html">WEBSOCKET CLIENT
 </a>测试以下内容。  
 - 如果发送`{"controller": "Test","action": "index"}`返回 `1 这是一个测试` ，则说明Redis连接正常。
 
@@ -312,6 +313,32 @@ class Test extends WebSocketController
 # 三、 聊天室设计
 ## 基本定义
 
-- fd : 连接id,Server发送消息的唯一标识,会回收,不会重复。
-- userId : 用户id,不多赘述。
-- roomId : 房间id,房间的唯一标识。
+- `fd` : 连接id,Server发送消息的唯一标识,会回收,不会重复。
+- `userId` : 用户id,不多赘述。
+- `roomId` : 房间id,房间的唯一标识。
+
+*实际上聊天室就是对 `fd` `userId` `roomId` 的管理*
+
+## 设计思路
+###私聊
+
+私聊实际上是指fd和uid的关系，即通过uid查询fd，发送消息；这种结构是最基本的kv结构，也就是如下结构:
+| uid      | fd     |
+| -------- | -----: |
+| 1        | 1      |
+| 1        | 2      |
+| 1        | 3      |
+
+这里我们可以看出来如果直接使用Redis的`string` kv则会出现不可避免的冲突，即key相同的情况，而如果fd做key，则无法通过uid查询fd，故不可取。
+这里我的做法是使用Redis`有序集合(sorted set)`来处理，有序集合有3个属性: `key(键)` `socre(分值)` `member(成员)`，并且member绝不重复，相同的member会被覆盖；而socre则可以重复。有序集合允许通过member查询socre(一对多)也允许使用socre范围查询member(多对多)。
+看，简直是量身定做的，由于我们在业务层面保证了uid的绝对属主(fd每次连接都会随机分配，并不真的属主)，在这种情况下，实际上我们使用多对多查询其实是一对多的情况。
+当我们需要想要给uid = 1的用户发送信息，只需要通过socre = 1 查出对应的member fd列表(即便你在不同的房间，不同的设备，你都需要收到私聊)，然后迭代(遍历)这个列表发送信息即可。
+这个有序集合相当于全服务器所有的在线人数(全部连接数)，所以key可以叫做online即online集合。
+
+| Redis概念      || key      || socre      | member     |
+| :--------: | :--------: |:--------: |:--------: |:--------: |
+| 业务概念        | online      |uid        | fd       |
+| 业务概念        | online      |1        |1        |
+| 业务概念        | online      |1        |2        |
+| 业务概念        | online      |1        |3        |
+| 业务概念        | online      |2        |4        |
