@@ -161,11 +161,12 @@ php Redis连接示例
 
 ```php
 <?php
+
 namespace App\Utility;
 
 class Redis
 {
-    protected $handler = null;
+    protected static $instance = null;
 
     protected $options = [
         'host'       => '127.0.0.1',
@@ -178,6 +179,11 @@ class Redis
         'prefix'     => '',
     ];
 
+    /**
+     * 构造函数
+     * @param array $options 参数
+     * @access public
+     */
     public function __construct($options = [])
     {
         if (!extension_loaded('redis')) {
@@ -186,30 +192,46 @@ class Redis
         if (!empty($options)) {
             $this->options = array_merge($this->options, $options);
         }
-        $this->handler = new \Redis;
-        if ($this->options['persistent']) {
-            $this->handler->pconnect($this->options['host'], $this->options['port'], $this->options['timeout'], 'persistent_id_' . $this->options['select']);
-        } else {
-            $this->handler->connect($this->options['host'], $this->options['port'], $this->options['timeout']);
-        }
+    }
 
-        if ('' != $this->options['password']) {
-            $this->handler->auth($this->options['password']);
-        }
+    /**
+     * 连接Redis
+     * @return void
+     */
+    protected function connect()
+    {
+        if (!is_object(self::$instance)) {
+            self::$instance = new \Redis;
+            if ($this->options['persistent']) {
+                self::$instance->pconnect($this->options['host'], $this->options['port'], $this->options['timeout'], 'persistent_id_' . $this->options['select']);
+            } else {
+                self::$instance->connect($this->options['host'], $this->options['port'], $this->options['timeout']);
+            }
 
-        if (0 != $this->options['select']) {
-            $this->handler->select($this->options['select']);
+            if ('' != $this->options['password']) {
+                self::$instance->auth($this->options['password']);
+            }
+
+            if (0 != $this->options['select']) {
+                self::$instance->select($this->options['select']);
+            }
         }
     }
 
+    /**
+     * 获取连接句柄
+     * @return object Redis
+     */
     public function handler()
     {
-        return $this->handler;
+        $this->connect();
+        return self::$instance;
     }
 }
 ```
 
 easySwoole提供了Di容器，可以方便我们随时取用Redis，现在让我们在Event事件中将Redis注入到Di容器中。
+
 ```php
 // 引入EventHelper
 use \EasySwoole\Core\Swoole\EventHelper;
@@ -240,26 +262,28 @@ namespace App\Socket\Logic;
 
 use EasySwoole\Core\Component\Di;
 
+
 class Room
 {
     public static function getRedis()
     {
-        return Di::getInstance()->get('REDIS');
+        return Di::getInstance()->get('REDIS')->handler();
     }
 
     public static function testSet()
     {
-        return self::getRedis()->handler()->set('test', '这是一个测试');
+        return self::getRedis()->set('test', '这是一个测试');
     }
 
     public static function testGet()
     {
-        return self::getRedis()->handler()->get('test');
+        return self::getRedis()->get('test');
     }
 }
 ```
 
 修改Test类的index方法用于测试
+
 ```php
 <?php
 namespace App\Socket\Controller\WebSocket;
@@ -284,3 +308,10 @@ class Test extends WebSocketController
 - 如果发送`{"controller": "Test","action": "index"}`返回 `1 这是一个测试` ，则说明Redis连接正常。
 
 *至此已经完成了Redis的基本使用，以下为业务部分*
+
+# 三、 聊天室设计
+## 基本定义
+
+- fd : 连接id,Server发送消息的唯一标识,会回收,不会重复。
+- userId : 用户id,不多赘述。
+- roomId : 房间id,房间的唯一标识。
