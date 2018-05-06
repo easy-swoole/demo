@@ -337,24 +337,237 @@ _实际上聊天室就是对 `fd` `userId` `roomId` 的管理_
 
 ### 私聊
 
-私聊实际上是指fd和uid的关系，即通过uid查询fd，发送消息；这种结构是最基本的kv结构，也就是如下结构:
+私聊实际上是指fd和uid的关系，即通过uid查询fd，发送消息。
 
-| uid |  fd |
-| :-: | :-: |
-|  1  |  1  |
-|  1  |  2  |
-|  1  |  3  |
+使用Redis sorted set(有序集合)来管理 `fd` 和 `userId`之间的关系。
 
-这里我们可以看出来如果直接使用Redis的`string` kv则会出现不可避免的冲突，即key相同的情况，而如果fd做key，则无法通过uid查询fd，故不可取。
-这里我的做法是使用Redis`有序集合(sorted set)`来处理，有序集合有3个属性: `key(键)` `socre(分值)` `member(成员)`，并且member绝不重复，相同的member会被覆盖；而socre则可以重复。有序集合允许通过member查询socre(一对多)也允许使用socre范围查询member(多对多)。
-看，简直是量身定做的，由于我们在业务层面保证了uid的绝对属主(fd每次连接都会随机分配，并不真的属主)，在这种情况下，实际上我们使用多对多查询其实是一对多的情况。
-当我们需要想要给uid = 1的用户发送信息，只需要通过socre = 1 查出对应的member fd列表(即便你在不同的房间，不同的设备，你都需要收到私聊)，然后迭代(遍历)这个列表发送信息即可。
-这个有序集合相当于全服务器所有的在线人数(全部连接数)，所以key可以叫做online即online集合。
+| key    | socre  | member |
+| :----- | :----- | :----- |
+| online | userId | fd     |
 
-| Redis概念 |   key  | socre | member |
-| :-----: | :----: | :---: | :----: |
-|   业务概念  | online |  uid  |   fd   |
-|   业务概念  | online |   1   |    1   |
-|   业务概念  | online |   1   |    2   |
-|   业务概念  | online |   1   |    3   |
-|   业务概念  | online |   2   |    4   |
+### 全服务器广播
+
+全服务器广播实际上是给全部fd连接发送消息，可以使用上面的online有序集合遍历发送，也可以直接遍历server->connections中的fd发送(推荐)
+
+### 房间消息
+
+房间消息其实是指发送信息到具体房间中的一个概念，房间只是fd的一种组织(管理)形式，在房间这个概念中，实际上并不需要uid这个概念，因为你在公会频道收不到队伍消息嘛。
+
+我们只需要映射好room_id和fd的关系即可实现房间消息功能，这里我们选择Redis Hash(哈希)数据结构来维护此关系。
+
+| key    | field  | value  |
+| :----- | :----- | :----- |
+| roomId | userId | fd     |
+
+Hash允许你通过key只查询field列或者只查询value列，这样你就可以实现查询用户是否在房间(用于业务层面的检查)和房间内全部fd；随后通过迭代(遍历)，value列来发送信息。
+
+### 回收fd
+
+由于用户断线时，我们只能获取到fd，并不能获取到roomId和userId，所以我们必须设计一套回收机制，保证Redis中的映射关系不错误；防止信息发送给错误的fd。
+
+在上面我们其实已经建立了userId => fd 的映射关系，双向都能够找到找到对应彼此的值，唯独缺少了 roomId => fd的关系映射，在这里我们通过再建立一组关系映射，来保障fd => roomId的映射关系，由于fd是不重复的，roomId是重复的，故可以直接使用 `有序集合` 来管理。
+
+| key    | socre  | member |
+| :----- | :----- | :----- |
+| rfMap  | roomId | fd     |
+
+## 代码实现
+
+**注意：以下代码均是基本逻辑，业务使用需要根据自己业务场景丰富**
+
+*Room基本逻辑*
+
+```php
+<?php
+namespace App\Socket\Logic;
+
+use EasySwoole\Core\Component\Di;
+
+
+class Room
+{
+    /**
+     * 获取Redis连接实例
+     * @return object Redis
+     */
+    protected static function getRedis()
+    {
+        return Di::getInstance()->get('REDIS')->handler();
+    }
+
+    /**
+     * 进入房间
+     * @param  int    $roomId 房间id
+     * @param  int    $userId userId
+     * @param  int    $fd     连接id
+     * @return
+     */
+    public static function joinRoom(int $roomId, int $fd)
+    {
+        $userId = self::getUserId($fd);
+        self::getRedis()->zAdd('rfMap', $roomId, $fd);
+        self::getRedis()->hSet("room:{$roomId}", $userId, $fd);
+    }
+
+    /**
+     * 登录
+     * @param  int    $userId 用户id
+     * @param  int    $fd     连接id
+     * @return bool
+     */
+    public static function login(int $userId, int $fd)
+    {
+        self::getRedis()->zAdd('online', $userId, $fd);
+    }
+
+    /**
+     * 获取用户id
+     * @param  int    $fd
+     * @return int    userId
+     */
+    public static function getUserId(int $fd)
+    {
+        return self::getRedis()->zScore('online', $fd);
+    }
+
+    /**
+     * 获取用户fd
+     * @param  int    $userId
+     * @return array         用户fd集
+     */
+    public static function getUserFd(int $userId)
+    {
+        return self::getRedis()->zRange('online', $userId, $userId, true);
+    }
+
+    /**
+     * 获取RoomId
+     * @param  int    $fd
+     * @return int    RoomId
+     */
+    public static function getRoomId(int $fd)
+    {
+        return self::getRedis()->zScore('rfMap', $fd);
+    }
+
+    /**
+     * 获取room中全部fd
+     * @param  int    $roomId roomId
+     * @return array         房间中fd
+     */
+    public static function selectRoomFd(int $roomId)
+    {
+        return self::getRedis()->hVals("room:{$roomId}");
+    }
+
+    /**
+     * 退出room
+     * @param  int    $roomId roomId
+     * @param  int    $fd     fd
+     * @return
+     */
+    public static function exitRoom(int $roomId, int $fd)
+    {
+        $userId = self::getUserId($fd);
+        self::getRedis()->handler()->hDel("room:{$roomId}", $userId);
+        self::getRedis()->handler()->zRem('rfMap', $fd);
+    }
+
+    /**
+     * 关闭连接
+     * @param  string $fd 链接id
+     */
+    public static function close(int $fd)
+    {
+        $roomId = self::getRoomId($fd);
+        self::exitRoom($roomId, $fd);
+        self::getRedis()->zRem('online', $fd);
+    }
+}
+
+```
+
+*Test测试用控制器*
+
+```php
+<?php
+namespace App\Socket\Controller\WebSocket;
+
+use EasySwoole\Core\Socket\AbstractInterface\WebSocketController;
+use EasySwoole\Core\Swoole\ServerManager;
+use EasySwoole\Core\Swoole\Task\TaskManager;
+
+use App\Socket\Logic\Room;
+
+class Test extends WebSocketController
+{
+
+    /**
+     * 访问找不到的action
+     * @param  ?string $actionName 找不到的name名
+     * @return string
+     */
+    public function actionNotFound(?string $actionName)
+    {
+        $this->response()->write("action call {$actionName} not found");
+    }
+
+    public function index()
+    {
+    }
+
+    /**
+     * 进入房间
+     */
+    public function intoRoom()
+    {
+        // TODO: 业务逻辑自行实现
+        $param = $this->request()->getArg('data');
+        $userId = $param['userId'];
+        $roomId = $param['roomId'];
+
+        $fd = $this->client()->getFd();
+        Room::login($userId, $fd);
+        Room::joinRoom($roomId, $fd);
+        $this->response()->write("加入{$roomId}房间");
+    }
+
+    /**
+     * 发送信息到房间
+     */
+    public function sendToRoom()
+    {
+        // TODO: 业务逻辑自行实现
+        $param = $this->request()->getArg('data');
+        $message = $param['message'];
+        $roomId = $param['roomId'];
+
+        //异步推送
+        TaskManager::async(function ()use($roomId, $message){
+            $list = Room::selectRoomFd($roomId);
+            foreach ($list as $fd) {
+                ServerManager::getInstance()->getServer()->push($fd, $message);
+            }
+        });
+    }
+
+    /**
+     * 发送私聊
+     */
+    public function sendToUser()
+    {
+        // TODO: 业务逻辑自行实现
+        $param = $this->request()->getArg('data');
+        $message = $param['message'];
+        $userId = $param['userId'];
+
+        //异步推送
+        TaskManager::async(function ()use($userId, $message){
+            $fdList = Room::getUserFd($userId);
+            foreach ($fdList as $fd) {
+                ServerManager::getInstance()->getServer()->push($fd, $message);
+            }
+        });
+    }
+}
+```
