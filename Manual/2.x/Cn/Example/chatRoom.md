@@ -611,3 +611,32 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
 - 第二个标签发送 {"controller": "Test","action": "sendToUser","data":{"userId":"1","message":"发送私聊消息"}}，此时第一个标签连接会收到消息
 
 _至此已经完成了Room的基本逻辑，下面将介绍如何实现js消息处理_
+
+## js消息处理
+
+我们可以利用JSON数据来实现js消息解析
+
+示例
+```JSON
+// 客户端发送JSON消息格式
+{
+    "controller": "Test",   // 请求控制器
+    "action": "intoRoom",   // 请求方法
+    "data":{    // 请求参数
+        "a":"",
+        "b":""
+    }
+}
+
+// 服务端发送JSON消息格式
+{
+    "code":"200",    // 状态码，用于标记状态
+    "msg":"string"   // 信息，用于标记本次状态的描述
+    "result":{       // 结构，用于传输实际数据，通常是个多维结构
+        "type":"chat||gift||notice"     // 类型，标记本次消息的类型，如聊天、礼物
+        "data":"message"                // 数据，用于传输实际内容，如具体的信息
+    }
+}
+```
+
+当客户端收到消息时，使用JSON.parse就可以解析具体的事件。
