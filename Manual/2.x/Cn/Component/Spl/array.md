@@ -1,11 +1,11 @@
 ## SplArray使用
 
-SqlArray 支持链式操作，如：$array->unique()->asort()->keys();
+SplArray 支持链式操作，如：$array->unique()->asort()->keys();
 
 命名空间地址：
 
 ```php
-use \EasySwoole\Core\Component\Spl\SqlArray;
+use \EasySwoole\Core\Component\Spl\SplArray;
 ```
 
 获得默认数组格式：
@@ -29,7 +29,7 @@ function get($path)
 ```
 
 ```php
-$sqlArray = new SqlArray([
+$splArray = new SplArray([
     'config' => [
         'mysql' => [
             'name' => 'xxxx',
@@ -41,7 +41,7 @@ $sqlArray = new SqlArray([
         ]
     ]
 ]);
-var_dump($sqlArray->get('config.mysql.'));
+var_dump($splArray->get('config.mysql.'));
 /*
 [
   'name' => 'xxxx',
@@ -57,7 +57,7 @@ function delete($key): void
 ```
 
 ```php
-$sqlArray = new SqlArray([
+$splArray = new SplArray([
     'config' => [
         'mysql' => [
             'name' => 'xxxx',

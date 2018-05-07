@@ -3,7 +3,7 @@ demo中有封装好的mysql连接池，[MysqlPool2.php](https://github.com/easy-
 
 ### 添加数据库配置
 在Config中添加配置信息：
-```Json
+```php
 'MYSQL' => [
     'HOST' => '127.0.0.1', // 数据库地址
     'PORT' => 3306, // 数据库端口
@@ -12,6 +12,16 @@ demo中有封装好的mysql连接池，[MysqlPool2.php](https://github.com/easy-
     'DB_NAME' => 'db', // 数据库库名
     'MIN' => 5, // 最小连接数
     'MAX' => 100 // 最大连接数
+]
+```
+并在Config的COROUTINE_POOL中新增该连接池
+```php
+'COROUTINE_POOL' => [
+    'App\Utility\MysqlPool2' => [
+        'min' => 5,
+        'max' => 100,
+        'type' => 1
+    ]
 ]
 ```
 

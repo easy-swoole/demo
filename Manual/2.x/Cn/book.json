@@ -10,15 +10,17 @@
     },
     "links": {
         "sidebar": {
-            "<i class='fa fa-fw fa-qq'></i> 官方QQ交流群 <strong>633921431</strong>": "//shang.qq.com/wpa/qunwpa?idkey=35c84e12f7784153501e3c43c9f2454d3235a7f55371458a24f0c32320c99548"
+            "<i class='fa fa-fw fa-qq'></i> <strong> 在线交流群 633921431</strong>": "//shang.qq.com/wpa/qunwpa?idkey=35c84e12f7784153501e3c43c9f2454d3235a7f55371458a24f0c32320c99548",
+            "<i class='fa fa-fw fa-comments-o'></i>  <strong>WebSocket 调试工具</strong>": "http://evalor.cn/websocket.html"
         }
     },
     "plugins": [
         "-lunr",
         "-search",
         "-highlight",
+        "-fontsettings",
         "prism",
-        "alerts",
+        "prism-themes",
         "edit-link",
         "anchors",
         "github",
@@ -26,7 +28,7 @@
         "expand-active-chapter",
         "expandable-chapters-interactive",
         "versions-select",
-        "styled-blockquotes"
+        "theme-comscore"
     ],
     "pluginsConfig": {
         "edit-link": {
@@ -41,12 +43,17 @@
             "options": [
                 {
                     "value": "https://www.easyswoole.com/Manual/1.x/Cn/_book/",
-                    "text": "easySwoole 1.x"
+                    "text": "EASYSWOOLE v1 中文手册"
                 },
                 {
                     "value": "https://www.easyswoole.com/Manual/2.x/Cn/_book/",
-                    "text": "easySwoole 2.x"
+                    "text": "EASYSWOOLE v2 中文手册"
                 }
+            ]
+        },
+        "prism": {
+            "css": [
+                "prism-themes/themes/prism-vs.css"
             ]
         }
     }

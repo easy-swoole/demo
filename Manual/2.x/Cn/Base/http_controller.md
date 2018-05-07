@@ -86,8 +86,6 @@ class Hello extends Controller
 http://localhost:9501/hello/article
 ```
 
-> **danger no-icon**
->
 > 注意 : 因为 Swoole 常驻内存的特性，在修改了代码后，需要重新启动框架才能使新的代码生效，在控制台结束运行，一般可以按下 Ctrl+C 组合键来结束，并且执行 php easyswoole start 来重新启动框架
 
 如果不带任何路径的访问，比如说访问下面的路径

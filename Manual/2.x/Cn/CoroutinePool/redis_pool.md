@@ -3,7 +3,7 @@ demo中有封装好的redis连接池，[RedisPool.php](https://github.com/easy-s
 
 ### 添加数据库配置
 在Config中添加配置信息：
-```Json
+```php
 'REDIS' => [
     'host' => '127.0.0.1', // redis主机地址
     'port' => 6379, // 端口
@@ -16,6 +16,16 @@ demo中有封装好的redis连接池，[RedisPool.php](https://github.com/easy-s
     'errorHandler' => function(){
         return null;
     } // 如果Redis重连失败，会判断errorHandler是否callable，如果是，则会调用，否则会抛出异常，请自行try
+]
+```
+并在Config的COROUTINE_POOL中新增该连接池
+```php
+'COROUTINE_POOL' => [
+    'App\Utility\RedisPool' => [
+        'min' => 5,
+        'max' => 100,
+        'type' => 1
+    ]
 ]
 ```
 

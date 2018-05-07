@@ -22,7 +22,7 @@ EasySwoole 2.x支持以控制器模式来开发你的代码。
 >
 > 需要实现EasySwoole\Core\Socket\AbstractInterface\ParserInterface接口中的decode 和encode方法;
 
-**创建Application/Parser.php文件，写入以下代码**
+**创建App/Parser.php文件，写入以下代码**
 
 ```php
 namespace App;
@@ -46,7 +46,7 @@ class Parser implements ParserInterface
 
     }
 
-    public static function encode(string $raw, $client, $commandBean): ?string
+    public static function encode(string $raw, $client): ?string
     {
         // TODO: Implement encode() method.
         return $raw;
@@ -84,7 +84,7 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
 
 **创建Application/HttpController/websocket.html文件，写入以下代码**
 
-```Html
+```html
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
