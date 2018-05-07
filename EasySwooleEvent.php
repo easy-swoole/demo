@@ -6,8 +6,10 @@ use App\Process\Inotify;
 use App\Process\Test;
 use App\Sock\Parser\Tcp;
 use App\Sock\Parser\WebSock;
+use App\Utility\MysqlPool2;
 use \EasySwoole\Core\AbstractInterface\EventInterface;
 use \EasySwoole\Core\Component\Logger;
+use EasySwoole\Core\Component\Pool\PoolManager;
 use \EasySwoole\Core\Swoole\EventHelper;
 use \EasySwoole\Core\Swoole\Process\ProcessManager;
 use \EasySwoole\Core\Swoole\ServerManager;
@@ -48,7 +50,7 @@ Class EasySwooleEvent implements EventInterface
         // ------------------------------------------------------------------------------------------
         if (version_compare(phpversion('swoole'), '2.1.0', '>=')) {
 
-//            PoolManager::getInstance()->addPool(MysqlPool2::class, 3, 10);
+            PoolManager::getInstance()->registerPool(MysqlPool2::class, 3, 10);
         }
 
         // 普通事件注册 swoole 中的各种事件都可以按这个例子来进行注册
