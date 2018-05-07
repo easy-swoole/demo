@@ -21,8 +21,7 @@ demo中有封装好的redis连接池，[RedisPool.php](https://github.com/easy-s
 并在Config的COROUTINE_POOL中新增该连接池
 ```php
 COROUTINE_POOL => [
-    [
-        'class' => 'App\Utility\RedisPool',
+    'App\Utility\RedisPool' => [
         'min' => 5,
         'max' => 100,
         'type' => 1
