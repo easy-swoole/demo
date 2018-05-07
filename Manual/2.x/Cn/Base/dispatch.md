@@ -18,12 +18,12 @@
 
 ## 解析层级
 
-理论上 easySwoole 支持无限层级的URL -> 控制器映射，但出于系统效率和防止恶意 URL 访问， 系统默认为3级，若由于业务需求，需要更多层级的URL映射匹配，请于框架初始化事件中向 DI 注入常量`SysConst::CONTROLLER_MAX_DEPTH` ，值为 URL 解析的最大层级，如下代码，允许 URL 最大解析至5层
+理论上 easySwoole 支持无限层级的URL -> 控制器映射，但出于系统效率和防止恶意 URL 访问， 系统默认为3级，若由于业务需求，需要更多层级的URL映射匹配，请于框架初始化事件中向 DI 注入常量`SysConst::HTTP_CONTROLLER_MAX_DEPTH` ，值为 URL 解析的最大层级，如下代码，允许 URL 最大解析至5层
 
 ```php
 public static function frameInitialize(): void
 {
-	Di::getInstance()->set(SysConst::CONTROLLER_MAX_DEPTH, 5);
+	Di::getInstance()->set(SysConst::HTTP_CONTROLLER_MAX_DEPTH, 5);
 }
 ```
 

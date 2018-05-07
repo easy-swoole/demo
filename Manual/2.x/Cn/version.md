@@ -10,7 +10,9 @@
 
 ## EasySwoole 2.1.1
 
-相对于2.0.1而言，默认主配置项变动为
+相对于2.0.1而言
+
+### 配置项
 ```
     'SERVER_NAME'=>"EasySwoole",//新增
     'MAIN_SERVER'=>[
@@ -45,4 +47,10 @@
         'nodeId'=>null
     ]
 ```
-
+### socket控制器
+Socket 控制器dispatch进行了重构，事件注册器注册默认的tpc解析方法变更为：
+```
+public static function registerDefaultOnReceive(EventRegister $register,string $parserInterface,callable $onError = null,string $exceptionHandler = null):void
+public static function registerDefaultOnPacket(EventRegister $register,string $parserInterface,callable $onError = null,string $exceptionHandler = null):void
+public static function registerDefaultOnMessage(EventRegister $register,string $parserInterface,callable $onError = null,string $exceptionHandler = null):void
+```

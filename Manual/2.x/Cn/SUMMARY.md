@@ -68,12 +68,12 @@
     - [如何实现分布式](Other/distribute.md)
     - [如何实现队列消费/自定义进程](Other/process.md)
     - [Redis\Kafka订阅](Other/redisSubscribe.md)
-- [版本升级细微差异](version.md)
 - 开发示例
     - [微信小程序](Example/miniProgram.md)
     - [抢红包问题](Example/readPacket.md)
 - 其他问题
     - [Trait与单例](Problem/traitSingleTon.md)
     - [Mysql索引降维](Problem/mysqlIndexReduce.md)
-- [项目案例](example.md)
+- [开源项目案例](example.md)
+- [版本升级细微差异](version.md)
 - [捐赠](donate.md)

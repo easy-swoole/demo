@@ -10,7 +10,7 @@ defined('EASYSWOOLE_ROOT') or define("EASYSWOOLE_ROOT",realpath(getcwd()));
 ### Core类中的initialize方法
 在该方法中，先后执行了：
 - Di容器中SysConst::VERSION值的定义
-- Di容器中SysConst::HTTP_CONTROLLER_MAX_DEPTH值的定义
+- Di容器中SysConst::HTTP_HTTP_CONTROLLER_MAX_DEPTH值的定义
 - 创建全局事件容器（EasySwoole\Core\Component\Event），并将EasySwooleEvent.php中的事件加载到容器中
 - 设置系统默认目录DIR_TEMP、DIR_LOG
 - 执行全局事件容器中的frameInitialize事件
