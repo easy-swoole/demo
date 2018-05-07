@@ -357,9 +357,9 @@ _实际上聊天室就是对 `fd` `userId` `roomId` 的管理_
 
 | key    | field  | value  |
 | :----- | :----- | :----- |
-| roomId | userId | fd     |
+| roomId | fd     | userId |
 
-Hash允许你通过key只查询field列或者只查询value列，这样你就可以实现查询用户是否在房间(用于业务层面的检查)和房间内全部fd；随后通过迭代(遍历)，value列来发送信息。
+Hash允许你通过key只查询field列或者只查询value列，这样你就可以实现查询用户是否在房间(用于业务层面的检查)和房间内全部fd；随后通过迭代(遍历)，来发送信息。
 
 ### 回收fd
 
@@ -406,7 +406,7 @@ class Room
     {
         $userId = self::getUserId($fd);
         self::getRedis()->zAdd('rfMap', $roomId, $fd);
-        self::getRedis()->hSet("room:{$roomId}", $userId, $fd);
+        self::getRedis()->hSet("room:{$roomId}", $fd, $userId);
     }
 
     /**
@@ -457,7 +457,7 @@ class Room
      */
     public static function selectRoomFd(int $roomId)
     {
-        return self::getRedis()->hVals("room:{$roomId}");
+        return self::getRedis()->hKeys("room:{$roomId}");
     }
 
     /**
@@ -468,8 +468,7 @@ class Room
      */
      public static function exitRoom(int $roomId, int $fd)
      {
-         $userId = self::getUserId($fd);
-         self::getRedis()->hDel("room:{$roomId}", $userId);
+         self::getRedis()->hDel("room:{$roomId}", $fd);
          self::getRedis()->zRem('rfMap', $fd);
      }
 
