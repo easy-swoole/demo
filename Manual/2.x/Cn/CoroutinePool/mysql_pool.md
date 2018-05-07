@@ -17,8 +17,7 @@ demo中有封装好的mysql连接池，[MysqlPool2.php](https://github.com/easy-
 并在Config的COROUTINE_POOL中新增该连接池
 ```php
 COROUTINE_POOL => [
-    [
-        'class' => 'App\Utility\MysqlPool2',
+    'App\Utility\MysqlPool2' => [
         'min' => 5,
         'max' => 100,
         'type' => 1
