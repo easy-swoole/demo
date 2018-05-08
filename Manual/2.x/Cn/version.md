@@ -54,3 +54,8 @@ public static function registerDefaultOnReceive(EventRegister $register,string $
 public static function registerDefaultOnPacket(EventRegister $register,string $parserInterface,callable $onError = null,string $exceptionHandler = null):void
 public static function registerDefaultOnMessage(EventRegister $register,string $parserInterface,callable $onError = null,string $exceptionHandler = null):void
 ```
+Socket 控制器的解析器接口变更为
+```
+public static function encode(string $raw, $client): ?string
+```
+
