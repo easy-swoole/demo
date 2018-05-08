@@ -71,6 +71,7 @@
 - 开发示例
     - [微信小程序](Example/miniProgram.md)
     - [抢红包问题](Example/readPacket.md)
+    - [聊天室开发](Example/chatRoom.md)
 - 其他问题
     - [Trait与单例](Problem/traitSingleTon.md)
     - [Mysql索引降维](Problem/mysqlIndexReduce.md)
