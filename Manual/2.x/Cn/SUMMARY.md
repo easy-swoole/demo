@@ -17,8 +17,6 @@
     - [自定义路由](Base/router.md)
     - [常见问题](Base/problem.md)
     - [使用模板引擎](Base/template.md)
-- 核心讲解
-    - [设计流程](Core/design.md)
 - [全局事件注册](Event/event.md)
     - [frameInitialize](Event/frame_initialize.md)
     - [mainServerCreate](Event/main_server_create.md)
@@ -68,6 +66,8 @@
     - [如何实现分布式](Other/distribute.md)
     - [如何实现队列消费/自定义进程](Other/process.md)
     - [Redis\Kafka订阅](Other/redisSubscribe.md)
+- 核心讲解
+    - [设计流程](Core/design.md)
 - 开发示例
     - [微信小程序](Example/miniProgram.md)
     - [抢红包问题](Example/readPacket.md)
