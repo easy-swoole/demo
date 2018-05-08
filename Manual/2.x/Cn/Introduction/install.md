@@ -11,6 +11,8 @@ composer require easyswoole/easyswoole=2.x-dev
 php vendor/bin/easyswoole install
 php easyswoole start
 ```
+## 名称空间一定要更新！！！！！
+执行 `composer dumpautoload` 命令更新命名空间，框架已经可以自动加载 **App **目录下的文件了，此时框架已经安装完毕，可以开始编写业务逻辑
 
 中途没有报错的话，框架就安装完成了，此时可以访问 `http://localhost:9501/` 看到框架的欢迎页面，表示框架已经安装成功
 
@@ -85,8 +87,6 @@ class Index extends Controller
 }
 
 ```
-## 名称空间一定要更新！！！！！
-执行 `composer dumpautoload` 命令更新命名空间，框架已经可以自动加载 **App **目录下的文件了，此时框架已经安装完毕，可以开始编写业务逻辑
 
 ## 关于IDE助手
 
