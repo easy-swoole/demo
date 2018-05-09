@@ -17,6 +17,7 @@ var Vm = new Vue({
             timer: undefined
         },
         content: '',
+        keyword: '',
         heartBeatSecond: 1,
         heartBeatContent: 'PING',
         autoSend: false,
@@ -25,10 +26,12 @@ var Vm = new Vue({
         recvClean: false,
         recvDecode: false,
         connected: false,
-        recvPause: false
+        recvPause: false,
     },
     created: function created () {
         this.canUseH5WebSocket()
+        var address = localStorage.getItem('address');
+        if (typeof address === 'string') this.address = address
         window.onerror = function (ev) {
             console.warn(ev)
         }
@@ -62,6 +65,9 @@ var Vm = new Vue({
         },
         autoWsConnect: function () {
             try {
+
+                localStorage.setItem('address', this.address)
+
                 var wsInstance = new WebSocket(this.address);
                 var _this      = Vm
 

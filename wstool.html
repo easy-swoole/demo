@@ -33,6 +33,7 @@
                 <span>WEBSOCKET</span>
                 <small>在线测试工具</small>
             </a>
+            <a class="btn btn-primary" href="https://www.easyswoole.com/Manual/2.x/Cn/_book/" role="button">GOTO EASYSWOOLE</a>
         </div>
     </nav>
     <!-- 主体内容 -->
@@ -131,7 +132,7 @@
                                         <hr class="divider divider-dashed">
                                         <div class="card-text message-box" id="message-box">
                                             <template v-for="item in messageData">
-                                                <div class="mb-4" :class="{ 'text-right' : item.direction , 'text-left' : !item.direction }">
+                                                <div class="mb-4" :class="{ 'text-left' : item.direction , 'text-left' : !item.direction }">
                                                     <strong><span :class="{'text-success' : item.direction , 'text-primary' : !item.direction}">{{item.direction ? '发送' : '收到'}}消息</span> {{item.time}}</strong>
                                                     <div class="monospace" v-if="!recvDecode"> {{ item.content }}</div>
                                                     <div class="monospace" v-html='JSON.format(item.content)' v-if="recvDecode"></div>
