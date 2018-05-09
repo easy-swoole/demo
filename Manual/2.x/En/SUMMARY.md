@@ -11,4 +11,5 @@
 - [Global Event](event.md)
 - [Socket Controller](Socket/sock.md)
     - [WebSocket](Socket/websocket.md)
+    - [Tcp](Socket/tcp.md)
     
