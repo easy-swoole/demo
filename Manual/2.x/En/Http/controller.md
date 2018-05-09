@@ -28,15 +28,16 @@ index method must be implement in your controller.
 
 ## Controller Default Methods And How It Work
 
-### protected function actionNotFound($action):void
-### protected function afterAction($action):void
-### protected function onException(\Throwable $throwable,$actionName):void
-### protected function onRequest($action):?bool    //you can intercept an request to prevent do the next action here
-### protected function request():Request
-### protected function response():Response
-### protected function writeJson($statusCode = 200,$result = null,$msg = null)
+- protected function actionNotFound($action):void
+- protected function afterAction($action):void
+- protected function onException(\Throwable $throwable,$actionName):void
+- protected function onRequest($action):?bool    //you can intercept an request to prevent do the next action here
+- protected function request():Request
+- protected function response():Response
+- protected function writeJson($statusCode = 200,$result = null,$msg = null)
 
-____construct will call in dispatch ,$request and $response is all the implement of psr-7 http message 
+#### __construct
+__construct will call in dispatch ,$request and $response is all the implement of psr-7 http message 
 ```
 public function __construct(string $actionName,Request $request,Response $response)
 {
@@ -50,7 +51,8 @@ public function __construct(string $actionName,Request $request,Response $respon
     }
 }
 ```
-__hook function
+#### __hook 
+
 ```
 protected function __hook(?string $actionName):void
 {
