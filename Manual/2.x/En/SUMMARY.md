@@ -8,5 +8,8 @@
 - HTTP
     - [Controller](Http/controller.md)
     - [Custom Router](Http/router.md)
-- Global Event
+- [Global Event](event.md)
+- [Socket Controller](Socket/sock.md)
+    - [WebSocket](Socket/websocket.md)
+    - [Tcp](Socket/tcp.md)
     

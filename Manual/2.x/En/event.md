@@ -2,7 +2,7 @@
 EasySwoole has four global event. all of the events is located in EasySwooleEvent.php which is in your project root.
 
 ## frameInitialize
-when this function was called,EasySwoole has done this :
+when this function was called,EasySwoole has done  :
 - define EASYSWOOLE_ROOT
 - Log/Temp initialize
 
@@ -17,7 +17,7 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
 {
 }
 ```
-when this function was called,EasySwoole has done this :
+when this function was called,EasySwoole has done  :
 - global frameInitialize event
 - create main swoole server and register default callback
 
@@ -33,5 +33,10 @@ use \EasySwoole\Core\Http\Response;
 public static function onRequest(Request $request,Response $response): ?bool
 ```
 onRequest method will be called at each http request .
+
+what can you doo :
+- you can filter the request params
+- you can add response info here
+- you can interupt a request here by $response->end()
 
 ## afterAction
