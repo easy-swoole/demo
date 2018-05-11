@@ -40,8 +40,7 @@ composer require duncan3dc/blade
 
 namespace App;
 
-use EasySwoole\Core\Component\Di;
-use EasySwoole\Core\Component\SysConst;
+use EasySwoole\Config;
 use EasySwoole\Core\Http\AbstractInterface\Controller;
 use EasySwoole\Core\Http\Request;
 use EasySwoole\Core\Http\Response;
@@ -66,7 +65,7 @@ abstract class ViewController extends Controller
     function __construct(string $actionName, Request $request, Response $response)
     {
         $this->view = new \Smarty();
-        $tempPath   = Di::getInstance()->get(SysConst::DIR_TEMP);    # 临时文件目录
+        $tempPath   = Config::getInstance()->getConf('TEMP_DIR');    # 临时文件目录
         $this->view->setCompileDir("{$tempPath}/templates_c/");      # 模板编译目录
         $this->view->setCacheDir("{$tempPath}/cache/");              # 模板缓存目录
         $this->view->setTemplateDir(EASYSWOOLE_ROOT . '/Views/');    # 模板文件目录
@@ -111,8 +110,7 @@ abstract class ViewController extends Controller
 
 namespace App;
 
-use EasySwoole\Core\Component\Di;
-use EasySwoole\Core\Component\SysConst;
+use EasySwoole\Config;
 use EasySwoole\Core\Http\AbstractInterface\Controller;
 use EasySwoole\Core\Http\Request;
 use EasySwoole\Core\Http\Response;
@@ -138,7 +136,7 @@ abstract class ViewController extends Controller
     function __construct(string $actionName, Request $request, Response $response)
     {
         $this->view = new Template();
-        $tempPath   = Di::getInstance()->get(SysConst::DIR_TEMP);     # 临时文件目录
+        $tempPath   = Config::getInstance()->getConf('TEMP_DIR');     # 临时文件目录
         $this->view->config([
             'view_path'  => EASYSWOOLE_ROOT . '/Views/',              # 模板文件目录
             'cache_path' => "{$tempPath}/templates_c/",               # 模板编译目录
@@ -171,8 +169,7 @@ abstract class ViewController extends Controller
 
 namespace App;
 
-use EasySwoole\Core\Component\Di;
-use EasySwoole\Core\Component\SysConst;
+use EasySwoole\Config;
 use EasySwoole\Core\Http\AbstractInterface\Controller;
 use EasySwoole\Core\Http\Request;
 use EasySwoole\Core\Http\Response;
@@ -197,7 +194,7 @@ abstract class ViewController extends Controller
      */
     function __construct(string $actionName, Request $request, Response $response)
     {
-        $tempPath   = Di::getInstance()->get(SysConst::DIR_TEMP);    # 临时文件目录
+        $tempPath   = Config::getInstance()->getConf('TEMP_DIR');    # 临时文件目录
         $this->view = new BladeInstance(EASYSWOOLE_ROOT . '/Views', "{$tempPath}/templates_c");
         
         parent::__construct($actionName, $request, $response);
