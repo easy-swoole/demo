@@ -10,6 +10,7 @@
     <link href="https://cdn.bootcss.com/bulma/0.7.1/css/bulma.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.staticfile.org/highlight.js/9.10.0/styles/vs.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -18,7 +19,7 @@
         <div class="container">
             <div class="navbar-brand">
                 <a class="navbar-item" href="/">
-                    <img src="img/easyswoole.png" alt="EASYSWOOLE" width="112" height="28">
+                    <img src="img/easyswoole.png" alt="EASYSWOOLE">
                 </a>
                 <div class="navbar-burger burger" data-target="navbar">
                     <span></span>
@@ -40,9 +41,9 @@
     <section class="hero has-text-centered">
         <div class="hero-body" style="padding-bottom: 0; padding-top: 1.5rem">
             <div class="container">
-                <h3 class="hero-headline">一种愉悦的开发方式</h3>
+                <h3 class="hero-headline animated fadeInUp">一种愉悦的开发方式</h3>
                 <!--<div class="hero-subtitle">EasySwooe，一个简单，高效，快速的高并发框架</div>-->
-                <div class="hero-btn"><a class="btn-blue" href="/Manual/2.x/Cn/_book/Introduction/install.html">开始使用</a></div>
+                <div class="hero-btn"><a class="btn-blue" id="start" href="/Manual/2.x/Cn/_book/Introduction/install.html">开始使用</a></div>
             </div>
             <!-- 动画 -->
             <embed class="image esanimation" src="img/easy.svg" type="image/svg+xml" pluginspage="img/easy.svg"/>
@@ -58,7 +59,7 @@
                     EasySwoole 是一款基于Swoole Server 开发的常驻内存型的分布式PHP框架，专为API而生，摆脱传统PHP运行模式在进程唤起和文件加载上带来的性能损失。EasySwoole 高度封装了 Swoole Server 而依旧维持 Swoole Server 原有特性，支持同时混合监听HTTP、自定义TCP、UDP协议，让开发者以最低的学习成本和精力编写出多进程，可异步，高可用的应用服务。
                 </h2>
             </div>
-            <div class="icons has-text-centered">
+            <div class="icons has-text-centered features">
                 <div class="columns">
                     <div class="column">
                         <i class="fa fa-fw fa-2x fa-cubes"></i>
@@ -147,6 +148,7 @@
     <script src="https://cdn.staticfile.org/highlight.js/9.10.0/highlight.min.js"></script>
     <script src="https://cdn.staticfile.org/highlight.js/9.10.0/languages/php.min.js"></script>
     <script src="css/index.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- 动态代码块模板 -->
     <pre id="code-template-1" style="display: none">
@@ -201,8 +203,22 @@ $pool = PoolManager::getInstance()->getPool(MysqlPool::class);
             TypedCode('#codebox-1', 'code-template-1');
             TypedCode('#codebox-2', 'code-template-2');
             TypedCode('#codebox-3', 'code-template-3');
-            TypedCode('#codebox-4', 'code-template-4')
+            TypedCode('#codebox-4', 'code-template-4');
+        };
+
+        function addAnim (selector, anim) {
+            $(selector).hover(function () {
+                $(this).addClass(anim);
+            }, function () {
+                $(this).removeClass(anim);
+            }).on('touchstart', function () {
+                $(this).addClass(anim);
+            }).on('touchend', function () {
+                $(this).removeClass(anim);
+            });
         }
+
+        addAnim('#start', 'animated pulse infinite');
     </script>
 </div>
 </body>
