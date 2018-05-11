@@ -5,24 +5,221 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>easySwoole|swoole框架|swoole拓展|swoole</title>
-    <meta name="keywords" content="easySwoole|swoole框架|swoole拓展|swoole" />
-    <meta name="description" content="easySwoole是一款高度封装了swoole拓展而依旧保持swoole原有特性的一个高性能异步框架，旨在提供一个高效、快速、优雅的框架给php开发者。" />
-    <style>
-        html,body{background-color:#fff;color:#636b6f;font-family:'Raleway',sans-serif;font-weight:100;height:100vh;margin:0;}.full-height{height:100vh;}.flex-center{align-items:center;display:flex;justify-content:center;}.position-ref{position:relative;}.top-right{position:absolute;right:10px;top:18px;}.content{text-align:center;}.title{font-size:84px;}.links > a{color:#636b6f;padding:0 25px;font-size:12px;font-weight:600;letter-spacing:.1rem;text-decoration:none;text-transform:uppercase;}.m-b-md{margin-bottom:30px;}
-    </style>
+    <meta name="keywords" content="easySwoole|swoole框架|swoole拓展|swoole"/>
+    <meta name="description" content="easySwoole是一款高度封装了swoole拓展而依旧保持swoole原有特性的一个高性能异步框架，旨在提供一个高效、快速、优雅的框架给php开发者。"/>
+    <link href="https://cdn.bootcss.com/bulma/0.7.1/css/bulma.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.staticfile.org/highlight.js/9.10.0/styles/vs.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-<div class="flex-center position-ref full-height">
-    <div class="content">
-        <div class="title m-b-md">
-            欢迎使用 EasySwoole
+<div class="main">
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="img/easyswoole.png" alt="EASYSWOOLE">
+                </a>
+                <div class="navbar-burger burger" data-target="navbar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div id="navbar" class="navbar-menu">
+                <div class="navbar-end">
+                    <a class="navbar-item" href="/">首页</a>
+                    <a class="navbar-item" href="/Manual/2.x/Cn/_book/" target="_blank">文档中心</a>
+                    <a class="navbar-item" href="https://github.com/easy-swoole/demo" target="_blank">示例项目</a>
+                    <a class="navbar-item" href="https://github.com/easy-swoole/easyswoole" target="_blank">源码仓库</a>
+                    <a class="navbar-item" href="en.html" target="_blank">ENGLISH</a>
+                </div>
+            </div>
         </div>
-        <div class="links">
-            <a href="https://www.easyswoole.com/Manual/2.x/Cn/_book/">文档</a>
-            <a href="https://github.com/easy-swoole/easyswoole/">Git</a>
-            <a href="https://gitee.com/easyswoole/easyswoole">码云</a>
+    </nav>
+    <section class="hero has-text-centered">
+        <div class="hero-body" style="padding-bottom: 0; padding-top: 1.5rem">
+            <div class="container">
+                <h3 class="hero-headline animated fadeInUp">一种愉悦的开发方式</h3>
+                <!--<div class="hero-subtitle">EasySwooe，一个简单，高效，快速的高并发框架</div>-->
+                <div class="hero-btn"><a class="btn-blue" id="start" href="/Manual/2.x/Cn/_book/Introduction/install.html">开始使用</a></div>
+            </div>
+            <!-- 动画 -->
+            <embed class="image esanimation" src="img/easy.svg" type="image/svg+xml" pluginspage="img/easy.svg"/>
         </div>
-    </div>
+    </section>
+
+    <!-- 框架特性说明 -->
+    <section class="section" style="padding-top: 1.5rem">
+        <div class="container">
+            <div class="introduction has-text-centered">
+                <h1 class="title">框架特性</h1>
+                <h2 class="subtitle">
+                    EasySwoole 是一款基于Swoole Server 开发的常驻内存型的分布式PHP框架，专为API而生，摆脱传统PHP运行模式在进程唤起和文件加载上带来的性能损失。EasySwoole 高度封装了 Swoole Server 而依旧维持 Swoole Server 原有特性，支持同时混合监听HTTP、自定义TCP、UDP协议，让开发者以最低的学习成本和精力编写出多进程，可异步，高可用的应用服务。
+                </h2>
+            </div>
+            <div class="icons has-text-centered features">
+                <div class="columns">
+                    <div class="column">
+                        <i class="fa fa-fw fa-2x fa-cubes"></i>
+                        <div class="icons-desc">高并发</div>
+                    </div>
+                    <div class="column">
+                        <i class="fa fa-fw fa-2x fa-cubes"></i>
+                        <div class="icons-desc">可异步</div>
+                    </div>
+                    <div class="column">
+                        <i class="fa fa-fw fa-2x fa-cubes"></i>
+                        <div class="icons-desc">协程支持</div>
+                    </div>
+                    <div class="column">
+                        <i class="fa fa-fw fa-2x fa-cubes"></i>
+                        <div class="icons-desc">混合协议开发</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 动态代码块区域 -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="columns is-desktop code-block">
+                <div class="column">
+                    <div class="code-box">
+                        <div class="code-area" id="codebox-1"></div>
+                    </div>
+                </div>
+                <div class="column code-introduction">
+                    <h2>HTTP控制器</h2>
+                    <div class="code-introduction-desc">贴合传统FPM框架开发习惯的控制器<br/>无需关注底层各种事件回调，只需关注自身业务逻辑，即使初次使用也能快速上手</div>
+                </div>
+            </div>
+            <div class="columns is-desktop code-block">
+                <div class="column">
+                    <div class="code-box">
+                        <div class="code-area" id="codebox-2"></div>
+                    </div>
+                </div>
+                <div class="column code-introduction">
+                    <h2>异步任务</h2>
+                    <div class="code-introduction-desc">精心设计的异步任务管理器<br/>随时随地通过管理器投递异步任务，支持自定义异步任务异常处理</div>
+                </div>
+            </div>
+            <div class="columns is-desktop code-block">
+                <div class="column">
+                    <div class="code-box">
+                        <div class="code-area" id="codebox-3"></div>
+                    </div>
+                </div>
+                <div class="column code-introduction">
+                    <h2>WEB SOCKET开发</h2>
+                    <div class="code-introduction-desc">以控制器方式编写WebSocket代码<br/>按业务逻辑编写好解析器，即可对WS的业务逻辑进行控制器式的管理，代码结构更清晰</div>
+                </div>
+            </div>
+            <div class="columns is-desktop code-block">
+                <div class="column">
+                    <div class="code-box">
+                        <div class="code-area" id="codebox-4"></div>
+                    </div>
+                </div>
+                <div class="column code-introduction">
+                    <h2>连接池</h2>
+                    <div class="code-introduction-desc">内置协程连接池<br/>简单的方式实现高效的连接复用，提供通用的PoolManager组件，更多惊喜等你发现</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 全局页脚 -->
+    <footer class="footer" style="padding-bottom: 1rem;padding-top: 1rem">
+        <div class="container">
+            <div class="content has-text-centered">
+                <p>
+                    <strong>Easyswoole</strong> is power by <strong>yifeng.zhang</strong>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 页面脚本资源 -->
+    <script src="https://cdn.bootcss.com/typed.js/2.0.6/typed.min.js"></script>
+    <script src="https://cdn.staticfile.org/highlight.js/9.10.0/highlight.min.js"></script>
+    <script src="https://cdn.staticfile.org/highlight.js/9.10.0/languages/php.min.js"></script>
+    <script src="css/index.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- 动态代码块模板 -->
+    <pre id="code-template-1" style="display: none">
+class Index extends Controller
+{
+    function index()
+    {
+        $params = $this->request()->getRequestParams();
+        var_dump($params);
+        $this->response()->write('hello world');
+    }
+}
+    </pre>
+    <pre id="code-template-2" style="display: none">
+use EasySwoole\Core\Swoole\Task\TaskManager;
+
+$phone = 'xxx';
+TaskManager::async(function ()use($phone){
+    //do my task
+    $status = sendSms($phone);
+    saveToRedis($phone,$staus);
+});
+$this->response()->write('success');
+    </pre>
+    <pre id="code-template-3" style="display: none">
+class Web extends WebSocketController
+{
+    function delay()
+    {
+        $client = $this->client();
+        TaskManager::async(function ()use($client){
+            Response::response($client,'msg at '.time());
+        });
+    }
+}
+</pre>
+    <pre id="code-template-4" style="display: none">
+$pool = PoolManager::getInstance()->getPool(MysqlPool::class);
+\go(function ()use($pool){
+    $db = $pool->getObj();
+    if($db){
+        $ret = $db->rawQuery('select sleep(1)');
+        $pool->freeObj($db);
+        var_dump('1 finish at '.time());
+    }else{
+        var_dump('db not available');
+    }
+});
+    </pre>
+    <script>
+        window.onload = function () {
+            TypedCode('#codebox-1', 'code-template-1');
+            TypedCode('#codebox-2', 'code-template-2');
+            TypedCode('#codebox-3', 'code-template-3');
+            TypedCode('#codebox-4', 'code-template-4');
+        };
+
+        function addAnim (selector, anim) {
+            $(selector).hover(function () {
+                $(this).addClass(anim);
+            }, function () {
+                $(this).removeClass(anim);
+            }).on('touchstart', function () {
+                $(this).addClass(anim);
+            }).on('touchend', function () {
+                $(this).removeClass(anim);
+            });
+        }
+
+        addAnim('#start', 'animated pulse infinite');
+    </script>
 </div>
 </body>
 </html>

@@ -15,6 +15,14 @@
     color: #4c4c4c;
 }
 
+.navbar-item img {
+    max-height: 2.5rem;
+}
+
+.navbar-burger {
+    height: 3.5rem;
+}
+
 .hero-headline {
     font-size: 2.5rem;
     font-weight: 500;
@@ -103,6 +111,27 @@
     -webkit-animation: blink 0.7s infinite;
     -moz-animation: blink 0.7s infinite;
     animation: blink 0.7s infinite;
+}
+
+.features .column {
+    display: inline-block;
+    width: 25%;
+}
+
+.code-area {
+    max-width: 100%;
+}
+
+.code-area pre {
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+@media (max-width: 800px) {
+    .features .column {
+        width: 50%;
+    }
 }
 
 @keyframes blink {
