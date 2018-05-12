@@ -61,6 +61,40 @@ Timer::delay(10 * 1000, function () {
 
 
 
+## 清除定时器
+
+> 注意: 该操作不能用于清除其他进程的定时器，只作用于当前进程
+
+定时器创建成功时，会返回一个整数型编号，调用本函数传入该编号，即可提前停止定时器，对应 Swoole 原生的定时器函数为 `swoole_timer_clear`
+
+### 函数原型
+
+```php
+/**
+* 清除定时器
+* @param int $timerId 定时器编号
+* @author : evalor <master@evalor.cn>
+*/
+public static function clear($timerId)
+```
+
+### 示例代码
+
+```php
+// 创建一个延迟10秒后执行的定时器
+$timerId = Timer::after(10 * 1000, function () {
+	echo "timeout\n";
+});
+
+// 清除该定时器
+var_dump(Timer::clear($timerId)); // bool(true)
+var_dump($timer); // int(1)
+
+// 定时器得不到执行 不输出：timeout
+```
+
+
+
 ## 应用实例
 
 > 注意：定时器不能在服务启动之前使用。在服务启动以后，添加的定时器仅仅在当前进程中有效。在workerStart事件中添加定时器时，请注意判断需要添加定时器的workerId,否在该定时器在每个进程中均会被执行
