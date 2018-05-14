@@ -8,6 +8,7 @@ demo中有封装好的redis连接池，[RedisPool.php](https://github.com/easy-s
     'host' => '127.0.0.1', // redis主机地址
     'port' => 6379, // 端口
     'serialize' => false, // 是否序列化php变量
+    'dbName' => 1, // db名
     'auth' => null, // 密码
     'pool' => [
         'min' => 5, // 最小连接数
@@ -20,7 +21,7 @@ demo中有封装好的redis连接池，[RedisPool.php](https://github.com/easy-s
 ```
 并在Config的COROUTINE_POOL中新增该连接池
 ```php
-'COROUTINE_POOL' => [
+'POOL_MANAGER' => [
     'App\Utility\RedisPool' => [
         'min' => 5,
         'max' => 100,
