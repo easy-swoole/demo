@@ -10,9 +10,8 @@ namespace App\HttpController\Pool;
 
 
 use App\Utility\MysqlPool2;
-use EasySwoole\Core\Component\Di;
+use EasySwoole\Core\Component\Pool\PoolManager;
 use EasySwoole\Core\Http\AbstractInterface\Controller;
-use EasySwoole\Core\Swoole\Coroutine\PoolManager;
 
 class Index extends Controller
 {
