@@ -166,10 +166,10 @@ Class EasySwooleEvent implements EventInterface
     {
         date_default_timezone_set('Asia/Shanghai');
         // 载入项目 Conf 文件夹中所有的配置文件
-        $this->loadConf(EASYSWOOLE_ROOT . '/Conf');
+        self::loadConf(EASYSWOOLE_ROOT . '/Conf');
     }
 
-    function loadConf($ConfPath)
+    public static function loadConf($ConfPath)
     {
         $Conf  = Config::getInstance();
         $files = File::scanDir($ConfPath);
