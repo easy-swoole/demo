@@ -12,8 +12,8 @@ namespace App\HttpController\Api;
 use App\Model\User\Bean;
 use App\Utility\SysConst;
 use EasySwoole\Core\Http\Message\Status;
+use EasySwoole\Core\Utility\Validate\Rule;
 use EasySwoole\Core\Utility\Validate\Rules;
-use EasySwoole\Core\Utility\Validate\Validate;
 use \App\Model\User\User as UserModel;
 
 class Common extends AbstractBase
@@ -24,10 +24,10 @@ class Common extends AbstractBase
     function register()
     {
         $rule = new Rules();
-        $rule->add('account','account字段错误')->withRule(Validate::REQUIRED);
-        $rule->add('password','password字段错误')->withRule(Validate::REQUIRED)
-            ->withRule(Validate::MIN_LEN,6)
-            ->withRule(Validate::MAX_LEN,16);
+        $rule->add('account','account字段错误')->withRule(Rule::REQUIRED);
+        $rule->add('password','password字段错误')->withRule(Rule::REQUIRED)
+            ->withRule(Rule::MIN_LEN,6)
+            ->withRule(Rule::MAX_LEN,16);
         $v = $this->validateParams($rule);
         if(!$v->hasError()){
             $bean = new Bean($v->getRuleData());
@@ -48,8 +48,8 @@ class Common extends AbstractBase
     function login()
     {
         $rule = new Rules();
-        $rule->add('account','account字段错误')->withRule(Validate::REQUIRED);
-        $rule->add('password','password字段错误')->withRule(Validate::REQUIRED);
+        $rule->add('account','account字段错误')->withRule(Rule::REQUIRED);
+        $rule->add('password','password字段错误')->withRule(Rule::REQUIRED);
         $v = $this->validateParams($rule);
         if(!$v->hasError()){
             $bean = new Bean($v->getRuleData());

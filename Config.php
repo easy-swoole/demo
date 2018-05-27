@@ -7,6 +7,7 @@
  */
 
 return [
+    'SERVER_NAME'=>"EasySwoole",
     'MAIN_SERVER'=>[
         'HOST'=>'0.0.0.0',
         'PORT'=>9501,
@@ -32,11 +33,11 @@ return [
         'token'=>null,
         'broadcastAddress'=>['255.255.255.255:9556'],
         'listenAddress'=>'0.0.0.0',
-        'listenPort'=>9556,
+        'listenPort'=>'9556',
         'broadcastTTL'=>5,
-        'serviceTTL'=>10,
-        'serverName'=>'easySwoole',
-        'serverId'=>null
+        'nodeTimeout'=>10,
+        'nodeName'=>'easySwoole',
+        'nodeId'=>null
     ],
     'MYSQL'=>[
         'HOST'=>'',

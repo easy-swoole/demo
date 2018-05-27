@@ -33,7 +33,7 @@ class Tcp implements ParserInterface
         return $bean;
     }
 
-    public static function encode(string $raw, $client, $commandBean): ?string
+    public static function encode(string $raw, $client): ?string
     {
         // TODO: Implement encode() method.
         return $raw."\n";

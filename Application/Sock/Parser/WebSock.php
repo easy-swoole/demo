@@ -27,7 +27,7 @@ class WebSock implements ParserInterface
         return $command;
     }
 
-    public static function encode(string $raw, $client, $commandBean): ?string
+    public static function encode(string $raw, $client): ?string
     {
         // TODO: Implement encode() method.
         /*

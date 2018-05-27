@@ -10,17 +10,13 @@ namespace App\Utility;
 
 
 use EasySwoole\Config;
-use EasySwoole\Core\Swoole\Coroutine\AbstractInterface\CoroutinePool;
+use EasySwoole\Core\Component\Pool\AbstractInterface\Pool;
+use EasySwoole\Core\Component\Trigger;
 use EasySwoole\Core\Swoole\Coroutine\Client\Mysql;
 
 
-class MysqlPool2 extends CoroutinePool
+class MysqlPool2 extends Pool
 {
-
-    function __construct($min, $max)
-    {
-        parent::__construct($min, $max);
-    }
 
     function getObj($timeOut = 0.1):?Mysql
     {
@@ -30,16 +26,21 @@ class MysqlPool2 extends CoroutinePool
     protected function createObject()
     {
         // TODO: Implement createObject() method.
-        $conf = Config::getInstance()->getConf('MYSQL');
-        $db = new Mysql([
-            'host' => $conf['HOST'],
-            'username' => $conf['USER'],
-            'password' => $conf['PASSWORD'],
-            'db' => $conf['DB_NAME']
-        ]);
-        if (isset($conf['names'])) {
-            $db->rawQuery('SET NAMES ' . $conf['names']);
+        try{
+            $conf = Config::getInstance()->getConf('MYSQL');
+            $db = new Mysql([
+                'host' => $conf['HOST'],
+                'username' => $conf['USER'],
+                'password' => $conf['PASSWORD'],
+                'db' => $conf['DB_NAME']
+            ]);
+            if (isset($conf['names'])) {
+                $db->rawQuery('SET NAMES ' . $conf['names']);
+            }
+            return $db;
+        }catch (\Throwable $throwable){
+            Trigger::throwable($throwable);
+            return null;
         }
-        return $db;
     }
 }
