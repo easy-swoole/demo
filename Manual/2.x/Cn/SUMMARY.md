@@ -77,4 +77,5 @@
     - [Mysql索引降维](Problem/mysqlIndexReduce.md)
 - [开源项目案例](example.md)
 - [版本升级细微差异](version.md)
+- [教学视频](teach.md)
 - [捐赠](donate.md)
