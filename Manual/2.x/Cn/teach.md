@@ -3,7 +3,9 @@
 
 ## 第一章节
 
-https://pan.baidu.com/s/155DeGN7U_t3ykP6D7bINgA
+百度: https://pan.baidu.com/s/155DeGN7U_t3ykP6D7bINgA
+
+B站:https://www.bilibili.com/video/av24084798/
 
 - 框架安装
 - HTTP控制器
