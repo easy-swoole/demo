@@ -121,6 +121,35 @@ php easyswoole start
 
 中途没有报错的话，框架就安装完成了，此时可以访问 `http://localhost:9501` 看到框架的欢迎页面，表示框架已经安装成功
 
+## 使用Docker镜像
+
+可以使用docker仓库的镜像 `encircles/easyswoole:latest`
+> 映射本地9501端口, 可以自行修改
+* `docker run -d -p 9501:9501 --name container-name encircles/easyswoole:latest`  
+
+
+
+
+如果docker仓库的镜像不能满足你的开发需求, 可以修改 Dockerfile 来自定义镜像
+
+在 composer.json 添加
+```
+"repositories": [
+    {
+        "type": "composer",
+        "url": "https://packagist.phpcomposer.com"
+    },
+    { "packagist": false }
+]
+```
+
+修改Dockerfile之后, 在当前目录下运行命令
+* `docker build -t yourImageName .`
+
+运行容器
+* `docker run -p 9501:9501 --name container-name yourImageName`
+
+> 如果运行失败, 可以通过 `docker logs containerName` 查看日志
 
 
 ## 关于IDE助手
