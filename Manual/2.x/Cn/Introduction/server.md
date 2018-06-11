@@ -90,18 +90,18 @@ do
    php easyswoole reload
 done
 ```
-使用方法： `./start.sh ./Application` 
+使用方法： `./start.sh ./App` 
 
-如果直接执行 `./start.sh` 会提示 `you have not choice Application directory`，因为我们需要指定监听路径，通常是`Application` 目录
+如果直接执行 `./start.sh` 会提示 `you have not choice App directory`，因为我们需要指定监听路径，通常是`App` 目录
 
 
-所以执行命令 `./start.sh ./Application` 监听的路径为相对路径或绝对路径，相对路径注意使用 `./` 开头，否则会监听成 `Mac OS` 里 `/Application` 目录。
+所以执行命令 `./start.sh ./App` 监听的路径为相对路径或绝对路径，相对路径注意使用 `./` 开头，否则会监听成 `Mac OS` 里 `/App` 目录。
 
 
 启动后脚本会自动启动 `easyswoole` 并进入守护模式，但注意进程还是会hang住，因为 `fswatch` 会不断监听文件变更，如果 `Ctrl+c` 关闭进程则仅关闭了文件监听，`easyswoole` 会依然再后台运行。此时可以手动停止服务或者再次运行热加载脚本。
  
  
-如果需要将热加载脚本也放入后台则使用命令 <code> nohup ./start.sh ./Application &</code> 即可(注意最后有个and符号)。  
+如果需要将热加载脚本也放入后台则使用命令 <code> nohup ./start.sh ./App &</code> 即可(注意最后有个and符号)。  
 
 ## Linux
 

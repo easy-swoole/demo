@@ -53,6 +53,24 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
 }
 ```
 
+服务获取客户端参数
+
+```php
+namespace App\RpcController\A;
+
+
+use EasySwoole\Core\Component\Rpc\AbstractInterface\AbstractRpcService;
+
+class G extends AbstractRpcService
+{
+    function index()
+    {
+        $args = $this->serviceCaller();
+        // TODO: 处理args......
+    }
+}
+```
+
 ## 客户端
 客户端测试代码
 ```php

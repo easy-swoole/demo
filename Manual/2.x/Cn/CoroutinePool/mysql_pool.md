@@ -29,7 +29,7 @@ demo中有封装好的mysql连接池，[MysqlPool2.php](https://github.com/easy-
 连接池不是跨进程的，也就是说一个进程有一个连接池，配置中的MAX为100，开了4个worker，最大连接数可能达到400。
 
 ### 使用
-需要先```use EasySwoole\Core\Swoole\Coroutine\PoolManager;```，可以通过
+需要先```use EasySwoole\Core\Component\Pool\PoolManager;```，可以通过
 ```php
 $pool = PoolManager::getInstance()->getPool('App\Utility\MysqlPool'); // 获取连接池对象
 $db = $pool->getObj();
