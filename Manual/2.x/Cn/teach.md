@@ -30,3 +30,9 @@ B站:https://www.bilibili.com/video/av24084798/
 
 ### Frame(EasySwoole3) 组件
 百度： https://pan.baidu.com/s/1k3E_RsNJcHZ6mMdPdj_tyw
+
+### 以上视频B站合集
+
+https://www.bilibili.com/video/av24609514
+
+> 因为度娘原因，无法在线播放，可以先下载到本地再播放。
