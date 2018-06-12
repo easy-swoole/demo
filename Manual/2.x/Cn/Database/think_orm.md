@@ -32,6 +32,12 @@ composer require topthink/think-orm
         'prefix'          => 'db_',
         // 是否需要断线重连
         'break_reconnect' => true,
+        //分页配置
+        'paginate'               => [
+            'type'      => 'bootstrap',
+            'var_page'  => 'page',
+            'list_rows' => 15,
+        ],
       ]
  ]
 ```
