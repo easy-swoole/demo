@@ -55,7 +55,7 @@ EasySwoole 是一款基于Swoole Server 开发的常驻内存型的分布式PHP�
 |  PHP   |    7.2     |    ----    |
 | Swoole |   1.9.21   |    ----    |
 
-基准测试在默认的 **Index** 控制器输出 'Hello World' 
+基准测试在默认的 **Index** 控制器输出 'Hello World'
 
 ```php
 <?php
@@ -146,7 +146,7 @@ Percentage of the requests served within a certain time (ms)
 
 - [捐赠](https://www.easyswoole.com/Manual/2.x/Cn/_book/donate.html)
     您的捐赠是对Swoole项目开发组最大的鼓励和支持。我们会坚持开发维护下去。 您的捐赠将被用于:
-        
+
   - 持续和深入地开发
   - 文档和社区的建设和维护
 

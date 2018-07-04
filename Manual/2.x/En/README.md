@@ -9,8 +9,8 @@
                           __/ |                                               
                          |___/                                                
 ```
-EasySwoole is a distributed, in-memory, distributed PHP framework based on Swoole Extension. It was created specifically for APIs to get rid of the performance penalties associated with process arousal and file loading. 
-EasySwoole highly encapsulates the Swoole Server and still maintains the original features of the Swoole Server, supports simultaneous monitoring of HTTP, custom TCP, and UDP protocols, allowing developers to write multi-process, asynchronous, and highly available applications with minimal learning cost and effort。
+EasySwoole is a distributed, persistent memory PHP framework based on the Swoole extension. It was created specifically for APIs to get rid of the performance penalties associated with process calls and file loading.
+EasySwoole highly encapsulates the Swoole Server and still maintains the original features of the Swoole server, supports simultaneous monitoring of HTTP, custom TCP, and UDP protocols, allowing developers to write multi-process, asynchronous, and highly available applications with minimal learning cost and effort.
 
 ## Common functions and components
 - HTTP Controllers and Custom Routes
@@ -96,4 +96,4 @@ Percentage of the requests served within a certain time (ms)
   99%     12
  100%     67 (longest request)
 ```
-> base on one core and 1G Ram 
+> base on one core and 1G Ram
