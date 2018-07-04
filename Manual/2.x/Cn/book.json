@@ -28,7 +28,8 @@
         "expand-active-chapter",
         "expandable-chapters-interactive",
         "versions-select",
-        "theme-comscore"
+        "theme-comscore",
+        "footer"
     ],
     "pluginsConfig": {
         "edit-link": {
@@ -55,6 +56,9 @@
             "css": [
                 "prism-themes/themes/prism-vs.css"
             ]
+        },
+        "layout": {
+            "footerPath": "styles/footer.html"
         }
     }
 }
