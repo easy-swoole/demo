@@ -44,28 +44,3 @@ array(
 ## 获取配置项
 运行中要获取/设置配置项请使用 Config::getInstance()->getConf() 和 Config::getInstance()->setConf()。getConf 和 setConf 都支持 . 操作，例如要获取到 PORT 的值，可以使用 Config::getInstance()->getConf('SERVER.PORT') 来获取。
 > 注意在服务启动后，setConf()仅仅对当前进程有效。
-
-<script>
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-</script> 
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-  

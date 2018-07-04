@@ -41,28 +41,3 @@ easySwoole 不依赖 Apache/Nginx, 自带 HttpServer 功能，进入项目根目
 在启动 easySwoole 的时候也可以指定一些配置参数。例如通过执行 php server help --start 可以查看启动参数和具体的参数含义。
 
 > 这里注意一点，easySwoole 属于常驻内存的应用，当修改代码之后要重启 easySwoole 代码才能生效。
-
-<script>
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-</script> 
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-  
