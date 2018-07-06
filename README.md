@@ -1,8 +1,16 @@
-# demo
-克隆该项目后，请先执行
-- composer install
-- 安装easySwoole（安装easyswoole教程请看文档）
+# 如何运行演示项目
 
+```bash
+# 克隆项目到本地
+git clone https://github.com/easy-swoole/demo.git demo
+# 安装依赖
+cd demo && composer install
+# 安装框架 (详细请查看教程)
+# 提示是否覆盖文件时请选择否 不要覆盖demo自带的Event和Config
+php vendor/bin/easyswoole install
+# 启动项目
+php easyswoole start
+```
 ## 使用前准备
 若测试数据库部分，请确保数修改好数据库配置，并存在以下表
 ```
@@ -41,6 +49,6 @@ CREATE TABLE `user_list` (
 
 - [捐赠](https://www.easyswoole.com/Manual/2.x/Cn/_book/donate.html)
     您的捐赠是对Swoole项目开发组最大的鼓励和支持。我们会坚持开发维护下去。 您的捐赠将被用于:
-        
+    
   - 持续和深入地开发
   - 文档和社区的建设和维护
