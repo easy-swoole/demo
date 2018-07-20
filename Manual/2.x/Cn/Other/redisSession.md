@@ -1,6 +1,6 @@
 # 自定义ReidsHandler实现用Redis管理Session
 
-> 实现RedisHanler的重点是实现 SessionHandlerInterface,重写接口方法即可。熟悉代码还可以在此基础上扩展。
+> 实现RedisHanler的重点是实现 SessionHandlerInterface,重写接口方法即可。熟悉代码还可以在此基础上扩展,记得处理好命名空间。
 
 ## 代码实现如下
 
