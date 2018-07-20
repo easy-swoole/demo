@@ -104,11 +104,11 @@ class RedisSession implements \SessionHandlerInterface
 
 }
 ```
-## 然后在根目录的EasySwooleEevent.php文件 mainServerCreate 方法中注入该Handler，即可在代码中调用Session时，自动使用redis来存储seesion
+> 然后在根目录的EasySwooleEevent.php文件 mainServerCreate 方法中注入该Handler，即可在代码中调用Session时，自动使用redis来存储seesion
 
 ```
-        //注入Session Redis 处理Handler
-        Di::getInstance()->set(SysConst::HTTP_SESSION_HANDLER,RedisSession::class);
-        //注入Session Redis 过期时间
-        Di::getInstance()->set(SysConst::HTTP_SESSION_GC_MAX_LIFE_TIME,3600);
+    //注入Session Redis 处理Handler
+    Di::getInstance()->set(SysConst::HTTP_SESSION_HANDLER,RedisSession::class);
+    //注入Session Redis 过期时间
+    Di::getInstance()->set(SysConst::HTTP_SESSION_GC_MAX_LIFE_TIME,3600);
 ```
