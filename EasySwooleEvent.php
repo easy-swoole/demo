@@ -11,6 +11,8 @@ namespace EasySwoole\EasySwoole;
 
 use App\Rpc\RpcTwo;
 use App\Rpc\ServiceOne;
+use App\Utility\Pool\MysqlPool;
+use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
@@ -24,13 +26,18 @@ class EasySwooleEvent implements Event
     public static function initialize()
     {
         // TODO: Implement initialize() method.
+        /*
+           * ***************** 协程数据库连接池 ********************
+         */
+
+        PoolManager::getInstance()->register(MysqlPool::class);
     }
 
     public static function mainServerCreate(EventRegister $register)
     {
         /*
           * ***************** RPC ********************
-          */
+        */
         $conf = new \EasySwoole\Rpc\Config();
         $conf->setSubServerMode(true);//设置为子务模式
         /*

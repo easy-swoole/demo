@@ -21,7 +21,8 @@ class ServiceOne extends AbstractService
     function funcOne()
     {
         $arg = $this->getCaller()->getArgs();
-        Logger::getInstance()->log('client arg is '.json_encode($arg));
+//        Logger::getInstance()->log('client arg is '.json_encode($arg));
+        $this->getResponse()->setMessage('call at '.time());
     }
 
     function task(){

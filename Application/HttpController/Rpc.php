@@ -14,30 +14,34 @@ use EasySwoole\Trigger\Logger;
 
 class Rpc extends Base
 {
+    /*
+     * 具体使用看https://github.com/easy-swoole/rpc/
+     */
     function index()
     {
+        $msg = null;
         $t = microtime(true);
         $client = \EasySwoole\Rpc\Rpc::getInstance()->client();
         $client->addCall('serviceOne','funcOne')
-            ->success(function (Response $response){
-                Logger::getInstance()->console($response->__toString());
+            ->success(function (Response $response)use(&$msg){
+                $msg = $response->getMessage();
             })
             ->fail(function (Response $response){
                 Logger::getInstance()->console($response->__toString());
             });
 
-        $client->addCall('serviceOne','task')
-            ->success(function (Response $response){
-                Logger::getInstance()->console($response->__toString());
-            })
-            ->fail(function (Response $response){
-                Logger::getInstance()->console($response->__toString());
-            });
+//        $client->addCall('serviceOne','task')
+//            ->success(function (Response $response){
+//                Logger::getInstance()->console($response->__toString());
+//            })
+//            ->fail(function (Response $response){
+//                Logger::getInstance()->console($response->__toString());
+//            });
 
         $client->exec(0.5);
 
         $t = round(microtime(true) - $t,3);
-        $this->response()->write("rpc take {$t} s");
+        $this->response()->write("rpc take {$t} s and mgs is {$msg}");
     }
 
     function allNodes()
