@@ -9,6 +9,7 @@
 namespace App\HttpController;
 
 
+use App\Test;
 use App\Utility\Pool\MysqlPool;
 use App\Utility\Pool\MysqlPoolObj;
 use EasySwoole\Component\Pool\PoolManager;
@@ -34,5 +35,10 @@ class Index extends Base
             }
         }
 
+    }
+
+    function test2()
+    {
+        $test = new Test();
     }
 }

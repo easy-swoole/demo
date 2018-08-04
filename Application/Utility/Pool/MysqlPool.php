@@ -10,7 +10,6 @@ namespace App\Utility\Pool;
 
 use EasySwoole\Component\Pool\AbstractPool;
 use EasySwoole\Mysqli\Config;
-use EasySwoole\Mysqli\Mysqli;
 
 class MysqlPool extends AbstractPool
 {
@@ -19,12 +18,7 @@ class MysqlPool extends AbstractPool
     {
         // TODO: Implement createObject() method.
         //这里的配置，请从Config读取
-        $conf = new Config([
-            'host'=>'',
-            'user'=>'root',
-            'password'=>'',
-            'database'=>'test'
-        ]);
+        $conf = new Config(\EasySwoole\EasySwoole\Config::getInstance()->getConf('MYSQL'));
 
         $db = new MysqlPoolObj($conf);
         return $db;

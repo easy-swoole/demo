@@ -16,4 +16,10 @@ return [
     ],
     'TEMP_DIR'=>null,//若不配置，则默认框架初始化
     'LOG_DIR'=>null,//若不配置，则默认框架初始化
+    'MYSQL'=>[
+        'host'=>'',
+        'user'=>'root',
+        'password'=>'',
+        'database'=>'test'
+    ]
 ];
