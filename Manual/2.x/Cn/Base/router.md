@@ -2,7 +2,7 @@
 
 easySwoole支持路由拦截。其路由利用[fastRoute](https://github.com/nikic/FastRoute)实现，因此其路由规则与其保持一致，该组件的详细文档请参考 [GitHub文档](https://github.com/nikic/FastRoute/blob/master/README.md)
 ## 使用指导
-若需要在asySwoole使用自定义路由拦截功能，请在应用目录的Http控制器目录下（默认为HttpController）下，建立Router类，
+若需要在EasySwoole使用自定义路由拦截功能，请在应用目录的Http控制器目录下（默认为HttpController）下，建立Router类，
 井继承\EasySwoole\Core\Http\AbstractInterface\Router实现register方法，如果在类UNIX系统下请严格注意文件名的大小写，如果获取不到该类则会跳过路由检测，进行框架内置的URL解析。
 
 
