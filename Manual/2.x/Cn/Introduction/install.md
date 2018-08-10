@@ -2,8 +2,7 @@
 
 框架使用 `Composer` 作为依赖管理工具，在开始安装框架前，请确保已经按上一章节的要求配置好环境并安装好了`Composer` 工具，在安装过程中，会释放框架的文件到项目目录，请保证项目目录有可写入权限
 
-> 关于 Composer 的安装可以参照 [Composer中国全量镜像](https://pkg.phpcomposer.com/#how-to-install-composer) 的安装教程
-
+> 关于 Composer 的安装可以参照 [Composer中国全量镜像](https://laravel-china.org/topics/4484/composer-mirror-use-help) 的安装教程
 
 
 ## 快速安装
@@ -164,7 +163,7 @@ composer require easyswoole/swoole-ide-helper
 
 ## 常见问题
 
-###安装后第一次启动 报错协程 ID 只能为 int 或 null 
+###安装后第一次启动 报错协程 ID 只能为 int 或 null
 
 请确保 `swoole` 拓展版本大于 1.9.23 或者是大于 2.1.0，并且使用了easyswoole仓库提供的IDE助手
 
