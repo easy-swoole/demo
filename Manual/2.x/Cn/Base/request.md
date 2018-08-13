@@ -15,10 +15,7 @@ var_dump($data);
 $orderId = $request->getRequestParam('orderId');
 var_dump($orderId);
 
-$keys = array(
-"orderId","type"
-);
-$mixData = $request->getRequestParam($keys);
+$mixData = $request->getRequestParam("orderId","type");
 var_dump($mixData);
 ```
 ### getSwooleRequest()

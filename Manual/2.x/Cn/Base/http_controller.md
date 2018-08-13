@@ -106,7 +106,7 @@ http://localhost:9501/
 
 - actionNotFound($action)
 
-  当在URL中解析出actionName，而在控制器中无存在对应方法（函数）时，则执行该方法。例如有一个Test控制器，当访问domain/test/test1/index.html路径时，actionName会被解析为test1，而此时若控制器中无test1方法时，则执行actionNotFount
+  当在URL中解析出actionName，而在控制器中无存在对应方法（函数）时，则执行该方法。例如有一个Test控制器，当访问domain/test/test1/index.html路径时，actionName会被解析为test1，而此时若控制器中无test1方法时，则执行actionNotFound
 
 - onRequest($action)
 

@@ -42,7 +42,7 @@ WebSocket模式下，Client和Server之间不再是新的请求，而是一条�
 
 ```json
 {
-    "controller": "Test",
+    "class": "Test",
     "action": "index",
     "data": {
         "parameter_one": "数据one",
@@ -59,45 +59,49 @@ _示例代码_
 
 ```php
 <?php
-namespace App\Socket\Parser;
-
+namespace App\WebSocket;
 use EasySwoole\Core\Socket\AbstractInterface\ParserInterface;
 use EasySwoole\Core\Socket\Common\CommandBean;
 
-use App\Socket\Controller\WebSocket\Index;
-
-class WebSocket implements ParserInterface
+class Parser implements ParserInterface
 {
 
     public static function decode($raw, $client)
     {
-        //检查数据是否为JSON
-        $commandLine = json_decode($raw, true);
-        if (!is_array($commandLine)) {
-            return 'unknown command';
-        }
-
+        // TODO: Implement decode() method.
         $CommandBean = new CommandBean();
-        $control = isset($commandLine['controller']) ? 'App\\Socket\\Controller\\WebSocket\\'. ucfirst($commandLine['controller']) : '';
+        //这里的$raw是请求服务器的信息，你可以自行设计，这里使用了JSON字符串的形式。
+        $commandLine = json_decode($raw, true);
+        //这里会获取JSON数据中class键对应的值，并且设置一些默认值
+        //当用户传递class键的时候，会去App/WebSocket命名空间下寻找类
+        $control = isset($commandLine['class']) ? 'App\\WebSocket\\Controller\\'. ucfirst($commandLine['class']) : '';
         $action = $commandLine['action'] ?? 'none';
         $data = $commandLine['data'] ?? null;
-        //找不到类时访问默认Index类
-        $CommandBean->setControllerClass(class_exists($control) ? $control : Index::class);
+        //先检查这个类是否存在，如果不存在则使用Index默认类
+        $CommandBean->setControllerClass(class_exists($control) ? $control : App\Websocket\Controller\Index::class);
+        //检查传递的action键是否存在，如果不存在则访问默认方法
         $CommandBean->setAction(class_exists($control) ? $action : 'controllerNotFound');
         $CommandBean->setArg('data', $data);
-
         return $CommandBean;
+
     }
 
-    public static function encode(string $raw, $client, $commandBean): ?string
+    public static function encode(string $raw, $client): ?string
     {
         // TODO: Implement encode() method.
+        /*
+         * 注意，return ''与return null不一样，空字符串一样会回复给客户端，比如在服务端主动心跳测试的场景
+         */
+        if(strlen($raw) == 0){
+            return null;
+        }
         return $raw;
     }
 }
+}
 ```
 
-在上面的decode方法中，我们将一条JSON信息解析成调用 `'App\\Socket\\Controller\\WebSocket\\'` 命名空间下的控制器和方法，就像我们使用传统FPM模式那样。
+在上面的decode方法中，我们将一条JSON信息解析成调用 `'App\\WebSocket\\Controller\\'` 命名空间下的控制器和方法，就像我们使用传统FPM模式那样。
 
 ## 注册WebSocket解析器
 
@@ -110,14 +114,14 @@ class WebSocket implements ParserInterface
 // 引入EventHelper
 use \EasySwoole\Core\Swoole\EventHelper;
 // 注意这里是指额外引入我们上文实现的解析器
-use \App\Socket\Parser\WebSocket;
+use \App\WebSocket\Parser as WebSocketParser;
 
 //...省略
 public static function mainServerCreate(ServerManager $server,EventRegister $register): void
 {
     // 注意一个事件方法中可以注册多个服务，这里只是注册WebSocket解析器
-    // 注册WebSocket解析器
-    EventHelper::registerDefaultOnMessage($register, WebSocket::class);
+    // // 注册WebSocket处理
+    EventHelper::registerDefaultOnMessage($register, WebSocketParser::class);
 }
 ```
 
@@ -125,7 +129,7 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
 
 ```php
 <?php
-namespace App\Socket\Controller\WebSocket;
+namespace App\WebSocket\Controller;
 
 use EasySwoole\Core\Socket\AbstractInterface\WebSocketController;
 
@@ -159,7 +163,7 @@ class Test extends WebSocketController
 
 -   如果能正常连接服务器，说明Server已经启动
 -   如果发送 `空` 字符串消息返回 `unknown command` 说明解析器已经工作
--   如果发送 `{"controller": "Test","action": "index"}` 返回 `you fd is 1` 则说明Server正常工作
+-   如果发送 `{"class": "Test","action": "index"}` 返回 `you fd is 1` 则说明Server正常工作
 
 **到此为止WebSocket Server已经可以完成基本的工作，接下来是在easySwoole中使用Redis。**
 
@@ -168,6 +172,7 @@ class Test extends WebSocketController
 ## 建立Redis连接
 
 _easySwoole中提供了Redis连接池，但是本示例不使用此方案，有能力的请自行选择。_
+_基于Redis连接池的示例将写在后文，但不推荐无经验的用户使用。_
 
 php Redis连接示例
 
@@ -250,7 +255,7 @@ use \EasySwoole\Core\Swoole\EventHelper;
 // 引入Di
 use \EasySwoole\Core\Component\Di;
 // 注意这里是指额外引入我们上文实现的解析器
-use \App\Socket\Parser\WebSocket;
+use \App\WebSocket\Parser as WebSocketParser;
 // 引入上文Redis连接
 use \App\Utility\Redis;
 
@@ -265,18 +270,18 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
 }
 ```
 
-## 创建Room.php并使用Redis
+## 创建Im.php并使用Redis
 
-现在我们新建Room.php文件作为我们的房间逻辑实现文件，第一步是连接Redis并测试。
+现在我们新建Im.php文件作为我们的房间逻辑实现文件，第一步是连接Redis并测试。
 
 ```php
 <?php
-namespace App\Socket\Logic;
+namespace App\WebSocket\Logic;
 
 use EasySwoole\Core\Component\Di;
 
 
-class Room
+class Im
 {
     public static function getRedis()
     {
@@ -299,19 +304,19 @@ class Room
 
 ```php
 <?php
-namespace App\Socket\Controller\WebSocket;
+namespace App\WebSocket\Controller;
 
 use EasySwoole\Core\Socket\AbstractInterface\WebSocketController;
 
-use App\Socket\Logic\Room;
+use App\WebSocket\Logic\Im;
 
 class Test extends WebSocketController
 {
     public function index()
     {
-        $this->response()->write(Room::testSet());
+        $this->response()->write(Im::testSet());
         $this->response()->write("\n");
-        $this->response()->write(Room::testGet());
+        $this->response()->write(Im::testGet());
     }
 }
 ```
@@ -319,7 +324,7 @@ class Test extends WebSocketController
 现在可以启动Server了，如果没有任何错误，请使用<a href="http://evalor.cn/websocket.html">WEBSOCKET CLIENT
 </a>测试以下内容。  
 
--   如果发送`{"controller": "Test","action": "index"}`返回 `1 这是一个测试` ，则说明Redis连接正常。
+-   如果发送`{"class": "Test","action": "index"}`返回 `1 这是一个测试` ，则说明Redis连接正常。
 
 _至此已经完成了Redis的基本使用，以下为业务部分_
 
@@ -339,52 +344,32 @@ _实际上聊天室就是对 `fd` `userId` `roomId` 的管理_
 
 私聊实际上是指fd和uid的关系，即通过uid查询fd，发送消息。
 
-使用Redis sorted set(有序集合)来管理 `fd` 和 `userId`之间的关系。
-
-| key    | socre  | member |
-| :----- | :----- | :----- |
-| online | userId | fd     |
-
 ### 全服务器广播
 
-全服务器广播实际上是给全部fd连接发送消息，可以使用上面的online有序集合遍历发送，也可以直接遍历server->connections中的fd发送(推荐)
+全服务器广播实际上是给全部fd连接发送消息。
 
 ### 房间消息
 
 房间消息其实是指发送信息到具体房间中的一个概念，房间只是fd的一种组织(管理)形式，在房间这个概念中，实际上并不需要uid这个概念，因为你在公会频道收不到队伍消息嘛。
 
-我们只需要映射好room_id和fd的关系即可实现房间消息功能，这里我们选择Redis Hash(哈希)数据结构来维护此关系。
-
-| key    | field  | value  |
-| :----- | :----- | :----- |
-| roomId | fd     | userId |
-
-Hash允许你通过key只查询field列或者只查询value列，这样你就可以实现查询用户是否在房间(用于业务层面的检查)和房间内全部fd；随后通过迭代(遍历)，来发送信息。
-
 ### 回收fd
 
 由于用户断线时，我们只能获取到fd，并不能获取到roomId和userId，所以我们必须设计一套回收机制，保证Redis中的映射关系不错误；防止信息发送给错误的fd。
-
-在上面我们其实已经建立了userId => fd 的映射关系，双向都能够找到找到对应彼此的值，唯独缺少了 roomId => fd的关系映射，在这里我们通过再建立一组关系映射，来保障fd => roomId的映射关系，由于fd是不重复的，roomId是重复的，故可以直接使用 `有序集合` 来管理。
-
-| key    | socre  | member |
-| :----- | :----- | :----- |
-| rfMap  | roomId | fd     |
 
 ## 代码实现
 
 **注意：以下代码均是基本逻辑，业务使用需要根据自己业务场景丰富**
 
-### Room基本逻辑
+### Im基本逻辑
 
 ```php
 <?php
-namespace App\Socket\Logic;
+namespace App\WebSocket\Logic;
 
 use EasySwoole\Core\Component\Di;
 
 
-class Room
+class Im
 {
     /**
      * 获取Redis连接实例
@@ -396,91 +381,261 @@ class Room
     }
 
     /**
-     * 进入房间
-     * @param  int    $roomId 房间id
-     * @param  int    $userId userId
-     * @param  int    $fd     连接id
-     * @return
+     * 设置User => Fd 映射
+     * @param int $userId userId
+     * @param int $fd     fd
+     * @return void
      */
-    public static function joinRoom(int $roomId, int $fd)
+    protected static function setUserFdMap(int $userId, int $fd)
     {
-        $userId = self::getUserId($fd);
-        self::getRedis()->zAdd('rfMap', $roomId, $fd);
+        $fdList = self::findFdListToUserId($userId);
+        // 检查此user 是否已经存在fd
+        if (is_null($fdList)) {
+            $fdList = [];
+        }
+        array_push($fdList, $fd);
+        self::setUserFdList($userId, $fdList);
+    }
+
+    /**
+     * 设置User Fd list
+     * @param int   $userId userId
+     * @param array $fdList fd List
+     */
+    protected static function setUserFdList(int $userId, array $fdList)
+    {
+        self::getRedis()->hSet('userIdFdMap', $userId, json_encode($fdList));
+    }
+
+    /**
+     * 通过userId 查询 fd list
+     * @param  int    $userId userId
+     * @return array|null    此userId 的fdList
+     */
+    protected static function findFdListToUserId(int $userId)
+    {
+        return json_decode(self::getRedis()->hGet('userIdFdMap', $userId), true);
+    }
+
+    /**
+     * 通过Fd 删除UserId => Fd Map
+     * @param  int    $fd fd
+     * @return void
+     */
+    protected static function deleteUserIdFdMapByFd(int $fd)
+    {
+        $userId = self::findUserIdByFd($fd);
+        $fdList = self::findFdListToUserId($userId);
+        foreach ($fdList as $number => $valFd) {
+            if ($valFd == $fd) {
+                unset($fdList[$number]);
+            }
+        }
+        self::setUserFdList($userId, $fdList);
+    }
+
+    /**
+     * 设置Fd => userId 映射
+     * @param int $userId userId
+     * @param int $fd     fd
+     * @return void
+     */
+    protected static function setFdUserMap(int $userId, int $fd)
+    {
+        self::getRedis()->hSet('fdUserIdMap', $fd, $userId);
+    }
+
+    /**
+     * 通过Fd 删除 Fd => UserId Map
+     * @param  int    $fd fd
+     * @return void
+     */
+    protected static function deleteFdUserIdMapByFd(int $fd)
+    {
+        self::getRedis()->hDel('fdUserIdMap', $fd);
+    }
+
+    /**
+     * 通过fd 查询 userId
+     * @param  int    $fd fd
+     * @return int     userId
+     */
+    protected static function findUserIdByFd(int $fd)
+    {
+        return (int)self::getRedis()->hGet('fdUserIdMap', $fd);
+    }
+
+    /**
+     * 将fd 推入 room list
+     * @param int $roomId roomId
+     * @param int $fd     fd
+     * @param int $userId userId
+     */
+    protected static function roomPush(int $roomId, int $fd, int $userId)
+    {
         self::getRedis()->hSet("room:{$roomId}", $fd, $userId);
     }
 
     /**
-     * 登录
-     * @param  int    $userId 用户id
-     * @param  int    $fd     连接id
-     * @return bool
+     * 获取Room 中全部 fd list
+     * @param  int $roomId roomId
+     * @return array|null         fd list
      */
-    public static function login(int $userId, int $fd)
-    {
-        self::getRedis()->zAdd('online', $userId, $fd);
-    }
-
-    /**
-     * 获取用户id
-     * @param  int    $fd
-     * @return int    userId
-     */
-    public static function getUserId(int $fd)
-    {
-        return self::getRedis()->zScore('online', $fd);
-    }
-
-    /**
-     * 获取用户fd
-     * @param  int    $userId
-     * @return array         用户fd集
-     */
-    public static function getUserFd(int $userId)
-    {
-        return self::getRedis()->zRange('online', $userId, $userId, true);
-    }
-
-    /**
-     * 获取RoomId
-     * @param  int    $fd
-     * @return int    RoomId
-     */
-    public static function getRoomId(int $fd)
-    {
-        return self::getRedis()->zScore('rfMap', $fd);
-    }
-
-    /**
-     * 获取room中全部fd
-     * @param  int    $roomId roomId
-     * @return array         房间中fd
-     */
-    public static function selectRoomFd(int $roomId)
+    protected static function getRoomFdList(int $roomId)
     {
         return self::getRedis()->hKeys("room:{$roomId}");
     }
 
     /**
-     * 退出room
+     * 获取Room 中的全 userId list
      * @param  int    $roomId roomId
-     * @param  int    $fd     fd
-     * @return
+     * @return array|null         userId list
      */
-     public static function exitRoom(int $roomId, int $fd)
-     {
-         self::getRedis()->hDel("room:{$roomId}", $fd);
-         self::getRedis()->zRem('rfMap', $fd);
-     }
+    protected static function getRoomUserIdList(int $roomId)
+    {
+        return self::getRedis()->hVals("room:{$roomId}");
+    }
 
     /**
-     * 关闭连接
-     * @param  string $fd 链接id
+     * 删除Room中的Fd
+     * @param  int    $fd fd
+     * @return void
      */
-    public static function close(int $fd)
+    protected static function deleteRoomFd(int $roomId, int $fd)
     {
-        $roomId = self::getRoomId($fd);
-        self::exitRoom($roomId, $fd);
-        self::getRedis()->zRem('online', $fd);
+        self::getRedis()->hDel("room:{$roomId}", $fd);
+    }
+
+    /**
+     * 设置 Fd => RoomId 映射
+     * @param int $fd     fd
+     * @param int $userId userId
+     */
+    protected static function setFdRoomIdMap(int $fd, int $roomId)
+    {
+        self::getRedis()->hSet('roomIdFdMap', $fd, $roomId);
+    }
+
+    /**
+     * 删除fd 在 RoomId => fd 映射
+     * @param  int    $fd fd
+     * @return void
+     */
+    protected static function deleteRoomIdMapByFd(int $fd)
+    {
+        self::getRedis()->hDel('roomIdFdMap', $fd);
+    }
+
+    /**
+     * 通过Fd 查询 RoomId
+     * @param  int    $fd fd
+     * @return int     RoomdId
+     */
+    protected static function findRoomIdToFd(int $fd)
+    {
+        return (int)self::getRedis()->hGet('roomIdFdMap', $fd);
+    }
+
+    /**
+     * 绑定User和fd的关系
+     * @param  int    $userId userId
+     * @param  int    $fd     fd
+     * @return void
+     */
+    public static function bindUser(int $userId, int $fd)
+    {
+        self::setFdUserMap($userId, $fd);
+        self::setUserFdMap($userId, $fd);
+    }
+
+    /**
+     * 进入房间
+     * @param  int    $roomId roomId
+     * @param  int    $fd     fd
+     * @return void
+     */
+    public static function joinRoom(int $roomId, int $fd, int $userId)
+    {
+        self::roomPush($roomId, $fd, $userId);
+        self::setFdRoomIdMap($fd, $roomId);
+    }
+
+    /**
+     * 获取UserId
+     * @param  int    $fd fd
+     * @return int  userId
+     */
+    public static function getUserId(int $fd)
+    {
+        return self::findUserIdByFd($fd);
+    }
+
+    /**
+     * 获取User的Fd
+     * @param  int    $userId userId
+     * @return array         fdList
+     */
+    public static function getUserFd(int $userId)
+    {
+        return self::findFdListToUserId($userId);
+    }
+
+    /**
+     * 获取RoomId
+     * @param  int    $fd fd
+     * @return int     roomId
+     */
+    public static function getRoomId(int $fd)
+    {
+        return self::findRoomIdToFd($fd);
+    }
+
+    /**
+     * 查询房间内的全部fd
+     * @param  int    $roomId roomId
+     * @return array|null         fd列表
+     */
+    public static function selectRoomFd(int $roomId)
+    {
+        return self::getRoomFdList($roomId);
+    }
+
+    /**
+     * 查询房间内的全部userId
+     * @param  int    $roomId roomId
+     * @return array|null $
+     */
+    public static function selectRoomUserId(int $roomId)
+    {
+        return self::getRoomUserIdList($roomId);
+    }
+
+    /**
+     * 退出房间
+     * @param  int    $roomId roomId
+     * @param  int    $fd      fd
+     * @return void
+     */
+    public static function exitRoom(int $roomId, int $fd)
+    {
+        self::deleteRoomIdMapByFd($fd);
+        self::deleteRoomFd($roomId, $fd);
+    }
+
+    /**
+     * 回收fd
+     * 解除fd的全部关联关系
+     * @param  int    $fd fd
+     * @return void
+     */
+    public static function recyclingFd(int $fd)
+    {
+        // 解除UserId => Fd 关系
+        self::deleteUserIdFdMapByFd($fd);
+        // 解除Fd => UserId 关系
+        self::deleteFdUserIdMapByFd($fd);
+        // 解除RoomId => Fd 关系
+        self::exitRoom(self::getRoomId($fd), $fd);
     }
 }
 
@@ -490,13 +645,13 @@ class Room
 
 ```php
 <?php
-namespace App\Socket\Controller\WebSocket;
+namespace App\WebSocket\Controller;
 
 use EasySwoole\Core\Socket\AbstractInterface\WebSocketController;
 use EasySwoole\Core\Swoole\ServerManager;
 use EasySwoole\Core\Swoole\Task\TaskManager;
 
-use App\Socket\Logic\Room;
+use App\WebSocket\Logic\Im;
 
 class Test extends WebSocketController
 {
@@ -522,12 +677,12 @@ class Test extends WebSocketController
     {
         // TODO: 业务逻辑自行实现
         $param = $this->request()->getArg('data');
-        $userId = $param['userId'];
-        $roomId = $param['roomId'];
+        $userId = (int)$param['userId'];
+        $roomId = (int)$param['roomId'];
 
         $fd = $this->client()->getFd();
-        Room::login($userId, $fd);
-        Room::joinRoom($roomId, $fd);
+        Im::bindUser($userId, $fd);
+        Im::joinRoom($roomId, $fd, $userId);
         $this->response()->write("加入{$roomId}房间");
     }
 
@@ -539,13 +694,15 @@ class Test extends WebSocketController
         // TODO: 业务逻辑自行实现
         $param = $this->request()->getArg('data');
         $message = $param['message'];
-        $roomId = $param['roomId'];
+        $roomId = (int)$param['roomId'];
 
+        // 注：单例Redis 可以将获取$list操作放在TaskManager中执行
+        // 连接池的Redis 则不可以, 因为默认Task进程没有RedisPool对象。
+        $list = Im::selectRoomFd($roomId);
         //异步推送
-        TaskManager::async(function ()use($roomId, $message){
-            $list = Room::selectRoomFd($roomId);
+        TaskManager::async(function ()use($list, $roomId, $message){
             foreach ($list as $fd) {
-                ServerManager::getInstance()->getServer()->push($fd, $message);
+                ServerManager::getInstance()->getServer()->push((int)$fd, $message);
             }
         });
     }
@@ -558,11 +715,13 @@ class Test extends WebSocketController
         // TODO: 业务逻辑自行实现
         $param = $this->request()->getArg('data');
         $message = $param['message'];
-        $userId = $param['userId'];
+        $userId = (int)$param['userId'];
 
-        //异步推送
-        TaskManager::async(function ()use($userId, $message){
-            $fdList = Room::getUserFd($userId);
+        // 注：单例Redis 可以将获取$list操作放在TaskManager中执行
+        // 连接池的Redis 则不可以, 因为默认Task进程没有RedisPool对象。
+        $fdList = Im::getUserFd($userId);
+        // 异步推送
+        TaskManager::async(function ()use($fdList, $userId, $message){
             foreach ($fdList as $fd) {
                 ServerManager::getInstance()->getServer()->push($fd, $message);
             }
@@ -579,11 +738,11 @@ use \EasySwoole\Core\Swoole\EventHelper;
 // 引入Di
 use \EasySwoole\Core\Component\Di;
 // 注意这里是指额外引入我们上文实现的解析器
-use \App\Socket\Parser\WebSocket;
+use \App\WebSocket\Parser as WebSocketParser;
 // 引入上文Redis连接
 use \App\Utility\Redis;
 // 引入上文Room文件
-use \App\Socket\Logic\Room;
+use \App\WebSocket\Logic\Im;
 
 // ...省略
 public static function mainServerCreate(ServerManager $server,EventRegister $register): void
@@ -593,7 +752,7 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
     //注册onClose事件
     $register->add($register::onClose, function (\swoole_server $server, $fd, $reactorId) {
         //清除Redis fd的全部关联
-        Room::close($fd);
+        Im::recyclingFd($fd);
     });
     // 注册Redis
     Di::getInstance()->set('REDIS', new Redis(Config::getInstance()->getConf('REDIS')));
@@ -604,12 +763,12 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
 </a>测试以下内容。
 
 - 用多个浏览器标签打开WEBSOCKET CLIENT页面
-- 第一个标签开启连接时发送{"controller": "Test","action": "intoRoom","data":{"userId":"1","roomId":"1000"}}
-- 第二个标签开启连接时发送{"controller": "Test","action": "intoRoom","data":{"userId":"2","roomId":"1000"}}
-- 发送{"controller": "Test","action": "sendToRoom","data":{"roomId":"1000","message":"发送房间消息"}}，此时多个标签连接都会收到该消息
-- 第二个标签发送 {"controller": "Test","action": "sendToUser","data":{"userId":"1","message":"发送私聊消息"}}，此时第一个标签连接会收到消息
+- 第一个标签开启连接时发送{"class": "Test","action": "intoRoom","data":{"userId":"1","roomId":"1000"}}
+- 第二个标签开启连接时发送{"class": "Test","action": "intoRoom","data":{"userId":"2","roomId":"1000"}}
+- 发送{"class": "Test","action": "sendToRoom","data":{"roomId":"1000","message":"发送房间消息"}}，此时多个标签连接都会收到该消息
+- 第二个标签发送 {"class": "Test","action": "sendToUser","data":{"userId":"1","message":"发送私聊消息"}}，此时第一个标签连接会收到消息
 
-_至此已经完成了Room的基本逻辑，下面将介绍如何实现js消息处理_
+_至此已经完成了Im的基本逻辑，下面将介绍如何实现js消息处理_
 
 ## js消息处理
 
@@ -619,7 +778,7 @@ _至此已经完成了Room的基本逻辑，下面将介绍如何实现js消息�
 ```JSON
 // 客户端发送JSON消息格式
 {
-    "controller": "Test",   // 请求控制器
+    "class": "Test",   // 请求控制器
     "action": "intoRoom",   // 请求方法
     "data":{    // 请求参数
         "a":"",
@@ -639,3 +798,215 @@ _至此已经完成了Room的基本逻辑，下面将介绍如何实现js消息�
 ```
 
 当客户端收到消息时，使用JSON.parse就可以解析具体的事件。
+
+### 连接池Redis
+
+*这里仅给出示例*
+
+#### 系统运行常量
+
+```php
+<?php
+namespace App\Utility;
+
+class SysConst
+{
+    /**
+     * redis连接池处理类
+     * @var string
+     */
+    const REDIS_POOL_CLASS = 'App\\Utility\\RedisPool';
+
+}
+
+```
+####
+
+```php
+<?php
+namespace App\Utility;
+
+use EasySwoole\Config;
+use EasySwoole\Core\Component\Pool\AbstractInterface\Pool;
+use EasySwoole\Core\Swoole\Coroutine\Client\Redis;
+
+class RedisPool extends Pool
+{
+    /**
+     * 实现getObj方法
+     * @param  float  $timeOut 超时连接等待时间
+     * @return null|Redis          Redis连接对象
+     */
+    public function getObj($timeOut = 0.1) : ? Redis
+    {
+        // TODO: Change the autogenerated stub
+        return parent::getObj($timeOut);
+    }
+
+    /**
+     * 实现创建对象方法
+     * @return Redis
+     */
+    protected function createObject()
+    {
+        $conf = Config::getInstance()->getConf('REDIS');
+        $redis = new Redis($conf['host'], $conf['port'], $conf['serialize'], $conf['auth']);
+        if (is_callable($conf['errorHandler'])) {
+            $redis->setErrorHandler($conf['errorHandler']);
+        }
+        try {
+            $redis->exec('select', $conf['dbName'] ?? 0);
+        } catch (\Exception $e) {
+        }
+        return $redis;
+    }
+}
+
+```
+#### Redis实例
+
+*可以使用__callStatic 来代理全部redis命令 以下仅做示例*
+
+*如果使用下面的Redis类作为Redis对象，请修改上文的Im.php*
+
+```php
+/**
+ * 获取Redis对象
+ * @return object
+ */
+protected static function getRedis()
+{
+    // 连接池直接return Redis 即可 不需要获取连接
+    return new Redis;
+}
+```
+
+```php
+<?php
+namespace App\Utility;
+
+use EasySwoole\Core\Component\Pool\PoolManager;
+
+/**
+ * Redis类
+ * 在这里实现Redis方法
+ */
+class Redis
+{
+    /**
+     * Redis连接池对象
+     * @var object
+     */
+    protected static $redisPool;
+
+    /**
+     * redis对象
+     * @var object
+     */
+    protected $redis;
+
+    /**
+     * 构造函数
+     */
+    public function __construct()
+    {
+        // 获取连接池对象
+        if (!self::$redisPool instanceof RedisPool) {
+            // 静态化的池不会被释放
+            self::$redisPool = PoolManager::getInstance()->getPool(SysConst::REDIS_POOL_CLASS);
+        }
+        $this->redis = self::$redisPool->getObj();
+    }
+
+    /**
+     * 构析函数
+     */
+    public function __destruct()
+    {
+        // 释放连接池对象
+        self::$redisPool->freeObj($this->redis);
+    }
+
+    /**
+     * redis执行代理
+     * @param  string $method redis命令
+     * @param  mixed  $args   redis参数列表
+     * @return string         redis 返回
+     */
+    public function exec($method, ...$args)
+    {
+        return $this->redis->exec($method, ...$args);
+    }
+
+
+    public function hSet($key, $field, $value)
+    {
+        return $this->redis->exec('hSet', $key, $field, $value);
+    }
+
+    public function hMset($key, $field, ...$value)
+    {
+        return $this->redis->exec('hMset', $key, $field, ...$value);
+    }
+
+    public function hGet($key, $field)
+    {
+        return $this->redis->exec('hGet', $key, $field);
+    }
+
+    public function hMget($key, $field, ...$value)
+    {
+        return $this->redis->exec('hMget', $key, $field, ...$value);
+    }
+
+    public function hGetAll($key)
+    {
+        return $this->redis->exec('hGetAll', $key);
+    }
+
+    public function hDel($key, ...$field)
+    {
+        return $this->redis->exec('hDel', $key, ...$field);
+    }
+
+    public function hExists($key, $field)
+    {
+        return $this->redis->exec('hExists', $key, $field);
+    }
+
+    public function hKeys($key)
+    {
+        return $this->redis->exec('hKeys', $key);
+    }
+
+    public function hVals($key)
+    {
+        return $this->redis->exec('hVals', $key);
+    }
+
+    public function sAdd($key, ...$member)
+    {
+        return $this->redis->exec('sAdd', $key, ...$member);
+    }
+
+    public function sRem($key, ...$member)
+    {
+        return $this->redis->exec('sRem', $key, ...$member);
+    }
+
+    public function sMembers($key)
+    {
+        return $this->redis->exec('smembers', $key);
+    }
+
+    public function sIsMember($key, $member)
+    {
+        return $this->redis->exec('sIsMember', $key, $member);
+    }
+}
+
+```
+
+### Demo项目地址
+<a href="https://github.com/RunsTp/easyChat">easyChat
+注: 仅做示例
