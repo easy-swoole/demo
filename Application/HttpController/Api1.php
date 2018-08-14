@@ -18,7 +18,7 @@ class Api1 extends Base
 {
     private $db;
 
-    protected function onRequest($action): ?bool
+    protected function onRequest(?string $action): ?bool
     {
         $this->db = PoolManager::getInstance()->getPool(MysqlPool::class)->getObj();
         if(!$this->db instanceof MysqlPoolObj){
@@ -32,7 +32,7 @@ class Api1 extends Base
         $this->response()->write($throwable->getMessage());
     }
 
-    protected function afterAction($actionName): void
+    protected function afterAction(?string $actionName): void
     {
         PoolManager::getInstance()->getPool(MysqlPool::class)->recycleObj($this->db);
 

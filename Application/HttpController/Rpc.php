@@ -9,8 +9,9 @@
 namespace App\HttpController;
 
 
+use App\Rpc\RpcServer;
+use EasySwoole\EasySwoole\Logger;
 use EasySwoole\Rpc\Bean\Response;
-use EasySwoole\Trigger\Logger;
 
 class Rpc extends Base
 {
@@ -21,7 +22,7 @@ class Rpc extends Base
     {
         $msg = null;
         $t = microtime(true);
-        $client = \EasySwoole\Rpc\Rpc::getInstance()->client();
+        $client = RpcServer::getInstance()->client();
         $client->addCall('serviceOne','funcOne')
             ->success(function (Response $response)use(&$msg){
                 $msg = $response->getMessage();
@@ -46,6 +47,6 @@ class Rpc extends Base
 
     function allNodes()
     {
-        var_dump(\EasySwoole\Rpc\Rpc::getInstance()->getAllServiceNodes());
+        var_dump(RpcServer::getInstance()->getAllServiceNodes());
     }
 }

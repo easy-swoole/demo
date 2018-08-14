@@ -14,14 +14,13 @@ use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\Rpc\AbstractInterface\AbstractService;
 use EasySwoole\Rpc\Bean\Response;
 use EasySwoole\Rpc\Rpc;
-use EasySwoole\Trigger\Logger;
 
 class ServiceOne extends AbstractService
 {
     function funcOne()
     {
         $arg = $this->getCaller()->getArgs();
-//        Logger::getInstance()->log('client arg is '.json_encode($arg));
+        var_dump($arg);
         $this->getResponse()->setMessage('call at '.time());
     }
 

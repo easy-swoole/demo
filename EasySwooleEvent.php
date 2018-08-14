@@ -9,6 +9,7 @@
 namespace EasySwoole\EasySwoole;
 
 
+use App\Rpc\RpcServer;
 use App\Rpc\RpcTwo;
 use App\Rpc\ServiceOne;
 use App\Utility\Pool\MysqlPool;
@@ -17,8 +18,6 @@ use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
-use EasySwoole\Rpc\Rpc;
-use EasySwoole\Trigger\Logger;
 
 class EasySwooleEvent implements Event
 {
@@ -50,11 +49,11 @@ class EasySwooleEvent implements Event
         /*
          * 注册配置项和服务注册
          */
-        Rpc::getInstance()->setConfig($conf);
+        RpcServer::getInstance($conf,Trigger::getInstance());
         try{
-            Rpc::getInstance()->registerService('serviceOne',ServiceOne::class);
-            Rpc::getInstance()->registerService('serviceTwo',RpcTwo::class);
-            Rpc::getInstance()->attach(ServerManager::getInstance()->getSwooleServer());
+            RpcServer::getInstance()->registerService('serviceOne',ServiceOne::class);
+            RpcServer::getInstance()->registerService('serviceTwo',RpcTwo::class);
+            RpcServer::getInstance()->attach(ServerManager::getInstance()->getSwooleServer());
         }catch (\Throwable $throwable){
             Logger::getInstance()->console($throwable->getMessage());
         }
