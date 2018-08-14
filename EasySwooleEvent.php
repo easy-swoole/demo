@@ -13,11 +13,13 @@ use App\Rpc\RpcServer;
 use App\Rpc\RpcTwo;
 use App\Rpc\ServiceOne;
 use App\Utility\Pool\MysqlPool;
+use App\Utility\TrackerManager;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
+use EasySwoole\Trace\Bean\Tracker;
 
 class EasySwooleEvent implements Event
 {
@@ -58,6 +60,13 @@ class EasySwooleEvent implements Event
             Logger::getInstance()->console($throwable->getMessage());
         }
 
+        //调用链追踪器设置Token获取值为协程id
+        TrackerManager::getInstance()->setTokenGenerator(function (){
+           return \Swoole\Coroutine::getuid();
+        });
+        TrackerManager::getInstance()->setEndTrackerHook(function ($token,Tracker $tracker){
+            Logger::getInstance()->console((string)$tracker);
+        });
     }
 
     public static function onRequest(Request $request, Response $response): bool
