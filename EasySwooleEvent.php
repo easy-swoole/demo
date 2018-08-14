@@ -32,6 +32,14 @@ class EasySwooleEvent implements Event
          */
 
         PoolManager::getInstance()->register(MysqlPool::class);
+
+        //调用链追踪器设置Token获取值为协程id
+        TrackerManager::getInstance()->setTokenGenerator(function (){
+            return \Swoole\Coroutine::getuid();
+        });
+        TrackerManager::getInstance()->setEndTrackerHook(function ($token,Tracker $tracker){
+            Logger::getInstance()->console((string)$tracker);
+        });
     }
 
     public static function mainServerCreate(EventRegister $register)
@@ -59,14 +67,6 @@ class EasySwooleEvent implements Event
         }catch (\Throwable $throwable){
             Logger::getInstance()->console($throwable->getMessage());
         }
-
-        //调用链追踪器设置Token获取值为协程id
-        TrackerManager::getInstance()->setTokenGenerator(function (){
-           return \Swoole\Coroutine::getuid();
-        });
-        TrackerManager::getInstance()->setEndTrackerHook(function ($token,Tracker $tracker){
-            Logger::getInstance()->console((string)$tracker);
-        });
     }
 
     public static function onRequest(Request $request, Response $response): bool
