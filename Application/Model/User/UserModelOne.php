@@ -10,6 +10,7 @@ namespace App\Model\User;
 
 
 use App\Model\BaseOne;
+use App\Utility\TrackerManager;
 use EasySwoole\Utility\Random;
 
 class UserModelOne extends BaseOne
@@ -64,6 +65,11 @@ class UserModelOne extends BaseOne
 
     function all()
     {
-        return $this->getDb()->get($this->table);
+        $caller = TrackerManager::getInstance()->getTracker()->addCaller('allUser',null,'DB');
+        $ret =  $this->getDb()->get($this->table);
+        $caller->endCall($caller::STATUS_SUCCESS,[
+            'sql'=>$this->getDb()->getLastQuery(),
+        ]);
+        return $ret;
     }
 }

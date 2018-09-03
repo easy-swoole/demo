@@ -49,11 +49,8 @@ class Api1 extends Base
 
     function allUser()
     {
-        $this->db->startTrace();
         $model = new UserModelOne($this->db);
         $res = $model->all();
-        $ret = $this->db->endTrace();
-        var_dump($ret);
         $this->writeJson(200,$res);
     }
 

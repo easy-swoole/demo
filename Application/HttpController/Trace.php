@@ -33,10 +33,4 @@ class Trace extends Base
         $this->response()->write('call trace');
 
     }
-
-    function afterAction(?string $actionName): void
-    {
-        //每次请求后，都结束当前协程的追踪
-        TrackerManager::getInstance()->closeTracker();
-    }
 }

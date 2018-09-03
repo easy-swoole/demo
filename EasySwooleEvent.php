@@ -37,6 +37,7 @@ class EasySwooleEvent implements Event
         TrackerManager::getInstance()->setTokenGenerator(function (){
             return \Swoole\Coroutine::getuid();
         });
+        //每个链结束的时候，都会执行的回调
         TrackerManager::getInstance()->setEndTrackerHook(function ($token,Tracker $tracker){
             Logger::getInstance()->console((string)$tracker);
         });
@@ -71,14 +72,16 @@ class EasySwooleEvent implements Event
 
     public static function onRequest(Request $request, Response $response): bool
     {
-
-
+        //为每个请求做标记
+        TrackerManager::getInstance()->getTracker()->addAttribute('workerId',ServerManager::getInstance()->getSwooleServer()->worker_id);
         return true;
     }
 
     public static function afterRequest(Request $request, Response $response): void
     {
         // TODO: Implement afterAction() method.
+        //因为在onRequest 中部分代码有埋点，比如UserModelOne，会产生追踪链，因此需要清理。
+        TrackerManager::getInstance()->closeTracker();
     }
 
     public static function onReceive(\swoole_server $server, int $fd, int $reactor_id, string $data):void
