@@ -26,6 +26,7 @@ return [
     ],
     'TEMP_DIR'=>null,//若不配置，则默认框架初始化
     'LOG_DIR'=>null,//若不配置，则默认框架初始化
+    'IS_DEV'=>true,//是否为开发模式，开发模式时，会额外加载dev.env
 ];
 ```
 

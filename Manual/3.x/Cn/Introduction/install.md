@@ -82,5 +82,5 @@ composer require easyswoole/swoole-ide-helper
 
 框架准备了一个示例项目，内有框架大部分功能的示例代码，直接克隆下方的 GitHub 仓库到本地并安装依赖，即可开始体验
 
-> 仓库地址: [https://github.com/easy-swoole/demo](https://github.com/easy-swoole/demo)
+> 仓库地址: [https://github.com/easy-swoole/demo/tree/3.x](https://github.com/easy-swoole/demo/tree/3.x)
 
