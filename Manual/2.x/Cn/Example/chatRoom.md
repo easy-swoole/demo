@@ -425,6 +425,9 @@ class Im
     protected static function deleteUserIdFdMapByFd(int $fd)
     {
         $userId = self::findUserIdByFd($fd);
+        if (false === $userId) {
+            return;
+        }
         $fdList = self::findFdListToUserId($userId);
         foreach ($fdList as $number => $valFd) {
             if ($valFd == $fd) {
@@ -751,8 +754,11 @@ public static function mainServerCreate(ServerManager $server,EventRegister $reg
     EventHelper::registerDefaultOnMessage($register, WebSocket::class);
     //注册onClose事件
     $register->add($register::onClose, function (\swoole_server $server, $fd, $reactorId) {
-        //清除Redis fd的全部关联
-        Im::recyclingFd($fd);
+        // 检查是否是ws连接
+        if (isset($server->connection_info($fd)['websocket_status']) && 3 ===  $server->connection_info($fd)['websocket_status']) {
+            //清除Redis fd的全部关联
+            Im::recyclingFd($fd);
+        }
     });
     // 注册Redis
     Di::getInstance()->set('REDIS', new Redis(Config::getInstance()->getConf('REDIS')));
