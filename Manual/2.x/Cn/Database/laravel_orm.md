@@ -37,7 +37,7 @@ composer require illuminate/database
 ```php
 use Illuminate\Database\Capsule\Manager as Capsule;//如果你不喜欢这个名称，as DB;就好 
 // 初始化完成
-function static frameInitialized()
+function static frameInitialize()
 {
     // 初始化数据库
     $dbConf = Config::getInstance()->getConf('database');
@@ -57,6 +57,7 @@ function static frameInitialized()
 数据库初始化完成后即可在控制器内使用，让我们先确认一下Eloquent是否能正常工作
 
 ```php
+use Illuminate\Database\Capsule\Manager as Capsule;
 // 在Index控制器类添加以下方法
 function index()
 {
