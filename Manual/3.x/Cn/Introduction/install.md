@@ -53,7 +53,7 @@ class Index extends Controller
         }
     },
     "require": {
-        "easyswoole/easyswoole": "2.x-dev"
+        "easyswoole/easyswoole": "3.x-dev"
     }
 }
 ```
