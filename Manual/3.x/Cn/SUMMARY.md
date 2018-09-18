@@ -7,7 +7,7 @@
     - [配置文件](Introduction/config.md)
     - [服务管理](Introduction/server.md)
     - [开发者必读!!!](Introduction/remind.md)
-    - [设计解读](Introduction/design.md)
+    - [核心解读](Introduction/design.md)
 - [HTTP组件](Http/intro.md)
     - [控制器](Http/controller.md)
     - [URL解析规则](Http/dispatch.md)

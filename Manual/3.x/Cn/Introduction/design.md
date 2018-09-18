@@ -154,7 +154,7 @@ php easyswoole start
                     //执行全局事件 ***EasySwooleEvent.php*** 中的***afterRequest*** 方法
                     EasySwooleEvent::afterRequest($request_psr,$response_psr);
                 }catch (\Throwable $throwable){
-                    Trigger::getInstance()->throwable($throwable);
+                    Trigger::getIn=stance()->throwable($throwable);
                 }
             }
         });
@@ -171,4 +171,12 @@ EasySwoole\EasySwoole\ServerManager
 
 - __construct
     
-    构造函数中，实例化了一个***EasySwoole\EasySwoole\Swoole\EventRegister***，
+    构造函数中，实例化了一个***EasySwoole\EasySwoole\Swoole\EventRegister***，事件注册器其实就是一个事件容器。
+    
+- createSwooleServer
+    
+    创建一个主swoole实例，注意，不需要自己创建，EasySwoole已经帮你创建好了。
+    
+- addServer
+    
+    注册一个子服务，即为swoole addListen的封装实现。        
