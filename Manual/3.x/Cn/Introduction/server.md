@@ -28,7 +28,7 @@ php easyswoole
   help          查看命令的帮助信息
 
 有关某个操作的详细信息 请使用 help 命令查看 
-如查看 start 操作的详细信息 请输入 easyswoole help --start
+如查看 start 操作的详细信息 请输入 easyswoole help -start
 ```
 
 ## 服务启动
@@ -38,7 +38,7 @@ php easyswoole start
 ```
 生产环境（守护模式）
 ```
-php easyswoole start --d
+php easyswoole start -d
 ```
 > 注意是两个 ***-***
 
@@ -82,7 +82,7 @@ if [ ! -n "$DIR" ] ;then
 fi
 
 php easyswoole stop
-php easyswoole start --d
+php easyswoole start -d
 
 fswatch $DIR | while read file
 do
