@@ -1,5 +1,5 @@
 # WebSocket Client
-其实Swoole官方是有提供web socket client的例子的，在源码的example里面，鉴于很多人都招不到，我就做下搬运工。
+其实Swoole官方是有提供web socket client的例子的，在源码的example里面，鉴于很多人都找不到，我就做下搬运工。
 直接上代码
 ```
 class WebSocketClient
