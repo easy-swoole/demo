@@ -15,4 +15,7 @@
     - [Request对象](Http/request.md)
     - [Response对象](Http/response.md)
     - [错误与异常拦截](Http/exception.md)
+- [Trace组件](Trace/Introduction.md)
+    - [TrackerManager](Trace/TrackerManager.md)
+    - [Tracker](Trace/Tracker.md)
 - [捐赠](donate.md)

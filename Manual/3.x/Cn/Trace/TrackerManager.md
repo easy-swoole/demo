@@ -2,7 +2,7 @@
 ## 方法列表  
 
 ###  setTokenGenerator()  
-设置链追踪器的token生成方法,示例:  
+设置链追踪器的token生成方法,如果不设置该方法,则会抛出异常,示例:  
 ```php
   //调用链追踪器设置Token获取值为协程id
   TrackerManager::getInstance()->setTokenGenerator(function () {
