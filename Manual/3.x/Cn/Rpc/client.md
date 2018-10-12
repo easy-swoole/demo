@@ -92,7 +92,7 @@ fclose($fp);
     });
 ```
 
-###easyswoole框架示例:
+####easyswoole框架示例:
 
 EasySwooleEvent.php:
 ```php
@@ -119,7 +119,7 @@ EasySwooleEvent.php:
         $msg = null;
         $t = microtime(true);
         $client = RpcServer::getInstance()->client();
-        $client->addCall('serviceOne','funcOne',1231,231,321)
+        $client->addCall('serviceOne','funcOne','额外参数1','额外参数2','额外参数3')
             ->success(function (Response $response)use(&$msg){
                 $msg = $response->getMessage();
             })
@@ -134,7 +134,7 @@ EasySwooleEvent.php:
 //            ->fail(function (Response $response){
 //                Logger::getInstance()->console($response->__toString());
 //            });
-        $client->exec(0.5);
+        $client->exec(0.5);//超时时间
         
         $t = round(microtime(true) - $t,3);
         $this->response()->write("rpc take {$t} s and mgs is {$msg}");
