@@ -1,4 +1,4 @@
-# EasySwole
+# EasySwoole
 
 - [基础入门](README.md)
     - [环境要求](Introduction/environment.md)
@@ -10,6 +10,7 @@
 - [HTTP组件](Http/intro.md)
     - [控制器](Http/controller.md)
     - [URL解析规则](Http/dispatch.md)
+    - [自定义路由](Http/FastRoute.md)
     - [权限验证](Http/authorization.md)
     - [Request对象](Http/request.md)
     - [Response对象](Http/response.md)
