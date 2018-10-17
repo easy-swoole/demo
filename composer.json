@@ -8,8 +8,7 @@
     ],
     "require": {
         "easyswoole/easyswoole": "3.x-dev",
-        "easyswoole/rpc": "^1.0",
-        "easyswoole/mysqli": "^1.0"
+        "easyswoole/rpc": "dev-master"
     },
     "autoload": {
         "psr-4": {
