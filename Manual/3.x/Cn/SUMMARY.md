@@ -29,8 +29,10 @@
     - [Socket问题](Socket/Problem.md)
 - [其他]
     - [异步客户端](Othe/AsyncClient.md)
+    - [错误处理与拦截](Othe/Exception.md)
     - [如何实现分布式](Othe/Distribute.md)
     - [HTTP中使用protobuf](Othe/Protobuf.md)
     - [队列消费/自定义进程问题](Othe/Process.md)
     - [Redis\Kafka订阅](Othe/RedisSubscribe.md)
+- [教学视频](teach.md)
 - [捐赠](donate.md)
