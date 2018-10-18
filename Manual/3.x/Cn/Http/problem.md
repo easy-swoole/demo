@@ -52,3 +52,14 @@ server {
   $this->response()->setCookie('name','value');
 ```
 更多操作可看[Response对象](response.md)
+
+
+# 如何自定义App名称
+只需要修改composer.json的命名空间注册就行
+```
+    "autoload": {
+        "psr-4": {
+            "App\\": "Application/"
+        }
+    }
+```
