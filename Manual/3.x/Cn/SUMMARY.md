@@ -27,4 +27,10 @@
     - [Tcp基础讲解](Socket/Tcp.md)
     - [Udp](Socket/Udp.md)
     - [Socket问题](Socket/Problem.md)
+- [其他]
+    - [异步客户端](Othe/AsyncClient.md)
+    - [如何实现分布式](Othe/Distribute.md)
+    - [HTTP中使用protobuf](Othe/Protobuf.md)
+    - [队列消费/自定义进程问题](Othe/Process.md)
+    - [Redis\Kafka订阅](Othe/RedisSubscribe.md)
 - [捐赠](donate.md)
