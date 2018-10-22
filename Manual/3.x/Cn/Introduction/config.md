@@ -4,30 +4,31 @@ EasySwoole框架提供了非常灵活自由的全局配置功能，配置文件�
 
 ## 默认配置文件
 
-框架安装完成后系统默认的全局配置文件是项目根目录下的 `Config.php` 文件，该文件的内容如下
+框架安装完成后系统默认的全局配置文件是项目根目录下的 `dev.env`,`produce.env` 文件，
+文件内容如下:
 
-```php
-<?php
+```env
+# eg:
+# mysql.port = 3306
+# MAIN_SERVER.PORT = 80
+# MAIN_SERVER.SETTING.worker_num = 80
 
-return [
-    'SERVER_NAME'=>"EasySwoole",
-    'MAIN_SERVER'=>[
-        'HOST'=>'0.0.0.0',
-        'PORT'=>9501,
-        'SERVER_TYPE'=>\EasySwoole\EasySwoole\ServerManager::TYPE_WEB_SERVER,
-        'SOCK_TYPE'=>SWOOLE_TCP,//该配置项当为SERVER_TYPE值为TYPE_SERVER时有效
-        'RUN_MODEL'=>SWOOLE_PROCESS,
-        'SETTING'=>[
-            'task_worker_num' => 8, //异步任务进程
-            'task_max_request'=>10,
-            'max_request'=>5000,//强烈建议设置此配置项
-            'worker_num'=>8
-        ],
-    ],
-    'TEMP_DIR'=>null,//若不配置，则默认框架初始化
-    'LOG_DIR'=>null,//若不配置，则默认框架初始化
-    'IS_DEV'=>true,//是否为开发模式，开发模式时，会额外加载dev.env
-];
+################ defalut config ##################
+SERVER_NAME = EasySwoole
+
+MAIN_SERVER.HOST = 0.0.0.0
+MAIN_SERVER.PORT = 9501
+MAIN_SERVER.SERVER_TYPE = WEB_SERVER ## 可选为 SERVER  WEB_SERVER WEB_SOCKET_SERVER
+MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为TYPE_SERVER时有效
+MAIN_SERVER.RUN_MODEL = SWOOLE_PROCESS
+
+MAIN_SERVER.SETTING.task_worker_num = 8
+MAIN_SERVER.SETTING.task_max_request = 500
+MAIN_SERVER.SETTING.worker_num = 8
+MAIN_SERVER.SETTING.max_request = 5000
+
+TEMP_DIR = null
+LOG_DIR = null
 ```
 
 各项目的配置含义如下
@@ -55,9 +56,7 @@ return [
 ```php
 <?php
 
-use EasySwoole\EasySwoole\Config;
-
-$instance = Config::getInstance();
+$instance = \EasySwoole\EasySwoole\Config::getInstance();
 
 // 获取配置 按层级用点号分隔
 $instance->getConf('MAIN_SERVER.SETTING.task_worker_num');
@@ -66,7 +65,7 @@ $instance->getConf('MAIN_SERVER.SETTING.task_worker_num');
 $instance->setConf('DATABASE.host', 'localhost');
 
 // 获取全部配置
-$conf = $instance->toArray();
+$conf = $instance->getConf();
 
 // 用一个数组覆盖当前配置项
 $conf['DATABASE'] = [
@@ -79,34 +78,113 @@ $instance->load($conf);
 
 ## 添加用户配置项
 
-每个应用都有自己的配置项，添加自己的配置项非常简单，其中一种方法是直接在配置文件的数组中添加即可，如下面的例子
+每个应用都有自己的配置项，添加自己的配置项非常简单，其中一种方法是直接在配置文件中添加即可，如下面的例子
+
+```env
+# eg:
+# mysql.port = 3306
+# MAIN_SERVER.PORT = 80
+# MAIN_SERVER.SETTING.worker_num = 80
+
+################ defalut config ##################
+SERVER_NAME = EasySwoole
+
+MAIN_SERVER.HOST = 0.0.0.0
+MAIN_SERVER.PORT = 9501
+MAIN_SERVER.SERVER_TYPE = WEB_SERVER ## 可选为 SERVER  WEB_SERVER WEB_SOCKET_SERVER
+MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为TYPE_SERVER时有效
+MAIN_SERVER.RUN_MODEL = SWOOLE_PROCESS
+
+MAIN_SERVER.SETTING.task_worker_num = 8
+MAIN_SERVER.SETTING.task_max_request = 500
+MAIN_SERVER.SETTING.worker_num = 8
+MAIN_SERVER.SETTING.max_request = 5000
+
+TEMP_DIR = null
+LOG_DIR = null
+
+############## 这里是用户自己的配置 ##################
+DATABASE.ip=127.0.0.1
+DATABASE.port=3306
+DATABASE.user=root
+DATABASE.password=root
+
+```
+
+也可以新建php或者env文件进行添加配置,例如:  
+
+添加App/Conf/web.php和App/Conf/app.env  
+
+EasySwooleEvent.php文件写法示例:  
+
 
 ```php
 <?php
+/**
+ * Created by PhpStorm.
+ * User: yf
+ * Date: 2018/5/28
+ * Time: 下午6:33
+ */
 
-return [
-    'MAIN_SERVER' => [
-        'HOST'        => '0.0.0.0',
-        'PORT'        => 9501,
-        'SERVER_TYPE' => \EasySwoole\Core\Swoole\ServerManager::TYPE_WEB_SERVER,
-        'SOCK_TYPE'   => SWOOLE_TCP,
-        'RUN_MODEL'   => SWOOLE_PROCESS,
-        'SETTING'     => [
-            'task_worker_num'  => 8,
-            'task_max_request' => 10,
-            'max_request'      => 5000,
-            'worker_num'       => 8
-        ],
-    ],
-    'TEMP_DIR'    => EASYSWOOLE_ROOT . '/Temp',
-    'LOG_DIR'     => EASYSWOOLE_ROOT . '/Log',
-    // 这里是自己添加的 Database 配置项
-    'DATABASE'    => [
-        'host'       => '127.0.0.1',
-        'port'       => 3306,
-        'auto_close' => true
-    ]
-];
+namespace EasySwoole\EasySwoole;
+
+
+use EasySwoole\EasySwoole\Swoole\EventRegister;
+use EasySwoole\EasySwoole\AbstractInterface\Event;
+use EasySwoole\Http\Request;
+use EasySwoole\Http\Response;
+use EasySwoole\Utility\File;
+
+class EasySwooleEvent implements Event
+{
+
+    public static function initialize()
+    {
+        self::loadConf();
+        // TODO: Implement initialize() method.
+    }
+
+    /**
+     * 加载配置文件
+     */
+    public static function loadConf(){
+        $files = File::scanDirectory(EASYSWOOLE_ROOT.'/Application/Config');
+        if(is_array($files)){
+            foreach ($files['files'] as $file) {
+                $fileNameArr= explode('.',$file);
+                $fileSuffix = end($fileNameArr);
+                if($fileSuffix=='php'){
+                    Config::getInstance()->loadFile($file);
+                }elseif($fileSuffix=='env'){
+                    Config::getInstance()->loadEnv($file);
+                }
+            }
+        }
+    }
+
+    public static function mainServerCreate(EventRegister $register)
+    {
+        // TODO: Implement mainServerCreate() method.
+    }
+
+    public static function onRequest(Request $request, Response $response): bool
+    {
+        // TODO: Implement onRequest() method.
+        return true;
+    }
+
+    public static function afterRequest(Request $request, Response $response): void
+    {
+        // TODO: Implement afterAction() method.
+    }
+
+    public static function onReceive(\swoole_server $server, int $fd, int $reactor_id, string $data):void
+    {
+
+    }
+
+}
+
 ```
-
 ## 生产与开发配置分离

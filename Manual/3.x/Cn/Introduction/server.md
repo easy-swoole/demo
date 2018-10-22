@@ -36,12 +36,14 @@ php easyswoole
 ```
 php easyswoole start
 ```
-生产环境（守护模式）
+## 守护模式启动
 ```
-php easyswoole start -d
+php easyswoole start d
 ```
-> 注意是两个 ***-***
-
+## 生产环境(默认配置加载dev.env,使用该命令加载produce.env)
+```
+php easyswoole start produce
+```
 ## 服务停止
 ```
 php easyswoole stop
@@ -53,12 +55,6 @@ php easyswoole stop
 php easyswoole reload
 ```
 > 注意，守护模式下才需要reload，不然control+c或者是终端断开就退出进程了，此处为热重启，可以用于更新worker start后才加载的文件（业务逻辑），主进程（如配置文件）不会被重启。
-
-## 服务重新启动
-```
-php easyswoole restart
-```
-> 此处逻辑为，先stop，再启动服务。
 
 # 热加载
 
