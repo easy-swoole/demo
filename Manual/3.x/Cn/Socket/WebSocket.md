@@ -8,7 +8,7 @@ MAIN_SERVER.SERVER_TYPE = WEB_SOCKET_SERVER ## 可选为 SERVER  WEB_SERVER WEB_
 ```
 并且引入 easyswoole/socket composer 包:
 >  *composer require easyswoole/socket*
-*警告：请保证你安装的 easyswoole/socket 版本大于等于 1.0.7 否则会导致ws消息发送客户端无法解析的问题* 
+*警告：请保证你安装的 easyswoole/socket 版本大于等于 1.0.7 否则会导致ws消息发送客户端无法解析的问题*
 
 ## 新人帮助
 
@@ -298,7 +298,7 @@ Application
         // 设置被调用的类 这里会将ws消息中的 class 参数解析为具体想访问的控制器
         // 如果更喜欢 event 方式 可以自定义 event 和具体的类的 map 即可
         // 注 目前 easyswoole 3.0.4 版本及以下 不支持直接传递 class string 可以通过这种方式
-        $class = '\\App\\Socket\\Websocket\\'. ucfirst($jsonObject->class) ?? 'Test';
+        $class = '\\App\\Socket\\Websocket\\'. ucfirst($jsonObject->class ?? 'Test');
         $caller->setControllerClass($class);
 
         // 提供一个事件风格的写法
