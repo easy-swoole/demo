@@ -188,3 +188,6 @@ class EasySwooleEvent implements Event
 
 ```
 ## 生产与开发配置分离
+在php easyswoole start命令下,默认为开发模式,加载dev.env  
+运行 php easyswoole start produce 命令时,为生产模式,加载produce.env
+ 
