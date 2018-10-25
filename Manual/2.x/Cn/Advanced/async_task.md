@@ -96,9 +96,9 @@ function index()
 有时需要同时执行多个异步任务，最典型的例子是数据采集，采集完多个数据后集中进行处理，这时可以进行并发任务投递，底层会将任务逐个进行投递并执行，所有任务执行完后返回一个结果集
 
 ```php
-$tasks[] = function () { sleep(50000); }; // 任务1
+$tasks[] = function () { usleep(50000); }; // 任务1
 $tasks[] = function () { sleep(2); };     // 任务2
-$tasks[] = function () { sleep(50000); }; // 任务3
+$tasks[] = function () { usleep(50000); }; // 任务3
 
 $results = \EasySwoole\Core\Swoole\Task\TaskManager::barrier($tasks, 0.5);
 ```
