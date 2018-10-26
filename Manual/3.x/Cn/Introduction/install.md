@@ -12,14 +12,6 @@
 composer require easyswoole/easyswoole=3.x-dev
 php vendor/bin/easyswoole.php install
 ```
-中途没有报错的话，执行：
-```bash
-# 启动框架
-php easyswoole start
-```
-此时可以访问 `http://localhost:9501` 看到框架的欢迎页面，表示框架已经安装成功
-
-
 
 ## 报错处理
 
@@ -63,11 +55,19 @@ php vendor/easyswoole/easyswoole/bin/easyswoole.php install
 按下面的步骤进行手动安装
 
 ```bash
-composer require easyswoole/easyswoole=2.x-dev
+composer require easyswoole/easyswoole=3.x-dev
 php vendor/bin/easyswoole install
 ```
 
+中途没有报错的话，执行：
+```bash
+# 启动框架
+php easyswoole start
+```
+此时可以访问 `http://localhost:9501` 看到框架的欢迎页面，表示框架已经安装成功
+
 > 如果第二步的 install 操作报错 请查看上方的报错处理
+
 
 
 
