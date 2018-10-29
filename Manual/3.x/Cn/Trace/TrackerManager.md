@@ -20,7 +20,7 @@
   });
 ```
 ### getTracker($token=null)
-获取一个链追踪器
+通过token 获取一个链追踪器
 ```php
 TrackerManager::getInstance()->getTracker(\Swoole\Coroutine::getuid());
 ```
