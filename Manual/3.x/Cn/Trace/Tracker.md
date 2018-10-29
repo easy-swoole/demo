@@ -7,33 +7,43 @@ TrackerManager::getInstance()->getTracker()->getTrackerToken()
 TrackerManager::getInstance()->getTracker(\Swoole\Coroutine::getuid())->getTrackerToken()
 ```
 ###addAttribute()
-添加参数
+添加追踪器标签
 ```php
 TrackerManager::getInstance()->getTracker()->addAttribute('user','用户名1');
 TrackerManager::getInstance()->getTracker()->addAttribute('name','这是昵称');
 ```
 ###getAttribute()
-获取参数
+获取追踪器标签
 ```php
 TrackerManager::getInstance()->getTracker()->getAttribute('user');
 TrackerManager::getInstance()->getTracker()->getAttribute('name');
 ```
 ###getAttributes()
-获取所有的参数
+获取追踪器全部标签
 ```php
 TrackerManager::getInstance()->getTracker()->getAttribute()
 ```
-###getStacks()
+###getPointStacks()
 获取调用栈
 ```php
-TrackerManager::getInstance()->getTracker()->getStacks()
+TrackerManager::getInstance()->getTracker()->getPointStacks()
 ```
-###addCaller()
-添加一个跟踪点,返回TrackerCaller对象
+###setPoint()
+设置一个调用点,返回TrackerPoint对象
 ```php
-$caller = TrackerManager::getInstance()->getTracker()->addCaller('CurlBaiDu','wd=easyswoole');
-$caller->endCall();//结束跟踪
+ $trackerPoint = TrackerManager::getInstance()->getTracker()->setPoint('CurlBaiDu',['wd'=>'easyswoole'],'test1');
+ $trackerPoint->endPoint($trackerPoint::STATUS_FAIL,['msg'=>'失败了']);//结束调用,记录状态以及结束参数
+ //使用TrackerPoint对象endPoint方法结束
 ```
+###endPoint()
+结束一个调用点
+```php
+ $trackerPoint = TrackerManager::getInstance()->getTracker()->setPoint('CurlBaiDu',['wd'=>'easyswoole'],'test1');
+ TrackerManager::getInstance()->getTracker()->endPoint('CurlBaiDu',$caller::STATUS_SUCCESS,['msg'=>'调用成功'.time()]);
+ //使用Tracker对象endPoint方法结束
+```
+
+
 ###__toString()
 字符串输出对象  
 
