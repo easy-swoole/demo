@@ -46,6 +46,6 @@ class WebSocketParser implements ParserInterface
     {
         // 这里返回响应给客户端的信息
         // 这里应当只做统一的encode操作 具体的状态等应当由 Controller处理
-        return json_encode($response->getResult());
+        return $response->getMessage();
     }
 }
