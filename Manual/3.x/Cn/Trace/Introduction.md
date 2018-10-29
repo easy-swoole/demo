@@ -3,6 +3,8 @@ es3.x提供了trace代码追踪组件,可在任意位置调用该组件,追踪�
 
 ```php
 //调用链追踪器设置Token获取值为协程id
+```php
+<?php
 TrackerManager::getInstance()->setTokenGenerator(function () {
     return \Swoole\Coroutine::getuid();
 });
@@ -15,25 +17,66 @@ TrackerManager::getInstance()->setEndTrackerHook(function ($token, Tracker $trac
 //加入参数到链追踪器
 TrackerManager::getInstance()->getTracker()->addAttribute('user','用户名1');
 TrackerManager::getInstance()->getTracker()->addAttribute('name','这是昵称');
-
+```
 //设置追踪1
-$caller = TrackerManager::getInstance()->getTracker()->addCaller('CurlBaiDu','wd=easyswoole');
-file_get_contents('https://www.baidu.com/s?wd=easyswoole');
-$caller->endCall();
+```php
+<?php
+$tracker = TrackerManager::getInstance()->getTracker();
+
+$trackerPoint = $tracker->setPoint('查询用户余额',[
+'sql'=>'sql statement one'
+]);
+//模拟sql one执行
+//$mode->func();
+usleep(3000);
+$tracker->endPoint('查询用户余额',$trackerPoint::STATUS_SUCCESS,["调用成功"]);
+$this->response()->write('call trace');
+
+```
 
 //设置追踪2，模拟失败任务
-$caller = TrackerManager::getInstance()->getTracker()->addCaller('CurlBaiDu2','wd=easyswoole');
-file_get_contents('https://www.baidu.com/s?wd=easyswoole');
-$caller->endCall($caller::STATUS_FAIL,'curl失败了');
+```php
+<?php
 
+$tracker = TrackerManager::getInstance()->getTracker();
+
+$trackerPoint = $tracker->setPoint('查询用户订单',[
+'sql'=>'sql statement one'
+]);
+//模拟sql 执行
+usleep(1000000);
+$tracker->endPoint('查询用户订单',$trackerPoint::STATUS_FAIL,["查询失败"]);
+$this->response()->write('call trace');
 //关闭链追踪器
-TrackerManager::getInstance()->closeTracker();
+$tracker->closeTracker();
 
 ```
 
 ###可以使用Logger类进行打印,保存追踪日志,示例:
 
 ```php
+<?php
+$tracker = TrackerManager::getInstance()->getTracker();
 Logger::getInstance()->console((string)$tracker);//输出到控制台并且保存到日志
 Logger::getInstance()->log((string)$tracker);//直接保存到日志
+```
+### 记录日志为如下格式:
+```
+
+18-10-29 09:30:50:TrackerToken:2
+Attribute:
+	workerId:4
+	user:用户名1
+	name:这是昵称
+Stack:
+	#:
+	pointName:查询用户订单
+	pointCategory:default
+	pointStatus:FAIL
+	pointStartTime:1540776649.2616
+	pointTakeTime:1.0008
+	pointFile:/www/wwwroot/es3/Application/HttpController/Trace.php
+	pointLine:28
+	pointStartArgs:{"sql":"sql statement one"}
+	pointEndArgs:["查询失败"]
 ```
