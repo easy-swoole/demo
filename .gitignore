@@ -1,3 +1,14 @@
-.idea
-/vendor
-/composer.lock
+# ide
+/.idea/
+
+# composer
+/vendor/
+composer.lock
+
+# easySwoole
+/Log/
+/Temp/
+/easyswoole
+easyswoole.install
+src/swoole_log.txt
+
