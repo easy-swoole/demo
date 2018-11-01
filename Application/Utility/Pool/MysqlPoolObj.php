@@ -33,4 +33,15 @@ class MysqlPoolObj extends Mysqli implements PoolObjectInterface
         $this->rollback();
         $this->resetDbStatus();
     }
+
+    /**
+     * @return bool
+     */
+    function beforeUse(): bool
+    {
+        //使用前调用,当返回true，表示该对象可用。返回false，该对象失效，需要回收
+        //根据个人逻辑修改,只要做好了断线处理逻辑,就可直接返回true
+        return $this->getMysqlClient()->connected;
+    }
+
 }
