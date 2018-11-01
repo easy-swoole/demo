@@ -9,16 +9,16 @@ class Test extends Controller
 {
     function hello()
     {
-        $this->response()->setResult(['call hello with arg:'. json_encode($this->caller()->getArgs())]);
+        $this->response()->setMessage('call hello with arg:'. json_encode($this->caller()->getArgs()));
     }
 
     public function who(){
-        $this->response()->setResult(['your fd is '. $this->caller()->getClient()->getFd()]);
+        $this->response()->setMessage('your fd is '. $this->caller()->getClient()->getFd());
     }
 
     function delay()
     {
-        $this->response()->setResult(['this is delay action']);
+        $this->response()->setMessage('this is delay action');
         $client = $this->caller()->getClient();
 
         // 异步推送, 这里直接 use fd也是可以的

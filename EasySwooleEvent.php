@@ -15,6 +15,7 @@ use App\Rpc\ServiceOne;
 use App\Utility\Pool\MysqlPool;
 use App\Utility\TrackerManager;
 use App\Socket\WebSocketParser;
+use App\Socket\WebSocketEvent;
 
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
@@ -61,14 +62,23 @@ class EasySwooleEvent implements Event
 
         // 创建 Dispatcher 对象 并注入 config 对象
         $dispatch = new Dispatcher($conf);
+        $websocketEvent = new WebSocketEvent();
 
-        // 给server 注册相关事件 在 WebSocket 模式下  message 事件必须注册 并且交给 Dispatcher 对象处理
-        $register->set('message', function(\swoole_websocket_server  $server, \swoole_websocket_frame $frame) use ($dispatch){
+        /* 给 server 注册相关事件
+         * 在 WebSocket 模式下  `onMessage` 事件必须注册 并且交给 Dispatcher 对象处理
+         * `onHandShake` 事件为握手事件 用于身份验证等
+         * `onClose` 事件为连接关闭事件 用户状态清除等
+         *注：一但注册了 `onHandShake` 事件 `onOpen` 事件则失效 具体请参照 https://wiki.swoole.com/wiki/page/409.html
+         */
+        $register->set(EventRegister::onHandShake, function(\swoole_http_request $request, \swoole_http_response $response) use ($websocketEvent){
+            $websocketEvent->onHandShake($request, $response);
+        });
+        $register->set(EventRegister::onMessage, function(\swoole_websocket_server  $server, \swoole_websocket_frame $frame) use ($dispatch){
             $dispatch->dispatch($server, $frame->data, $frame);
         });
-        // $register->set('close', function ($server, $fd) {
-        //     echo "connection close: {$fd}\n";
-        // });
+        $register->set(EventRegister::onClose, function (\swoole_server $server, int $fd, int $reactorId) {
+            $websocketEvent->onClose($server, $fd, $reactorId);
+        });
 
         /*
           * ***************** RPC ********************
