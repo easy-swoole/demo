@@ -15,6 +15,8 @@ use App\Rpc\RpcTwo;
 use App\Rpc\ServiceOne;
 use App\Utility\Pool\MysqlPool;
 use App\Utility\TrackerManager;
+use App\WebSocket\WebSocketEvent;
+use App\WebSocket\WebSocketParser;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
@@ -22,6 +24,7 @@ use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
 use EasySwoole\Socket\Client\Tcp;
+use EasySwoole\Socket\Dispatcher;
 use EasySwoole\Trace\Bean\Tracker;
 use EasySwoole\Utility\File;
 use Swoole\Server;
@@ -75,6 +78,9 @@ class EasySwooleEvent implements Event
         $subPort->on('receive', function (\swoole_server $server, int $fd, int $reactor_id, string $data) {
             echo "subport on receive \n";
         });
+        $subPort->on('connect', function (\swoole_server $server, int $fd, int $reactor_id) {
+            echo "subport on connect \n";
+        });
 
         //主swoole服务修改配置
         ServerManager::getInstance()->getSwooleServer()->set(['worker_num' => 1, 'task_worker_num' => 1]);
@@ -113,14 +119,14 @@ class EasySwooleEvent implements Event
         $server = ServerManager::getInstance()->getSwooleServer();
         $subPort = $server->addListener('0.0.0.0', 9503, SWOOLE_TCP);
         $subPort->set(
-            ['open_length_check'   => false]//不验证数据包
+            ['open_length_check' => false]//不验证数据包
         );
         $socketConfig = new \EasySwoole\Socket\Config();
         $socketConfig->setType($socketConfig::TCP);
         $socketConfig->setParser(new \App\TcpController\Parser());
         //设置解析异常时的回调,默认将抛出异常到服务器
-        $socketConfig->setOnExceptionHandler(function (Server $server,$throwable,$raw,Tcp $client,$response){
-            $server->send($client->getFd(),'bye');
+        $socketConfig->setOnExceptionHandler(function (Server $server, $throwable, $raw, Tcp $client, $response) {
+            $server->send($client->getFd(), 'bye');
             $server->close($client->getFd());
         });
         $dispatch = new \EasySwoole\Socket\Dispatcher($socketConfig);
@@ -128,7 +134,81 @@ class EasySwooleEvent implements Event
             $dispatch->dispatch($server, $data, $fd, $reactor_id);
         });
 
+        /**
+         * **************** websocket控制器 **********************
+         */
+        // 创建一个 Dispatcher 配置
+        $conf = new \EasySwoole\Socket\Config();
+        // 设置 Dispatcher 为 WebSocket 模式
+        $conf->setType($conf::WEB_SOCKET);
+        // 设置解析器对象
+        $conf->setParser(new WebSocketParser());
+        // 创建 Dispatcher 对象 并注入 config 对象
+        $dispatch = new Dispatcher($conf);
+        // 给server 注册相关事件 在 WebSocket 模式下  message 事件必须注册 并且交给 Dispatcher 对象处理
+        $register->set(EventRegister::onMessage, function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) use ($dispatch) {
+            $dispatch->dispatch($server, $frame->data, $frame);
+        });
+        //自定义握手
+        $websocketEvent = new WebSocketEvent();
+        $register->set(EventRegister::onHandShake, function (\swoole_http_request $request, \swoole_http_response $response) use ($websocketEvent) {
+            $websocketEvent->onHandShake($request, $response);
+        });
 
+
+        /**
+         * **************** udp服务 **********************
+         */
+
+        //新增一个udp服务
+        $server = ServerManager::getInstance()->getSwooleServer();
+        $subPort = $server->addListener('0.0.0.0', '9605', SWOOLE_UDP);
+        $subPort->on('packet', function (\swoole_server $server, string $data, array $client_info) {
+            echo "udp packet:{$data}";
+        });
+        //udp客户端
+        //添加自定义进程做定时udp发送
+        $server->addProcess(new \swoole_process(function (\swoole_process $process) {
+            //服务正常关闭
+            $process::signal(SIGTERM, function () use ($process) {
+                $process->exit(0);
+            });
+            //每隔5秒发送一次数据
+            \Swoole\Timer::tick(5000, function () {
+                if ($sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP)) {
+                    socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, true);
+                    $msg = '123456';
+                    socket_sendto($sock, $msg, strlen($msg), 0, '255.255.255.255', 9605);//广播地址
+                    socket_close($sock);
+                }
+            });
+        }));
+
+
+        /**
+         * **************** 异步客户端 **********************
+         */
+        //纯原生异步
+        $register->add(EventRegister::onWorkerStart,function ($ser,$workerId){
+            if($workerId == 0){
+                $client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
+                $client->on("connect", function(\swoole_client $cli) {
+                    $cli->send("test:delay");
+                });
+                $client->on("receive", function(\swoole_client $cli, $data){
+                    echo "Receive: $data";
+                    $cli->send("test:delay");
+                    sleep(1);
+                });
+                $client->on("error", function(\swoole_client $cli){
+                    echo "error\n";
+                });
+                $client->on("close", function(\swoole_client $cli){
+                    echo "Connection close\n";
+                });
+                $client->connect('127.0.0.1', 9502);
+            }
+        });
 
 
         // TODO: Implement mainServerCreate() method.
