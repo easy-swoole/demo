@@ -1,165 +1,263 @@
 <?php
-
-namespace EasySwoole;
-
-use App\Process\Inotify;
-use App\Process\Test;
-use App\Sock\Parser\Tcp;
-use App\Sock\Parser\WebSock;
-use App\Utility\MysqlPool2;
-use \EasySwoole\Core\AbstractInterface\EventInterface;
-use \EasySwoole\Core\Component\Logger;
-use EasySwoole\Core\Component\Pool\PoolManager;
-use \EasySwoole\Core\Swoole\EventHelper;
-use \EasySwoole\Core\Swoole\Process\ProcessManager;
-use \EasySwoole\Core\Swoole\ServerManager;
-use \EasySwoole\Core\Swoole\EventRegister;
-use \EasySwoole\Core\Swoole\Task\TaskManager;
-use \EasySwoole\Core\Swoole\Time\Timer;
-use \EasySwoole\Core\Http\Request;
-use \EasySwoole\Core\Http\Response;
-
 /**
- * 全局事件定义文件
- * Class EasySwooleEvent
- * @package EasySwoole
+ * Created by PhpStorm.
+ * User: yf
+ * Date: 2018/5/28
+ * Time: 下午6:33
  */
-Class EasySwooleEvent implements EventInterface
-{
 
+namespace EasySwoole\EasySwoole;
+
+
+use App\Process\ProcessTest;
+use App\Rpc\RpcServer;
+use App\Rpc\RpcTwo;
+use App\Rpc\ServiceOne;
+use App\Utility\Pool\MysqlPool;
+use App\Utility\TrackerManager;
+use App\WebSocket\WebSocketEvent;
+use App\WebSocket\WebSocketParser;
+use EasySwoole\Component\Di;
+use EasySwoole\Component\Pool\PoolManager;
+use EasySwoole\EasySwoole\Swoole\EventRegister;
+use EasySwoole\EasySwoole\AbstractInterface\Event;
+use EasySwoole\Http\Request;
+use EasySwoole\Http\Response;
+use EasySwoole\Socket\Client\Tcp;
+use EasySwoole\Socket\Dispatcher;
+use EasySwoole\Trace\Bean\Tracker;
+use EasySwoole\Utility\File;
+use Swoole\Server;
+
+class EasySwooleEvent implements Event
+{
     /**
      * 框架初始化事件
      * 在Swoole没有启动之前 会先执行这里的代码
      */
-    public static function frameInitialize(): void
+    public static function initialize()
     {
-        date_default_timezone_set('Asia/Shanghai');
+        // TODO: Implement initialize() method.
+        date_default_timezone_set('Asia/Shanghai');//设置时区
+        $tempDir = EASYSWOOLE_ROOT . '/Temp2';
+        Config::getInstance()->setConf('TEMP_DIR', $tempDir);//重新设置temp文件夹
+        Di::getInstance()->set(SysConst::SHUTDOWN_FUNCTION, function () {//注册自定义代码终止回调
+            $error = error_get_last();
+            if (!empty($error)) {
+                var_dump($error);
+            }
+        });
+
+        //注册数据库协程连接池
+        PoolManager::getInstance()->register(MysqlPool::class, 20);
+        //调用链追踪器设置Token获取值为协程id
+        TrackerManager::getInstance()->setTokenGenerator(function () {
+            return \Swoole\Coroutine::getuid();
+        });
+        //每个链结束的时候，都会执行的回调
+        TrackerManager::getInstance()->setEndTrackerHook(function ($token, Tracker $tracker) {
+            Logger::getInstance()->console((string)$tracker);
+        });
+
+        //引用自定义文件配置
+        self::loadConf();
+
     }
+
+    public static function mainServerCreate(EventRegister $register)
+    {
+        //注册onWorkerStart回调事件
+        $register->add($register::onWorkerStart, function (\swoole_server $server, int $workerId) {
+            var_dump('worker:' . $workerId . 'start');
+        });
+        //注册自定义进程
+        ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTest('test_process'))->getProcess());
+
+        //添加子服务监听
+        $subPort = ServerManager::getInstance()->getSwooleServer()->addListener('0.0.0.0', 9502, SWOOLE_TCP);
+        $subPort->on('receive', function (\swoole_server $server, int $fd, int $reactor_id, string $data) {
+            echo "subport on receive \n";
+        });
+        $subPort->on('connect', function (\swoole_server $server, int $fd, int $reactor_id) {
+            echo "subport on connect \n";
+        });
+
+        //主swoole服务修改配置
+        ServerManager::getInstance()->getSwooleServer()->set(['worker_num' => 1, 'task_worker_num' => 1]);
+
+        /*TODO
+          ****************** websocket ********************
+        */
+
+        /*
+         * ***************** RPC ********************
+        */
+        $conf = new \EasySwoole\Rpc\Config();
+        $conf->setSubServerMode(true);//设置为子务模式
+        /*
+         * 开启服务自动广播，可以修改广播地址，实现定向ip组广播
+         */
+        $conf->setEnableBroadcast(true);
+        $conf->getBroadcastList()->set([
+            '255.255.255.255:9602'
+        ]);
+
+        /*
+         * 注册配置项和服务注册
+         */
+        RpcServer::getInstance($conf, Trigger::getInstance());
+        try {
+            RpcServer::getInstance()->registerService('serviceOne', ServiceOne::class);
+            RpcServer::getInstance()->registerService('serviceTwo', RpcTwo::class);
+            RpcServer::getInstance()->attach(ServerManager::getInstance()->getSwooleServer());
+        } catch (\Throwable $throwable) {
+            Logger::getInstance()->console($throwable->getMessage());
+        }
+        /**
+         * **************** tcp控制器 **********************
+         */
+        $server = ServerManager::getInstance()->getSwooleServer();
+        $subPort = $server->addListener('0.0.0.0', 9503, SWOOLE_TCP);
+        $subPort->set(
+            ['open_length_check' => false]//不验证数据包
+        );
+        $socketConfig = new \EasySwoole\Socket\Config();
+        $socketConfig->setType($socketConfig::TCP);
+        $socketConfig->setParser(new \App\TcpController\Parser());
+        //设置解析异常时的回调,默认将抛出异常到服务器
+        $socketConfig->setOnExceptionHandler(function (Server $server, $throwable, $raw, Tcp $client, $response) {
+            $server->send($client->getFd(), 'bye');
+            $server->close($client->getFd());
+        });
+        $dispatch = new \EasySwoole\Socket\Dispatcher($socketConfig);
+        $subPort->on('receive', function (\swoole_server $server, int $fd, int $reactor_id, string $data) use ($dispatch) {
+            $dispatch->dispatch($server, $data, $fd, $reactor_id);
+        });
+
+        /**
+         * **************** websocket控制器 **********************
+         */
+        // 创建一个 Dispatcher 配置
+        $conf = new \EasySwoole\Socket\Config();
+        // 设置 Dispatcher 为 WebSocket 模式
+        $conf->setType($conf::WEB_SOCKET);
+        // 设置解析器对象
+        $conf->setParser(new WebSocketParser());
+        // 创建 Dispatcher 对象 并注入 config 对象
+        $dispatch = new Dispatcher($conf);
+        // 给server 注册相关事件 在 WebSocket 模式下  message 事件必须注册 并且交给 Dispatcher 对象处理
+        $register->set(EventRegister::onMessage, function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) use ($dispatch) {
+            $dispatch->dispatch($server, $frame->data, $frame);
+        });
+        //自定义握手
+        $websocketEvent = new WebSocketEvent();
+        $register->set(EventRegister::onHandShake, function (\swoole_http_request $request, \swoole_http_response $response) use ($websocketEvent) {
+            $websocketEvent->onHandShake($request, $response);
+        });
+
+
+        /**
+         * **************** udp服务 **********************
+         */
+
+        //新增一个udp服务
+        $server = ServerManager::getInstance()->getSwooleServer();
+        $subPort = $server->addListener('0.0.0.0', '9605', SWOOLE_UDP);
+        $subPort->on('packet', function (\swoole_server $server, string $data, array $client_info) {
+            echo "udp packet:{$data}";
+        });
+        //udp客户端
+        //添加自定义进程做定时udp发送
+        $server->addProcess(new \swoole_process(function (\swoole_process $process) {
+            //服务正常关闭
+            $process::signal(SIGTERM, function () use ($process) {
+                $process->exit(0);
+            });
+            //每隔5秒发送一次数据
+            \Swoole\Timer::tick(5000, function () {
+                if ($sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP)) {
+                    socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, true);
+                    $msg = '123456';
+                    socket_sendto($sock, $msg, strlen($msg), 0, '255.255.255.255', 9605);//广播地址
+                    socket_close($sock);
+                }
+            });
+        }));
+
+
+        /**
+         * **************** 异步客户端 **********************
+         */
+        //纯原生异步
+        $register->add(EventRegister::onWorkerStart,function ($ser,$workerId){
+            if($workerId == 0){
+                $client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
+                $client->on("connect", function(\swoole_client $cli) {
+                    $cli->send("test:delay");
+                });
+                $client->on("receive", function(\swoole_client $cli, $data){
+                    echo "Receive: $data";
+                    $cli->send("test:delay");
+                    sleep(1);
+                });
+                $client->on("error", function(\swoole_client $cli){
+                    echo "error\n";
+                });
+                $client->on("close", function(\swoole_client $cli){
+                    echo "Connection close\n";
+                });
+                $client->connect('127.0.0.1', 9502);
+            }
+        });
+
+
+        // TODO: Implement mainServerCreate() method.
+    }
+
 
     /**
-     * 创建主服务
-     * 除了主服务之外还可以在这里创建额外的端口监听
-     * @param ServerManager $server
-     * @param EventRegister $register
+     * 引用自定义配置文件
+     * @throws \Exception
      */
-    public static function mainServerCreate(ServerManager $server, EventRegister $register): void
+    public static function loadConf()
     {
-
-        // 数据库协程连接池
-        // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/CoroutinePool/mysql_pool.html?h=pool
-        // ------------------------------------------------------------------------------------------
-        if (version_compare(phpversion('swoole'), '2.1.0', '>=')) {
-
-            PoolManager::getInstance()->registerPool(MysqlPool2::class, 3, 10);
-        }
-
-        // 普通事件注册 swoole 中的各种事件都可以按这个例子来进行注册
-        // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/Core/event_register.html
-        // ------------------------------------------------------------------------------------------
-        $register->add($register::onWorkerStart, function (\swoole_server $server, $workerId) {
-            //为第一个进程添加定时器
-            if ($workerId == 0) {
-                # 启动定时器
-                Timer::loop(10000, function () {
-                    Logger::getInstance()->console('timer run');  # 写日志到控制台
-                    ProcessManager::getInstance()->writeByProcessName('test', time());  # 向自定义进程发消息
-                });
-            }
-        });
-
-        // 创建自定义进程 上面定时器中发送的消息 由 Test 类进行处理
-        // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/Advanced/process.html
-        // ------------------------------------------------------------------------------------------
-        ProcessManager::getInstance()->addProcess('test', Test::class);
-
-        // 天天都在问的服务热重启 单独启动一个进程处理
-        // ------------------------------------------------------------------------------------------
-        ProcessManager::getInstance()->addProcess('autoReload', Inotify::class);
-
-        // WebSocket 以控制器的方式处理业务逻辑
-        // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/Sock/websocket.html
-        // ------------------------------------------------------------------------------------------
-        EventHelper::registerDefaultOnMessage($register, WebSock::class);
-
-        // 多端口混合监听
-        // @see https://www.easyswoole.com/Manual/2.x/Cn/_book/Event/main_server_create.html
-        // @see https://wiki.swoole.com/wiki/page/525.html
-        // ------------------------------------------------------------------------------------------
-        $tcp = $server->addServer('tcp', 9502);
-
-        # 第二参数为TCP控制器 和WS一样 都可以使用控制器方式来解析收到的报文并处理
-        # 第三参数为错误回调 可以不传入 当无法正确解析 或者是解析出来的控制器不在的时候会调用
-        EventHelper::registerDefaultOnReceive($tcp, Tcp::class, function ($errorType, $clientData, \EasySwoole\Core\Socket\Client\Tcp $client) {
-            TaskManager::async(function () use ($client) {
-                sleep(3);
-                \EasySwoole\Core\Socket\Response::response($client, "Bye");
-                ServerManager::getInstance()->getServer()->close($client->getFd());
-            });
-            return "{$errorType} and going to close";
-        });
-
-        // 自定义WS握手处理 可以实现在握手的时候 鉴定用户身份
-        // @see https://wiki.swoole.com/wiki/page/409.html
-        // ------------------------------------------------------------------------------------------
-        $register->add($register::onHandShake, function (\swoole_http_request $request, \swoole_http_response $response) {
-            if (isset($request->cookie['token'])) {
-                $token = $request->cookie['token'];
-                if ($token == '123') {
-                    // 如果取得 token 并且验证通过 则进入 ws rfc 规范中约定的验证过程
-                    if (!isset($request->header['sec-websocket-key'])) {
-                        // 需要 Sec-WebSocket-Key 如果没有拒绝握手
-                        var_dump('shake fai1 3');
-                        $response->end();
-                        return false;
-                    }
-                    if (0 === preg_match('#^[+/0-9A-Za-z]{21}[AQgw]==$#', $request->header['sec-websocket-key'])
-                        || 16 !== strlen(base64_decode($request->header['sec-websocket-key']))
-                    ) {
-                        //不接受握手
-                        var_dump('shake fai1 4');
-                        $response->end();
-                        return false;
-                    }
-
-                    $key     = base64_encode(sha1($request->header['sec-websocket-key'] . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
-                    $headers = array(
-                        'Upgrade'               => 'websocket',
-                        'Connection'            => 'Upgrade',
-                        'Sec-WebSocket-Accept'  => $key,
-                        'Sec-WebSocket-Version' => '13',
-                        'KeepAlive'             => 'off',
-                    );
-                    foreach ($headers as $key => $val) {
-                        $response->header($key, $val);
-                    }
-                    //接受握手  发送验证后的header   还需要101状态码以切换状态
-                    $response->status(101);
-                    var_dump('shake success at fd :' . $request->fd);
-                    $response->end();
-                } else {
-                    // 令牌不正确的情况 不接受握手
-                    var_dump('shake fail 2');
-                    $response->end();
+        $files = File::scanDirectory(EASYSWOOLE_ROOT . '/App/Config');
+        if (is_array($files)) {
+            foreach ($files['files'] as $file) {
+                $fileNameArr = explode('.', $file);
+                $fileSuffix = end($fileNameArr);
+                if ($fileSuffix == 'php') {
+                    Config::getInstance()->loadFile($file);
+                } elseif ($fileSuffix == 'env') {
+                    Config::getInstance()->loadEnv($file);
                 }
-            } else {
-                // 没有携带令牌的情况 不接受握手
-                var_dump('shake fai1 1');
-                $response->end();
             }
-        });
+        }
     }
 
-    public static function onRequest(Request $request, Response $response): void
+    public static function onRequest(Request $request, Response $response): bool
     {
-        // 每个请求进来都先执行这个方法 可以作为权限验证 前置请求记录等
-        $request->withAttribute('requestTime', microtime(true));
+        //为每个请求做标记
+        TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
+        if ((0/*auth fail伪代码,拦截该请求,判断是否有效*/)) {
+            $response->end(true);
+            return false;
+        }
+        // TODO: Implement onRequest() method.
+        return true;
     }
 
-    public static function afterAction(Request $request, Response $response): void
+    public static function afterRequest(Request $request, Response $response): void
     {
-        // 每个请求结束后都执行这个方法 可以作为后置日志等
-        $start = $request->getAttribute('requestTime');
-        $spend = round(microtime(true) - $start, 3);
-        Logger::getInstance()->console("request :{$request->getUri()->getPath()} take {$spend}");
+        // TODO: Implement afterAction() method.
+        //tracker结束
+        TrackerManager::getInstance()->closeTracker();
     }
+
+    public static function onReceive(\swoole_server $server, int $fd, int $reactor_id, string $data): void
+    {
+        echo "TCP onReceive.\n";
+
+    }
+
 }
