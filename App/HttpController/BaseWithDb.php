@@ -13,17 +13,10 @@ use App\Utility\Pool\MysqlObject;
 use App\Utility\Pool\MysqlPool;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Config;
-use EasySwoole\Http\AbstractInterface\Controller;
 
-abstract class BaseWithDb extends Controller
+abstract class BaseWithDb extends Base
 {
     protected $db;
-
-    function index()
-    {
-        // TODO: Implement index() method.
-        $this->actionNotFound('index');
-    }
 
     function onRequest(?string $action): ?bool
     {

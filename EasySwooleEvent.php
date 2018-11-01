@@ -10,6 +10,7 @@ namespace EasySwoole\EasySwoole;
 
 
 use App\Utility\Pool\MysqlPool;
+use App\Utility\Pool\RedisPool;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
@@ -25,6 +26,10 @@ class EasySwooleEvent implements Event
 
         // 注册mysql数据库连接池
         PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'));
+
+        // 注册redis连接池
+
+        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
     }
 
     public static function mainServerCreate(EventRegister $register)
