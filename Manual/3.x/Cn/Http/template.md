@@ -8,6 +8,11 @@
 | think-template | ThinkPHP 5.1 官方分离的模板引擎 | [GitHub](https://github.com/top-think/think-template) | [官方手册](https://www.kancloud.cn/manual/thinkphp5/118122) |
 |     Blade      |     Laravel的模板引擎组件     | [GitHub](https://github.com/duncan3dc/blade) | [官方手册](https://laravel-china.org/docs/laravel/5.6/blade) |
 
+## demo
+demo提供了tp-orm的封装:  
+[TpViewController.php](https://github.com/easy-swoole/demo/blob/3.x/App/HttpController/TpViewController.php)  
+ [TpView.php](https://github.com/easy-swoole/demo/blob/3.x/App/HttpController/TpViewController.php)
+
 ## 引入支持库
 
 无论使用哪个模板引擎，首先都要引入模板引擎的支持库文件，我们推荐使用 Composer 进行第三方组件包的管理，请确保已经正确安装了 Composer 然后执行下面对应的命令，引入引擎的支持库包

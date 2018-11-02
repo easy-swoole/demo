@@ -65,6 +65,7 @@
     - [HTTP中使用protobuf](Othe/Protobuf.md)
     - [队列消费/自定义进程问题](Othe/Process.md)
     - [Redis\Kafka订阅](Othe/RedisSubscribe.md)
+    - [更新记录](UpdateLog/)
 - 开发示例
     - [微信小程序](Example/miniProgram.md)
     - [抢红包场景](Example/readPacket.md)

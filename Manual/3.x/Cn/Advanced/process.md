@@ -1,5 +1,6 @@
 # 自定义进程
-EasySwoole中支持添加用户自定义的swoole process。
+EasySwoole中支持添加用户自定义的swoole process。  
+demo地址:https://github.com/easy-swoole/demo/tree/3.x
 
 ## 抽象父类
 任何的自定义进程，都应该继承自EasySwoole\EasySwoole\Swoole\Process\AbstractProcess,
@@ -188,5 +189,5 @@ class Test extends AbstractProcess
     }
 }
 ```
-以上代码[直达连接](https://github.com/HeKunTong/easyswoole3_demo/blob/master/App/Process/Test.php)，
+以上代码[直达连接](https://github.com/easy-swoole/demo/blob/3.x/App/Process/ProcessTest.php)，
 至于如何使用（测试），请见demo中的EasySwooleEvent.php
