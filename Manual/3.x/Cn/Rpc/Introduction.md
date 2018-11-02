@@ -1,4 +1,5 @@
-#EasySwoole RPC组件
+#EasySwoole RPC组件  
+demo地址:https://github.com/easy-swoole/demo/tree/3.x
 
  - 协程调度
  - 服务自动发现

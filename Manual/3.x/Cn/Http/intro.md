@@ -1,5 +1,6 @@
 # HTTP 组件
-EasySwoole 3采用了独立组件的形式，将各个小模块拆分。HTTP独立组件地址：https://github.com/easy-swoole/http
+EasySwoole 3采用了独立组件的形式，将各个小模块拆分。HTTP独立组件地址：https://github.com/easy-swoole/http  
+demo地址[HttpController](https://github.com/easy-swoole/demo/tree/3.x/App/HttpController)
 
 ## 独立测试代码
 ### HTTP.php
