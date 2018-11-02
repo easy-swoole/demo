@@ -67,6 +67,7 @@
     - [Redis\Kafka订阅](Othe/RedisSubscribe.md)
     - [更新记录](UpdateLog/Introduction.md)
 - 开发示例
+    - [京东爬虫](Example/jd.md)
     - [微信小程序](Example/miniProgram.md)
     - [抢红包场景](Example/readPacket.md)
 - 其他问题
