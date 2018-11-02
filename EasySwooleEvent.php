@@ -14,6 +14,7 @@ use App\Rpc\RpcServer;
 use App\Rpc\RpcTwo;
 use App\Rpc\ServiceOne;
 use App\Utility\Pool\MysqlPool;
+use App\Utility\Pool\RedisPool;
 use App\Utility\TrackerManager;
 use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
@@ -48,8 +49,7 @@ class EasySwooleEvent implements Event
             }
         });
 
-        //注册数据库协程连接池
-        PoolManager::getInstance()->register(MysqlPool::class, 20);
+
         //调用链追踪器设置Token获取值为协程id
         TrackerManager::getInstance()->setTokenGenerator(function () {
             return \Swoole\Coroutine::getuid();
@@ -61,6 +61,13 @@ class EasySwooleEvent implements Event
 
         //引用自定义文件配置
         self::loadConf();
+
+        // 注册mysql数据库连接池
+        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'));
+
+        // 注册redis连接池
+
+        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
 
     }
 

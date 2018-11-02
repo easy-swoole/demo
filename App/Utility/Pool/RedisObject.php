@@ -1,21 +1,24 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: yf
- * Date: 2018/10/26
- * Time: 7:23 PM
+ * User: root
+ * Date: 18-11-1
+ * Time: 下午2:33
  */
 
 namespace App\Utility\Pool;
 
 
 use EasySwoole\Component\Pool\PoolObjectInterface;
+use Swoole\Coroutine\Redis;
 
-class RedisObject extends \Redis implements PoolObjectInterface
+class RedisObject extends Redis implements PoolObjectInterface
 {
+
     function gc()
     {
         // TODO: Implement gc() method.
+        // 回收
         $this->close();
     }
 
