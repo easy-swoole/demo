@@ -12,3 +12,7 @@ composer.lock
 easyswoole.install
 src/swoole_log.txt
 
+dev.env
+
+produce.env
+
