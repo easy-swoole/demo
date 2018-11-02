@@ -82,7 +82,7 @@ if [ ! -n "$DIR" ] ;then
 fi
 
 php easyswoole stop
-php easyswoole start --d
+php easyswoole start d
 
 fswatch -r $DIR | while read file
 do
