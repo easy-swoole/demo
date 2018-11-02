@@ -1,5 +1,5 @@
 ## Mysql协程连接池
-demo中有封装好的mysql连接池，[MysqlPool.php](https://github.com/HeKunTong/easyswoole3_demo/blob/master/App/Utility/Pools/MysqlPool.php)，复制demo中的MysqlPool.php并放入App/Utility中即可使用
+demo中有封装好的mysql连接池，[MysqlPool.php](https://github.com/easy-swoole/demo/blob/3.x/Application/Utility/Pool/MysqlPool.php)，复制demo中的MysqlPool.php并放入App/Utility中即可使用
 
 ### 添加数据库配置
 在env中添加配置信息：

@@ -4,7 +4,7 @@
 ```php
 sericeName:actionName:args
 ```
-## 实现解析器
+## 实现解析器[Parser.php](https://github.com/easy-swoole/demo/blob/3.x/App/TcpController/Parser.php)
 ```php
 <?php
 /**
@@ -42,7 +42,7 @@ class Parser implements ParserInterface
     }
 }
 ```
-## 实现一个控制服务
+## 实现一个控制服务[Test.php](https://github.com/easy-swoole/demo/blob/3.x/App/TcpController/Test.php)
 ```php
 <?php
 /**
