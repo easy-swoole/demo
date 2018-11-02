@@ -1,30 +1,31 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: root
- * Date: 18-11-1
- * Time: 下午2:33
+ * User: yf
+ * Date: 2018/10/26
+ * Time: 4:08 PM
  */
 
 namespace App\Utility\Pool;
 
 
 use EasySwoole\Component\Pool\PoolObjectInterface;
-use Swoole\Coroutine\Redis;
+use EasySwoole\Mysqli\Mysqli;
 
-class RedisObject extends Redis implements PoolObjectInterface
+class MysqlDbObject extends Mysqli implements PoolObjectInterface
 {
 
     function gc()
     {
         // TODO: Implement gc() method.
-        // 回收
-        $this->close();
+        $this->resetDbStatus();
+        $this->getMysqlClient()->close();
     }
 
     function objectRestore()
     {
         // TODO: Implement objectRestore() method.
+        $this->resetDbStatus();
     }
 
     function beforeUse(): bool

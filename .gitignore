@@ -1,18 +1,12 @@
-# ide
-/.idea/
+.idea
+/vendor
+/composer.lock
 
-# composer
-/vendor/
-composer.lock
-
-# easySwoole
 /Log/
 /Temp/
+/Temp2/
 /easyswoole
-easyswoole.install
-src/swoole_log.txt
 
 dev.env
 
 produce.env
-

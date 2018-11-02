@@ -1,24 +1,22 @@
 {
-    "name": "easyswoole3/demo",
-    "description": "demo",
-    "type": "project",
+    "name": "easyswoole/demo",
+    "authors": [
+        {
+            "name": "如果的如果",
+            "email": "291323003@qq.com"
+        }
+    ],
     "require": {
         "easyswoole/easyswoole": "3.x-dev",
-        "easyswoole/mysqli": "^1.0"
+        "easyswoole/mysqli": "^1.0",
+        "easyswoole/rpc": "^1.0"
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master"
     },
-    "license": "",
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://packagist.laravel-china.org"
-        }
-    },
     "autoload": {
         "psr-4": {
-            "App\\": "App/"
+          "App\\": "App/"
         }
     }
 }
