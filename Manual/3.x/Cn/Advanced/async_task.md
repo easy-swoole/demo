@@ -89,7 +89,23 @@ function index()
 });
 ```
 
+## 自定义进程投递
 
+由于自定义进程的特殊性，不能直接调用Swoole的异步任务相关方法进行异步任务投递，框架已经封装好了相关的方法方便异步任务投递，请看下面的例子
+
+```php
+    public function run(Process $process)
+    {
+        // 直接投递闭包
+        TaskManager::processAsync(function () {
+            echo "process async task run on closure!\n";
+        });
+
+        // 投递任务类
+        $taskClass = new TaskClass('task data');
+        TaskManager::processAsync($taskClass);
+    }
+```
 
 ## 任务并发执行
 
