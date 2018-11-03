@@ -147,7 +147,7 @@ static function sync($task, $timeout = 0.5, $taskWorkerId = -1)
 
 ```php
 /**
- * 并发执行多个任务
+ * 异步进程内投递任务
  * @param array $taskList 需要执行的任务列表
  * @param float $timeout  任务执行超时
  * @return array|bool 每个任务的执行结果

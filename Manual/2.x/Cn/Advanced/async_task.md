@@ -157,7 +157,7 @@ static function barrier(array $taskList, $timeout = 0.5)
 
 ```php
 /**
- * 并发执行多个任务
+ * 异步进程内投递任务
  * @param array $task 需要执行的异步任务(可以直接投递闭包或任务模板类)
  * @return bool|string 投递成功 返回整数 $task_id 投递失败 返回 false
  */
