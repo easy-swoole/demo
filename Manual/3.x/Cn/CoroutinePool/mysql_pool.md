@@ -5,9 +5,9 @@ demo中有封装好的mysql连接池，[MysqlPool.php](https://github.com/easy-s
 在env中添加配置信息：
 ```dotenv
 MYSQL.host = 127.0.0.1   // 数据库地址
-MYSQL.username = root    // 数据库用户名   
+MYSQL.user = root        // 数据库用户名   
 MYSQL.password = root    // 数据库密码
-MYSQL.db = db            // 数据库库名
+MYSQL.database = db      // 数据库库名
 MYSQL.port = 3306        // 数据库端口
 ```
 在EasySwooleEvent注册该连接池
