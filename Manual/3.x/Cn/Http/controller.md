@@ -126,13 +126,14 @@ http://localhost:9501/
 
 - getActionName():?string
 
-  获得当前被请求的方法名称
+  获得当前被请求的方法名称,可用于记录日志,或者在使用模板引擎时,调用对应的方法模板文件
 
-- writeJson($statusCode = 200,$result = null,$msg = null)
+- writeJson($statusCode = 200,$result = null,$msg = null)  
 
-  直接输出 Json 数据到浏览器
-- gc()
-  当该控制器被回收进入控制器对象池的时候执行的事件
+  直接输出 Json 数据到浏览器,当控制器作为api接口时,可直接调用该方法进行标准化的json输出
+  
+- gc()  
+  当该控制器被回收进入控制器对象池的时候执行的事件,当你在控制器有保存属性时,需要在回收之前清空属性防止下次请求属性复用
 
 ## 请求和响应
 
@@ -140,8 +141,8 @@ http://localhost:9501/
 
 - request()
 
-  获取到本次访问的 EasySwoole\Http\Request 对象
+  获取到本次访问的 EasySwoole\Http\Request 对象,该对象详细文档[点击查看](request.md)
 
 - response()
 
-  获取到本次访问的 EasySwoole\Http\Response 对象
+  获取到本次访问的 EasySwoole\Http\Response 对象,该对象详细文档[点击查看](response.md)

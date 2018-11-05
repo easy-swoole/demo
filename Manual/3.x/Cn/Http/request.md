@@ -31,7 +31,7 @@ $who = $request->getCookieParams('who');
 var_dump($who);
 ```
 ### getUploadedFiles()
-该方法用于获取客户端上传的全部文件。
+该方法用于获取客户端上传的全部文件信息。
 ```php
 $data = $request->getUploadFiles();
 var_dump($data);
