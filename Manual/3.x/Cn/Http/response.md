@@ -17,13 +17,17 @@ $response()->redirect("/newURL/index.html");
 ```
 ### setCookie
 向客户端设置一个Cookie，用法与原生的setCookie一致。
-
 ### getSwooleResponse
 用于获取原始的swoole_http_response实例。
 ### end
-结束对该次HTTP请求响应
+结束对该次HTTP请求响应,结束之后,无法再次向客户端响应数据.
 ### isEndResponse
-判断该次HTTP请求是否结束响应。
+判断该次HTTP请求是否结束响应,当你不知道是否已经结束响应时,可通过该方法判断是否能再次向客户端响应数据:
+```php
+if(!$this->response()->isEndResponse()){
+    $this->response()->write('继续发送数据');
+}
+```
 ## PSR-7规范Response对象中常用方法
 ### withStatus
 向客户端发送HTTP状态码。
