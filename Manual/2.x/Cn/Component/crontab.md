@@ -3,7 +3,7 @@ EasySwoole支持用户根据Crontab规则去添加定时器。时间最小粒度
 
 ## 实现原理
 在主进程中，注册好各个任务规则和回调，服务启动后，在自定义进程内，通过定时器检测有没有待执行任务，若有则投递给异步进程异步执行。
-解析规则通过https://github.com/dragonmantank/cron-expression实现。
+解析规则通过https://github.com/dragonmantank/cron-expression 实现。
 
 ## 示例代码
 EasySwooleEvent.php中
