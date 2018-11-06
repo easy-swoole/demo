@@ -10,6 +10,7 @@
     },
     "links": {
         "sidebar": {
+            "<i class='fa fa-fw fa-qq'></i> <strong> VIP交流群 579434607</strong>": "//jq.qq.com/?_wv=1027&k=5bxu3cG",
             "<i class='fa fa-fw fa-qq'></i> <strong> 在线交流群 633921431</strong>": "//shang.qq.com/wpa/qunwpa?idkey=35c84e12f7784153501e3c43c9f2454d3235a7f55371458a24f0c32320c99548",
             "<i class='fa fa-fw fa-comments-o'></i>  <strong>WebSocket 调试工具</strong>": "http://easyswoole.com/wstool.html"
         }
@@ -43,16 +44,16 @@
             "gitbookConfigURL": "https://www.easyswoole.com/Manual/2.x/Cn/book.json",
             "options": [
                 {
+                    "value": "https://www.easyswoole.com/Manual/3.x/Cn/_book/",
+                    "text": "EASYSWOOLE v3 中文手册"
+                },
+                {
                     "value": "https://www.easyswoole.com/Manual/1.x/Cn/_book/",
                     "text": "EASYSWOOLE v1 中文手册"
                 },
                 {
                     "value": "https://www.easyswoole.com/Manual/2.x/Cn/_book/",
                     "text": "EASYSWOOLE v2 中文手册"
-                },
-                {
-                    "value": "https://www.easyswoole.com/Manual/3.x/Cn/_book/",
-                    "text": "EASYSWOOLE v3 中文手册"
                 }
             ]
         },

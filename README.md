@@ -16,5 +16,8 @@
 
   - 持续和深入地开发
   - 文档和社区的建设和维护
-  
+
+  - VIP交流群 [579434607](//jq.qq.com/?_wv=1027&k=5bxu3cG)
+  - 在线交流群 [633921431](//shang.qq.com/wpa/qunwpa?idkey=35c84e12f7784153501e3c43c9f2454d3235a7f55371458a24f0c32320c99548)
+
 [捐赠链接](https://www.easyswoole.com/Manual/2.x/Cn/_book/donate.html)
