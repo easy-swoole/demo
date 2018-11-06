@@ -1,5 +1,5 @@
 ##方法列表
-
+>注意,下文的TrackerManager::getInstance()调用模式需要自行增加,[trace介绍](Introduction.md)有说明
 ###getTrackerToken()
 获取链追踪器token
 ```php
