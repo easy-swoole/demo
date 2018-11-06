@@ -87,7 +87,7 @@ php easyswoole start d
 fswatch -r $DIR | while read file
 do
    echo "${file} was modify" >> ./Temp/reload.log 2>&1
-   php easyswoole reload
+   php easyswoole reload all
 done
 ```
 使用方法： `./start.sh ./App` 
