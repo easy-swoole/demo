@@ -44,6 +44,7 @@
     - [自定义进程](Advanced/process.md)
     - [定时器](Advanced/timer.md)
 - 系统组件
+    - [Crontab](Component/crontab.md)
     - Spl
         - [Array](Component/Spl/array.md)
         - [Bean](Component/Spl/bean.md)
