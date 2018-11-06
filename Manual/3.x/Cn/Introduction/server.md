@@ -79,12 +79,12 @@ if [ ! -n "$DIR" ] ;then
 fi
 
 php easyswoole stop
-php easyswoole start -d
+php easyswoole start d
 
-fswatch $DIR | while read file
+fswatch -r $DIR | while read file
 do
    echo "${file} was modify" >> ./Temp/reload.log 2>&1
-   php easyswoole reload
+   php easyswoole reload all
 done
 ```
 使用方法： `./start.sh ./App` 
