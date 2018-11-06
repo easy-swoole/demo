@@ -90,11 +90,7 @@ class EasySwooleEvent implements Event
         });
 
         //主swoole服务修改配置
-        ServerManager::getInstance()->getSwooleServer()->set(['worker_num' => 1, 'task_worker_num' => 1]);
-
-        /*TODO
-          ****************** websocket ********************
-        */
+//        ServerManager::getInstance()->getSwooleServer()->set(['worker_num' => 1, 'task_worker_num' => 1]);
 
         /*
          * ***************** RPC ********************
