@@ -9,6 +9,8 @@
 namespace EasySwoole\EasySwoole;
 
 
+use App\Crontab\TaskOne;
+use App\Crontab\TaskTwo;
 use App\Process\ProcessTest;
 use App\Rpc\RpcServer;
 use App\Rpc\RpcTwo;
@@ -20,6 +22,7 @@ use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Pool\PoolManager;
+use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
@@ -75,7 +78,7 @@ class EasySwooleEvent implements Event
     {
         //注册onWorkerStart回调事件
         $register->add($register::onWorkerStart, function (\swoole_server $server, int $workerId) {
-            var_dump('worker:' . $workerId . 'start');
+            // var_dump('worker:' . $workerId . 'start');
         });
         //注册自定义进程
         ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTest('test_process'))->getProcess());
@@ -216,6 +219,12 @@ class EasySwooleEvent implements Event
                 $client->connect('127.0.0.1', 9502);
             }
         });
+
+        /**
+         * **************** Crontab任务计划 **********************
+         */
+        Crontab::getInstance()->addTask(TaskOne::class);
+        Crontab::getInstance()->addTask(TaskTwo::class);
 
 
         // TODO: Implement mainServerCreate() method.
