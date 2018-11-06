@@ -3,9 +3,31 @@ demo地址 https://github.com/easy-swoole/demo/tree/3.x
 
 es3.x提供了trace代码追踪组件,可在任意位置调用该组件,追踪打印数据,示例:   
 
+>为了使用方便,我们需要增加TrackerManager.php文件,使其支持单例调用(注意命名空间):
+```php
+<?php 
+/**
+ * Created by PhpStorm.
+ * User: yf
+ * Date: 2018/8/15
+ * Time: 上午12:02
+ */
+
+namespace App\Utility;
+
+use EasySwoole\Component\Singleton;
+
+class TrackerManager extends \EasySwoole\Trace\TrackerManager
+{
+    use Singleton;
+}
+```
+
+
+
+
 ```php
 //调用链追踪器设置Token获取值为协程id
-```php
 <?php
 TrackerManager::getInstance()->setTokenGenerator(function () {
     return \Swoole\Coroutine::getuid();
@@ -32,7 +54,7 @@ $trackerPoint = $tracker->setPoint('查询用户余额',[
 //$mode->func();
 usleep(3000);
 $tracker->endPoint('查询用户余额',$trackerPoint::STATUS_SUCCESS,["调用成功"]);
-$this->response()->write('call trace');
+$this->response()->write('call trace');//$this->response()在控制器中调用
 
 ```
 

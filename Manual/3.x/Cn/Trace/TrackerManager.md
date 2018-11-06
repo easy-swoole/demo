@@ -1,5 +1,6 @@
 
 ## 方法列表  
+>注意,下文的TrackerManager::getInstance()调用模式需要自行增加,[trace介绍](Introduction.md)有说明
 
 ###  setTokenGenerator()  
 设置链追踪器的token生成方法,如果不设置该方法,则会抛出异常,示例:  
