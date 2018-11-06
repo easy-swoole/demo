@@ -5,7 +5,6 @@ es3.x提供了trace代码追踪组件,可在任意位置调用该组件,追踪�
 
 ```php
 //调用链追踪器设置Token获取值为协程id
-```php
 <?php
 TrackerManager::getInstance()->setTokenGenerator(function () {
     return \Swoole\Coroutine::getuid();
