@@ -31,7 +31,7 @@ $trackerPoint = $tracker->setPoint('查询用户余额',[
 //$mode->func();
 usleep(3000);
 $tracker->endPoint('查询用户余额',$trackerPoint::STATUS_SUCCESS,["调用成功"]);
-$this->response()->write('call trace');
+$this->response()->write('call trace');//$this->response()在控制器中调用
 
 ```
 
