@@ -22,6 +22,8 @@ class TrackerManager extends \EasySwoole\Trace\TrackerManager
     use Singleton;
 }
 ```
+在use Singleton之后,就可以使用单例模式在框架全局调用同一个Tracker,共用对象实例了,下面所有文档都使用了单例TrackerManager
+
 
 ```php
 //调用链追踪器设置Token获取值为协程id
