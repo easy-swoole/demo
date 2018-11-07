@@ -1,5 +1,5 @@
 ## Redis协程连接池
-demo中有封装好的redis连接池以及redis类，地址: https://github.com/easy-swoole/demo/blob/3.x/App/Utility/Pool/RedisPool.php，复制demo中的RedisPool.php和RedisObject.php并放入App/Utility中即可使用
+demo中有封装好的redis连接池以及redis类，地址: https://github.com/easy-swoole/demo/blob/3.x/App/Utility/Pool，复制demo中的RedisPool.php和RedisObject.php并放入App/Utility中即可使用
 
 ### 添加数据库配置
 在env中添加配置信息：
@@ -18,6 +18,10 @@ REDIS.POOL_TIME_OUT = 0.1
 
 PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
 ```
+
+### 注意
+连接池不是跨进程的，进程间的连接池连接数是相互独立的，默认最大值是10个；如果开了4个worker，最大连接数可以达到40个。
+
 
 ### 使用
 
