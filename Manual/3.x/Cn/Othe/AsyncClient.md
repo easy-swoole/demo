@@ -1,6 +1,8 @@
 # EasySwoole中使用异步客户端
 为方便查看代码,本文没有使用自定义进程类模板,如果需要开发,可查看[自定义进程](Process.md)  在run方法里面使用异步客户端
 >请不要直接在worker进程使用自定义进程,否则将出现问题  
+
+
 ## 纯原生异步
 ```php
  public static function mainServerCreate(EventRegister $register)
