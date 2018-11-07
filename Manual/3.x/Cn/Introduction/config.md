@@ -19,7 +19,7 @@ SERVER_NAME = EasySwoole
 MAIN_SERVER.HOST = 0.0.0.0
 MAIN_SERVER.PORT = 9501
 MAIN_SERVER.SERVER_TYPE = WEB_SERVER ## 可选为 SERVER  WEB_SERVER WEB_SOCKET_SERVER
-MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为TYPE_SERVER时有效
+MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为SERVER时有效
 MAIN_SERVER.RUN_MODEL = SWOOLE_PROCESS
 
 MAIN_SERVER.SETTING.task_worker_num = 8
@@ -37,7 +37,7 @@ LOG_DIR = null
   - **HOST**  -  默认Server监听的地址
   - **PORT**  -  默认Server监听的端口
   - **SERVER_TYPE**  -  默认Server的类型
-  - **SOCK_TYPE**  -  默认Server的Sock类型（ 仅 SERVER_TYPE 配置为 TYPE_SERVER 时有效 ）
+  - **SOCK_TYPE**  -  默认Server的Sock类型（ 仅 SERVER_TYPE 配置为 SERVER 时有效 ）
   - **RUN_MODEL**  -  默认Server的运行模式
   - **SETTING**  -  Swoole Server的运行配置（ 完整配置可见[Swoole文档](https://wiki.swoole.com/wiki/page/274.html) ）
     - **task_worker_num**  -  运行的 task_worker 进程数量
@@ -92,7 +92,7 @@ SERVER_NAME = EasySwoole
 MAIN_SERVER.HOST = 0.0.0.0
 MAIN_SERVER.PORT = 9501
 MAIN_SERVER.SERVER_TYPE = WEB_SERVER ## 可选为 SERVER  WEB_SERVER WEB_SOCKET_SERVER
-MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为TYPE_SERVER时有效
+MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为SERVER时有效
 MAIN_SERVER.RUN_MODEL = SWOOLE_PROCESS
 
 MAIN_SERVER.SETTING.task_worker_num = 8
@@ -191,3 +191,17 @@ class EasySwooleEvent implements Event
 在php easyswoole start命令下,默认为开发模式,加载dev.env  
 运行 php easyswoole start produce 命令时,为生产模式,加载produce.env
  
+
+## DI注入配置
+es3.x提供了几个Di参数配置,可自定义配置脚本错误异常处理回调,控制器命名空间,最大解析层级等
+```php
+<?php
+Di::getInstance()->set(SysConst::ERROR_HANDLER,function (){});//配置错误处理回调
+Di::getInstance()->set(SysConst::SHUTDOWN_FUNCTION,function (){});//配置脚本结束回调
+Di::getInstance()->set(SysConst::HTTP_CONTROLLER_NAMESPACE,'App\\HttpController\\');//配置控制器命名空间
+Di::getInstance()->set(SysConst::HTTP_CONTROLLER_MAX_DEPTH,5);//配置http控制器最大解析层级
+Di::getInstance()->set(SysConst::HTTP_EXCEPTION_HANDLER,function (){});//配置http控制器异常回调
+Di::getInstance()->set(SysConst::HTTP_CONTROLLER_POOL_MAX_NUM,15);//http控制器对象池最大数量
+```
+
+

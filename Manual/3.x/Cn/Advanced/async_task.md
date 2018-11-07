@@ -55,7 +55,7 @@ class Task extends \EasySwoole\EasySwoole\Swoole\Task\AbstractAsyncTask
     {
         // 需要注意的是task编号并不是绝对唯一
         // 每个worker进程的编号都是从0开始
-        // 所以 $fromWorkerId + $taskId 才是绝度唯一的编号
+        // 所以 $fromWorkerId + $taskId 才是绝对唯一的编号
         // !!! 任务完成需要 return 结果
     }
 
@@ -89,7 +89,7 @@ function index()
 });
 ```
 
-## 自定义进程投递
+## 在自定义进程投递异步任务
 
 由于自定义进程的特殊性，不能直接调用Swoole的异步任务相关方法进行异步任务投递，框架已经封装好了相关的方法方便异步任务投递，请看下面的例子
 
@@ -119,7 +119,7 @@ $tasks[] = function () { sleep(50000); }; // 任务3
 $results = \EasySwoole\EasySwoole\Swoole\Task\TaskManager::barrier($tasks, 0.5);
 ```
 
-> 注意：Barrier为阻塞等待执行，所有的任务会被分发到不同Task进程同步执行， 直到所有的任务执行结束或超时才返回全部结果，默认的任务超时为0.5秒，所以只有任务1和任务3能成功执行并返回结果
+> 注意：Barrier为阻塞等待执行，所有的任务会被分发到不同Task进程(需要有足够的task进程,否则也会阻塞)同步执行， 直到所有的任务执行结束或超时才返回全部结果，默认的任务超时为0.5秒，所以只有任务1和任务3能成功执行并返回结果
 
 ## 类函数参考
 
