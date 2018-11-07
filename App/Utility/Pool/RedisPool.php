@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: yf
- * Date: 2018/10/26
- * Time: 7:23 PM
+ * User: root
+ * Date: 18-11-1
+ * Time: 下午2:31
  */
 
 namespace App\Utility\Pool;
@@ -14,17 +14,18 @@ use EasySwoole\EasySwoole\Config;
 
 class RedisPool extends AbstractPool
 {
+
     protected function createObject()
     {
         // TODO: Implement createObject() method.
+        $config = Config::getInstance()->getConf('REDIS');
         $redis = new RedisObject();
-        $conf = Config::getInstance()->getConf('REDIS');
-        if( $redis->connect($conf['host'],$conf['port'])){
-            if(!empty($conf['auth'])){
-                $redis->auth($conf['auth']);
+        if ($redis->connect($config['host'], $config['port'])) {
+            if (!empty($config['auth'])) {
+                $redis->auth($config['auth']);
             }
             return $redis;
-        }else{
+        } else {
             return null;
         }
     }

@@ -48,6 +48,7 @@ class EasySwooleEvent implements Event
             }
         });
 
+
         //注册数据库协程连接池
         PoolManager::getInstance()->register(MysqlPool::class, 20);
         //调用链追踪器设置Token获取值为协程id
@@ -61,6 +62,13 @@ class EasySwooleEvent implements Event
 
         //引用自定义文件配置
         self::loadConf();
+
+        // 注册mysql数据库连接池
+        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'));
+
+        // 注册redis连接池
+
+        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
 
     }
 
@@ -84,10 +92,6 @@ class EasySwooleEvent implements Event
 
         //主swoole服务修改配置
         ServerManager::getInstance()->getSwooleServer()->set(['worker_num' => 1, 'task_worker_num' => 1]);
-
-        /*TODO
-          ****************** websocket ********************
-        */
 
         /*
          * ***************** RPC ********************
@@ -185,30 +189,39 @@ class EasySwooleEvent implements Event
         }));
 
 
-        /**
-         * **************** 异步客户端 **********************
-         */
-        //纯原生异步
-        $register->add(EventRegister::onWorkerStart,function ($ser,$workerId){
-            if($workerId == 0){
-                $client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
-                $client->on("connect", function(\swoole_client $cli) {
-                    $cli->send("test:delay");
+        ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function () {
+            $client = new \swoole_client(SWOOLE_SOCK_TCP);
+            $client->connect('192.168.159.1', 9502);
+            //该出send是为了触发服务端主动返回消息，方便直观测试
+            $client->send("test:delay");
+            Timer::loop(100, function () use ($client) {
+                $write = $error = array();
+                $read = [$client];
+                $n = swoole_client_select($read, $write, $error, 0.01);
+                if ($n > 0) {
+                    $data = trim($client->recv());
+                    if (!empty($data)) {
+                        $client->send("test:delay");
+                        var_dump('rec:' . $data);
+                    }
+                }
+            });
+            //本demo自定义进程采用的是原生写法,如果需要使用,请使用上文的自定义进程类模板开发
+            if (extension_loaded('pcntl')) {//异步信号,使用自定义进程类模板不需要该代码
+                pcntl_async_signals(true);
+                Process::signal(SIGTERM, function () {//信号回调,使用自定义进程类模板不需要该代码
+                    $this->swooleProcess->exit(0);
                 });
-                $client->on("receive", function(\swoole_client $cli, $data){
-                    echo "Receive: $data";
-                    $cli->send("test:delay");
-                    sleep(1);
-                });
-                $client->on("error", function(\swoole_client $cli){
-                    echo "error\n";
-                });
-                $client->on("close", function(\swoole_client $cli){
-                    echo "Connection close\n";
-                });
-                $client->connect('127.0.0.1', 9502);
             }
-        });
+        }));
+
+        /**
+         * **************** Crontab任务计划 **********************
+         */
+        // 开始一个定时任务计划
+        Crontab::getInstance()->addTask(TaskOne::class);
+        // 开始一个定时任务计划
+        Crontab::getInstance()->addTask(TaskTwo::class);
 
 
         // TODO: Implement mainServerCreate() method.

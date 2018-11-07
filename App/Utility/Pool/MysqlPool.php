@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: yf
- * Date: 2018/10/26
- * Time: 4:43 PM
+ * User: root
+ * Date: 18-11-1
+ * Time: 下午2:32
  */
 
 namespace App\Utility\Pool;
@@ -14,11 +14,12 @@ use EasySwoole\EasySwoole\Config;
 
 class MysqlPool extends AbstractPool
 {
+
     protected function createObject()
     {
         // TODO: Implement createObject() method.
-        $conf = Config::getInstance()->getConf("MYSQL");
-        $dbConf = new \EasySwoole\Mysqli\Config($conf);
-        return new MysqlDbObject($dbConf);
+        $config = Config::getInstance()->getConf('MYSQL');
+        $dbConf = new \EasySwoole\Mysqli\Config($config);
+        return new MysqlObject($dbConf);
     }
 }
