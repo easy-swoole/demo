@@ -10,6 +10,7 @@ namespace App\HttpController;
 
 
 use EasySwoole\EasySwoole\Config;
+use EasySwoole\EasySwoole\Console\TcpService;
 use EasySwoole\EasySwoole\Logger;
 use EasySwoole\EasySwoole\ServerManager;
 use EasySwoole\Http\AbstractInterface\Controller;

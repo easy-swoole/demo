@@ -16,6 +16,7 @@ use App\Rpc\RpcServer;
 use App\Rpc\RpcTwo;
 use App\Rpc\ServiceOne;
 use App\Task\TaskTest;
+use App\Utility\ConsoleCommand\Test;
 use App\Utility\ConsoleCommand\TrackerLogCategory;
 use App\Utility\ConsoleCommand\TrackerPushLog;
 use App\Utility\Pool\MysqlPool;
@@ -84,6 +85,7 @@ class EasySwooleEvent implements Event
         // 设置Tracker的推送配置和命令，以下配置请写入动态配置项
         CommandContainer::getInstance()->set('trackerPushLog',new TrackerPushLog());
         CommandContainer::getInstance()->set('trackerLogCategory',new TrackerLogCategory());
+        \EasySwoole\EasySwoole\Console\CommandContainer::getInstance()->set('Test',new Test());
         //默认开启，推送全部日志
         Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_LOG_CATEGORY',['all']);
         Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_PUSH_LOG',true);
