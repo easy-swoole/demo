@@ -1,6 +1,6 @@
 # 异步任务
 
-> 参考DEMO：[异步任务处理](https://github.com/HeKunTong/easyswoole3_demo/blob/master/App/HttpController/Index.php)
+> 参考DEMO：[异步任务处理](https://github.com/easy-swoole/demo/tree/3.x/App/HttpController/Task.php)
 
 > 异步任务管理器类：EasySwoole\EasySwoole\Swoole\Task\TaskManager
 
@@ -91,7 +91,8 @@ function index()
 
 ## 在自定义进程投递异步任务
 
-由于自定义进程的特殊性，不能直接调用Swoole的异步任务相关方法进行异步任务投递，框架已经封装好了相关的方法方便异步任务投递，请看下面的例子
+由于自定义进程的特殊性，不能直接调用Swoole的异步任务相关方法进行异步任务投递，框架已经封装好了相关的方法方便异步任务投递，请看下面的例子  
+>自定义进程投递异步任务没有finish回调  
 
 ```php
     public function run(Process $process)
