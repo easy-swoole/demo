@@ -14,14 +14,15 @@ class TaskTest extends AbstractAsyncTask
 {
     function run($taskData, $taskId, $fromWorkerId)
     {
+        echo "执行task模板任务\n";
         return 1;
         // TODO: Implement run() method.
     }
 
     function finish($result, $task_id)
     {
-        echo "异步任务完成\n";
-        file_get_contents('http://x.cn/Trace');
+        echo "task模板任务完成\n";
+        return 1;
         // TODO: Implement finish() method.
     }
 

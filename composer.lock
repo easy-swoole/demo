@@ -4,20 +4,75 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c781658ef9c3cb3b98755430b73e9a9",
+    "content-hash": "0c5e3993b70abe090d164e9995d6bde6",
     "packages": [
         {
-            "name": "easyswoole/component",
-            "version": "1.1.7",
+            "name": "dragonmantank/cron-expression",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/easy-swoole/component.git",
-                "reference": "a357fbd04ce3a8bf1751826bef61d432db573270"
+                "url": "https://github.com/dragonmantank/cron-expression.git",
+                "reference": "92a2c3768d50e21a1f26a53cb795ce72806266c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-swoole/component/zipball/a357fbd04ce3a8bf1751826bef61d432db573270",
-                "reference": "a357fbd04ce3a8bf1751826bef61d432db573270",
+                "url": "https://api.github.com/repos/dragonmantank/cron-expression/zipball/92a2c3768d50e21a1f26a53cb795ce72806266c5",
+                "reference": "92a2c3768d50e21a1f26a53cb795ce72806266c5",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cron\\": "src/Cron/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Chris Tankersley",
+                    "email": "chris@ctankersley.com",
+                    "homepage": "https://github.com/dragonmantank"
+                }
+            ],
+            "description": "CRON for PHP: Calculate the next or previous run date and determine if a CRON expression is due",
+            "keywords": [
+                "cron",
+                "schedule"
+            ],
+            "time": "2018-06-06T03:12:17+00:00"
+        },
+        {
+            "name": "easyswoole/component",
+            "version": "1.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easy-swoole/component.git",
+                "reference": "a54f893469ca39f96ef81b3e1b0acc8f5e9fd20d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easy-swoole/component/zipball/a54f893469ca39f96ef81b3e1b0acc8f5e9fd20d",
+                "reference": "a54f893469ca39f96ef81b3e1b0acc8f5e9fd20d",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -54,7 +109,7 @@
                 "framework",
                 "swoole"
             ],
-            "time": "2018-10-30T08:59:07+00:00"
+            "time": "2018-11-06T15:09:36+00:00"
         },
         {
             "name": "easyswoole/curl",
@@ -114,12 +169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/easy-swoole/easyswoole.git",
-                "reference": "b8f12f69535fe708e3f7cd45f295cea7d9e9fe09"
+                "reference": "5cac8158e53332758d731c62e5022d5faa53d39c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-swoole/easyswoole/zipball/b8f12f69535fe708e3f7cd45f295cea7d9e9fe09",
-                "reference": "b8f12f69535fe708e3f7cd45f295cea7d9e9fe09",
+                "url": "https://api.github.com/repos/easy-swoole/easyswoole/zipball/5cac8158e53332758d731c62e5022d5faa53d39c",
+                "reference": "5cac8158e53332758d731c62e5022d5faa53d39c",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -129,6 +184,7 @@
                 ]
             },
             "require": {
+                "dragonmantank/cron-expression": "^2.2",
                 "easyswoole/component": "^1.0",
                 "easyswoole/http": "^1.0",
                 "easyswoole/socket": "^1.0",
@@ -169,20 +225,20 @@
                 "framework",
                 "swoole"
             ],
-            "time": "2018-10-31T16:14:41+00:00"
+            "time": "2018-11-07T05:21:36+00:00"
         },
         {
             "name": "easyswoole/http",
-            "version": "1.1.7",
+            "version": "1.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/easy-swoole/http.git",
-                "reference": "10b75099110ca8e0770b3294e3e33bd202b5d8ea"
+                "reference": "f15453b0c7eede0fe62587f1aad23f6c3539f14b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-swoole/http/zipball/10b75099110ca8e0770b3294e3e33bd202b5d8ea",
-                "reference": "10b75099110ca8e0770b3294e3e33bd202b5d8ea",
+                "url": "https://api.github.com/repos/easy-swoole/http/zipball/f15453b0c7eede0fe62587f1aad23f6c3539f14b",
+                "reference": "f15453b0c7eede0fe62587f1aad23f6c3539f14b",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -227,20 +283,129 @@
                 "framework",
                 "swoole"
             ],
-            "time": "2018-10-26T11:33:54+00:00"
+            "time": "2018-11-07T02:46:02+00:00"
         },
         {
-            "name": "easyswoole/socket",
-            "version": "1.0.9",
+            "name": "easyswoole/mysqli",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/easy-swoole/socket.git",
-                "reference": "957c56f98e25e50cbf4b6e43650d9915cd047f24"
+                "url": "https://github.com/easy-swoole/mysqli.git",
+                "reference": "1fdd70cd745ed19c08257eacdfa190b8055d2942"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-swoole/socket/zipball/957c56f98e25e50cbf4b6e43650d9915cd047f24",
-                "reference": "957c56f98e25e50cbf4b6e43650d9915cd047f24",
+                "url": "https://api.github.com/repos/easy-swoole/mysqli/zipball/1fdd70cd745ed19c08257eacdfa190b8055d2942",
+                "reference": "1fdd70cd745ed19c08257eacdfa190b8055d2942",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "easyswoole/spl": "^1.0"
+            },
+            "require-dev": {
+                "easyswoole/swoole-ide-helper": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EasySwoole\\Mysqli\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "YF",
+                    "email": "291323003@qq.com"
+                }
+            ],
+            "description": "An efficient swoole framework",
+            "homepage": "https://www.easyswoole.com/",
+            "keywords": [
+                "async",
+                "easyswoole",
+                "framework",
+                "swoole"
+            ],
+            "time": "2018-10-31T09:37:02+00:00"
+        },
+        {
+            "name": "easyswoole/rpc",
+            "version": "1.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easy-swoole/rpc.git",
+                "reference": "43c973350100af272e7ebdb0743c03058cc62f0a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easy-swoole/rpc/zipball/43c973350100af272e7ebdb0743c03058cc62f0a",
+                "reference": "43c973350100af272e7ebdb0743c03058cc62f0a",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "easyswoole/component": "^1.0",
+                "easyswoole/spl": "^1.0",
+                "easyswoole/trace": "^1.0",
+                "easyswoole/utility": "^1.0",
+                "ext-swoole": ">=4.0.3",
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "easyswoole/swoole-ide-helper": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EasySwoole\\Rpc\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "YF",
+                    "email": "291323003@qq.com"
+                }
+            ],
+            "description": "An efficient swoole framework",
+            "homepage": "https://www.easyswoole.com/",
+            "keywords": [
+                "async",
+                "easyswoole",
+                "framework",
+                "swoole"
+            ],
+            "time": "2018-10-11T03:25:20+00:00"
+        },
+        {
+            "name": "easyswoole/socket",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easy-swoole/socket.git",
+                "reference": "6b094143e2c48fb28b885102dcfe498bb1f775a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easy-swoole/socket/zipball/6b094143e2c48fb28b885102dcfe498bb1f775a8",
+                "reference": "6b094143e2c48fb28b885102dcfe498bb1f775a8",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -282,7 +447,7 @@
                 "framework",
                 "swoole"
             ],
-            "time": "2018-10-24T05:12:47+00:00"
+            "time": "2018-11-02T13:16:47+00:00"
         },
         {
             "name": "easyswoole/spl",
@@ -335,16 +500,16 @@
         },
         {
             "name": "easyswoole/trace",
-            "version": "1.1.3",
+            "version": "1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/easy-swoole/trace.git",
-                "reference": "60e9c98808b64fc76c371203c5d59e531ee5c4c1"
+                "reference": "e2487aef9fd8da345792a792574a991336c77a71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-swoole/trace/zipball/60e9c98808b64fc76c371203c5d59e531ee5c4c1",
-                "reference": "60e9c98808b64fc76c371203c5d59e531ee5c4c1",
+                "url": "https://api.github.com/repos/easy-swoole/trace/zipball/e2487aef9fd8da345792a792574a991336c77a71",
+                "reference": "e2487aef9fd8da345792a792574a991336c77a71",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -380,7 +545,7 @@
                 "framework",
                 "swoole"
             ],
-            "time": "2018-10-27T13:46:21+00:00"
+            "time": "2018-11-07T03:21:39+00:00"
         },
         {
             "name": "easyswoole/utility",
@@ -768,11 +933,59 @@
             "time": "2018-09-30T16:36:12+00:00"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "eaglewu/swoole-ide-helper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wudi/swoole-ide-helper.git",
+                "reference": "d5ba04bca84302713dc4ae288dcdf11febb82d35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wudi/swoole-ide-helper/zipball/d5ba04bca84302713dc4ae288dcdf11febb82d35",
+                "reference": "d5ba04bca84302713dc4ae288dcdf11febb82d35",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "eagle",
+                    "email": "eaglewudi@gmail.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "Swoole IDE Helper, to improve auto-completion",
+            "keywords": [
+                "autocomplete",
+                "codeintel",
+                "helper",
+                "ide",
+                "netbeans",
+                "phpdoc",
+                "phpstorm",
+                "sublime",
+                "swoole"
+            ],
+            "time": "2018-10-25T04:44:48+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "easyswoole/easyswoole": 20
+        "easyswoole/easyswoole": 20,
+        "eaglewu/swoole-ide-helper": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
