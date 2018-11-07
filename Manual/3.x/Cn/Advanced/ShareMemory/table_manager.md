@@ -14,13 +14,13 @@ EasySwoole对Swoole table进行了基础的封装。
 
 ## 示例代码
 
-```
+```php
 TableManager::getInstance()->add(
-            self::TABLE_NAME,
-            [
-                'currentNum'=>['type'=>Table::TYPE_INT,'size'=>2],
-            ],
-            1024
+    self::TABLE_NAME,
+    [
+        'currentNum'=>['type'=>Table::TYPE_INT,'size'=>2],
+    ],
+    1024
 );
 ```
 

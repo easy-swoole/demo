@@ -23,9 +23,6 @@ class TrackerManager extends \EasySwoole\Trace\TrackerManager
 }
 ```
 
-
-
-
 ```php
 //调用链追踪器设置Token获取值为协程id
 <?php

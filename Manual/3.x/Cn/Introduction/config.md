@@ -19,7 +19,7 @@ SERVER_NAME = EasySwoole
 MAIN_SERVER.HOST = 0.0.0.0
 MAIN_SERVER.PORT = 9501
 MAIN_SERVER.SERVER_TYPE = WEB_SERVER ## 可选为 SERVER  WEB_SERVER WEB_SOCKET_SERVER
-MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为TYPE_SERVER时有效
+MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为SERVER时有效
 MAIN_SERVER.RUN_MODEL = SWOOLE_PROCESS
 
 MAIN_SERVER.SETTING.task_worker_num = 8
@@ -37,7 +37,7 @@ LOG_DIR = null
   - **HOST**  -  默认Server监听的地址
   - **PORT**  -  默认Server监听的端口
   - **SERVER_TYPE**  -  默认Server的类型
-  - **SOCK_TYPE**  -  默认Server的Sock类型（ 仅 SERVER_TYPE 配置为 TYPE_SERVER 时有效 ）
+  - **SOCK_TYPE**  -  默认Server的Sock类型（ 仅 SERVER_TYPE 配置为 SERVER 时有效 ）
   - **RUN_MODEL**  -  默认Server的运行模式
   - **SETTING**  -  Swoole Server的运行配置（ 完整配置可见[Swoole文档](https://wiki.swoole.com/wiki/page/274.html) ）
     - **task_worker_num**  -  运行的 task_worker 进程数量
@@ -92,7 +92,7 @@ SERVER_NAME = EasySwoole
 MAIN_SERVER.HOST = 0.0.0.0
 MAIN_SERVER.PORT = 9501
 MAIN_SERVER.SERVER_TYPE = WEB_SERVER ## 可选为 SERVER  WEB_SERVER WEB_SOCKET_SERVER
-MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为TYPE_SERVER时有效
+MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为SERVER时有效
 MAIN_SERVER.RUN_MODEL = SWOOLE_PROCESS
 
 MAIN_SERVER.SETTING.task_worker_num = 8

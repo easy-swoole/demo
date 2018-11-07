@@ -42,6 +42,7 @@
     - 共享内存
         - [table_manager](Advanced/ShareMemory/table_manager.md)
     - [自定义进程](Advanced/process.md)
+    - [异步任务](Advanced/async_task.md)
     - [定时器](Advanced/timer.md)
 - 系统组件
     - Spl
