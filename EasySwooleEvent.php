@@ -16,6 +16,8 @@ use App\Rpc\RpcServer;
 use App\Rpc\RpcTwo;
 use App\Rpc\ServiceOne;
 use App\Task\TaskTest;
+use App\Utility\ConsoleCommand\TrackerLogCategory;
+use App\Utility\ConsoleCommand\TrackerPushLog;
 use App\Utility\Pool\MysqlPool;
 use App\Utility\Pool\RedisPool;
 use App\Utility\TrackerManager;
@@ -23,6 +25,8 @@ use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Pool\PoolManager;
+use EasySwoole\EasySwoole\Console\CommandContainer;
+use EasySwoole\EasySwoole\Console\TcpService;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
@@ -56,15 +60,34 @@ class EasySwooleEvent implements Event
             }
         });
 
-
         //调用链追踪器设置Token获取值为协程id
         TrackerManager::getInstance()->setTokenGenerator(function () {
             return \Swoole\Coroutine::getuid();
         });
         //每个链结束的时候，都会执行的回调
         TrackerManager::getInstance()->setEndTrackerHook(function ($token, Tracker $tracker) {
-            Logger::getInstance()->console((string)$tracker);
+//            Logger::getInstance()->console((string)$tracker);
+            //这里请读取动态配置 TrackerPushLog 来判断是否推送，读取TrackerLogCategory 判断推送分类
+            $trackerPushLogStatus = Config::getInstance()->getDynamicConf('CONSOLE.TRACKER_PUSH_LOG');
+            if ($trackerPushLogStatus) {
+                $trackerLogCategory = Config::getInstance()->getDynamicConf('CONSOLE.TRACKER_LOG_CATEGORY');
+                if ($trackerLogCategory){
+                    if (in_array('all',$trackerLogCategory)){
+                        TcpService::push((string)$tracker);
+                    }else{
+                        TcpService::push($tracker->toString($trackerLogCategory));
+                    }
+                }
+            }
         });
+
+        // 设置Tracker的推送配置和命令，以下配置请写入动态配置项
+        CommandContainer::getInstance()->set('trackerPushLog',new TrackerPushLog());
+        CommandContainer::getInstance()->set('trackerLogCategory',new TrackerLogCategory());
+        //默认开启，推送全部日志
+        Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_LOG_CATEGORY',['all']);
+        Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_PUSH_LOG',true);
+
 
         //引用自定义文件配置
         self::loadConf();
@@ -75,7 +98,6 @@ class EasySwooleEvent implements Event
         PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'));
 
         // 注册redis连接池
-
         PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
 
     }
@@ -236,7 +258,6 @@ class EasySwooleEvent implements Event
         Crontab::getInstance()->addTask(TaskOne::class);
         // 开始一个定时任务计划
         Crontab::getInstance()->addTask(TaskTwo::class);
-
 
         // TODO: Implement mainServerCreate() method.
     }
