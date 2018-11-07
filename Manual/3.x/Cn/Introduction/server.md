@@ -52,7 +52,8 @@ php easyswoole stop
 
 ## 服务热重启
 ```
-php easyswoole reload
+php easyswoole reload 只重启task进程
+php easyswoole reload all  重启task + worker进程
 ```
 > 注意，守护模式下才需要reload，不然control+c或者是终端断开就退出进程了，此处为热重启，可以用于更新worker start后才加载的文件（业务逻辑），主进程（如配置文件）不会被重启。
 
@@ -78,12 +79,12 @@ if [ ! -n "$DIR" ] ;then
 fi
 
 php easyswoole stop
-php easyswoole start -d
+php easyswoole start d
 
-fswatch $DIR | while read file
+fswatch -r $DIR | while read file
 do
    echo "${file} was modify" >> ./Temp/reload.log 2>&1
-   php easyswoole reload
+   php easyswoole reload all
 done
 ```
 使用方法： `./start.sh ./App` 

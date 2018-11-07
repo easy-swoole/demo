@@ -30,8 +30,15 @@
             <div id="navbar" class="navbar-menu">
                 <div class="navbar-end">
                     <a class="navbar-item" href="/">首页</a>
-                    <a class="navbar-item" href="/Manual/2.x/Cn/_book/" target="_blank">V2文档</a>
-                    <a class="navbar-item" href="/Manual/3.x/Cn/_book/" target="_blank">V3文档</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" href="/Manual/3.x/Cn/_book/">文档中心</a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="/Manual/3.x/Cn/_book/">V3 在线文档</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="/Manual/2.x/Cn/_book/">V2 在线文档</a>
+                            <a class="navbar-item" href="/Manual/1.x/Cn/_book/">V1 在线文档</a>
+                        </div>
+                    </div>
                     <a class="navbar-item" href="https://github.com/easy-swoole/demo" target="_blank">示例项目</a>
                     <a class="navbar-item" href="https://github.com/easy-swoole/easyswoole" target="_blank">源码仓库</a>
                     <a class="navbar-item" href="en.html" target="_blank">ENGLISH</a>
@@ -207,7 +214,7 @@ $pool = PoolManager::getInstance()->getPool(MysqlPool::class);
             TypedCode('#codebox-4', 'code-template-4');
         };
 
-        function addAnim (selector, anim) {
+        function addAnim(selector, anim) {
             $(selector).hover(function () {
                 $(this).addClass(anim);
             }, function () {
@@ -223,7 +230,7 @@ $pool = PoolManager::getInstance()->getPool(MysqlPool::class);
     </script>
     <script>
         var _hmt = _hmt || [];
-        (function() {
+        (function () {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?4c8d895ff3b25bddb6fa4185c8651cc3";
             var s = document.getElementsByTagName("script")[0];
