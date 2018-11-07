@@ -70,6 +70,9 @@
     - [Websocket](Socket/WebSocket.md)
     - [Udp](Socket/Udp.md)
     - [Socket问题](Socket/Problem.md)
+- [Console组件](Console/Introduction.md)
+    - [基础功能](Console/BasicFunction.md)
+    - [自定义命令](Console/CustomCommand.md)
 - 其他
     - [异步客户端](Othe/AsyncClient.md)
     - [错误处理与拦截](Othe/Exception.md)

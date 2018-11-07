@@ -204,4 +204,13 @@ Di::getInstance()->set(SysConst::HTTP_EXCEPTION_HANDLER,function (){});//配置h
 Di::getInstance()->set(SysConst::HTTP_CONTROLLER_POOL_MAX_NUM,15);//http控制器对象池最大数量
 ```
 
+## 动态配置
+当你在控制器(worker进程)中修改某一项配置时,由于进程隔离,修改的配置不会在其他进程生效,所以我们可以使用动态配置:  
+动态配置将配置数据存储在swoole_table中,取/修改配置数据时是从swoole_table直接操作,所有进程都可以使用  
+>但是不适合存储大量\大长度的的配置,建议用于开关存储等小数据型数据存储    
 
+```php
+Config::getInstance()->setDynamicConf('test_config_value', 0);//配置一个动态配置项
+$test_config_value_1 = Config::getInstance()->getDynamicConf('test_config_value');//获取一个配置
+Config::getInstance()->delDynamicConf('test_config_value');//删除一个配置
+```
