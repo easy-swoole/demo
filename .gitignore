@@ -1,5 +1,12 @@
 .idea
-/Log/*
-/Temp/*
 /vendor
 /composer.lock
+
+/Log/
+/Temp/
+/Temp2/
+/easyswoole
+
+dev.env
+
+produce.env
