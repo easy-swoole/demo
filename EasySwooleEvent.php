@@ -11,6 +11,7 @@ namespace EasySwoole\EasySwoole;
 
 use App\Crontab\TaskOne;
 use App\Crontab\TaskTwo;
+use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
 use App\Rpc\RpcServer;
 use App\Rpc\RpcTwo;
@@ -112,6 +113,8 @@ class EasySwooleEvent implements Event
         });
         //注册自定义进程
         ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTest('test_process'))->getProcess());
+        //注册异步任务自定义进程
+        ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTaskTest('ProcessTaskTest'))->getProcess());
 
         //添加子服务监听
         $subPort = ServerManager::getInstance()->getSwooleServer()->addListener('0.0.0.0', 9502, SWOOLE_TCP);
