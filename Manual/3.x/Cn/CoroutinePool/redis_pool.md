@@ -1,29 +1,43 @@
 ## Redis协程连接池
-demo中有封装好的redis连接池，[RedisPool.php](https://github.com/HeKunTong/easyswoole3_demo/blob/master/App/Utility/Pools/RedisPool.php)，复制demo中的RedisPool.php并放入App/Utility中即可使用
+demo中有封装好的redis连接池以及redis类，地址: https://github.com/easy-swoole/demo/blob/3.x/App/Utility/Pool，复制demo中的RedisPool.php和RedisObject.php并放入App/Utility中即可使用
 
 ### 添加数据库配置
 在env中添加配置信息：
 ```dotenv
+################ REDIS CONFIG ##################
+
 REDIS.host = 127.0.0.1
 REDIS.port = 6379
-REDIS.password =
-REDIS.select = 0
-REDIS.timeout = 0
-REDIS.expire = 0
-REDIS.persistent = false
-REDIS.prefix =
+REDIS.auth =
+REDIS.POOL_MAX_NUM = 4
+REDIS.POOL_TIME_OUT = 0.1
 ```
-在EasySwooleEvent注册该连接池
+在EasySwooleEvent初始化事件initialize注册该连接池
 ```php
-PoolManager::getInstance()->register(RedisPool::class);
+// 注册redis连接池
+
+PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
 ```
 
+### 注意
+连接池不是跨进程的，进程间的连接池连接数是相互独立的，默认最大值是10个；如果开了4个worker，最大连接数可以达到40个。
+
+
 ### 使用
-获取到对象后，可以使用exec方法来执行任何命令，例如：
+
+通过redis连接池获取redis操作对象
+
 ```php
-$pool = PoolManager::getInstance()->getPool(RedisPool::class);  // 获取连接池
-$redis = $pool->getObj();                                       // 获取redis对象
-$redis->exec('set', 'a', '123');
-$a = $redis->exec('get', 'a');
-$pool->recycleObj($redis);                                      // 回收连接池对象
+$redis = PoolManager::getInstance()->getPool(RedisPool::class)->getObj(Config::getInstance()->getConf('REDIS.POOL_TIME_OUT'));
+$redis->set('name', 'blank');
+$name = $redis->get('name');
+var_dump($name);
+/*
+ * string(5) "blank"
+ */
+```
+用完redis连接池对象之后记得用recycleObj回收
+
+```php
+PoolManager::getInstance()->getPool(RedisPool::class)->recycleObj($redis);
 ```

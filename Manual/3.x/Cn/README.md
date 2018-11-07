@@ -51,7 +51,9 @@ EasySwoole 是一款基于Swoole Server 开发的常驻内存型的分布式PHP�
 
 - [HTTP基础DEMO](https://github.com/easy-swoole/demo)
 
-- 官方QQ交流群 : **633921431**
+- VIP交流群 [579434607](https://jq.qq.com/?_wv=1027&k=5bxu3cG)
+
+- 在线交流群 [633921431](https://shang.qq.com/wpa/qunwpa?idkey=35c84e12f7784153501e3c43c9f2454d3235a7f55371458a24f0c32320c99548)
 
 - [捐赠](https://www.easyswoole.com/Manual/2.x/Cn/_book/donate.html)
     您的捐赠是对Swoole项目开发组最大的鼓励和支持。我们会坚持开发维护下去。 您的捐赠将被用于:
