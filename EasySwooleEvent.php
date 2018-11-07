@@ -189,6 +189,11 @@ class EasySwooleEvent implements Event
         }));
 
 
+
+        /**
+         * **************** 异步客户端 **********************
+         */
+        //纯原生异步
         ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function () {
             $client = new \swoole_client(SWOOLE_SOCK_TCP);
             $client->connect('192.168.159.1', 9502);
