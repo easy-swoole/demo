@@ -15,6 +15,7 @@ use App\Process\ProcessTest;
 use App\Rpc\RpcServer;
 use App\Rpc\RpcTwo;
 use App\Rpc\ServiceOne;
+use App\Task\TaskTest;
 use App\Utility\Pool\MysqlPool;
 use App\Utility\Pool\RedisPool;
 use App\Utility\TrackerManager;
@@ -25,12 +26,15 @@ use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
+use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
+use EasySwoole\EasySwoole\Swoole\Time\Timer;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
 use EasySwoole\Socket\Client\Tcp;
 use EasySwoole\Socket\Dispatcher;
 use EasySwoole\Trace\Bean\Tracker;
 use EasySwoole\Utility\File;
+use Swoole\Process;
 use Swoole\Server;
 
 class EasySwooleEvent implements Event
@@ -64,6 +68,8 @@ class EasySwooleEvent implements Event
 
         //引用自定义文件配置
         self::loadConf();
+        Config::getInstance()->setDynamicConf('test_config_value', 0);//配置一个动态配置项
+        Config::getInstance()->setConf('test_config_value', 0);//配置一个普通配置项
 
         // 注册mysql数据库连接池
         PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'));
@@ -160,9 +166,7 @@ class EasySwooleEvent implements Event
         $register->set(EventRegister::onHandShake, function (\swoole_http_request $request, \swoole_http_response $response) use ($websocketEvent) {
             $websocketEvent->onHandShake($request, $response);
         });
-        $register->set(EventRegister::onClose, function (\swoole_server $server, int $fd, int $reactorId) {
-            $websocketEvent->onClose($server, $fd, $reactorId);
-        });
+
 
         /**
          * **************** udp服务 **********************
@@ -197,26 +201,33 @@ class EasySwooleEvent implements Event
          * **************** 异步客户端 **********************
          */
         //纯原生异步
-        $register->add(EventRegister::onWorkerStart,function ($ser,$workerId){
-            if($workerId == 0){
-                $client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
-                $client->on("connect", function(\swoole_client $cli) {
-                    $cli->send("test:delay");
-                });
-                $client->on("receive", function(\swoole_client $cli, $data){
-                    echo "Receive: $data";
-                    $cli->send("test:delay");
-                    sleep(1);
-                });
-                $client->on("error", function(\swoole_client $cli){
-                    echo "error\n";
-                });
-                $client->on("close", function(\swoole_client $cli){
-                    echo "Connection close\n";
-                });
-                $client->connect('127.0.0.1', 9502);
+        ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function (){
+            $client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
+            $client->on("connect", function(\swoole_client $cli) {
+                $cli->send("test:delay");
+            });
+            $client->on("receive", function(\swoole_client $cli, $data){
+                echo "Receive: $data";
+                $cli->send("test:delay");
+                sleep(1);
+            });
+            $client->on("error", function(\swoole_client $cli){
+                echo "error\n";
+            });
+            $client->on("close", function(\swoole_client $cli){
+                echo "Connection close\n";
+            });
+            $client->connect('192.168.159.1', 9502);
+
+
+            //本demo自定义进程采用的是原生写法,如果需要使用,请使用自定义进程类模板开发
+            if (extension_loaded('pcntl')) {//异步信号,使用自定义进程类模板不需要该代码
+                pcntl_async_signals(true);
             }
-        });
+            Process::signal(SIGTERM,function (){//信号回调,使用自定义进程类模板不需要该代码
+                $this->swooleProcess->exit(0);
+            });
+        }));
 
         /**
          * **************** Crontab任务计划 **********************
