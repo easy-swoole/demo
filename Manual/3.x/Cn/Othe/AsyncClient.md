@@ -7,7 +7,7 @@
   {
        
 //        //纯原生异步
-    ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function (){
+    ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function ($worker){
         $client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
         $client->on("connect", function(\swoole_client $cli) {
             $cli->send("test:delay");
@@ -30,8 +30,8 @@
         if (extension_loaded('pcntl')) {//异步信号,使用自定义进程类模板不需要该代码
             pcntl_async_signals(true);
         }
-        Process::signal(SIGTERM,function (){//信号回调,使用自定义进程类模板不需要该代码
-            $this->swooleProcess->exit(0);
+        Process::signal(SIGTERM,function ()use($worker){//信号回调,使用自定义进程类模板不需要该代码
+           $worker->exit(0);
         });
     }));
 }
@@ -43,7 +43,7 @@
 
     public static function mainServerCreate(EventRegister $register)
     {
-         ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function (){
+         ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function ($worker){
               $client = new \swoole_client(SWOOLE_SOCK_TCP);
               $client->connect('192.168.159.1', 9502);
               //该出send是为了触发服务端主动返回消息，方便直观测试
@@ -60,8 +60,8 @@
               if (extension_loaded('pcntl')) {//异步信号,使用自定义进程类模板不需要该代码
                   pcntl_async_signals(true);
               }
-              Process::signal(SIGTERM,function (){//信号回调,使用自定义进程类模板不需要该代码
-                  $this->swooleProcess->exit(0);
+              Process::signal(SIGTERM,function ()use($worker){//信号回调,使用自定义进程类模板不需要该代码
+                  $worker->exit(0);
               });
          }));
     }
@@ -72,7 +72,7 @@
     
  public static function mainServerCreate(EventRegister $register)
     {
-         ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function (){
+         ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function ($worker){
                $client = new \swoole_client(SWOOLE_SOCK_TCP);
                $client->connect('192.168.159.1', 9502);
                //该出send是为了触发服务端主动返回消息，方便直观测试
@@ -93,8 +93,8 @@
                if (extension_loaded('pcntl')) {//异步信号,使用自定义进程类模板不需要该代码
                    pcntl_async_signals(true);
                }
-               Process::signal(SIGTERM,function (){//信号回调,使用自定义进程类模板不需要该代码
-                   $this->swooleProcess->exit(0);
+               Process::signal(SIGTERM,function ()use($worker){//信号回调,使用自定义进程类模板不需要该代码
+                  $worker->exit(0);
                });
            }));
     }
