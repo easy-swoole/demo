@@ -1,11 +1,6 @@
 ## Redis协程连接池
 demo中有封装好的redis连接池以及redis类，地址: <https://github.com/easy-swoole/demo/blob/3.x/App/Utility/Pool/>，复制demo中的RedisPool.php和RedisObject.php并放入App/Utility中即可使用
 
-### 使用须知
-
-在使用redis连接池之前，请确保swoole版本支持hiredis 
-安装方法请参考<https://wiki.swoole.com/wiki/page/589.html/>。
-
 ### 添加数据库配置
 在env中添加配置信息：
 ```dotenv
