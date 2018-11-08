@@ -3,7 +3,7 @@ demo中有封装好的redis连接池以及redis类，地址: <https://github.com
 
 ### 使用须知
 
-在使用redis连接池之前，请确保swoole版本支持hreids  
+在使用redis连接池之前，请确保swoole版本支持hiredis 
 安装方法请参考<https://wiki.swoole.com/wiki/page/589.html/>。
 
 ### 添加数据库配置
