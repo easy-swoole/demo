@@ -12,6 +12,7 @@ namespace App\HttpController;
 use App\Utility\Pool\RedisPool;
 use EasySwoole\Component\Pool\PoolManager;
 use Swoole\Coroutine\Redis;
+use EasySwoole\EasySwoole\Config;
 
 class BaseWithRedis extends Base
 {
@@ -19,7 +20,7 @@ class BaseWithRedis extends Base
 
     function onRequest(?string $action): ?bool
     {
-        $redis = PoolManager::getInstance()->getPool(RedisPool::class)->getObj();
+        $redis = PoolManager::getInstance()->getPool(RedisPool::class)->getObj(Config::getInstance()->getConf('REDIS.POOL_TIME_OUT'));
         if ($redis) {
             $this->redis = $redis;
         } else {
