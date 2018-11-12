@@ -19,6 +19,6 @@ class MysqlPool extends AbstractPool
         // TODO: Implement createObject() method.
         $conf = Config::getInstance()->getConf("MYSQL");
         $dbConf = new \EasySwoole\Mysqli\Config($conf);
-        return new MysqlDbObject($dbConf);
+        return new MysqlObject($dbConf);
     }
 }
