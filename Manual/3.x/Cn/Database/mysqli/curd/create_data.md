@@ -1,5 +1,5 @@
 ## 数据对象创建  
-mysqli组件没有自行封装数据对象,可通过继承EasySwoole工具类[splBean](../../../Component/Spl/bean.md)自行创建一个数据对象.
+mysqli组件没有自行封装数据对象,可通过继承EasySwoole工具类[splBean](../../../Spl/bean.md)自行创建一个数据对象.
 
 ### 示例:
 ```php
