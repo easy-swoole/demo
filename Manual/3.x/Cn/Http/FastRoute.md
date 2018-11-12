@@ -47,6 +47,25 @@ class Router extends AbstractRouter
 访问127.0.0.1:9501/rpc,对应为App\HttpController\Rpc.php->index()  
 > 注意：若在路由回调函数中不结束该请求响应，则该次请求将会继续进行Dispatch并尝试寻找对应的控制器进行响应处理。
 
+### 全局模式拦截
+在Router.php加入以下代码,即可开启全局模式拦截
+```php
+$this->setGlobalMode(true);
+```
+全局模式拦截下,路由将只匹配Router.php中的控制器方法响应,将不会执行框架的默认解析
+
+### 异常错误处理  
+通过以下2个方法,可设置路由匹配错误以及未找到方法的回调:
+```php
+$this->setMethodNotAllowCallBack(function (Request $request,Response $response){
+    $response->write('未找到处理方法');
+});
+$this->setRouterNotFoundCallBack(function (Request $request,Response $response){
+    $response->write('未找到路由匹配');
+});
+```
+### fastRoute使用 
+
 addRoute方法
 ------
 
