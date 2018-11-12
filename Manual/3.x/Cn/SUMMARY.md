@@ -54,7 +54,6 @@
     - [Di](Component/di.md)
     - [Invoker](Component/invoker.md)
 - 系统工具
-    - [Curl](Tools/curl.md)
     - [Validate](Tools/validate.md)
     - [File](Tools/file.md)
     - [Random](Tools/random.md)
@@ -74,6 +73,10 @@
     - [Websocket](Socket/WebSocket.md)
     - [Udp](Socket/Udp.md)
     - [Socket问题](Socket/Problem.md)
+- [Curl](Curl/curl.md)
+- [验证码](Verifycode/Introduction.md)
+    - [配置](Verifycode/Config.md)
+    - [使用](Verifycode/VerifyCode.md)
 - 其他
     - [异步客户端](Othe/AsyncClient.md)
     - [错误处理与拦截](Othe/Exception.md)
