@@ -11,6 +11,7 @@ namespace EasySwoole\EasySwoole;
 
 use App\Crontab\TaskOne;
 use App\Crontab\TaskTwo;
+use App\Log\LogHandler;
 use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
 use App\Rpc\RpcServer;
@@ -103,10 +104,14 @@ class EasySwooleEvent implements Event
         // 注册redis连接池
         PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
 
+        // 注册日志处理器
+        Di::getInstance()->set('LOGGER_WRITER', LogHandler::class);
     }
 
     public static function mainServerCreate(EventRegister $register)
     {
+        // TODO: Implement mainServerCreate() method.
+
         //注册onWorkerStart回调事件
         $register->add($register::onWorkerStart, function (\swoole_server $server, int $workerId) {
             // var_dump('worker:' . $workerId . 'start');
@@ -264,7 +269,11 @@ class EasySwooleEvent implements Event
         // 开始一个定时任务计划
         Crontab::getInstance()->addTask(TaskTwo::class);
 
-        // TODO: Implement mainServerCreate() method.
+        /**
+         * **************** 日志处理 **********************
+         */
+
+        Logger::getInstance()->setLoggerWriter(Di::getInstance()->get('LOGGER_WRITER'));
     }
 
 
