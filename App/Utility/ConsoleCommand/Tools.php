@@ -80,7 +80,6 @@ class Tools implements CommandInterface
                     }
                     break;
             }
-
         }
     }
 
