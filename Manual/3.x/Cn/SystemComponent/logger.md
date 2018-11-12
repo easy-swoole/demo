@@ -21,29 +21,28 @@ $log->console("message",false);
 
 ## 自定义日志存储
 
-实现LoggerWriterInterface接口
+自定义日志处理类
 
 ```php
 <?php
 /**
  * Created by PhpStorm.
  * User: root
- * Date: 18-10-17
- * Time: 下午3:39
+ * Date: 18-11-12
+ * Time: 上午9:27
  */
 
-namespace App\Model;
-
+namespace App\Log;
 
 use EasySwoole\Trace\AbstractInterface\LoggerWriterInterface;
 
-class Handler implements LoggerWriterInterface
+class LogHandler implements LoggerWriterInterface
 {
 
     function writeLog($obj, $logCategory, $timeStamp)
     {
         // TODO: Implement writeLog() method.
-        
+        echo date('Y-m-d H:i:s', $timeStamp)."\t".$obj.PHP_EOL;
     }
 }
 ```
@@ -54,6 +53,15 @@ class Handler implements LoggerWriterInterface
 function static initialize()
 {
     // TODO: Implement frameInitialize() method.
-    Di::getInstance()->set('LOGGER_WRITER', Handler::class);
+    // 注入日志处理类
+    Logger::getInstance()->setLoggerWriter(new LogHandler());
 }
 ```
+
+打印日志信息
+
+```php
+Logger::getInstance()->log('hello world....');
+```
+
+附上demo地址: <https://github.com/easy-swoole/demo/blob/3.x/App/HttpController/Log/Index.php>
