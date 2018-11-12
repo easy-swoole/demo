@@ -64,6 +64,10 @@ $this->setRouterNotFoundCallBack(function (Request $request,Response $response){
     $response->write('未找到路由匹配');
 });
 ```
+>该回调函数只针对于fastRoute未匹配状况,如果回调里面不结束该请求响应,则该次请求将会继续进行Dispatch并尝试寻找对应的控制器进行响应处理。  
+
+
+
 ### fastRoute使用 
 
 addRoute方法
