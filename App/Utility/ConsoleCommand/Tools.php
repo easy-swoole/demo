@@ -8,11 +8,10 @@
 
 namespace App\Utility\ConsoleCommand;
 
-use EasySwoole\EasySwoole\Console\CommandContainer;
 use EasySwoole\EasySwoole\Console\CommandInterface;
 use EasySwoole\Socket\Bean\Caller;
 use EasySwoole\Socket\Bean\Response;
-// 在EasySwooleEvent 添加 
+// 在EasySwooleEvent 添加
 // use App\Utility\ConsoleCommand\Tools;
 // CommandContainer::getInstance()->set('Tools',new \Tools());
 
@@ -43,8 +42,8 @@ class Tools implements CommandInterface
                         $response->setMessage('please version type |请输入版本控制器类型');
                     }else{
                         if($type=='svn'){
-                           $str = shell_exec('svn info '.EASYSWOOLE_ROOT);
-                           $response->setMessage($str);
+                            $str = shell_exec('svn info '.EASYSWOOLE_ROOT);
+                            $response->setMessage($str);
                         }else{
                             $str = shell_exec('git rev-parse HEAD');
                             $response->setMessage($str);
@@ -63,6 +62,10 @@ class Tools implements CommandInterface
                     $topInfo= shell_exec('cat '.EASYSWOOLE_ROOT.'/Log/swoole.log| tail -n 10 ').PHP_EOL;
                     $response->setMessage($topInfo);
                     break;
+                case 'crontabInfo':
+                    $crontabInfo = shell_exec('crontab -l').PHP_EOL;
+                    $response->setMessage($crontabInfo);
+                    break;
             }
 
         }
@@ -73,12 +76,13 @@ class Tools implements CommandInterface
 
         $help = <<<HELP
 用法: 命令 [命令参数]
-需要开启  shell_exec() 
+(需要开启|Need to open)  shell_exec() 
 Tools version git|svn  # (svn info) (git rev-parse HEAD)
-Tools showServerTime 
-Tools serverTopInfo
-Tools showLog
+Tools showServerTime    
+Tools serverTopInfo #top -n 1
+Tools showLog #show swoole log
+Tools crontabInfo #crontab -l
 HELP;
-    $response->setMessage($help);
+        $response->setMessage($help);
     }
 }
