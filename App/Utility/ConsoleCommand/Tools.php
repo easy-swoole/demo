@@ -66,8 +66,20 @@ class Tools implements CommandInterface
                     $crontabInfo = shell_exec('crontab -l').PHP_EOL;
                     $response->setMessage($crontabInfo);
                     break;
+                case 'cat':
+                    if(empty($path = array_shift($args))){
+                        $response->setMessage('please Fill out the document path |请输入版本控制器类型');
+                    }else{
+                        $file = EASYSWOOLE_ROOT.'/'.$path;
+                        if(file_exists($file)){
+                            $cat = shell_exec('cat '.$file).PHP_EOL;
+                            $response->setMessage($cat);
+                        }else{
+                            $response->setMessage('file not exists:'.$file);
+                        }
+                    }
+                    break;
             }
-
         }
     }
 
@@ -82,6 +94,7 @@ Tools showServerTime
 Tools serverTopInfo #top -n 1
 Tools showLog #show swoole log
 Tools crontabInfo #crontab -l
+Tools cat {file path} #cat EASYSWOOLE_ROOT.'/'.{file path}
 HELP;
         $response->setMessage($help);
     }
