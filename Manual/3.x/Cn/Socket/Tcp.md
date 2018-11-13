@@ -109,7 +109,7 @@ class Test extends Controller{
 public static function mainServerCreate(EventRegister $register)
 {
       $server = ServerManager::getInstance()->getSwooleServer();
-      $subPort = $server->addListener(Config::getInstance()->getConf('MAIN_SERVER.HOST'), 9503, SWOOLE_TCP);
+      $subPort = $server->addListener(Config::getInstance()->getConf('MAIN_SERVER.LISTEN_ADDRESS'), 9503, SWOOLE_TCP);
 
       $socketConfig = new \EasySwoole\Socket\Config();
       $socketConfig->setType($socketConfig::TCP);
