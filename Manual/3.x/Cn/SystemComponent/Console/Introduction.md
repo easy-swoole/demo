@@ -14,7 +14,7 @@ server hostIp
 console配置如下:
 ```
 CONSOLE.ENABLE = true              #是否开启console
-CONSOLE.LISTEN_HOST = 127.0.0.1    #console服务端监听地址
+CONSOLE.LISTEN_ADDRESS = 127.0.0.1 #console服务端监听地址
 CONSOLE.HOST = 127.0.0.1           #console客户端连接远程地址
 CONSOLE.PORT = 9000                #console服务端监听端口,客户端连接远程端口
 CONSOLE.EXPIRE = 120               #心跳超时时间

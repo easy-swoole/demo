@@ -16,7 +16,7 @@ EasySwoole框架提供了非常灵活自由的全局配置功能，配置文件�
 ################ defalut config ##################
 SERVER_NAME = EasySwoole
 
-MAIN_SERVER.HOST = 0.0.0.0
+MAIN_SERVER.LISTEN_ADDRESS = 0.0.0.0
 MAIN_SERVER.PORT = 9501
 MAIN_SERVER.SERVER_TYPE = WEB_SERVER ## 可选为 SERVER  WEB_SERVER WEB_SOCKET_SERVER
 MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为SERVER时有效
@@ -34,7 +34,7 @@ LOG_DIR = null
 各项目的配置含义如下
 
 - **MAIN_SERVER**  -  默认Server配置
-  - **HOST**  -  默认Server监听的地址
+  - **LISTEN_ADDRESS**  -  默认Server监听的地址
   - **PORT**  -  默认Server监听的端口
   - **SERVER_TYPE**  -  默认Server的类型
   - **SOCK_TYPE**  -  默认Server的Sock类型（ 仅 SERVER_TYPE 配置为 SERVER 时有效 ）
@@ -89,7 +89,7 @@ $instance->load($conf);
 ################ defalut config ##################
 SERVER_NAME = EasySwoole
 
-MAIN_SERVER.HOST = 0.0.0.0
+MAIN_SERVER.LISTEN_ADDRESS = 0.0.0.0
 MAIN_SERVER.PORT = 9501
 MAIN_SERVER.SERVER_TYPE = WEB_SERVER ## 可选为 SERVER  WEB_SERVER WEB_SOCKET_SERVER
 MAIN_SERVER.SOCK_TYPE = SWOOLE_TCP  ## 该配置项当为SERVER_TYPE值为SERVER时有效
