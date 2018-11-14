@@ -211,7 +211,7 @@ class EasySwooleEvent implements Event
         $server = ServerManager::getInstance()->getSwooleServer();
         $subPort = $server->addListener('0.0.0.0', '9605', SWOOLE_UDP);
         $subPort->on('packet', function (\swoole_server $server, string $data, array $client_info) {
-            echo "udp packet:{$data}";
+//            echo "udp packet:{$data}";
         });
         //udp客户端
         //添加自定义进程做定时udp发送
