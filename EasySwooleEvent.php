@@ -11,6 +11,7 @@ namespace EasySwoole\EasySwoole;
 
 use App\Crontab\TaskOne;
 use App\Crontab\TaskTwo;
+use App\HttpController\Pool\Redis;
 use App\Log\LogHandler;
 use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
@@ -33,6 +34,7 @@ use EasySwoole\EasySwoole\Console\TcpService;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
+use EasySwoole\EasySwoole\Swoole\Process\Helper;
 use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\EasySwoole\Swoole\Time\Timer;
 use EasySwoole\Http\Request;
@@ -74,10 +76,10 @@ class EasySwooleEvent implements Event
             $trackerPushLogStatus = Config::getInstance()->getDynamicConf('CONSOLE.TRACKER_PUSH_LOG');
             if ($trackerPushLogStatus) {
                 $trackerLogCategory = Config::getInstance()->getDynamicConf('CONSOLE.TRACKER_LOG_CATEGORY');
-                if ($trackerLogCategory){
-                    if (in_array('all',$trackerLogCategory)){
+                if ($trackerLogCategory) {
+                    if (in_array('all', $trackerLogCategory)) {
                         TcpService::push((string)$tracker);
-                    }else{
+                    } else {
                         TcpService::push($tracker->toString($trackerLogCategory));
                     }
                 }
@@ -85,12 +87,12 @@ class EasySwooleEvent implements Event
         });
 
         // 设置Tracker的推送配置和命令，以下配置请写入动态配置项
-        CommandContainer::getInstance()->set('trackerPushLog',new TrackerPushLog());
-        CommandContainer::getInstance()->set('trackerLogCategory',new TrackerLogCategory());
-        \EasySwoole\EasySwoole\Console\CommandContainer::getInstance()->set('Test',new Test());
+        CommandContainer::getInstance()->set('trackerPushLog', new TrackerPushLog());
+        CommandContainer::getInstance()->set('trackerLogCategory', new TrackerLogCategory());
+        \EasySwoole\EasySwoole\Console\CommandContainer::getInstance()->set('Test', new Test());
         //默认开启，推送全部日志
-        Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_LOG_CATEGORY',['all']);
-        Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_PUSH_LOG',true);
+        Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_LOG_CATEGORY', ['all']);
+        Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_PUSH_LOG', true);
 
 
         //引用自定义文件配置
@@ -120,6 +122,7 @@ class EasySwooleEvent implements Event
         ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTest('test_process'))->getProcess());
         //注册异步任务自定义进程
         ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTaskTest('ProcessTaskTest'))->getProcess());
+
 
         //添加子服务监听
         $subPort = ServerManager::getInstance()->getSwooleServer()->addListener('0.0.0.0', 9502, SWOOLE_TCP);
@@ -233,20 +236,20 @@ class EasySwooleEvent implements Event
          * **************** 异步客户端 **********************
          */
         //纯原生异步
-        ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function (){
+        ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function ($worker) {
             $client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
-            $client->on("connect", function(\swoole_client $cli) {
+            $client->on("connect", function (\swoole_client $cli) {
                 $cli->send("test:delay");
             });
-            $client->on("receive", function(\swoole_client $cli, $data){
+            $client->on("receive", function (\swoole_client $cli, $data) {
                 echo "Receive: $data";
                 $cli->send("test:delay");
                 sleep(1);
             });
-            $client->on("error", function(\swoole_client $cli){
+            $client->on("error", function (\swoole_client $cli) {
                 echo "error\n";
             });
-            $client->on("close", function(\swoole_client $cli){
+            $client->on("close", function (\swoole_client $cli) {
                 echo "Connection close\n";
             });
             $client->connect('192.168.159.1', 9502);
@@ -256,8 +259,8 @@ class EasySwooleEvent implements Event
             if (extension_loaded('pcntl')) {//异步信号,使用自定义进程类模板不需要该代码
                 pcntl_async_signals(true);
             }
-            Process::signal(SIGTERM,function (){//信号回调,使用自定义进程类模板不需要该代码
-                $this->swooleProcess->exit(0);
+            Process::signal(SIGTERM, function () use ($worker) {//信号回调,使用自定义进程类模板不需要该代码
+                $worker->exit(0);
             });
         }));
 
