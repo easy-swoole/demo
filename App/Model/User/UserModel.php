@@ -31,4 +31,12 @@ class UserModel extends BaseModel
         $data = $this->getDbConnection()->where('id', $userBean->getId())->getOne($this->table);
         return empty($data) ? null : new UserBean($data);
     }
+
+    /*
+     * 修改用户信息
+     */
+    function update(UserBean $userBean, $data):bool {
+        $result = $this->getDbConnection()->where('id', $userBean->getId())->update($this->table, $data);
+        return $result;
+    }
 }
