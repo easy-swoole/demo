@@ -106,8 +106,8 @@ class EasySwooleEvent implements Event
         // 注册redis连接池
         PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
 
-        // 注册日志处理器
-        Di::getInstance()->set('LOGGER_WRITER', LogHandler::class);
+        // 注入日志处理类
+        Logger::getInstance()->setLoggerWriter(new LogHandler());
     }
 
     public static function mainServerCreate(EventRegister $register)
@@ -271,12 +271,6 @@ class EasySwooleEvent implements Event
         Crontab::getInstance()->addTask(TaskOne::class);
         // 开始一个定时任务计划
         Crontab::getInstance()->addTask(TaskTwo::class);
-
-        /**
-         * **************** 日志处理 **********************
-         */
-
-        Logger::getInstance()->setLoggerWriter(Di::getInstance()->get('LOGGER_WRITER'));
     }
 
 
