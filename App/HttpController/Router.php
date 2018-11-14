@@ -31,9 +31,5 @@ class Router extends AbstractRouter
         $routeCollector->get('/user','/index.html');
         $routeCollector->get('/test','/Index/test');
         $routeCollector->get('/rpc','/Rpc/test');
-        $routeCollector->get('/index/index/{id:\d+}',function (\EasySwoole\Http\Request $request ,\EasySwoole\Http\Response $response,$id){
-            echo
-            $response->write("this is router user ,your id is {$id}");
-        });
     }
 }

@@ -24,7 +24,6 @@ class Parser implements ParserInterface
         $bean->setControllerClass($controller);
         $bean->setAction(array_shift($list));
         $bean->setArgs($list);
-        $bean->setArgs($list);
         return $bean;
     }
 
