@@ -32,6 +32,21 @@ class WebSocketEvent
     }
 
     /**
+     * 关闭事件
+     * @param  swoole_server $server    swoole server
+     * @param  int           $fd        fd
+     * @param  int           $reactorId 线程id
+     * @return void
+     */
+    public function onClose(\swoole_server $server, int $fd, int $reactorId)
+    {
+        // 判断连接是否为 WebSocket 客户端 详情 参见 https://wiki.swoole.com/wiki/page/490.html
+        $connection = $server->connection_info($fd);
+        // 判断连接是否为 server 主动关闭 参见 https://wiki.swoole.com/wiki/page/p-event/onClose.html
+        $reactorId < 0 ? '主动' : '被动';
+    }
+
+    /**
      * 自定义握手事件
      * 在这里自定义验证规则
      * @param  swoole_http_request $request swoole http request

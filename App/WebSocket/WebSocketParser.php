@@ -47,6 +47,9 @@ class WebSocketParser implements ParserInterface
         // 设置被调用的方法
         $caller->setAction($jsonObject->action??'index');
         // 设置被调用的Args
+        if (!empty($jsonObject->content) && !is_array($jsonObject->content)) {
+            $jsonObject->content = json_decode(json_encode($jsonObject->content), true);
+        }
         $caller->setArgs($jsonObject->content ?? []);
         return $caller;
     }
