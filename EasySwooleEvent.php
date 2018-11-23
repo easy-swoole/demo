@@ -15,10 +15,6 @@ use App\HttpController\Pool\Redis;
 use App\Log\LogHandler;
 use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
-use App\Rpc\RpcServer;
-use App\Rpc\RpcTwo;
-use App\Rpc\ServiceOne;
-use App\Task\TaskTest;
 use App\Utility\ConsoleCommand\Test;
 use App\Utility\ConsoleCommand\TrackerLogCategory;
 use App\Utility\ConsoleCommand\TrackerPushLog;
@@ -136,30 +132,7 @@ class EasySwooleEvent implements Event
         //主swoole服务修改配置
 //        ServerManager::getInstance()->getSwooleServer()->set(['worker_num' => 1, 'task_worker_num' => 1]);
 
-        /*
-         * ***************** RPC ********************
-        */
-        $conf = new \EasySwoole\Rpc\Config();
-        $conf->setSubServerMode(true);//设置为子务模式
-        /*
-         * 开启服务自动广播，可以修改广播地址，实现定向ip组广播
-         */
-        $conf->setEnableBroadcast(true);
-        $conf->getBroadcastList()->set([
-            '255.255.255.255:9602'
-        ]);
 
-        /*
-         * 注册配置项和服务注册
-         */
-        RpcServer::getInstance($conf, Trigger::getInstance());
-        try {
-            RpcServer::getInstance()->registerService('serviceOne', ServiceOne::class);
-            RpcServer::getInstance()->registerService('serviceTwo', RpcTwo::class);
-            RpcServer::getInstance()->attach(ServerManager::getInstance()->getSwooleServer());
-        } catch (\Throwable $throwable) {
-            Logger::getInstance()->console($throwable->getMessage());
-        }
         /**
          * **************** tcp控制器 **********************
          */
@@ -201,10 +174,7 @@ class EasySwooleEvent implements Event
         $register->set(EventRegister::onHandShake, function (\swoole_http_request $request, \swoole_http_response $response) use ($websocketEvent) {
             $websocketEvent->onHandShake($request, $response);
         });
-        // 自定义关闭事件
-        $register->set(EventRegister::onClose, function (\swoole_server $server, int $fd, int $reactorId) {
-           $websocketEvent->onClose($server, $fd, $reactorId);	
-        });
+
 
         /**
          * **************** udp服务 **********************
