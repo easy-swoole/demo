@@ -15,6 +15,7 @@ use App\HttpController\Pool\Redis;
 use App\Log\LogHandler;
 use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
+use App\Rpc\ServiceOne;
 use App\Utility\ConsoleCommand\Test;
 use App\Utility\ConsoleCommand\TrackerLogCategory;
 use App\Utility\ConsoleCommand\TrackerPushLog;
@@ -24,6 +25,7 @@ use App\Utility\TrackerManager;
 use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
 use EasySwoole\Component\Di;
+use EasySwoole\Component\Openssl;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Console\CommandContainer;
 use EasySwoole\EasySwoole\Console\TcpService;
@@ -35,6 +37,8 @@ use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\EasySwoole\Swoole\Time\Timer;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
+use EasySwoole\Rpc\Pack;
+use EasySwoole\Rpc\RequestPackage;
 use EasySwoole\Socket\Client\Tcp;
 use EasySwoole\Socket\Dispatcher;
 use EasySwoole\Trace\Bean\Tracker;
@@ -130,7 +134,7 @@ class EasySwooleEvent implements Event
         });
 
         //主swoole服务修改配置
-//        ServerManager::getInstance()->getSwooleServer()->set(['worker_num' => 1, 'task_worker_num' => 1]);
+        ServerManager::getInstance()->getSwooleServer()->set(['task_async' => true]);
 
 
         /**
@@ -244,6 +248,71 @@ class EasySwooleEvent implements Event
         Crontab::getInstance()->addTask(TaskOne::class);
         // 开始一个定时任务计划
         Crontab::getInstance()->addTask(TaskTwo::class);
+
+        /**
+         * **************** Rpc2.0 默认demo **********************
+         */
+        $rpcConfig = new \EasySwoole\Rpc\Config();
+        $rpcConfig->setServiceName('service');
+        $rpcConfig->setServiceName(ServiceOne::class);//自定义控制器写法
+        $rpcConfig->setBroadcastTTL(4);//广播时间间隔
+        //$rpcConfig->setAuthKey('123456');//开启通讯密钥
+
+        $rpc = new \EasySwoole\Rpc\Rpc($rpcConfig);
+
+        ##########自定义控制器写法 开始####################
+        $rpcConfig->setOnRequest(function (RequestPackage $package, \EasySwoole\Rpc\Response $response,\EasySwoole\Rpc\Config $config, \swoole_server $server, int $fd){
+            try{
+                $class = $config->getServiceName();
+                new $class($package,$response,$config,$server,$fd);
+            }catch (\Throwable $throwable){
+                $response->setStatus($response::STATUS_SERVER_ERROR);
+                $response->setMessage("{$throwable->getMessage()} at file {$throwable->getFile()} line {$throwable->getLine()}");
+            }
+            if(is_callable($config->getAfterRequest())){
+                call_user_func($config->getAfterRequest(),$package,$response,$config,$server,$fd);
+            }
+            if($server->exist($fd)){
+                $msg = $response->__toString();
+                if($config->isEnableOpenssl()){
+                    $openssl = new Openssl($config->getAuthKey());
+                    $msg = $openssl->encrypt($msg);
+                }
+                $server->send($fd,Pack::pack($msg));
+            }
+
+            return false;
+        });
+        ##########自定义控制器写法结束####################
+
+
+        //注册action
+        $rpc->getActionList()->register('a1', function (RequestPackage $package, \EasySwoole\Rpc\Response $response, \swoole_server $server, int $fd) {
+            var_dump($package->getArg());
+            return 'AAA';
+        });
+
+        $rpc->getActionList()->register('a2', function (RequestPackage $package, \EasySwoole\Rpc\Response $response, \swoole_server $server, int $fd) {
+            \co::sleep(0.1);
+            return 'a2';
+        });
+
+        $server = ServerManager::getInstance()->getSwooleServer();
+        //注册广播进程，主动对外udp广播服务节点信息
+        $server->addProcess($rpc->getRpcBroadcastProcess());
+        //创建一个udp子服务，用来接收udp广播
+        $udp = $server->addListener($rpcConfig->getBroadcastListenAddress(),$rpcConfig->getBroadcastListenPort(),SWOOLE_UDP);
+        $udp->on('packet',function (\swoole_server $server, string $data, array $client_info)use($rpc){
+            $rpc->onRpcBroadcast($server,$data,$client_info);
+        });
+
+        //创建一个tcp子服务，用来接收rpc的tcp请求。
+        $sub = $server->addListener($rpcConfig->getListenAddress(),$rpcConfig->getListenPort(),SWOOLE_TCP);
+        $sub->set($rpcConfig->getProtocolSetting());
+        $sub->on('receive',function (\swoole_server $server, int $fd, int $reactor_id, string $data)use($rpc){
+            $rpc->onRpcRequest( $server,  $fd,  $reactor_id,  $data);
+        });
+
     }
 
 
