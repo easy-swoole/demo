@@ -8,6 +8,7 @@
 
 namespace App\Task;
 
+use App\Model\User\UserModelWithDb;
 use EasySwoole\EasySwoole\Swoole\Task\AbstractAsyncTask;
 
 class TaskTest extends AbstractAsyncTask
@@ -15,6 +16,10 @@ class TaskTest extends AbstractAsyncTask
     function run($taskData, $taskId, $fromWorkerId)
     {
         echo "执行task模板任务\n";
+        $page = 1;
+        $model = new UserModelWithDb();
+        $data = $model->getAll($page);
+        $this->writeJson(Status::CODE_OK, $data, 'success');
         return 1;
         // TODO: Implement run() method.
     }
