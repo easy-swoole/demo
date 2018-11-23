@@ -39,7 +39,7 @@ class TaskTwo extends AbstractCronTask
         $cron->resetTaskRule('taskTwo','*/5 * * * *'); // 可以重新设置某任务的执行规则
         $current = date('Y-m-d H:i:s');
         $rule = $cron->getTaskCurrentRule('taskTwo');
-        $nextTime = date('Y-m-d H:i:s');
+        $nextTime = date('Y-m-d H:i:s',$cron->getTaskNextRunTime('taskTwo'));
         $runCount = $cron->getTaskRunNumberOfTimes('taskTwo');
 
         var_dump("cron taskTwo run at {$current} currentRule: {$rule} next: {$nextTime} count: {$runCount}");
