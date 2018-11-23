@@ -9,7 +9,7 @@
     "require": {
         "easyswoole/easyswoole": "3.x-dev",
         "easyswoole/mysqli": "^1.0",
-        "easyswoole/rpc": "^1.0",
+        "easyswoole/rpc": "^2.0",
         "phpunit/phpunit": "^7.4"
     },
     "require-dev": {
