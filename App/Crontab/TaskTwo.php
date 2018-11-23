@@ -10,6 +10,7 @@ namespace App\Crontab;
 
 
 use EasySwoole\EasySwoole\Crontab\AbstractCronTask;
+use EasySwoole\EasySwoole\Crontab\Crontab;
 
 class TaskTwo extends AbstractCronTask
 {
@@ -32,6 +33,15 @@ class TaskTwo extends AbstractCronTask
     {
         // TODO: Implement run() method.
         // 定时任务处理逻辑
-        var_dump('run once every two minutes');
+
+        // 可以获得当前任务的规则 任务下一次执行的时间 任务总计执行的次数
+        $cron = Crontab::getInstance();
+        $cron->resetTaskRule('taskTwo','*/5 * * * *'); // 可以重新设置某任务的执行规则
+        $current = date('Y-m-d H:i:s');
+        $rule = $cron->getTaskCurrentRule('taskTwo');
+        $nextTime = date('Y-m-d H:i:s');
+        $runCount = $cron->getTaskRunNumberOfTimes('taskTwo');
+
+        var_dump("cron taskTwo run at {$current} currentRule: {$rule} next: {$nextTime} count: {$runCount}");
     }
 }
