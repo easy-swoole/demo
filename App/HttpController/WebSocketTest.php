@@ -17,9 +17,10 @@ use EasySwoole\EasySwoole\ServerManager;
     function push()
     {
         $fd = intval($this->request()->getRequestParam('fd'));
-        $info = ServerManager::getInstance()->getServer()->getClientInfo($fd);
+        $server = ServerManager::getInstance()->getSwooleServer();
+        $info =$server->getClientInfo($fd);
         if(is_array($info)){
-            ServerManager::getInstance()->getServer()->push($fd,'push in http at '.time());
+            $server->push($fd,'push in http at '.time());
         }else{
             $this->response()->write("fd {$fd} not exist");
         }
