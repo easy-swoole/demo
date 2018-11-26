@@ -52,7 +52,7 @@ class HotReload extends AbstractProcess
         if (isset($files['files'])) {
             foreach ($files['files'] as $file) {
                 $currentTime = filemtime($file);
-                $inode = fileinode($file);
+                $inode = crc32($file);
                 if (!$this->table->exist($inode)) {
                     $doReload = true;
                     $this->table->set($inode, ['mtime' => $currentTime]);
