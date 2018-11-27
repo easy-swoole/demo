@@ -16,6 +16,7 @@ use App\Log\LogHandler;
 use App\Process\HotReload;
 use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
+use App\Rpc\RpcServer;
 use App\Rpc\ServiceOne;
 use App\Utility\ConsoleCommand\Test;
 use App\Utility\ConsoleCommand\TrackerLogCategory;
@@ -255,17 +256,16 @@ class EasySwooleEvent implements Event
          * **************** Rpc2.0 默认demo **********************
          */
         $rpcConfig = new \EasySwoole\Rpc\Config();
-        $rpcConfig->setServiceName('service');
-        $rpcConfig->setServiceName(ServiceOne::class);//自定义控制器写法
+        $rpcConfig->setServiceName('ServiceOne');
         $rpcConfig->setBroadcastTTL(4);//广播时间间隔
         //$rpcConfig->setAuthKey('123456');//开启通讯密钥
 
-        $rpc = new \EasySwoole\Rpc\Rpc($rpcConfig);
-
+        $rpc = RpcServer::getInstance($rpcConfig);
         ##########自定义控制器写法 开始####################
         $rpcConfig->setOnRequest(function (RequestPackage $package, \EasySwoole\Rpc\Response $response,\EasySwoole\Rpc\Config $config, \swoole_server $server, int $fd){
             try{
-                $class = $config->getServiceName();
+                $class ='App\\Rpc\\'. $config->getServiceName();
+                var_dump($class);
                 new $class($package,$response,$config,$server,$fd);
             }catch (\Throwable $throwable){
                 $response->setStatus($response::STATUS_SERVER_ERROR);

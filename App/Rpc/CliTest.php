@@ -17,7 +17,7 @@ $rpc->nodeManager()->refreshServiceNode($serviceNode);
 
 go(function () use ($rpc) {
     $client = $rpc->client();
-    $client->selectService('serviceName')->callAction('a1')->setArg(
+    $client->selectService('serviceOne')->callAction('a1')->setArg(
         [
             'callTime' => time()
         ]
