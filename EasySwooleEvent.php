@@ -13,6 +13,7 @@ use App\Crontab\TaskOne;
 use App\Crontab\TaskTwo;
 use App\HttpController\Pool\Redis;
 use App\Log\LogHandler;
+use App\Process\HotReload;
 use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
 use App\Rpc\ServiceOne;
@@ -122,7 +123,8 @@ class EasySwooleEvent implements Event
         ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTest('test_process'))->getProcess());
         //注册异步任务自定义进程
         ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTaskTest('ProcessTaskTest'))->getProcess());
-
+        // 暴力热重启
+        ServerManager::getInstance()->getSwooleServer()->addProcess((new HotReload('HotReload'))->getProcess());
 
         //添加子服务监听
         $subPort = ServerManager::getInstance()->getSwooleServer()->addListener('0.0.0.0', 9502, SWOOLE_TCP);
