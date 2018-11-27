@@ -1,10 +1,9 @@
 <?php
 include 'vendor/autoload.php';
 $conf = new \EasySwoole\Rpc\Config();
-$rpc = new \EasySwoole\Rpc\Rpc($conf);
-$conf->setServiceName('serviceName');
 //开启通讯密钥
 //$conf->setAuthKey('123456');
+$rpc = new \EasySwoole\Rpc\Rpc($conf);
 
 //虚拟一个服务节点
 $serviceNode = new \EasySwoole\Rpc\ServiceNode();
@@ -18,7 +17,7 @@ $rpc->nodeManager()->refreshServiceNode($serviceNode);
 
 go(function () use ($rpc) {
     $client = $rpc->client();
-    $client->selectService('serviceName')->callAction('a1')->setArg(
+    $client->selectService('serviceOne')->callAction('a1')->setArg(
         [
             'callTime' => time()
         ]
