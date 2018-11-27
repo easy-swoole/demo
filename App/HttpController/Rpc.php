@@ -31,7 +31,6 @@ class Rpc extends Controller
         $rpc->nodeManager()->refreshServiceNode($serviceNode);
 
         $msg = null;
-        $t = microtime(true);
         $client = RpcServer::getInstance()->client();
         $client->selectService('ServiceOne')->callAction('a1')->setArg(
             [
