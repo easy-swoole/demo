@@ -14,6 +14,7 @@ class UserBean extends \EasySwoole\Spl\SplBean {
     protected $id;
     protected $name;
 
+    // 设置字段别名映射
     function setKeyMapping(): array
     {
         return [
