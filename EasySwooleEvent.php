@@ -14,6 +14,7 @@ use App\Crontab\TaskTwo;
 use App\HttpController\Pool\Redis;
 use App\Log\LogHandler;
 use App\Process\HotReload;
+use App\Process\InotifyHotReload;
 use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
 use App\Rpc\RpcServer;
@@ -126,6 +127,8 @@ class EasySwooleEvent implements Event
         ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTaskTest('ProcessTaskTest'))->getProcess());
         // 暴力热重启
         ServerManager::getInstance()->getSwooleServer()->addProcess((new HotReload('HotReload'))->getProcess());
+        // 如果有Inotify扩展也可以使用事件热重启
+        // ServerManager::getInstance()->getSwooleServer()->addProcess((new InotifyHotReload('InotifyHotReload'))->getProcess());
 
         //添加子服务监听
         $subPort = ServerManager::getInstance()->getSwooleServer()->addListener('0.0.0.0', 9502, SWOOLE_TCP);
