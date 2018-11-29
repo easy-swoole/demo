@@ -184,7 +184,9 @@ class EasySwooleEvent implements Event
         $register->set(EventRegister::onHandShake, function (\swoole_http_request $request, \swoole_http_response $response) use ($websocketEvent) {
             $websocketEvent->onHandShake($request, $response);
         });
-
+        $register->set(EventRegister::onClose, function (\swoole_server $server, int $fd, int $reactorId) use ($websocketEvent) {
+            $websocketEvent->onClose($server, $fd, $reactorId);
+        });
 
         /**
          * **************** udp服务 **********************
