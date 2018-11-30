@@ -27,14 +27,14 @@ class WebSocketParser implements ParserInterface
      */
     public function decode($raw, $client) : ? Caller
     {
-        $jsonObject = json_decode($raw);
+        $data = json_decode($raw, true);
 
         // new 调用者对象
         $caller =  new Caller();
         // 设置被调用的类 这里会将ws消息中的 class 参数解析为具体想访问的控制器
         // 如果更喜欢 event 方式 可以自定义 event 和具体的类的 map 即可
         // 注 目前 easyswoole 3.0.4 版本及以下 不支持直接传递 class string 可以通过这种方式
-        $class = '\\App\\WebSocket\\'. ucfirst($jsonObject->class ?? 'Test');
+        $class = '\\App\\WebSocket\\'. ucfirst($data['class'] ?? 'Test');
         $caller->setControllerClass($class);
 
         // 提供一个事件风格的写法
@@ -45,9 +45,9 @@ class WebSocketParser implements ParserInterface
         // $caller->setControllerClass($eventMap[$jsonObject->event] ?? Test::class);
 
         // 设置被调用的方法
-        $caller->setAction($jsonObject->action??'index');
+        $caller->setAction($data['action'] ?? 'index');
         // 设置被调用的Args
-        $caller->setArgs($jsonObject->content ?? []);
+        $caller->setArgs(is_array($data['content']) ? $data['content'] : []);
         return $caller;
     }
     /**
