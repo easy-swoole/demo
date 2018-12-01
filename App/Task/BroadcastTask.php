@@ -10,7 +10,6 @@ namespace App\Task;
 
 use App\Utility\AppConst;
 use App\Utility\Redis;
-use App\WebSocket\ResponsePayload;
 use EasySwoole\EasySwoole\ServerManager;
 use EasySwoole\EasySwoole\Swoole\Task\AbstractAsyncTask;
 

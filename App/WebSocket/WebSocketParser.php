@@ -23,6 +23,7 @@ class WebSocketParser implements ParserInterface
      */
     public function decode($raw, $client): ?Caller
     {
+        $caller = new Caller;
         // 聊天消息 {"controller":"broadcast","action":"roomBroadcast","params":{"content":"111"}}
         if ($raw !== 'PING') {
             $payload = json_decode($raw, true);
@@ -31,14 +32,15 @@ class WebSocketParser implements ParserInterface
             $params = isset($payload['params']) ? (array)$payload['params'] : [];
             $controllerClass = "\\App\\WebSocket\\Controller\\" . ucfirst($class);
             if (!class_exists($controllerClass)) $controllerClass = "\\App\\WebSocket\\Controller\\Index";
-            $caller = new Caller;
             $caller->setClient($caller);
             $caller->setControllerClass($controllerClass);
             $caller->setAction($action);
             $caller->setArgs($params);
-            return $caller;
+        } else {
+            $caller->setControllerClass("\\App\\WebSocket\\Controller\\Index");
+            $caller->setAction('heartbeat');
         }
-        return null;
+        return $caller;
     }
 
     /**

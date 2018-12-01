@@ -44,4 +44,9 @@ class Index extends Base
             $this->response()->setMessage($message);
         }
     }
+
+    function heartbeat()
+    {
+        $this->response()->setMessage('PONG');
+    }
 }
