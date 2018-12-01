@@ -161,7 +161,6 @@
                     return false;
                 } else if (ev.keyCode == 13) {
                     othis.clickBtnSend();
-                    textInput.val('');
                     ev.preventDefault();
                     return false;
                 }
@@ -195,7 +194,8 @@
             clickBtnSend: function () {
                 var content = $('#text-input').val();
                 if (content.trim() !== '') {
-                    this.broadcastTextMessage(content)
+                    this.broadcastTextMessage(content);
+                    textInput.val('');
                 } else {
                     layer.tips('请输入消息内容', '.windows_input', {
                         tips: [1, '#3595CC'],
