@@ -192,7 +192,8 @@
              * @return void
              */
             clickBtnSend: function () {
-                var content = $('#text-input').val();
+                var textInput = $('#text-input');
+                var content =textInput.val();
                 if (content.trim() !== '') {
                     this.broadcastTextMessage(content);
                     textInput.val('');
