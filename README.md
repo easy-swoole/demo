@@ -2,6 +2,10 @@
 
 EASYSWOOLE 聊天室DEMO
 
+## 在线体验
+
+[在线DEMO演示站](http://chat.evalor.cn/)
+
 ## 安装
 
 安装时遇到提示是否覆盖 `EasySwooleEvent.php` 请选择否 (输入 n 回车)
