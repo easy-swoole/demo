@@ -1,0 +1,43 @@
+{
+    "name": "easyswoole/app",
+    "description": "the new easyswoole application",
+    "type": "project",
+    "authors": [
+        {
+            "name": "YF",
+            "email": "291323003@qq.com"
+        },
+        {
+            "name": "evalor",
+            "email": "mipone@foxmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "ext-swoole": ">=4.0.3",
+        "easyswoole/easyswoole": "3.x-dev",
+        "easyswoole/swoole-ide-helper": "^1.0",
+        "catfan/medoo": "^1.6",
+        "ext-json": "*",
+        "ext-redis": "*"
+    },
+    "require-dev": {
+        "composer/composer": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "App\\Run::postCreateCmd"
+        ]
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.laravel-china.org"
+        }
+    }
+}
