@@ -340,3 +340,32 @@ ul {
 #text-input::-ms-clear {
     display: none;
 }
+
+/* ---------------- 响应式适配 ---------------- */
+
+@media only screen and (max-width: 641px ) {
+    #chat {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    .online_window {
+        display: none;
+    }
+
+    .talk_window {
+        width: 100%;
+    }
+
+    .windows_body {
+        height: calc(100vh - 143px - 63px);
+    }
+
+    .windows_input {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 99999;
+    }
+}
