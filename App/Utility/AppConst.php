@@ -10,5 +10,7 @@ namespace App\Utility;
 
 class AppConst
 {
+    const SYSTEM_CON_COUNT_KEY = 'connect_count';
+    const SYSTEM_RUNTIME_KEY = 'run_at';
     const REDIS_ONLINE_KEY = 'online';
 }

@@ -116,6 +116,16 @@
                     try {
                         var data = JSON.parse(ev.data);
                         switch (data.action) {
+                            case 101: {
+                                // 收到管理员消息
+                                othis.roomChat.push({
+                                    fd: 0,
+                                    content: data.content,
+                                    avatar: 99,
+                                    username: '列车乘务员'
+                                });
+                                break;
+                            }
                             case 103 : {
                                 // 收到用户消息
                                 var message = {
@@ -124,7 +134,7 @@
                                     avatar: othis.roomUser[data.fromUserFd].avatar,
                                     username: othis.roomUser[data.fromUserFd].username
                                 };
-                                othis.roomChat.push(message)
+                                othis.roomChat.push(message);
                                 break;
                             }
                             case 201: {
@@ -149,7 +159,7 @@
                             }
                             case 204: {
                                 // 用户已离线
-                                othis.$delete(othis.roomUser, data.userFd)
+                                othis.$delete(othis.roomUser, data.userFd);
                                 break;
                             }
                         }

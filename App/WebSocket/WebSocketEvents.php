@@ -12,6 +12,7 @@ use App\Task\BroadcastTask;
 use App\Utility\AppConst;
 use App\Utility\Pool\RedisPool;
 use App\Utility\Pool\RedisPoolObject;
+use App\WebSocket\Actions\Broadcast\BroadcastAdmin;
 use App\WebSocket\Actions\User\UserInRoom;
 use App\WebSocket\Actions\User\UserOutRoom;
 use EasySwoole\Component\Pool\PoolManager;
@@ -32,11 +33,19 @@ class WebSocketEvents
         if ($redis instanceof RedisPoolObject) {
             $info = self::mockUser($req->fd);
             $redis->hSet(AppConst::REDIS_ONLINE_KEY, $req->fd, $info);
+            $redis->incr(AppConst::SYSTEM_CON_COUNT_KEY);
+            $count = $redis->get(AppConst::SYSTEM_CON_COUNT_KEY);
 
             // 全频道通知新用户上线
             $message = new UserInRoom;
             $message->setInfo($info);
             TaskManager::async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $req->fd]));
+
+            // 对该用户单独发送欢迎消息
+            $runDays = intval((time() - ($redis->get(AppConst::SYSTEM_RUNTIME_KEY))) / 86400);
+            $message = new BroadcastAdmin;
+            $message->setContent("欢迎乘坐EASYSWOOLE号特快列车，列车已稳定运行{$runDays}天，共计服务{$count}人次，请系好安全带，文明乘车");
+            $server->push($req->fd, $message->__toString());
 
             $redisPool->recycleObj($redis);
             echo "websocket user {$req->fd} was connected\n";
@@ -83,6 +92,8 @@ class WebSocketEvents
         $redisPool = PoolManager::getInstance()->getPool(RedisPool::class);
         $redis = $redisPool->getObj();
         if ($redis instanceof RedisPoolObject) {
+            $redis->set(AppConst::SYSTEM_RUNTIME_KEY, time());
+            $redis->del(AppConst::SYSTEM_CON_COUNT_KEY);
             if ($redis->exists(AppConst::REDIS_ONLINE_KEY)) {
                 $clear = $redis->del(AppConst::REDIS_ONLINE_KEY);
                 $status = $clear ? 'success' : 'failed';
