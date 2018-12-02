@@ -30,8 +30,9 @@ class WebSocketEvents
     {
         $redisPool = PoolManager::getInstance()->getPool(RedisPool::class);
         $redis = $redisPool->getObj();
+        $username = $req->get['username'] ?? '吃瓜乘客' . str_pad($req->fd, 4, '0', STR_PAD_LEFT);
         if ($redis instanceof RedisPoolObject) {
-            $info = self::mockUser($req->fd);
+            $info = self::mockUser($req->fd, $username);
             $redis->hSet(AppConst::REDIS_ONLINE_KEY, $req->fd, $info);
             $redis->incr(AppConst::SYSTEM_CON_COUNT_KEY);
             $count = $redis->get(AppConst::SYSTEM_CON_COUNT_KEY);
@@ -44,7 +45,7 @@ class WebSocketEvents
             // 对该用户单独发送欢迎消息
             $runDays = intval((time() - ($redis->get(AppConst::SYSTEM_RUNTIME_KEY))) / 86400);
             $message = new BroadcastAdmin;
-            $message->setContent("欢迎乘坐EASYSWOOLE号特快列车，列车已稳定运行{$runDays}天，共计服务{$count}人次，请系好安全带，文明乘车");
+            $message->setContent("{$username}，欢迎乘坐EASYSWOOLE号特快列车，列车已稳定运行{$runDays}天，共计服务{$count}人次，请系好安全带，文明乘车");
             $server->push($req->fd, $message->__toString());
 
             $redisPool->recycleObj($redis);
@@ -107,14 +108,14 @@ class WebSocketEvents
 
     /**
      * 生产一个游客用户
-     * @param int $userFd
+     * @param int     $userFd
+     * @param  string $userName
      * @return array
      */
-    static private function mockUser($userFd)
+    static private function mockUser($userFd, $userName)
     {
         mt_srand();
         $introduce = ['请叫我秋名山车神', '这不是去学校的车', '最长的路是你的套路', '车速超快我有点怕', '最美的风景是在路上', '身娇腰柔易推倒', '时光静好与君语', '细水流年与君同', '繁华落尽与君老', '吃瓜什么的最棒了'];
-        $username = '吃瓜乘客' . str_pad($userFd, 4, '0', STR_PAD_LEFT);
-        return ['username' => $username, 'userFd' => $userFd, 'avatar' => rand(0, 9), 'intro' => $introduce[rand(0, 9)]];
+        return ['username' => $userName, 'userFd' => $userFd, 'avatar' => rand(0, 9), 'intro' => $introduce[rand(0, 9)]];
     }
 }

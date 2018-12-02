@@ -22,7 +22,9 @@
                         <img :src="'/avatar/'+currentUser.avatar+'.jpg'" alt="">
                     </div>
                     <div class="me_status">
-                        <div class="me_username">{{currentUser.username}}</div>
+                        <div class="me_username">
+                            <i class="am-icon am-icon-pencil" @click="changeName"></i> {{currentUser.username}}
+                        </div>
                         <div class="me_income">{{currentUser.intro}}</div>
                     </div>
                     <div class="times-icon"><i class="am-icon am-icon-times"></i></div>
@@ -103,6 +105,10 @@
         },
         created: function () {
             var othis = this;
+            var username = localStorage.getItem('username');
+            if (username) {
+                this.websocketServer += '?username=' + encodeURIComponent(username)
+            }
             this.websocketInstance = new WebSocket(this.websocketServer);
             this.websocketInstance.onopen = function (ev) {
                 // 前端循环心跳 (1min)
@@ -244,6 +250,16 @@
                         time: 2000
                     });
                 }
+            },
+            changeName: function () {
+                layer.prompt({title: '拒绝吃瓜，秀出你的昵称', formType: 0}, function (username, index) {
+                    if (username) {
+                        localStorage.setItem('username', username);
+                        window.location.reload();
+                    }
+                    layer.close(index);
+                });
+
             }
         },
         computed: {
