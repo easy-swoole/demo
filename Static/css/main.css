@@ -27,7 +27,7 @@ ul {
 #chat {
     margin: 20px auto;
     width: 860px;
-    height: 800px
+    height: 650px
 }
 
 /* ---------------- 左侧区域 ---------------- */
@@ -95,7 +95,7 @@ ul {
 /* ---------------- 在线列表 ---------------- */
 
 .online_list {
-    height: 690px
+    height: 540px
 }
 
 .online_list_header {
@@ -206,7 +206,7 @@ ul {
 .windows_body {
     padding: 15px;
     width: 100%;
-    height: 590px;
+    height: 440px;
     overflow-y: scroll;
 }
 
@@ -376,7 +376,7 @@ ul {
     }
 
     .windows_body {
-        height: calc(100vh - 143px - 63px);
+        height: calc(100% - 143px - 63px);
     }
 
     .windows_input {
