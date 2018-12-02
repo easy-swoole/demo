@@ -156,6 +156,22 @@
                     } catch (e) {
 
                     }
+                };
+                othis.websocketInstance.onclose = function () {
+                    othis.roomUser = {};
+                    $('#text-input').disabled = true;
+                    $('.send').remove();
+                    layer.alert('链接已被关闭，请刷新页面重新链接', function () {
+                        window.location.reload();
+                    })
+                };
+                othis.websocketInstance.onerror = function () {
+                    othis.roomUser = {};
+                    $('#text-input').disabled = true;
+                    $('.send').remove();
+                    layer.alert('发生异常，请刷新页面重新链接', function () {
+                        window.location.reload();
+                    })
                 }
             }
         },
