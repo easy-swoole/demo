@@ -7,7 +7,7 @@
     <title>微聊 - EASYSWOOLE DEMO</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/amazeui/2.7.2/css/amazeui.min.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/layer/2.3/skin/layer.css">
-    <link rel="stylesheet" href="/css/main.css?v=120201">
+    <link rel="stylesheet" href="/css/main.css?v=120202">
     <script src="https://cdn.staticfile.org/vue/2.5.17-beta.0/vue.js"></script>
     <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/layer/2.3/layer.js"></script>
@@ -25,6 +25,7 @@
                         <div class="me_username">{{currentUser.username}}</div>
                         <div class="me_income">{{currentUser.intro}}</div>
                     </div>
+                    <div class="times-icon"><i class="am-icon am-icon-times"></i></div>
                 </div>
             </div>
             <div class="online_list">
@@ -46,7 +47,7 @@
         </div>
         <div class="talk_window">
             <div class="windows_top">
-                <div class="windows_top_left">欢迎乘坐特快列车</div>
+                <div class="windows_top_left"><i class="am-icon am-icon-list online-list"></i> 欢迎乘坐特快列车</div>
                 <div class="windows_top_right">
                     <a href="https://github.com/easy-swoole/demo/tree/3.x-chat" target="_blank" style="color: #999">查看源码</a>
                 </div>
@@ -170,6 +171,14 @@
                     ev.preventDefault();
                     return false;
                 }
+            });
+            $('.online-list').on('click', function () {
+                $('.online_window').show();
+                $('.windows_input').hide();
+            });
+            $('.times-icon').on('click', function () {
+                $('.online_window').hide();
+                $('.windows_input').show();
             })
         },
         methods: {

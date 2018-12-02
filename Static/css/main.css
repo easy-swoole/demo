@@ -341,9 +341,23 @@ ul {
     display: none;
 }
 
+.online-list {
+    display: none;
+}
+
+.times-icon {
+    display: none;
+}
+
 /* ---------------- 响应式适配 ---------------- */
 
-@media only screen and (max-width: 641px ) {
+@media only screen and (min-width: 641px ) {
+    .online_window {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 640px ) {
     #chat {
         margin: 0;
         height: 100%;
@@ -352,6 +366,9 @@ ul {
 
     .online_window {
         display: none;
+        width: 100%;
+        z-index: 10000;
+        border-radius: 0;
     }
 
     .talk_window {
@@ -366,6 +383,19 @@ ul {
         position: fixed;
         left: 0;
         bottom: 0;
-        z-index: 99999;
+        z-index: 100;
+    }
+
+    .online-list {
+        display: inline-block;
+        padding-right: 10px;
+    }
+
+    .times-icon {
+        color: #FFF;
+        font-size: 150%;
+        display: block;
+        float: right;
+        margin-right: 10px;
     }
 }
