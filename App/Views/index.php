@@ -57,23 +57,29 @@
             <div class="windows_body" id="chat-window" v-scroll-bottom>
                 <ul class="am-comments-list am-comments-list-flip">
                     <template v-for="chat in roomChat">
-                        <article class="am-comment" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
-                            <a href="#link-to-user-home">
-                                <img :src="'/avatar/'+chat.avatar+'.jpg'" alt="" class="am-comment-avatar" width="48" height="48"/>
-                            </a>
-                            <div class="am-comment-main">
-                                <header class="am-comment-hd">
-                                    <div class="am-comment-meta">
-                                        <a href="#link-to-user" class="am-comment-author">{{chat.username}}</a>
-                                    </div>
-                                </header>
-                                <div class="am-comment-bd">
-                                    <div class="bd-content">
-                                        {{chat.content}}
+                        <template v-if="chat.type === 'tips'">
+                            <div class="chat-tips">
+                                <span class="am-badge am-badge-primary am-radius">{{chat.content}}</span></div>
+                        </template>
+                        <template v-else>
+                            <article class="am-comment" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
+                                <a href="#link-to-user-home">
+                                    <img :src="'/avatar/'+chat.avatar+'.jpg'" alt="" class="am-comment-avatar" width="48" height="48"/>
+                                </a>
+                                <div class="am-comment-main">
+                                    <header class="am-comment-hd">
+                                        <div class="am-comment-meta">
+                                            <a href="#link-to-user" class="am-comment-author">{{chat.username}}</a>
+                                        </div>
+                                    </header>
+                                    <div class="am-comment-bd">
+                                        <div class="bd-content">
+                                            {{chat.content}}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </article>
+                            </article>
+                        </template>
                     </template>
                 </ul>
             </div>
@@ -125,6 +131,7 @@
                             case 101: {
                                 // 收到管理员消息
                                 othis.roomChat.push({
+                                    type: 'chat',
                                     fd: 0,
                                     content: data.content,
                                     avatar: 99,
@@ -135,6 +142,7 @@
                             case 103 : {
                                 // 收到用户消息
                                 var message = {
+                                    type: 'chat',
                                     fd: data.fromUserFd,
                                     content: data.content,
                                     avatar: othis.roomUser[data.fromUserFd].avatar,
@@ -158,14 +166,21 @@
                             }
                             case 203: {
                                 // 新用户上线
-                                if (data.info.userFd !== othis.currentUser.userFd) {
-                                    othis.$set(othis.roomUser, data.info.userFd, data.info)
-                                }
+                                othis.$set(othis.roomUser, data.info.userFd, data.info);
+                                othis.roomChat.push({
+                                    type: 'tips',
+                                    content: '乘客 ' + data.info.username + ' 已登车',
+                                });
                                 break;
                             }
                             case 204: {
                                 // 用户已离线
+                                var username = othis.roomUser[data.userFd].username;
                                 othis.$delete(othis.roomUser, data.userFd);
+                                othis.roomChat.push({
+                                    type: 'tips',
+                                    content: '乘客 ' + username + ' 下车了',
+                                });
                                 break;
                             }
                         }

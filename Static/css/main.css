@@ -95,7 +95,8 @@ ul {
 /* ---------------- 在线列表 ---------------- */
 
 .online_list {
-    height: 540px
+    height: calc(100% - 64px - 45px);
+    overflow-y: auto;
 }
 
 .online_list_header {
@@ -261,6 +262,15 @@ ul {
 .am-comment-flip .am-comment-main:after {
     border-left: none;
     margin: 0;
+}
+
+.chat-tips {
+    width: 100%;
+    text-align: center;
+    height: 24px;
+    font-size: 12px;
+    line-height: 24px;
+    margin: 1.6rem 0 0 0;
 }
 
 /* ---------------- 聊天输入框 ---------------- */
