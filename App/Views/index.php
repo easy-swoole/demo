@@ -7,7 +7,7 @@
     <title>微聊 - EASYSWOOLE DEMO</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/amazeui/2.7.2/css/amazeui.min.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/layer/2.3/skin/layer.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/main.css?v=120201">
     <script src="https://cdn.staticfile.org/vue/2.5.17-beta.0/vue.js"></script>
     <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/layer/2.3/layer.js"></script>
