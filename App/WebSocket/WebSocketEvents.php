@@ -99,8 +99,8 @@ class WebSocketEvents
                 $clear = $redis->del(AppConst::REDIS_ONLINE_KEY);
                 $status = $clear ? 'success' : 'failed';
                 echo "Redis online user clean {$status}\n";
-                $redisPool->recycleObj($redis);
             }
+            $redisPool->recycleObj($redis);
         } else {
             throw new \Exception('redis pool is empty');
         }
