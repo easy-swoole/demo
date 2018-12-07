@@ -231,7 +231,7 @@ class EasySwooleEvent implements Event
                 sleep(1);
             });
             $client->on("error", function (\swoole_client $cli) {
-                echo "error\n";
+                echo "Connection to 192.168.159.1 failed\n";
             });
             $client->on("close", function (\swoole_client $cli) {
                 echo "Connection close\n";
