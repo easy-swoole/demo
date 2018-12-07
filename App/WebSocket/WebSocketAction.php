@@ -14,6 +14,7 @@ class WebSocketAction
     const BROADCAST_ADMIN = 101;   // 管理消息
     const BROADCAST_SYSTEM = 102;  // 系统消息
     const BROADCAST_MESSAGE = 103; // 用户消息
+    const BROADCAST_LAST_MESSAGE = 104; // 最后消息
 
     // 2xx USER 用户类消息
     const USER_INFO = 201;         // 用户信息
