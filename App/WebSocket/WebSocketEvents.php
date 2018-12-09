@@ -17,6 +17,7 @@ use App\WebSocket\Actions\User\UserInRoom;
 use App\WebSocket\Actions\User\UserOutRoom;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
+use EasySwoole\EasySwoole\Config;
 
 class WebSocketEvents
 {
@@ -41,6 +42,12 @@ class WebSocketEvents
             $message = new UserInRoom;
             $message->setInfo($info);
             TaskManager::async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $req->fd]));
+
+            // 发送最后?条数据
+            $lastMessage = $redis->lRange(AppConst::REDIS_LAST_MESSAGE_KEY, 0, Config::getInstance()->getConf('SYSTEM.LAST_MESSAGE_MAX'));
+            for ($i = count($lastMessage) - 1; $i >= 0; $i--) {
+                $server->push($req->fd, $lastMessage[$i]);
+            }
 
             // 对该用户单独发送欢迎消息
             $runDays = intval((time() - ($redis->get(AppConst::SYSTEM_RUNTIME_KEY))) / 86400);

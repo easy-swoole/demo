@@ -151,6 +151,18 @@
                                 othis.roomChat.push(message);
                                 break;
                             }
+                            case 104 : {
+                                // 收到最后消息
+                                var message = {
+                                    type: 'chat',
+                                    fd: data.fromUserFd,
+                                    content: data.content,
+                                    avatar: data.avatar,
+                                    username: data.username
+                                };
+                                othis.roomChat.push(message);
+                                break;
+                            }
                             case 201: {
                                 // 刷新自己的用户信息
                                 othis.currentUser.intro = data.intro;
