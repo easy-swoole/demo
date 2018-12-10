@@ -9,16 +9,14 @@
     "require": {
         "easyswoole/easyswoole": "3.x-dev",
         "easyswoole/mysqli": "^1.0",
-        "easyswoole/rpc": "^2.0",
-        "phpunit/phpunit": "^7.4"
+        "easyswoole/rpc": "^2.0"
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "App\\": "App/",
-            "PhpUnit\\": "PhpUnit/"
+            "App\\": "App/"
         }
     }
 }
