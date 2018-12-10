@@ -30,11 +30,6 @@ class Mysql extends Controller
             });
         } catch (\Throwable $throwable) {
             $this->writeJson(Status::CODE_BAD_REQUEST, null, $throwable->getMessage());
-        }catch (PoolEmpty $poolEmpty){
-            $this->writeJson(Status::CODE_BAD_REQUEST, null, '没有链接可用');
-
-        }catch (PoolUnRegister $poolUnRegister){
-            $this->writeJson(Status::CODE_BAD_REQUEST, null, '连接池未注册');
         }
 
         $this->writeJson(Status::CODE_OK, null, 'success');
