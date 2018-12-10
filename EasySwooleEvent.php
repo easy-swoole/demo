@@ -14,7 +14,6 @@ use App\Crontab\TaskTwo;
 use App\HttpController\Pool\Redis;
 use App\Log\LogHandler;
 use App\Process\HotReload;
-use App\Process\InotifyHotReload;
 use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
 use App\Rpc\RpcServer;
@@ -30,11 +29,11 @@ use App\WebSocket\WebSocketParser;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Openssl;
 use EasySwoole\Component\Pool\PoolManager;
+use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\EasySwoole\Console\CommandContainer;
 use EasySwoole\EasySwoole\Console\TcpService;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
-use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\EasySwoole\Swoole\Process\Helper;
 use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\EasySwoole\Swoole\Time\Timer;
@@ -121,14 +120,14 @@ class EasySwooleEvent implements Event
         $register->add($register::onWorkerStart, function (\swoole_server $server, int $workerId) {
             // var_dump('worker:' . $workerId . 'start');
         });
-        //注册自定义进程
-        ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTest('test_process'))->getProcess());
+
+        // 自定义进程注册例子
+        $swooleServer = ServerManager::getInstance()->getSwooleServer();
+        $swooleServer->addProcess((new ProcessTest('test_process'))->getProcess());
         //注册异步任务自定义进程
-        ServerManager::getInstance()->getSwooleServer()->addProcess((new ProcessTaskTest('ProcessTaskTest'))->getProcess());
-        // 暴力热重启
-        ServerManager::getInstance()->getSwooleServer()->addProcess((new HotReload('HotReload'))->getProcess());
-        // 如果有Inotify扩展也可以使用事件热重启
-        // ServerManager::getInstance()->getSwooleServer()->addProcess((new InotifyHotReload('InotifyHotReload'))->getProcess());
+        $swooleServer->addProcess((new ProcessTaskTest('ProcessTaskTest'))->getProcess());
+        //自适应热重启 虚拟机下可以传入 disableInotify => true 强制使用扫描式热重启 规避虚拟机无法监听事件刷新
+        $swooleServer->addProcess((new HotReload('HotReload', ['disableInotify' => false]))->getProcess());
 
         //添加子服务监听
         $subPort = ServerManager::getInstance()->getSwooleServer()->addListener('0.0.0.0', 9502, SWOOLE_TCP);
@@ -232,7 +231,7 @@ class EasySwooleEvent implements Event
                 sleep(1);
             });
             $client->on("error", function (\swoole_client $cli) {
-                echo "error\n";
+                echo "Connection to 192.168.159.1 failed\n";
             });
             $client->on("close", function (\swoole_client $cli) {
                 echo "Connection close\n";
