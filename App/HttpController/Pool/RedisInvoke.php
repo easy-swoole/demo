@@ -12,15 +12,13 @@ namespace App\HttpController\Pool;
 use App\HttpController\Base;
 use App\Utility\Pool\RedisObject;
 use App\Utility\Pool\RedisPool;
-use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\Http\Message\Status;
 
 class RedisInvoke extends Base
 {
     function index() {
         try {
-            $result = PoolManager::getInstance()->getPool(RedisPool::class)
-                ->invoke(function(RedisObject $redis) {
+            $result = RedisPool::invoke(function(RedisObject $redis) {
                     $name = $redis->get('name');
                     return $name;
                 });
