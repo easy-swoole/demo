@@ -105,118 +105,18 @@
         data: {
             websocketServer: "<?= $server ?>",
             websocketInstance: undefined,
+            isReconnection: false,
             currentUser: {username: '-----', intro: '-----------', userFd: 0, avatar: 0},
             roomUser: {},
             roomChat: []
         },
         created: function () {
             var othis = this;
-            var username = localStorage.getItem('username');
-            if (username) {
-                this.websocketServer += '?username=' + encodeURIComponent(username)
-            }
-            this.websocketInstance = new WebSocket(this.websocketServer);
-            this.websocketInstance.onopen = function (ev) {
-                // 前端循环心跳 (1min)
-                setInterval(function () {
-                    othis.websocketInstance.send('PING');
-                }, 1000 * 30);
-                // 请求获取自己的用户信息和在线列表
-                othis.release('index', 'info');
-                othis.release('index', 'online');
-                othis.websocketInstance.onmessage = function (ev) {
-                    try {
-                        var data = JSON.parse(ev.data);
-                        switch (data.action) {
-                            case 101: {
-                                // 收到管理员消息
-                                othis.roomChat.push({
-                                    type: 'chat',
-                                    fd: 0,
-                                    content: data.content,
-                                    avatar: 99,
-                                    username: '列车乘务员'
-                                });
-                                break;
-                            }
-                            case 103 : {
-                                // 收到用户消息
-                                var message = {
-                                    type: 'chat',
-                                    fd: data.fromUserFd,
-                                    content: data.content,
-                                    avatar: othis.roomUser[data.fromUserFd].avatar,
-                                    username: othis.roomUser[data.fromUserFd].username
-                                };
-                                othis.roomChat.push(message);
-                                break;
-                            }
-                            case 104 : {
-                                // 收到最后消息
-                                var message = {
-                                    type: 'chat',
-                                    fd: data.fromUserFd,
-                                    content: data.content,
-                                    avatar: data.avatar,
-                                    username: data.username
-                                };
-                                othis.roomChat.push(message);
-                                break;
-                            }
-                            case 201: {
-                                // 刷新自己的用户信息
-                                othis.currentUser.intro = data.intro;
-                                othis.currentUser.avatar = data.avatar;
-                                othis.currentUser.userFd = data.userFd;
-                                othis.currentUser.username = data.username;
-                                break;
-                            }
-                            case 202: {
-                                // 刷新当前的在线列表
-                                othis.roomUser = data.list;
-                                break;
-                            }
-                            case 203: {
-                                // 新用户上线
-                                othis.$set(othis.roomUser, data.info.userFd, data.info);
-                                othis.roomChat.push({
-                                    type: 'tips',
-                                    content: '乘客 ' + data.info.username + ' 已登车',
-                                });
-                                break;
-                            }
-                            case 204: {
-                                // 用户已离线
-                                var username = othis.roomUser[data.userFd].username;
-                                othis.$delete(othis.roomUser, data.userFd);
-                                othis.roomChat.push({
-                                    type: 'tips',
-                                    content: '乘客 ' + username + ' 下车了',
-                                });
-                                break;
-                            }
-                        }
-                    } catch (e) {
-
-                    }
-                };
-                othis.websocketInstance.onclose = function () {
-                    othis.roomUser = {};
-                    $('#text-input').disabled = true;
-                    $('.send').remove();
-                    layer.alert('链接已被关闭，请刷新页面重新链接', function () {
-                        window.location.reload();
-                    })
-                };
-                othis.websocketInstance.onerror = function () {
-                    othis.roomUser = {};
-                    $('#text-input').disabled = true;
-                    $('.send').remove();
-                    layer.alert('发生异常，请刷新页面重新链接', function () {
-                        window.location.reload();
-                    })
+            setInterval(function(){
+                if (!othis.websocketInstance || othis.websocketInstance.readyState === 3) {
+                    othis.connect(othis.isReconnection);
                 }
-            }
+            }, 1000);
         },
         mounted: function () {
             var othis = this;
@@ -241,6 +141,129 @@
             })
         },
         methods: {
+            /**
+             *
+             */
+            connect: function(is_reconnection = false){
+                var othis = this;
+                var username = localStorage.getItem('username');
+                var websocketServer = this.websocketServer;
+                if (username) {
+                    websocketServer += '?username=' + encodeURIComponent(username)
+                }
+                if (is_reconnection) {
+                    websocketServer += (username ? '&' : '?') + 'is_reconnection=1'
+                }
+                this.websocketInstance = new WebSocket(websocketServer);
+                this.websocketInstance.onopen = function (ev) {
+                    // 前端循环心跳 (1min)
+                    var ping_t = setInterval(function () {
+                        othis.websocketInstance.send('PING');
+                    }, 1000 * 30);
+                    // 请求获取自己的用户信息和在线列表
+                    othis.release('index', 'info');
+                    othis.release('index', 'online');
+                    othis.websocketInstance.onmessage = function (ev) {
+                        try {
+                            var data = JSON.parse(ev.data);
+                            switch (data.action) {
+                                case 101: {
+                                    // 收到管理员消息
+                                    othis.roomChat.push({
+                                        type: 'chat',
+                                        fd: 0,
+                                        content: data.content,
+                                        avatar: 99,
+                                        username: '列车乘务员'
+                                    });
+                                    break;
+                                }
+                                case 103 : {
+                                    // 收到用户消息
+                                    var message = {
+                                        type: 'chat',
+                                        fd: data.fromUserFd,
+                                        content: data.content,
+                                        avatar: othis.roomUser[data.fromUserFd].avatar,
+                                        username: othis.roomUser[data.fromUserFd].username
+                                    };
+                                    othis.roomChat.push(message);
+                                    break;
+                                }
+                                case 104 : {
+                                    // 收到最后消息
+                                    var message = {
+                                        type: 'chat',
+                                        fd: data.fromUserFd,
+                                        content: data.content,
+                                        avatar: data.avatar,
+                                        username: data.username
+                                    };
+                                    othis.roomChat.push(message);
+                                    break;
+                                }
+                                case 201: {
+                                    // 刷新自己的用户信息
+                                    othis.currentUser.intro = data.intro;
+                                    othis.currentUser.avatar = data.avatar;
+                                    othis.currentUser.userFd = data.userFd;
+                                    othis.currentUser.username = data.username;
+                                    break;
+                                }
+                                case 202: {
+                                    // 刷新当前的在线列表
+                                    othis.roomUser = data.list;
+                                    break;
+                                }
+                                case 203: {
+                                    // 新用户上线
+                                    othis.$set(othis.roomUser, data.info.userFd, data.info);
+                                    othis.roomChat.push({
+                                        type: 'tips',
+                                        content: '乘客 ' + data.info.username + ' 已登车',
+                                    });
+                                    break;
+                                }
+                                case 204: {
+                                    // 用户已离线
+                                    var username = othis.roomUser[data.userFd].username;
+                                    othis.$delete(othis.roomUser, data.userFd);
+                                    othis.roomChat.push({
+                                        type: 'tips',
+                                        content: '乘客 ' + username + ' 下车了',
+                                    });
+                                    break;
+                                }
+                            }
+                        } catch (e) {
+
+                        }
+                    };
+                    othis.websocketInstance.onclose = function () {
+                        // othis.roomUser = {};
+                        clearInterval(ping_t);
+                        othis.isReconnection = true;
+                        othis.websocketInstance = null;
+                        // $('#text-input').disabled = true;
+                        // $('.send').remove();
+                        // layer.alert('链接已被关闭，请刷新页面重新链接', function () {
+                            // window.location.reload();
+                        // })
+                    };
+                    othis.websocketInstance.onerror = function () {
+                        // othis.roomUser = {};
+                        clearInterval(ping_t);
+                        othis.isReconnection = true;
+                        othis.websocketInstance = null;
+                        // $('#text-input').disabled = true;
+                        // $('.send').remove();
+                        // layer.alert('发生异常，请刷新页面重新链接', function () {
+                        //     window.location.reload();
+                        // })
+
+                    }
+                }
+            },
             /**
              * 向服务器发送消息
              * @param controller 请求控制器
