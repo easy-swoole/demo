@@ -30,25 +30,6 @@ class Mysql extends BaseWithDb
         $this->writeJson(Status::CODE_OK, $data, 'success');
     }
 
-    function insert()
-    {
-        try {
-            MysqlPool::invoke(function (MysqlObject $mysqlObject) {
-                $model = new UserModel($mysqlObject);
-                $model->insert(new UserBean($this->request()->getRequestParam()));
-            });
-        } catch (\Throwable $throwable) {
-            $this->writeJson(Status::CODE_BAD_REQUEST, null, $throwable->getMessage());
-        }catch (PoolEmpty $poolEmpty){
-            $this->writeJson(Status::CODE_BAD_REQUEST, null, '没有链接可用');
-
-        }catch (PoolUnRegister $poolUnRegister){
-            $this->writeJson(Status::CODE_BAD_REQUEST, null, '连接池未注册');
-        }
-
-        $this->writeJson(Status::CODE_OK, null, 'success');
-    }
-
     function getOneUser()
     {
         $params = $this->request()->getRequestParam();
