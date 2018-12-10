@@ -344,6 +344,7 @@ class EasySwooleEvent implements Event
 
     public static function onRequest(Request $request, Response $response): bool
     {
+//        $response->withHeader('Transfer-Encoding',"false");
         //为每个请求做标记
         TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
         if ((0/*auth fail伪代码,拦截该请求,判断是否有效*/)) {
