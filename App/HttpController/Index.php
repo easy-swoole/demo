@@ -9,6 +9,8 @@
 namespace App\HttpController;
 
 
+use App\Utility\Pool\MysqlObject;
+use EasySwoole\Component\Context;
 use EasySwoole\EasySwoole\Config;
 use EasySwoole\EasySwoole\Console\TcpService;
 use EasySwoole\EasySwoole\Logger;
@@ -21,7 +23,6 @@ class Index extends Controller
 {
     function index()
     {
-
         $ip = ServerManager::getInstance()->getSwooleServer()->connection_info($this->request()->getSwooleRequest()->fd);
 //        var_dump($ip);
         $this->response()->write('your ip:'.$ip['remote_ip']);

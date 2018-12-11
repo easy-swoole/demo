@@ -31,5 +31,6 @@ class Router extends AbstractRouter
         $routeCollector->get('/user','/index.html');
         $routeCollector->get('/test','/Index/test');
         $routeCollector->get('/rpc','/Rpc/test');
+        $routeCollector->get('/FastCache','/FastCache/index');
     }
 }

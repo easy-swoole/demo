@@ -18,7 +18,7 @@ use EasySwoole\Component\Pool\Exception\PoolUnRegister;
 use EasySwoole\Http\AbstractInterface\Controller;
 use EasySwoole\Http\Message\Status;
 
-class Mysql extends Controller
+class Mysql2 extends Controller
 {
 
     function index()
