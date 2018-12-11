@@ -363,6 +363,7 @@ class EasySwooleEvent implements Event
 
     public static function afterRequest(Request $request, Response $response): void
     {
+        Context::getInstance()->clear();//清除当前协程的变量
         // TODO: Implement afterAction() method.
         //tracker结束
         TrackerManager::getInstance()->closeTracker();
