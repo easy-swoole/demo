@@ -39,4 +39,8 @@ class UserModel extends BaseModel
         $result = $this->getDbConnection()->where('id', $userBean->getId())->update($this->table, $data);
         return $result;
     }
+
+    function insert(UserBean $userBean){
+        return $this->getDbConnection()->insert($this->table,$userBean->toArray(null, UserBean::FILTER_NOT_NULL));
+    }
 }
