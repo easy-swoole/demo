@@ -36,6 +36,7 @@ use EasySwoole\EasySwoole\Console\CommandContainer;
 use EasySwoole\EasySwoole\Console\TcpService;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
+use EasySwoole\EasySwoole\Swoole\Memory\AtomicManager;
 use EasySwoole\EasySwoole\Swoole\Process\Helper;
 use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\EasySwoole\Swoole\Time\Timer;
@@ -112,6 +113,9 @@ class EasySwooleEvent implements Event
 
         // 注入日志处理类
         Logger::getInstance()->setLoggerWriter(new LogHandler());
+
+        // 注册一个atomic对象
+        AtomicManager::getInstance()->add('second');
     }
 
     public static function mainServerCreate(EventRegister $register)
