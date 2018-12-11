@@ -21,11 +21,13 @@ use App\Rpc\ServiceOne;
 use App\Utility\ConsoleCommand\Test;
 use App\Utility\ConsoleCommand\TrackerLogCategory;
 use App\Utility\ConsoleCommand\TrackerPushLog;
+use App\Utility\Pool\MysqlObject;
 use App\Utility\Pool\MysqlPool;
 use App\Utility\Pool\RedisPool;
 use App\Utility\TrackerManager;
 use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
+use EasySwoole\Component\Context;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Openssl;
 use EasySwoole\Component\Pool\PoolManager;
@@ -344,6 +346,10 @@ class EasySwooleEvent implements Event
 
     public static function onRequest(Request $request, Response $response): bool
     {
+        $conf = Config::getInstance()->getConf("MYSQL");
+        $dbConf = new \EasySwoole\Mysqli\Config($conf);
+        Context::getInstance()->register('Mysql',new MysqlObject($dbConf));//注册一个mysql连接,这次请求都将是单例Mysql的
+
 //        $response->withHeader('Transfer-Encoding',"false");
         //为每个请求做标记
         TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
