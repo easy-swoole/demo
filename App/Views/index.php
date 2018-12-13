@@ -178,11 +178,13 @@
                     othis.websocketInstance.onmessage = function (ev) {
                         try {
                             var data = JSON.parse(ev.data);
-                            if(othis.up_recv_time + 10 * 1000 > (new Date(data.sendTime)).getTime()){
-                                othis.up_recv_time = (new Date(data.sendTime)).getTime();
-                                data.sendTime = null;
-                            }else {
-                                othis.up_recv_time = (new Date(data.sendTime)).getTime();
+                            if(data.sendTime) {
+                                if (othis.up_recv_time + 10 * 1000 > (new Date(data.sendTime)).getTime()) {
+                                    othis.up_recv_time = (new Date(data.sendTime)).getTime();
+                                    data.sendTime = null;
+                                } else {
+                                    othis.up_recv_time = (new Date(data.sendTime)).getTime();
+                                }
                             }
                             switch (data.action) {
                                 case 101: {
