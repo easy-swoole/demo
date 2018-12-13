@@ -21,6 +21,8 @@ class BroadcastMessage extends ActionPayload
     protected $action = WebSocketAction::BROADCAST_MESSAGE;
     protected $fromUserFd;
     protected $content;
+    protected $type;
+    protected $sendTime;
 
     /**
      * @return mixed
@@ -52,5 +54,21 @@ class BroadcastMessage extends ActionPayload
     public function setContent($content): void
     {
         $this->content = $content;
+    }
+
+    /**
+     * @param mixed $content
+     */
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @param mixed $content
+     */
+    public function setSendTime($sendTime): void
+    {
+        $this->sendTime = $sendTime;
     }
 }

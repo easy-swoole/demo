@@ -62,6 +62,9 @@
                                 <span class="am-badge am-badge-primary am-radius">{{chat.content}}</span></div>
                         </template>
                         <template v-else>
+                            <div class="chat-tips">
+                                <span class="am-radius" style="color: #666666">{{chat.sendTime}}</span>
+                            </div>
                             <article class="am-comment" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
                                 <a href="#link-to-user-home">
                                     <img :src="'/avatar/'+chat.avatar+'.jpg'" alt="" class="am-comment-avatar" width="48" height="48"/>
@@ -74,7 +77,15 @@
                                     </header>
                                     <div class="am-comment-bd">
                                         <div class="bd-content">
-                                            {{chat.content}}
+                                            <template v-if="chat.type === 'text'">
+                                                {{chat.content}}
+                                            </template>
+                                            <template v-else-if="chat.type === 'image'">
+                                                <img :src="chat.content">
+                                            </template>
+                                            <template v-else>
+                                                {{chat.content}}
+                                            </template>
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +181,7 @@
                                 case 101: {
                                     // 收到管理员消息
                                     othis.roomChat.push({
-                                        type: 'chat',
+                                        type: data.type ? data.type : 'text',
                                         fd: 0,
                                         content: data.content,
                                         avatar: 99,
@@ -181,11 +192,12 @@
                                 case 103 : {
                                     // 收到用户消息
                                     var message = {
-                                        type: 'chat',
+                                        type: data.type,
                                         fd: data.fromUserFd,
                                         content: data.content,
                                         avatar: othis.roomUser[data.fromUserFd].avatar,
-                                        username: othis.roomUser[data.fromUserFd].username
+                                        username: othis.roomUser[data.fromUserFd].username,
+                                        sendTime: data.sendTime
                                     };
                                     othis.roomChat.push(message);
                                     break;
@@ -193,11 +205,12 @@
                                 case 104 : {
                                     // 收到最后消息
                                     var message = {
-                                        type: 'chat',
+                                        type: data.type,
                                         fd: data.fromUserFd,
                                         content: data.content,
                                         avatar: data.avatar,
-                                        username: data.username
+                                        username: data.username,
+                                        sendTime: data.sendTime
                                     };
                                     othis.roomChat.push(message);
                                     break;
@@ -240,27 +253,14 @@
                         }
                     };
                     othis.websocketInstance.onclose = function () {
-                        // othis.roomUser = {};
                         clearInterval(ping_t);
                         othis.isReconnection = true;
                         othis.websocketInstance = null;
-                        // $('#text-input').disabled = true;
-                        // $('.send').remove();
-                        // layer.alert('链接已被关闭，请刷新页面重新链接', function () {
-                            // window.location.reload();
-                        // })
                     };
                     othis.websocketInstance.onerror = function () {
-                        // othis.roomUser = {};
                         clearInterval(ping_t);
                         othis.isReconnection = true;
                         othis.websocketInstance = null;
-                        // $('#text-input').disabled = true;
-                        // $('.send').remove();
-                        // layer.alert('发生异常，请刷新页面重新链接', function () {
-                        //     window.location.reload();
-                        // })
-
                     }
                 }
             },
@@ -282,7 +282,14 @@
              * @param content
              */
             broadcastTextMessage: function (content) {
-                this.release('broadcast', 'roomBroadcast', {content: content})
+                this.release('broadcast', 'roomBroadcast', {content: content, type: 'text'})
+            },
+            /**
+             * 发送图片消息
+             * @param base64_content
+             */
+            broadcastImageMessage: function (base64_content) {
+                this.release('broadcast', 'roomBroadcast', {content: base64_content, type: 'image'})
             },
             /**
              * 点击发送按钮
