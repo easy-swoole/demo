@@ -292,8 +292,15 @@
                 var textInput = $('#text-input');
                 var content = textInput.val();
                 if (content.trim() !== '') {
-                    this.broadcastTextMessage(content);
-                    textInput.val('');
+                    if (this.websocketInstance && this.websocketInstance.readyState === 1) {
+                        this.broadcastTextMessage(content);
+                        textInput.val('');
+                    } else {
+                        layer.tips('连接已断开', '.windows_input', {
+                            tips: [1, '#ff4f4f'],
+                            time: 2000
+                        });
+                    }
                 } else {
                     layer.tips('请输入消息内容', '.windows_input', {
                         tips: [1, '#3595CC'],
