@@ -43,17 +43,19 @@ class WebSocketEvents
             $message->setInfo($info);
             TaskManager::async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $req->fd]));
 
-            // 发送最后?条数据
-            $lastMessage = $redis->lRange(AppConst::REDIS_LAST_MESSAGE_KEY, 0, Config::getInstance()->getConf('SYSTEM.LAST_MESSAGE_MAX'));
-            for ($i = count($lastMessage) - 1; $i >= 0; $i--) {
-                $server->push($req->fd, $lastMessage[$i]);
-            }
+            if (empty($req->get['is_reconnection']) || $req->get['is_reconnection'] == '0') {
+                // 发送最后?条数据
+                $lastMessage = $redis->lRange(AppConst::REDIS_LAST_MESSAGE_KEY, 0, Config::getInstance()->getConf('SYSTEM.LAST_MESSAGE_MAX'));
+                for ($i = count($lastMessage) - 1; $i >= 0; $i--) {
+                    $server->push($req->fd, $lastMessage[$i]);
+                }
 
-            // 对该用户单独发送欢迎消息
-            $runDays = intval((time() - ($redis->get(AppConst::SYSTEM_RUNTIME_KEY))) / 86400);
-            $message = new BroadcastAdmin;
-            $message->setContent("{$username}，欢迎乘坐EASYSWOOLE号特快列车，列车已稳定运行{$runDays}天，共计服务{$count}人次，请系好安全带，文明乘车");
-            $server->push($req->fd, $message->__toString());
+                // 对该用户单独发送欢迎消息
+                $runDays = intval((time() - ($redis->get(AppConst::SYSTEM_RUNTIME_KEY))) / 86400);
+                $message = new BroadcastAdmin;
+                $message->setContent("{$username}，欢迎乘坐EASYSWOOLE号特快列车，列车已稳定运行{$runDays}天，共计服务{$count}人次，请系好安全带，文明乘车");
+                $server->push($req->fd, $message->__toString());
+            }
 
             $redisPool->recycleObj($redis);
             echo "websocket user {$req->fd} was connected\n";
