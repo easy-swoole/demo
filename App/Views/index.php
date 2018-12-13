@@ -62,7 +62,7 @@
                                 <span class="am-badge am-badge-primary am-radius">{{chat.content}}</span></div>
                         </template>
                         <template v-else>
-                            <div class="chat-tips">
+                            <div v-if="chat.sendTime" class="chat-tips">
                                 <span class="am-radius" style="color: #666666">{{chat.sendTime}}</span>
                             </div>
                             <article class="am-comment" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
@@ -119,7 +119,8 @@
             isReconnection: false,
             currentUser: {username: '-----', intro: '-----------', userFd: 0, avatar: 0},
             roomUser: {},
-            roomChat: []
+            roomChat: [],
+            up_recv_time: 0
         },
         created: function () {
             var othis = this;
@@ -177,6 +178,12 @@
                     othis.websocketInstance.onmessage = function (ev) {
                         try {
                             var data = JSON.parse(ev.data);
+                            if(othis.up_recv_time + 10 * 1000 > (new Date(data.sendTime)).getTime()){
+                                othis.up_recv_time = (new Date(data.sendTime)).getTime();
+                                data.sendTime = null;
+                            }else {
+                                othis.up_recv_time = (new Date(data.sendTime)).getTime();
+                            }
                             switch (data.action) {
                                 case 101: {
                                     // 收到管理员消息
