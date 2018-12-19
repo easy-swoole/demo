@@ -18,5 +18,11 @@
         "psr-4": {
             "App\\": "App/"
         }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.laravel-china.org"
+        }
     }
 }
