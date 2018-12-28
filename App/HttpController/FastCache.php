@@ -9,8 +9,8 @@
 namespace App\HttpController;
 
 use App\Rpc\RpcServer;
-use EasySwoole\EasySwoole\FastCache\Cache;
 use EasySwoole\EasySwoole\Logger;
+use EasySwoole\FastCache\Cache;
 use EasySwoole\Http\AbstractInterface\Controller;
 use EasySwoole\Rpc\Bean\Response;
 
