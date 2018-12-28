@@ -84,7 +84,7 @@
                                                 {{chat.content}}
                                             </template>
                                             <template v-else-if="chat.type === 'image'">
-                                                <img :src="chat.content">
+                                                <img :src="chat.content" width="100%">
                                             </template>
                                             <template v-else>
                                                 {{chat.content}}
@@ -98,6 +98,13 @@
                 </ul>
             </div>
             <div class="windows_input">
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button type="button" class="am-btn" @click="picture"><i class="am-icon am-icon-picture-o"></i>
+                        </button>
+                        <input type="file" id="fileInput" style="display: none" accept="image/*">
+                    </div>
+                </div>
                 <div class="input-box">
                     <label for="text-input" style="display: none"></label>
                     <textarea name="" id="text-input" cols="30" rows="10" title=""></textarea>
@@ -151,7 +158,27 @@
             $('.times-icon').on('click', function () {
                 $('.online_window').hide();
                 $('.windows_input').show();
-            })
+            });
+            var input = document.getElementById("fileInput");
+            input.addEventListener('change', readFile, false);
+
+            function readFile() {
+                var file = this.files[0];
+                //判断是否是图片类型
+                if (!/image\/\w+/.test(file.type)) {
+                    alert("只能选择图片");
+                    return false;
+                }
+                if (file.size > 1048576) {
+                    alert('图片大小不能超过1MB');
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (e) {
+                    othis.broadcastImageMessage(this.result)
+                }
+            }
         },
         methods: {
             connect: function () {
@@ -262,10 +289,10 @@
 
                         }
                     };
-                    othis.websocketInstance.onclose = function () {
+                    othis.websocketInstance.onclose = function (ev) {
                         othis.doReconnect();
                     };
-                    othis.websocketInstance.onerror = function () {
+                    othis.websocketInstance.onerror = function (ev) {
                         othis.doReconnect();
                     }
                 }
@@ -310,6 +337,10 @@
              */
             broadcastImageMessage: function (base64_content) {
                 this.release('broadcast', 'roomBroadcast', {content: base64_content, type: 'image'})
+            },
+            picture: function () {
+                var input = document.getElementById("fileInput");
+                input.click();
             },
             /**
              * 点击发送按钮
