@@ -27,6 +27,7 @@ use App\Utility\Pool\RedisPool;
 use App\Utility\TrackerManager;
 use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
+use EasySwoole\Component\AtomicManager;
 use EasySwoole\Component\Context;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Openssl;
@@ -36,10 +37,9 @@ use EasySwoole\EasySwoole\Console\CommandContainer;
 use EasySwoole\EasySwoole\Console\TcpService;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
-use EasySwoole\EasySwoole\Swoole\Memory\AtomicManager;
-use EasySwoole\EasySwoole\Swoole\Process\Helper;
 use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
-use EasySwoole\EasySwoole\Swoole\Time\Timer;
+use EasySwoole\FastCache\Cache;
+use EasySwoole\FastCache\CacheProcess;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
 use EasySwoole\Rpc\Pack;
@@ -48,6 +48,7 @@ use EasySwoole\Socket\Client\Tcp;
 use EasySwoole\Socket\Dispatcher;
 use EasySwoole\Trace\Bean\Tracker;
 use EasySwoole\Utility\File;
+use function foo\func;
 use Swoole\Process;
 use Swoole\Server;
 
@@ -106,10 +107,10 @@ class EasySwooleEvent implements Event
         Config::getInstance()->setConf('test_config_value', 0);//配置一个普通配置项
 
         // 注册mysql数据库连接池
-        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'));
+        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'))->getMinObjectNum('MYSQL.POOL_MIN_NUM');
 
         // 注册redis连接池
-        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
+        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->getMinObjectNum('MYSQL.POOL_MIN_NUM');
 
         // 注入日志处理类
         Logger::getInstance()->setLoggerWriter(new LogHandler());
@@ -121,9 +122,40 @@ class EasySwooleEvent implements Event
     public static function mainServerCreate(EventRegister $register)
     {
         // TODO: Implement mainServerCreate() method.
+        Cache::getInstance()->setTickInterval(5 * 1000);
+   /*     Cache::getInstance()->__setTickCall(function (CacheProcess $cacheProcess) {
+            $data = [
+                'data'  => $cacheProcess->getSplArray(),
+                'queue' => $cacheProcess->getQueueArray()
+            ];
+            $path = EASYSWOOLE_ROOT . '/Temp/' . $cacheProcess->getProcessName();
+            File::createFile($path,serialize($data));
+        });*/
+        Cache::getInstance()->setOnStart(function (CacheProcess $cacheProcess) {
+            $path = EASYSWOOLE_ROOT . '/Temp/' . $cacheProcess->getProcessName();
+            if(is_file($path)){
+                $data = unserialize(file_get_contents($path));
+                $cacheProcess->setQueueArray($data['queue']);
+                $cacheProcess->setSplArray($data['data']);
+            }
+        });
+        Cache::getInstance()->setOnShutdown(function (CacheProcess $cacheProcess) {
+            $data = [
+                'data'  => $cacheProcess->getSplArray(),
+                'queue' => $cacheProcess->getQueueArray()
+            ];
+            $path = EASYSWOOLE_ROOT . '/Temp/' . $cacheProcess->getProcessName();
+            File::createFile($path,serialize($data));
+        });
+
 
         //注册onWorkerStart回调事件
         $register->add($register::onWorkerStart, function (\swoole_server $server, int $workerId) {
+            if ($server->taskworker == false) {
+                PoolManager::getInstance()->getPool(RedisPool::class)->preLoad(6);
+                //PoolManager::getInstance()->getPool(RedisPool::class)->preLoad(预创建数量,必须小于连接池最大数量);
+            }
+            //PoolManager::getInstance()->getPool(RedisPool::class)->preLoad(预创建数量,必须小于连接池最大数量);
             // var_dump('worker:' . $workerId . 'start');
         });
 
@@ -272,25 +304,25 @@ class EasySwooleEvent implements Event
 
         $rpc = RpcServer::getInstance($rpcConfig);
         ##########自定义控制器写法 开始####################
-        $rpcConfig->setOnRequest(function (RequestPackage $package, \EasySwoole\Rpc\Response $response,\EasySwoole\Rpc\Config $config, \swoole_server $server, int $fd){
-            try{
-                $class ='App\\Rpc\\'. $config->getServiceName();
+        $rpcConfig->setOnRequest(function (RequestPackage $package, \EasySwoole\Rpc\Response $response, \EasySwoole\Rpc\Config $config, \swoole_server $server, int $fd) {
+            try {
+                $class = 'App\\Rpc\\' . $config->getServiceName();
                 var_dump($class);
-                new $class($package,$response,$config,$server,$fd);
-            }catch (\Throwable $throwable){
+                new $class($package, $response, $config, $server, $fd);
+            } catch (\Throwable $throwable) {
                 $response->setStatus($response::STATUS_SERVER_ERROR);
                 $response->setMessage("{$throwable->getMessage()} at file {$throwable->getFile()} line {$throwable->getLine()}");
             }
-            if(is_callable($config->getAfterRequest())){
-                call_user_func($config->getAfterRequest(),$package,$response,$config,$server,$fd);
+            if (is_callable($config->getAfterRequest())) {
+                call_user_func($config->getAfterRequest(), $package, $response, $config, $server, $fd);
             }
-            if($server->exist($fd)){
+            if ($server->exist($fd)) {
                 $msg = $response->__toString();
-                if($config->isEnableOpenssl()){
+                if ($config->isEnableOpenssl()) {
                     $openssl = new Openssl($config->getAuthKey());
                     $msg = $openssl->encrypt($msg);
                 }
-                $server->send($fd,Pack::pack($msg));
+                $server->send($fd, Pack::pack($msg));
             }
 
             return false;
@@ -313,16 +345,16 @@ class EasySwooleEvent implements Event
         //注册广播进程，主动对外udp广播服务节点信息
         $server->addProcess($rpc->getRpcBroadcastProcess());
         //创建一个udp子服务，用来接收udp广播
-        $udp = $server->addListener($rpcConfig->getBroadcastListenAddress(),$rpcConfig->getBroadcastListenPort(),SWOOLE_UDP);
-        $udp->on('packet',function (\swoole_server $server, string $data, array $client_info)use($rpc){
-            $rpc->onRpcBroadcast($server,$data,$client_info);
+        $udp = $server->addListener($rpcConfig->getBroadcastListenAddress(), $rpcConfig->getBroadcastListenPort(), SWOOLE_UDP);
+        $udp->on('packet', function (\swoole_server $server, string $data, array $client_info) use ($rpc) {
+            $rpc->onRpcBroadcast($server, $data, $client_info);
         });
 
         //创建一个tcp子服务，用来接收rpc的tcp请求。
-        $sub = $server->addListener($rpcConfig->getListenAddress(),$rpcConfig->getListenPort(),SWOOLE_TCP);
+        $sub = $server->addListener($rpcConfig->getListenAddress(), $rpcConfig->getListenPort(), SWOOLE_TCP);
         $sub->set($rpcConfig->getProtocolSetting());
-        $sub->on('receive',function (\swoole_server $server, int $fd, int $reactor_id, string $data)use($rpc){
-            $rpc->onRpcRequest( $server,  $fd,  $reactor_id,  $data);
+        $sub->on('receive', function (\swoole_server $server, int $fd, int $reactor_id, string $data) use ($rpc) {
+            $rpc->onRpcRequest($server, $fd, $reactor_id, $data);
         });
 
     }
@@ -352,7 +384,7 @@ class EasySwooleEvent implements Event
     {
         $conf = Config::getInstance()->getConf("MYSQL");
         $dbConf = new \EasySwoole\Mysqli\Config($conf);
-        Context::getInstance()->register('Mysql',new MysqlObject($dbConf));//注册一个mysql连接,这次请求都将是单例Mysql的
+        Context::getInstance()->register('Mysql', new MysqlObject($dbConf));//注册一个mysql连接,这次请求都将是单例Mysql的
 
 //        $response->withHeader('Transfer-Encoding',"false");
         //为每个请求做标记
