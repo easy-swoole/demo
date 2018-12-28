@@ -7,7 +7,7 @@
         }
     ],
     "require": {
-        "easyswoole/easyswoole": "3.x-dev",
+        "easyswoole/easyswoole": "^3.0",
         "easyswoole/mysqli": "^1.0",
         "easyswoole/rpc": "^2.0",
         "easyswoole/swoole-ide-helper": "^1.2",
@@ -16,6 +16,12 @@
     "autoload": {
         "psr-4": {
             "App\\": "App/"
+        }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.laravel-china.org"
         }
     }
 }
