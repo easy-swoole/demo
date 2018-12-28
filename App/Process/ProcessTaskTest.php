@@ -10,13 +10,13 @@ namespace App\Process;
 
 
 use App\Task\TaskTest;
-use EasySwoole\EasySwoole\Swoole\Process\AbstractProcess;
+use EasySwoole\Component\Process\AbstractProcess;
 use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use Swoole\Process;
 
 class ProcessTaskTest extends AbstractProcess
 {
-    public function run(Process $process)
+    public function run($arg)
     {
         $result = TaskManager::processAsync(new TaskTest());
         var_dump($result);

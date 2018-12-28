@@ -23,6 +23,7 @@ class FastCache extends Controller
     {
         $this->response()->withHeader('Content-type', 'application/json;charset=utf-8');
         $cache = Cache::getInstance();
+//        $cache->set('name', '仙士可');//设置
         $keys = $cache->keys();
         $str = "现在存储的数据有:";
         foreach ($keys as $key) {

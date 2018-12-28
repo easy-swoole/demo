@@ -8,8 +8,8 @@
 
 namespace App\Process;
 
+use EasySwoole\Component\Process\AbstractProcess;
 use EasySwoole\EasySwoole\ServerManager;
-use EasySwoole\EasySwoole\Swoole\Process\AbstractProcess;
 use EasySwoole\Utility\File;
 use Swoole\Process;
 use Swoole\Table;
@@ -31,9 +31,8 @@ class HotReload extends AbstractProcess
 
     /**
      * 启动定时器进行循环扫描
-     * @param Process $process
      */
-    public function run(Process $process)
+    public function run($arg)
     {
         $disableInotify = $this->getArg('disableInotify');
         $monitorDir = $this->getArg('monitorDir');
