@@ -2,7 +2,8 @@
 <html lang="zh-Hans">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>微聊 - EASYSWOOLE DEMO</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/amazeui/2.7.2/css/amazeui.min.css">
@@ -51,7 +52,8 @@
             <div class="windows_top">
                 <div class="windows_top_left"><i class="am-icon am-icon-list online-list"></i> 欢迎乘坐特快列车</div>
                 <div class="windows_top_right">
-                    <a href="https://github.com/easy-swoole/demo/tree/3.x-chat" target="_blank" style="color: #999">查看源码</a>
+                    <a href="https://github.com/easy-swoole/demo/tree/3.x-chat" target="_blank"
+                       style="color: #999">查看源码</a>
                 </div>
             </div>
             <div class="windows_body" id="chat-window" v-scroll-bottom>
@@ -67,7 +69,8 @@
                             </div>
                             <article class="am-comment" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
                                 <a href="#link-to-user-home">
-                                    <img :src="'/avatar/'+chat.avatar+'.jpg'" alt="" class="am-comment-avatar" width="48" height="48"/>
+                                    <img :src="'/avatar/'+chat.avatar+'.jpg'" alt="" class="am-comment-avatar"
+                                         width="48" height="48"/>
                                 </a>
                                 <div class="am-comment-main">
                                     <header class="am-comment-hd">
@@ -116,19 +119,17 @@
         data: {
             websocketServer: "<?= $server ?>",
             websocketInstance: undefined,
-            isReconnection: false,
+            Reconnect: false,
+            ReconnectTimer: null,
+            HeartBeatTimer: null,
+            ReconnectBox: null,
             currentUser: {username: '-----', intro: '-----------', userFd: 0, avatar: 0},
             roomUser: {},
             roomChat: [],
             up_recv_time: 0
         },
         created: function () {
-            var othis = this;
-            setInterval(function(){
-                if (!othis.websocketInstance || othis.websocketInstance.readyState === 3) {
-                    othis.connect(othis.isReconnection);
-                }
-            }, 1000);
+            this.connect();
         },
         mounted: function () {
             var othis = this;
@@ -153,23 +154,23 @@
             })
         },
         methods: {
-            /**
-             *
-             */
-            connect: function(is_reconnection = false){
+            connect: function () {
                 var othis = this;
                 var username = localStorage.getItem('username');
                 var websocketServer = this.websocketServer;
                 if (username) {
                     websocketServer += '?username=' + encodeURIComponent(username)
                 }
-                if (is_reconnection) {
-                    websocketServer += (username ? '&' : '?') + 'is_reconnection=1'
-                }
                 this.websocketInstance = new WebSocket(websocketServer);
                 this.websocketInstance.onopen = function (ev) {
+                    // 断线重连处理
+                    if (othis.ReconnectBox) {
+                        layer.close(othis.ReconnectBox);
+                        othis.ReconnectBox = null;
+                        clearInterval(othis.ReconnectTimer);
+                    }
                     // 前端循环心跳 (1min)
-                    var ping_t = setInterval(function () {
+                    othis.HeartBeatTimer = setInterval(function () {
                         othis.websocketInstance.send('PING');
                     }, 1000 * 30);
                     // 请求获取自己的用户信息和在线列表
@@ -178,7 +179,7 @@
                     othis.websocketInstance.onmessage = function (ev) {
                         try {
                             var data = JSON.parse(ev.data);
-                            if(data.sendTime) {
+                            if (data.sendTime) {
                                 if (othis.up_recv_time + 10 * 1000 > (new Date(data.sendTime)).getTime()) {
                                     othis.up_recv_time = (new Date(data.sendTime)).getTime();
                                     data.sendTime = null;
@@ -200,7 +201,7 @@
                                 }
                                 case 103 : {
                                     // 收到用户消息
-                                    var message = {
+                                    var broadcastMsg = {
                                         type: data.type,
                                         fd: data.fromUserFd,
                                         content: data.content,
@@ -208,12 +209,12 @@
                                         username: othis.roomUser[data.fromUserFd].username,
                                         sendTime: data.sendTime
                                     };
-                                    othis.roomChat.push(message);
+                                    othis.roomChat.push(broadcastMsg);
                                     break;
                                 }
                                 case 104 : {
                                     // 收到最后消息
-                                    var message = {
+                                    var lastMsg = {
                                         type: data.type,
                                         fd: data.fromUserFd,
                                         content: data.content,
@@ -221,7 +222,7 @@
                                         username: data.username,
                                         sendTime: data.sendTime
                                     };
-                                    othis.roomChat.push(message);
+                                    othis.roomChat.push(lastMsg);
                                     break;
                                 }
                                 case 201: {
@@ -262,16 +263,26 @@
                         }
                     };
                     othis.websocketInstance.onclose = function () {
-                        clearInterval(ping_t);
-                        othis.isReconnection = true;
-                        othis.websocketInstance = null;
+                        othis.doReconnect();
                     };
                     othis.websocketInstance.onerror = function () {
-                        clearInterval(ping_t);
-                        othis.isReconnection = true;
-                        othis.websocketInstance = null;
+                        othis.doReconnect();
                     }
                 }
+            },
+            doReconnect: function () {
+                var othis = this;
+                clearInterval(othis.HeartBeatTimer);
+                othis.ReconnectBox = layer.msg('已断开，正在重连...', {
+                    scrollbar: false,
+                    shade: 0.3,
+                    shadeClose: false,
+                    time: 0,
+                    offset: 't'
+                });
+                othis.ReconnectTimer = setInterval(function () {
+                    othis.connect();
+                }, 1000)
             },
             /**
              * 向服务器发送消息
