@@ -9,10 +9,9 @@
     "require": {
         "easyswoole/easyswoole": "3.x-dev",
         "easyswoole/mysqli": "^1.0",
-        "easyswoole/rpc": "^2.0"
-    },
-    "require-dev": {
-        "eaglewu/swoole-ide-helper": "dev-master"
+        "easyswoole/rpc": "^2.0",
+        "easyswoole/swoole-ide-helper": "^1.2",
+        "easyswoole/http-client": "^1.0"
     },
     "autoload": {
         "psr-4": {
