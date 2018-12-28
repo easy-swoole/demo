@@ -7,7 +7,7 @@
         }
     ],
     "require": {
-        "easyswoole/easyswoole": "3.x-dev",
+        "easyswoole/easyswoole": "^3.0",
         "easyswoole/mysqli": "^1.0",
         "easyswoole/rpc": "^2.0"
     },
