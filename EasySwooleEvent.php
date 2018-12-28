@@ -43,7 +43,7 @@ class EasySwooleEvent implements Event
         $dispatch = new Dispatcher($conf);
 
         // 收到客户端消息时的处理
-        $register->set(EventRegister::onMessage, function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) use ($dispatch) {
+        $register->set(EventRegister::onMessage, function (\swoole_server $server, \swoole_websocket_frame $frame) use ($dispatch) {
             $dispatch->dispatch($server, $frame->data, $frame);
         });
 
@@ -52,7 +52,7 @@ class EasySwooleEvent implements Event
         $register->set(EventRegister::onClose, [WebSocketEvents::class, 'onClose']);
 
         // 启动时清理 在线用户列表直接清空
-        $register->add($register::onWorkerStart, function (\swoole_websocket_server $server, $workerId) {
+        $register->add($register::onWorkerStart, function (\swoole_server $server, $workerId) {
             if ($workerId == 0) {
                 WebSocketEvents::cleanOnlineUser();
             }

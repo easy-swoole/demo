@@ -23,11 +23,11 @@ class WebSocketEvents
 {
     /**
      * 链接打开时 将用户的FD存入Redis
-     * @param \swoole_websocket_server $server
+     * @param \swoole_server $server
      * @param \swoole_http_request     $req
      * @throws \Exception
      */
-    static function onOpen(\swoole_websocket_server $server, \swoole_http_request $req)
+    static function onOpen(\swoole_server $server, \swoole_http_request $req)
     {
         $redisPool = PoolManager::getInstance()->getPool(RedisPool::class);
         $redis = $redisPool->getObj();
@@ -66,7 +66,7 @@ class WebSocketEvents
 
     /**
      * 链接关闭时 将用户的FD从Redis删除
-     * @param \swoole_websocket_server $server
+     * @param \swoole_server $server
      * @param int                      $fd
      * @param int                      $reactorId
      * @throws \Exception
