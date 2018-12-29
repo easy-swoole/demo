@@ -34,17 +34,13 @@ class HotReload extends AbstractProcess
      */
     public function run($arg)
     {
-        $disableInotify = $arg['disableInotify'];
-        $monitorDir = $arg['monitorDir'];
-        $monitorExt = $arg['monitorExt'];
-
         // 此处指定需要监视的目录 建议只监视App目录下的文件变更
-        $this->monitorDir = $monitorDir ? $monitorDir : EASYSWOOLE_ROOT . '/App';
+        $this->monitorDir = !empty($arg['monitorDir']) ? $arg['monitorDir'] : EASYSWOOLE_ROOT . '/App';
 
         // 指定需要监控的扩展名 不属于指定类型的的文件 无视变更 不重启
-        $this->monitorExt = $monitorExt && is_array($monitorExt) ? $monitorExt : ['php'];
+        $this->monitorExt = !empty($arg['monitorExt']) && is_array($arg['monitorExt']) ? $arg['monitorExt'] : ['php'];
 
-        if (extension_loaded('inotify') && !$disableInotify) {
+        if (extension_loaded('inotify') && empty($arg['disableInotify'])) {
             // 扩展可用 优先使用扩展进行处理
             $this->registerInotifyEvent();
             echo "server hot reload start : use inotify\n";
