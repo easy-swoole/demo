@@ -9,6 +9,7 @@
 namespace EasySwoole\EasySwoole;
 
 
+use App\Actor\RoomActor;
 use App\Crontab\TaskOne;
 use App\Crontab\TaskTwo;
 use App\HttpController\Pool\Redis;
@@ -27,6 +28,8 @@ use App\Utility\Pool\RedisPool;
 use App\Utility\TrackerManager;
 use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
+use EasySwoole\Actor\Actor;
+use EasySwoole\Actor\ActorConfig;
 use EasySwoole\Component\AtomicManager;
 use EasySwoole\Component\Context;
 use EasySwoole\Component\Di;
@@ -122,18 +125,35 @@ class EasySwooleEvent implements Event
     public static function mainServerCreate(EventRegister $register)
     {
         // TODO: Implement mainServerCreate() method.
+
+        //注册onWorkerStart回调事件
+        $register->add($register::onWorkerStart, function (\swoole_server $server, int $workerId) {
+            if ($server->taskworker == false) {
+                PoolManager::getInstance()->getPool(RedisPool::class)->preLoad(6);
+                //PoolManager::getInstance()->getPool(RedisPool::class)->preLoad(预创建数量,必须小于连接池最大数量);
+            }
+            //PoolManager::getInstance()->getPool(RedisPool::class)->preLoad(预创建数量,必须小于连接池最大数量);
+            // var_dump('worker:' . $workerId . 'start');
+        });
+        Actor::getInstance()->register(RoomActor::class)->setActorProcessNum(3)//设置保存actor的进程数目
+        ->setActorName('RoomActor')//设置Actor的名称，注意一定要注册，且不能重复
+        ->setMaxActorNum(1000);//设置当前actor中最大的actor数目
+
+        /**
+         * **************** fastCache 数据落地方案 **********************
+         */
         Cache::getInstance()->setTickInterval(5 * 1000);
-   /*     Cache::getInstance()->__setTickCall(function (CacheProcess $cacheProcess) {
+        Cache::getInstance()->setOnTick(function (CacheProcess $cacheProcess) {
             $data = [
                 'data'  => $cacheProcess->getSplArray(),
                 'queue' => $cacheProcess->getQueueArray()
             ];
             $path = EASYSWOOLE_ROOT . '/Temp/' . $cacheProcess->getProcessName();
-            File::createFile($path,serialize($data));
-        });*/
+            File::createFile($path, serialize($data));
+        });
         Cache::getInstance()->setOnStart(function (CacheProcess $cacheProcess) {
             $path = EASYSWOOLE_ROOT . '/Temp/' . $cacheProcess->getProcessName();
-            if(is_file($path)){
+            if (is_file($path)) {
                 $data = unserialize(file_get_contents($path));
                 $cacheProcess->setQueueArray($data['queue']);
                 $cacheProcess->setSplArray($data['data']);
@@ -145,18 +165,7 @@ class EasySwooleEvent implements Event
                 'queue' => $cacheProcess->getQueueArray()
             ];
             $path = EASYSWOOLE_ROOT . '/Temp/' . $cacheProcess->getProcessName();
-            File::createFile($path,serialize($data));
-        });
-
-
-        //注册onWorkerStart回调事件
-        $register->add($register::onWorkerStart, function (\swoole_server $server, int $workerId) {
-            if ($server->taskworker == false) {
-                PoolManager::getInstance()->getPool(RedisPool::class)->preLoad(6);
-                //PoolManager::getInstance()->getPool(RedisPool::class)->preLoad(预创建数量,必须小于连接池最大数量);
-            }
-            //PoolManager::getInstance()->getPool(RedisPool::class)->preLoad(预创建数量,必须小于连接池最大数量);
-            // var_dump('worker:' . $workerId . 'start');
+            File::createFile($path, serialize($data));
         });
 
         // 自定义进程注册例子
