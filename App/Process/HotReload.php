@@ -34,9 +34,9 @@ class HotReload extends AbstractProcess
      */
     public function run($arg)
     {
-        $disableInotify = $this->getArg('disableInotify');
-        $monitorDir = $this->getArg('monitorDir');
-        $monitorExt = $this->getArg('monitorExt');
+        $disableInotify = $arg['disableInotify'];
+        $monitorDir = $arg['monitorDir'];
+        $monitorExt = $arg['monitorExt'];
 
         // 此处指定需要监视的目录 建议只监视App目录下的文件变更
         $this->monitorDir = $monitorDir ? $monitorDir : EASYSWOOLE_ROOT . '/App';
