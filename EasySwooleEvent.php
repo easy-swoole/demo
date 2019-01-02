@@ -110,10 +110,10 @@ class EasySwooleEvent implements Event
         Config::getInstance()->setConf('test_config_value', 0);//配置一个普通配置项
 
         // 注册mysql数据库连接池
-        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'))->getMinObjectNum('MYSQL.POOL_MIN_NUM');
+        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('MYSQL.POOL_MIN_NUM'));
 
         // 注册redis连接池
-        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->getMinObjectNum('MYSQL.POOL_MIN_NUM');
+        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('REDIS.POOL_MIN_NUM'));
 
         // 注入日志处理类
         Logger::getInstance()->setLoggerWriter(new LogHandler());
