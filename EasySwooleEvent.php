@@ -125,7 +125,6 @@ class EasySwooleEvent implements Event
     public static function mainServerCreate(EventRegister $register)
     {
         // TODO: Implement mainServerCreate() method.
-
         //注册onWorkerStart回调事件
         $register->add($register::onWorkerStart, function (\swoole_server $server, int $workerId) {
             if ($server->taskworker == false) {
@@ -382,8 +381,6 @@ class EasySwooleEvent implements Event
                 $fileSuffix = end($fileNameArr);
                 if ($fileSuffix == 'php') {
                     Config::getInstance()->loadFile($file);
-                } elseif ($fileSuffix == 'env') {
-                    Config::getInstance()->loadEnv($file);
                 }
             }
         }
@@ -395,7 +392,7 @@ class EasySwooleEvent implements Event
         $dbConf = new \EasySwoole\Mysqli\Config($conf);
         Context::getInstance()->register('Mysql', new MysqlObject($dbConf));//注册一个mysql连接,这次请求都将是单例Mysql的
 
-//        $response->withHeader('Transfer-Encoding',"false");
+        $response->withHeader('Transfer-Encoding', "false");
         //为每个请求做标记
         TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
         if ((0/*auth fail伪代码,拦截该请求,判断是否有效*/)) {
