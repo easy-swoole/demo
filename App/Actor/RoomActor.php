@@ -60,7 +60,7 @@ class RoomActor extends \EasySwoole\Actor\AbstractActor
 
     static function configure(ActorConfig $actorConfig)
     {
-        $actorConfig->setActorName('RoomActor');//配置actor名称
+        $actorConfig->setActorName('RoomActor');
         // TODO: Implement configure() method.
     }
 }

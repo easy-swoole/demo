@@ -110,10 +110,10 @@ class EasySwooleEvent implements Event
         Config::getInstance()->setConf('test_config_value', 0);//配置一个普通配置项
 
         // 注册mysql数据库连接池
-        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'))->getMinObjectNum('MYSQL.POOL_MIN_NUM');
+        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('MYSQL.POOL_MIN_NUM'));
 
         // 注册redis连接池
-        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->getMinObjectNum('MYSQL.POOL_MIN_NUM');
+        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('REDIS.POOL_MIN_NUM'));
 
         // 注入日志处理类
         Logger::getInstance()->setLoggerWriter(new LogHandler());
@@ -125,7 +125,6 @@ class EasySwooleEvent implements Event
     public static function mainServerCreate(EventRegister $register)
     {
         // TODO: Implement mainServerCreate() method.
-
         //注册onWorkerStart回调事件
         $register->add($register::onWorkerStart, function (\swoole_server $server, int $workerId) {
             if ($server->taskworker == false) {
@@ -382,8 +381,6 @@ class EasySwooleEvent implements Event
                 $fileSuffix = end($fileNameArr);
                 if ($fileSuffix == 'php') {
                     Config::getInstance()->loadFile($file);
-                } elseif ($fileSuffix == 'env') {
-                    Config::getInstance()->loadEnv($file);
                 }
             }
         }
@@ -395,7 +392,7 @@ class EasySwooleEvent implements Event
         $dbConf = new \EasySwoole\Mysqli\Config($conf);
         Context::getInstance()->register('Mysql', new MysqlObject($dbConf));//注册一个mysql连接,这次请求都将是单例Mysql的
 
-//        $response->withHeader('Transfer-Encoding',"false");
+        $response->withHeader('Transfer-Encoding', "false");
         //为每个请求做标记
         TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
         if ((0/*auth fail伪代码,拦截该请求,判断是否有效*/)) {
