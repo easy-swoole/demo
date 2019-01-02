@@ -147,11 +147,11 @@ class EasySwooleEvent implements Event
                 'data'  => $cacheProcess->getSplArray(),
                 'queue' => $cacheProcess->getQueueArray()
             ];
-            $path = EASYSWOOLE_ROOT . '/Temp/' . $cacheProcess->getProcessName();
+            $path = Config::getInstance()->getConf('TEMP_DIR') . '/' . $cacheProcess->getProcessName();
             File::createFile($path, serialize($data));
         });
         Cache::getInstance()->setOnStart(function (CacheProcess $cacheProcess) {
-            $path = EASYSWOOLE_ROOT . '/Temp/' . $cacheProcess->getProcessName();
+            $path = Config::getInstance()->getConf('TEMP_DIR') . '/' . $cacheProcess->getProcessName();
             if (is_file($path)) {
                 $data = unserialize(file_get_contents($path));
                 $cacheProcess->setQueueArray($data['queue']);
@@ -163,7 +163,7 @@ class EasySwooleEvent implements Event
                 'data'  => $cacheProcess->getSplArray(),
                 'queue' => $cacheProcess->getQueueArray()
             ];
-            $path = EASYSWOOLE_ROOT . '/Temp/' . $cacheProcess->getProcessName();
+            $path = Config::getInstance()->getConf('TEMP_DIR') . '/' . $cacheProcess->getProcessName();
             File::createFile($path, serialize($data));
         });
 
@@ -263,38 +263,6 @@ class EasySwooleEvent implements Event
 
 
         /**
-         * **************** 异步客户端 **********************
-         */
-        //纯原生异步
-        ServerManager::getInstance()->getSwooleServer()->addProcess(new Process(function ($worker) {
-            $client = new \swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
-            $client->on("connect", function (\swoole_client $cli) {
-                $cli->send("test:delay");
-            });
-            $client->on("receive", function (\swoole_client $cli, $data) {
-                echo "Receive: $data";
-                $cli->send("test:delay");
-                sleep(1);
-            });
-            $client->on("error", function (\swoole_client $cli) {
-                echo "Connection to 192.168.159.1 failed\n";
-            });
-            $client->on("close", function (\swoole_client $cli) {
-                echo "Connection close\n";
-            });
-            $client->connect('192.168.159.1', 9502);
-
-
-            //本demo自定义进程采用的是原生写法,如果需要使用,请使用自定义进程类模板开发
-            if (extension_loaded('pcntl')) {//异步信号,使用自定义进程类模板不需要该代码
-                pcntl_async_signals(true);
-            }
-            Process::signal(SIGTERM, function () use ($worker) {//信号回调,使用自定义进程类模板不需要该代码
-                $worker->exit(0);
-            });
-        }));
-
-        /**
          * **************** Crontab任务计划 **********************
          */
         // 开始一个定时任务计划
@@ -391,8 +359,6 @@ class EasySwooleEvent implements Event
         $conf = Config::getInstance()->getConf("MYSQL");
         $dbConf = new \EasySwoole\Mysqli\Config($conf);
         Context::getInstance()->register('Mysql', new MysqlObject($dbConf));//注册一个mysql连接,这次请求都将是单例Mysql的
-
-        $response->withHeader('Transfer-Encoding', "false");
         //为每个请求做标记
         TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
         if ((0/*auth fail伪代码,拦截该请求,判断是否有效*/)) {
