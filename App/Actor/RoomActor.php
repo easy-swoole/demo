@@ -26,8 +26,9 @@ class RoomActor extends \EasySwoole\Actor\AbstractActor
      * @author Apple
      * Time: 13:57
      */
-    function onExit()
+    public function onExit($arg)
     {
+        var_dump($arg);
         var_dump("actor".$this->actorId() . "已经退出\n");
         return "on exit success\n";
         // TODO: Implement onExit() method.
@@ -63,4 +64,5 @@ class RoomActor extends \EasySwoole\Actor\AbstractActor
         $actorConfig->setActorName('RoomActor');
         // TODO: Implement configure() method.
     }
+
 }
