@@ -23,6 +23,6 @@ go(function (){
 //    广播给全部actor
     $ret = \EasySwoole\Actor\Actor::getInstance()->client(\App\Actor\RoomActor::class)->broadcastPush('121212');
 //    退出全部actor
-    $ret = \EasySwoole\Actor\Actor::getInstance()->client(\App\Actor\RoomActor::class)->exitAll();
+    $ret = \EasySwoole\Actor\Actor::getInstance()->client(\App\Actor\RoomActor::class)->exitAll(['arg1'=>'1']);//全部退出,参数arg1=>1
     var_dump($ret);
 });
