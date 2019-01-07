@@ -29,19 +29,16 @@ use App\Utility\TrackerManager;
 use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
 use EasySwoole\Actor\Actor;
-use EasySwoole\Actor\ActorConfig;
 use EasySwoole\Component\AtomicManager;
-use EasySwoole\Component\Context;
+use EasySwoole\Component\Context\ContextManager;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Openssl;
 use EasySwoole\Component\Pool\PoolManager;
-use EasySwoole\Component\Process\ProcessHelper;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\EasySwoole\Console\CommandContainer;
 use EasySwoole\EasySwoole\Console\TcpService;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
-use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\FastCache\Cache;
 use EasySwoole\FastCache\CacheProcess;
 use EasySwoole\Http\Request;
@@ -53,7 +50,6 @@ use EasySwoole\Socket\Dispatcher;
 use EasySwoole\Trace\Bean\Tracker;
 use EasySwoole\Utility\File;
 use function foo\func;
-use Swoole\Process;
 use Swoole\Server;
 
 class EasySwooleEvent implements Event
@@ -111,10 +107,10 @@ class EasySwooleEvent implements Event
         Config::getInstance()->setConf('test_config_value', 0);//配置一个普通配置项
 
         // 注册mysql数据库连接池
-//        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('MYSQL.POOL_MIN_NUM'));
+        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('MYSQL.POOL_MIN_NUM'));
 
         // 注册redis连接池
-//        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('REDIS.POOL_MIN_NUM'));
+        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('REDIS.POOL_MIN_NUM'));
 
         // 注入日志处理类
         Logger::getInstance()->setLoggerWriter(new LogHandler());
@@ -357,6 +353,7 @@ class EasySwooleEvent implements Event
 
     public static function onRequest(Request $request, Response $response): bool
     {
+        ContextManager::getInstance()->set('mysqlObject',PoolManager::getInstance()->getPool(MysqlPool::class)->getObj());
         $conf = Config::getInstance()->getConf("MYSQL");
         $dbConf = new \EasySwoole\Mysqli\Config($conf);
         //为每个请求做标记
@@ -380,20 +377,6 @@ class EasySwooleEvent implements Event
     {
         echo "TCP onReceive.\n";
 
-    }
-
-    public static function onMessage(\swoole_websocket_server $server, \swoole_websocket_frame $frame): void
-    {
-
-
-        // TODO: Implement onMessage() method.
-    }
-
-    public static function onPacket(\swoole_server $server, string $data, array $client_info): void
-    {
-        var_dump('onMessage');
-
-        // TODO: Implement onPacket() method.
     }
 
 
