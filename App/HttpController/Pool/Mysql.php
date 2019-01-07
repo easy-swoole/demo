@@ -46,4 +46,19 @@ class Mysql extends BaseWithDb
             $this->writeJson(Status::CODE_BAD_REQUEST, null, 'id不能为空');
         }
     }
+
+    function index()
+    {
+//        $data = MysqlPool::invoke(function (MysqlObject $mysqlObject) {
+//            $data = ($mysqlObject->get('test'));
+//            return $data;
+//        });
+//        $this->response()->write(json_encode($data));
+        $mysqlObject = PoolManager::getInstance()->getPool(MysqlPool::class)->getObj();
+
+        $data = ($mysqlObject->get('test'));
+        $this->response()->write(json_encode($data));
+
+
+    }
 }

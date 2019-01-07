@@ -29,9 +29,8 @@ use App\Utility\TrackerManager;
 use App\WebSocket\WebSocketEvent;
 use App\WebSocket\WebSocketParser;
 use EasySwoole\Actor\Actor;
-use EasySwoole\Actor\ActorConfig;
 use EasySwoole\Component\AtomicManager;
-use EasySwoole\Component\Context;
+use EasySwoole\Component\Context\ContextManager;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Openssl;
 use EasySwoole\Component\Pool\PoolManager;
@@ -40,7 +39,6 @@ use EasySwoole\EasySwoole\Console\CommandContainer;
 use EasySwoole\EasySwoole\Console\TcpService;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
-use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\FastCache\Cache;
 use EasySwoole\FastCache\CacheProcess;
 use EasySwoole\Http\Request;
@@ -52,7 +50,6 @@ use EasySwoole\Socket\Dispatcher;
 use EasySwoole\Trace\Bean\Tracker;
 use EasySwoole\Utility\File;
 use function foo\func;
-use Swoole\Process;
 use Swoole\Server;
 
 class EasySwooleEvent implements Event
@@ -356,9 +353,9 @@ class EasySwooleEvent implements Event
 
     public static function onRequest(Request $request, Response $response): bool
     {
+        ContextManager::getInstance()->set('mysqlObject',PoolManager::getInstance()->getPool(MysqlPool::class)->getObj());
         $conf = Config::getInstance()->getConf("MYSQL");
         $dbConf = new \EasySwoole\Mysqli\Config($conf);
-        Context::getInstance()->register('Mysql', new MysqlObject($dbConf));//注册一个mysql连接,这次请求都将是单例Mysql的
         //为每个请求做标记
         TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
         if ((0/*auth fail伪代码,拦截该请求,判断是否有效*/)) {
@@ -371,7 +368,6 @@ class EasySwooleEvent implements Event
 
     public static function afterRequest(Request $request, Response $response): void
     {
-        Context::getInstance()->clear();//清除当前协程的变量
         // TODO: Implement afterAction() method.
         //tracker结束
         TrackerManager::getInstance()->closeTracker();
@@ -382,5 +378,6 @@ class EasySwooleEvent implements Event
         echo "TCP onReceive.\n";
 
     }
+
 
 }
