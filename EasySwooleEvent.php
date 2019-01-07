@@ -35,6 +35,7 @@ use EasySwoole\Component\Context;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Openssl;
 use EasySwoole\Component\Pool\PoolManager;
+use EasySwoole\Component\Process\ProcessHelper;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\EasySwoole\Console\CommandContainer;
 use EasySwoole\EasySwoole\Console\TcpService;
@@ -110,10 +111,10 @@ class EasySwooleEvent implements Event
         Config::getInstance()->setConf('test_config_value', 0);//配置一个普通配置项
 
         // 注册mysql数据库连接池
-        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('MYSQL.POOL_MIN_NUM'));
+//        PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('MYSQL.POOL_MIN_NUM'));
 
         // 注册redis连接池
-        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('REDIS.POOL_MIN_NUM'));
+//        PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('REDIS.POOL_MIN_NUM'));
 
         // 注入日志处理类
         Logger::getInstance()->setLoggerWriter(new LogHandler());
@@ -358,7 +359,6 @@ class EasySwooleEvent implements Event
     {
         $conf = Config::getInstance()->getConf("MYSQL");
         $dbConf = new \EasySwoole\Mysqli\Config($conf);
-        Context::getInstance()->register('Mysql', new MysqlObject($dbConf));//注册一个mysql连接,这次请求都将是单例Mysql的
         //为每个请求做标记
         TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
         if ((0/*auth fail伪代码,拦截该请求,判断是否有效*/)) {
@@ -371,7 +371,6 @@ class EasySwooleEvent implements Event
 
     public static function afterRequest(Request $request, Response $response): void
     {
-        Context::getInstance()->clear();//清除当前协程的变量
         // TODO: Implement afterAction() method.
         //tracker结束
         TrackerManager::getInstance()->closeTracker();
@@ -382,5 +381,20 @@ class EasySwooleEvent implements Event
         echo "TCP onReceive.\n";
 
     }
+
+    public static function onMessage(\swoole_websocket_server $server, \swoole_websocket_frame $frame): void
+    {
+
+
+        // TODO: Implement onMessage() method.
+    }
+
+    public static function onPacket(\swoole_server $server, string $data, array $client_info): void
+    {
+        var_dump('onMessage');
+
+        // TODO: Implement onPacket() method.
+    }
+
 
 }
