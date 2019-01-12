@@ -4,7 +4,7 @@ use EasySwoole\EasySwoole\Swoole\Task\QuickTaskInterface;
 
 class QuickTaskTest implements QuickTaskInterface
 {
-    static function run(\swoole_server $server, int $taskId, int $fromWorkerId)
+    static function run(\swoole_server $server,int $taskId,int $fromWorkerId,$flags = null)
     {
         echo "快速任务模板";
 

@@ -29,7 +29,7 @@ class TaskTwo extends AbstractCronTask
         return 'taskTwo';
     }
 
-    static function run(\swoole_server $server, int $taskId, int $fromWorkerId)
+    static function run(\swoole_server $server,int $taskId,int $fromWorkerId,$flags = null)
     {
         // TODO: Implement run() method.
         // 定时任务处理逻辑
