@@ -14,6 +14,7 @@ use App\Crontab\TaskOne;
 use App\Crontab\TaskTwo;
 use App\HttpController\Pool\Redis;
 use App\Log\LogHandler;
+use App\Log\MyLogHandle;
 use App\Process\HotReload;
 use App\Process\ProcessTaskTest;
 use App\Process\ProcessTest;
@@ -70,6 +71,7 @@ class EasySwooleEvent implements Event
                 var_dump($error);
             }
         });
+        Di::getInstance()->set(SysConst::LOGGER_HANDLER,new MyLogHandle());
 
         //调用链追踪器设置Token获取值为协程id
         TrackerManager::getInstance()->setTokenGenerator(function () {
@@ -112,8 +114,6 @@ class EasySwooleEvent implements Event
         // 注册redis连接池
         PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'))->setMinObjectNum((int)Config::getInstance()->getConf('REDIS.POOL_MIN_NUM'));
 
-        // 注入日志处理类
-        Logger::getInstance()->setLoggerWriter(new LogHandler());
 
         // 注册一个atomic对象
         AtomicManager::getInstance()->add('second');
@@ -353,9 +353,9 @@ class EasySwooleEvent implements Event
 
     public static function onRequest(Request $request, Response $response): bool
     {
-        ContextManager::getInstance()->set('mysqlObject',PoolManager::getInstance()->getPool(MysqlPool::class)->getObj());
-        $conf = Config::getInstance()->getConf("MYSQL");
-        $dbConf = new \EasySwoole\Mysqli\Config($conf);
+//        ContextManager::getInstance()->set('mysqlObject',PoolManager::getInstance()->getPool(MysqlPool::class)->getObj());
+//        $conf = Config::getInstance()->getConf("MYSQL");
+//        $dbConf = new \EasySwoole\Mysqli\Config($conf);
         //为每个请求做标记
         TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
         if ((0/*auth fail伪代码,拦截该请求,判断是否有效*/)) {
