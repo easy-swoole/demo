@@ -13,7 +13,7 @@ use EasySwoole\EasySwoole\Swoole\Task\AbstractAsyncTask;
 
 class TaskTest extends AbstractAsyncTask
 {
-    function run($taskData, $taskId, $fromWorkerId)
+    protected function run($taskData,$taskId,$fromWorkerId,$flags = null)
     {
         echo "执行task模板任务\n";
         // TODO: Implement run() method.
