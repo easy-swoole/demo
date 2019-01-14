@@ -9,7 +9,7 @@
 ```bash
 git clone https://github.com/easy-swoole/demo.git demo
 cd demo && composer install
-php vendor/bin/easyswoole.php install
+php vendor/bin/easyswoole install
 php easyswoole start
 ```
 
