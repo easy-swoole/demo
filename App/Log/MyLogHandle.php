@@ -8,17 +8,17 @@
 namespace App\Log;
 use EasySwoole\Trace\AbstractInterface\LoggerInterface;
 
-class MyLogHandle implements LoggerInterface{
-    public function console(string $str, $category = null, $saveLog = true)
+class MyLogHandle implements LoggerInterface {
+
+    public function console(string $str, $category = null, $saveLog = true): ?string
     {
-        echo "这是自定义的log处理,输出:$str\n";
         // TODO: Implement console() method.
+        echo "这是自定义的log处理,输出:$str\n";
     }
 
-    public function log(string $str, $logCategory, int $timestamp = null)
+    public function log(string $str, $logCategory = null, int $timestamp = null): ?string
     {
-        echo "这是自定义的log处理,模拟写入:[$logCategory]$str\n";
         // TODO: Implement log() method.
+        echo "这是自定义的log处理,模拟写入:[$logCategory]$str\n";
     }
-
 }
