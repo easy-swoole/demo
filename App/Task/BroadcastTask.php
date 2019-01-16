@@ -29,7 +29,7 @@ class BroadcastTask extends AbstractAsyncTask
      * @param $fromWorkerId
      * @return bool
      */
-    function run($taskData, $taskId, $fromWorkerId)
+    function run($taskData, $taskId, $fromWorkerId,$flags = null)
     {
         $redis = Redis::getInstance()->getConnect();
         $users = $redis->hGetAll(AppConst::REDIS_ONLINE_KEY);
