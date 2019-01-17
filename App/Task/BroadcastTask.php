@@ -22,6 +22,7 @@ use EasySwoole\EasySwoole\Config;
  */
 class BroadcastTask extends AbstractAsyncTask
 {
+
     /**
      * 执行投递
      * @param $taskData
@@ -29,9 +30,11 @@ class BroadcastTask extends AbstractAsyncTask
      * @param $fromWorkerId
      * @return bool
      */
-    function run($taskData, $taskId, $fromWorkerId)
+    protected function run($taskData, $taskId, $fromWorkerId, $flags = null)
     {
+        // TODO: Implement run() method.
         $redis = Redis::getInstance()->getConnect();
+        var_dump($redis);
         $users = $redis->hGetAll(AppConst::REDIS_ONLINE_KEY);
         /** @var \swoole_websocket_server $server */
         $server = ServerManager::getInstance()->getSwooleServer();
@@ -56,7 +59,7 @@ class BroadcastTask extends AbstractAsyncTask
         return true;
     }
 
-    function finish($result, $task_id)
+    protected function finish($result, $task_id)
     {
         // TODO: Implement finish() method.
     }
