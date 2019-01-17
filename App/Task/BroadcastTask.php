@@ -59,7 +59,7 @@ class BroadcastTask extends AbstractAsyncTask
         return true;
     }
 
-    protected function finish($result, $task_id)
+    function finish($result, $task_id)
     {
         // TODO: Implement finish() method.
     }
