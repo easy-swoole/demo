@@ -9,7 +9,7 @@
 namespace App\HttpController;
 
 
-use EasySwoole\EasySwoole\Console\TcpService;
+use EasySwoole\EasySwoole\Console\ConsoleService;
 use EasySwoole\Http\AbstractInterface\Controller;
 
 class Console extends Controller
@@ -18,7 +18,7 @@ class Console extends Controller
     {
         $this->response()->write("Console");
         if (\EasySwoole\EasySwoole\Config::getInstance()->getDynamicConf('CONSOLE.PUSH_LOG')) {
-            TcpService::push('主动推送给控制台');
+            ConsoleService::push('主动推送给控制台');
         }
 
         // TODO: Implement index() method.
