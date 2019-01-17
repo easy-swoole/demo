@@ -12,7 +12,7 @@ namespace App\HttpController;
 use App\Utility\Pool\MysqlObject;
 use EasySwoole\Component\Context;
 use EasySwoole\EasySwoole\Config;
-use EasySwoole\EasySwoole\Console\TcpService;
+use EasySwoole\EasySwoole\Console\ConsoleService;
 use EasySwoole\EasySwoole\Logger;
 use EasySwoole\EasySwoole\ServerManager;
 use EasySwoole\Http\AbstractInterface\Controller;

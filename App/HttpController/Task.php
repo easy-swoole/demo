@@ -11,7 +11,7 @@ namespace App\HttpController;
 
 use App\Task\QuickTaskTest;
 use App\Task\TaskTest;
-use EasySwoole\EasySwoole\Console\TcpService;
+use EasySwoole\EasySwoole\Console\ConsoleService;
 use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\Http\AbstractInterface\Controller;
 use EasySwoole\Spl\SplBean;

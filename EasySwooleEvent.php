@@ -37,7 +37,7 @@ use EasySwoole\Component\Openssl;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\EasySwoole\Console\CommandContainer;
-use EasySwoole\EasySwoole\Console\TcpService;
+use EasySwoole\EasySwoole\Console\ConsoleService;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\FastCache\Cache;
@@ -86,9 +86,9 @@ class EasySwooleEvent implements Event
                 $trackerLogCategory = Config::getInstance()->getDynamicConf('CONSOLE.TRACKER_LOG_CATEGORY');
                 if ($trackerLogCategory) {
                     if (in_array('all', $trackerLogCategory)) {
-                        TcpService::push((string)$tracker);
+                        ConsoleService::push((string)$tracker);
                     } else {
-                        TcpService::push($tracker->toString($trackerLogCategory));
+                        ConsoleService::push($tracker->toString($trackerLogCategory));
                     }
                 }
             }
@@ -353,6 +353,8 @@ class EasySwooleEvent implements Event
 
     public static function onRequest(Request $request, Response $response): bool
     {
+        $response->withHeader('Content-type','application/json;charset=utf-8');
+
 //        ContextManager::getInstance()->set('mysqlObject',PoolManager::getInstance()->getPool(MysqlPool::class)->getObj());
 //        $conf = Config::getInstance()->getConf("MYSQL");
 //        $dbConf = new \EasySwoole\Mysqli\Config($conf);
