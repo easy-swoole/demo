@@ -34,7 +34,6 @@ class BroadcastTask extends AbstractAsyncTask
     {
         // TODO: Implement run() method.
         $redis = Redis::getInstance()->getConnect();
-        var_dump($redis);
         $users = $redis->hGetAll(AppConst::REDIS_ONLINE_KEY);
         /** @var \swoole_websocket_server $server */
         $server = ServerManager::getInstance()->getSwooleServer();
