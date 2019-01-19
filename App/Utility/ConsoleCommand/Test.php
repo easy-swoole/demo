@@ -14,6 +14,11 @@ use EasySwoole\Socket\Bean\Response;
 
 class Test implements \EasySwoole\EasySwoole\Console\CommandInterface
 {
+    function moduleName(): string
+    {
+        // TODO: Implement moduleName() method.
+        return 'Test';
+    }
     public function exec(Caller $caller, Response $response)
     {
         //调用命令时,会执行该方法

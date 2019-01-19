@@ -22,7 +22,11 @@ use EasySwoole\Socket\Bean\Response;
  */
 class Tools implements CommandInterface
 {
-
+    function moduleName(): string
+    {
+        // TODO: Implement moduleName() method.
+        return 'Tools';
+    }
     /**
      * 获取某个命令的帮助信息
      * @param Caller $caller
