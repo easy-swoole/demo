@@ -17,8 +17,17 @@ use EasySwoole\Socket\Bean\Response;
 class TrackerLogCategory implements CommandInterface
 {
 
+
+    public function moduleName(): string
+    {
+        // TODO: Implement moduleName() method.
+        return 'category';
+    }
+
     public function exec(Caller $caller, Response $response)
     {
+        // TODO: Implement exec() method.
+
         $args = $caller->getArgs();
 
         if (empty($args)) {
@@ -41,6 +50,8 @@ class TrackerLogCategory implements CommandInterface
 
     public function help(Caller $caller, Response $response)
     {
+        // TODO: Implement help() method.
+
         $help = <<<HELP
 
 用法 : TrackerLogCategory [categoryName...]

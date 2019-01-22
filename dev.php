@@ -33,8 +33,17 @@ return [
         'HOST'           => '127.0.0.1',//console客户端连接远程地址
         'PORT'           => 9500,//console服务端监听端口,客户端连接远程端口
         'EXPIRE'         => '120',//心跳超时时间
-        'AUTH'           => null,//鉴权密码,如不需要鉴权可设置null
-        'PUSH_LOG'       => true//是否推送日志
+        // 'AUTH'           => null,//鉴权密码,如不需要鉴权可设置null
+        'AUTH'           => [
+            [
+                'USER'        => 'root',
+                'PASSWORD'    => 'root',
+                'MODULES'     => [
+                    'auth', 'server', 'help', 'test'
+                ],
+                'PUSH_LOG'    => true
+            ]
+        ]
     ],
 
     /*################ MYSQL CONFIG ##################*/

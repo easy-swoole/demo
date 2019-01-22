@@ -16,9 +16,15 @@ use EasySwoole\Socket\Bean\Response;
 
 class TrackerPushLog implements CommandInterface
 {
+    public function moduleName(): string
+    {
+        // TODO: Implement moduleName() method.
+        return "kt";
+    }
 
     public function exec(Caller $caller, Response $response)
     {
+        // TODO: Implement exec() method.
         $args = $caller->getArgs();
         $command = array_shift($args);
         if ($command == 'enable') {
@@ -36,6 +42,7 @@ class TrackerPushLog implements CommandInterface
 
     public function help(Caller $caller, Response $response)
     {
+        // TODO: Implement help() method.
         $help = <<<HELP
 
 用法 : TrackerPushLog [enable|disable]
