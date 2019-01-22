@@ -9,11 +9,20 @@
 namespace App\Utility\ConsoleCommand;
 
 
+use EasySwoole\EasySwoole\Console\CommandInterface;
 use EasySwoole\Socket\Bean\Caller;
 use EasySwoole\Socket\Bean\Response;
 
-class Test implements \EasySwoole\EasySwoole\Console\CommandInterface
+class Test implements CommandInterface
 {
+
+    public function moduleName(): string
+    {
+        // TODO: Implement moduleName() method.
+        // 自定义模块命令名称
+        return 'test';
+    }
+
     public function exec(Caller $caller, Response $response)
     {
         //调用命令时,会执行该方法
@@ -38,5 +47,4 @@ HELP;
 
         // TODO: Implement help() method.
     }
-
 }
