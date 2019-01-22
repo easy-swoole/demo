@@ -353,6 +353,8 @@ class EasySwooleEvent implements Event
 
     public static function onRequest(Request $request, Response $response): bool
     {
+        $response->withHeader('Content-type','application/json;charset=utf-8');
+
 //        ContextManager::getInstance()->set('mysqlObject',PoolManager::getInstance()->getPool(MysqlPool::class)->getObj());
 //        $conf = Config::getInstance()->getConf("MYSQL");
 //        $dbConf = new \EasySwoole\Mysqli\Config($conf);
