@@ -10,11 +10,11 @@ namespace App\Utility\ConsoleCommand;
 
 
 use EasySwoole\EasySwoole\Config;
-use EasySwoole\EasySwoole\Console\CommandInterface;
+use EasySwoole\EasySwoole\Console\ModuleInterface;
 use EasySwoole\Socket\Bean\Caller;
 use EasySwoole\Socket\Bean\Response;
 
-class TrackerLogCategory implements CommandInterface
+class TrackerLogCategory implements ModuleInterface
 {
 
 
