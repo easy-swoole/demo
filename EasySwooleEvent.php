@@ -36,8 +36,8 @@ use EasySwoole\Component\Di;
 use EasySwoole\Component\Openssl;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
-use EasySwoole\EasySwoole\Console\CommandContainer;
 use EasySwoole\EasySwoole\Console\ConsoleService;
+use EasySwoole\EasySwoole\Console\ModuleContainer;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\FastCache\Cache;
@@ -95,9 +95,9 @@ class EasySwooleEvent implements Event
         });
 
         // 设置Tracker的推送配置和命令，以下配置请写入动态配置项
-        CommandContainer::getInstance()->set(new TrackerPushLog());
-        CommandContainer::getInstance()->set(new TrackerLogCategory());
-        CommandContainer::getInstance()->set(new Test());
+        ModuleContainer::getInstance()->set(new TrackerPushLog());
+        ModuleContainer::getInstance()->set(new TrackerLogCategory());
+        ModuleContainer::getInstance()->set(new Test());
         //默认开启，推送全部日志
         Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_LOG_CATEGORY', ['all']);
         Config::getInstance()->setDynamicConf('CONSOLE.TRACKER_PUSH_LOG', true);

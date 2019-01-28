@@ -8,7 +8,7 @@
 
 namespace App\Utility\ConsoleCommand;
 
-use EasySwoole\EasySwoole\Console\CommandInterface;
+use EasySwoole\EasySwoole\Console\ModuleInterface;
 use EasySwoole\Socket\Bean\Caller;
 use EasySwoole\Socket\Bean\Response;
 // 在EasySwooleEvent 添加
@@ -20,7 +20,7 @@ use EasySwoole\Socket\Bean\Response;
  * Class Help
  * @package EasySwoole\EasySwoole\Console\DefaultCommand
  */
-class Tools implements CommandInterface
+class Tools implements ModuleInterface
 {
 
     public function moduleName(): string
