@@ -15,7 +15,7 @@ php easyswoole start
 
 ## 请先认真阅读手册 再进行体验
 
-- [EASYSWOOLE在线手册](https://www.easyswoole.com/Manual/3.x/Cn/_book/Http/intro.html)
+- [EASYSWOOLE在线手册](https://www.easyswoole.com)
 - QQ交流群
     - VIP群 579434607 （本群需要付费599元）
     - EasySwoole官方一群 633921431(已满)
