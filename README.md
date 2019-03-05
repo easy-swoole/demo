@@ -1,6 +1,6 @@
 # EASYSWOOLE DEMO
-
-聊天室Demo请切换到 `3.x-chat` 分支， [点击链接直达](https://github.com/easy-swoole/demo/tree/3.x-chat)
+## 关于具体demo在哪
+demo/3.x分支对应了EasySwoole3.x版本的demo,3.x主要是简单的控制器例子，其他使用请看3.x对应的分支。
 
 ## 如何运行DEMO
 
@@ -13,7 +13,14 @@ php vendor/bin/easyswoole install
 php easyswoole start
 ```
 
-> 请先认真阅读手册 再进行体验
+## 请先认真阅读手册 再进行体验
 
 - [EASYSWOOLE在线手册](https://www.easyswoole.com/Manual/3.x/Cn/_book/Http/intro.html)
-- [EASYSWOOLE在线交流群 633921431](https://shang.qq.com/wpa/qunwpa?idkey=35c84e12f7784153501e3c43c9f2454d3235a7f55371458a24f0c32320c99548)
+- QQ交流群
+    - VIP群 579434607 （本群需要付费599元）
+    - EasySwoole官方一群 633921431(已满)
+    - EasySwoole官方二群 709134628
+    
+- 商业支持：
+    - QQ 291323003
+    - EMAIL admin@fosuss.com    
