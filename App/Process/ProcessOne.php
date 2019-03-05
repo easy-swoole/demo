@@ -1,37 +1,37 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Apple
- * Date: 2018/11/1 0001
- * Time: 11:30
+ * User: yf
+ * Date: 2019-03-05
+ * Time: 20:08
  */
 
 namespace App\Process;
 
 
 use EasySwoole\Component\Process\AbstractProcess;
-use Swoole\Process;
+use EasySwoole\EasySwoole\Logger;
 
-class ProcessTest extends AbstractProcess
+class ProcessOne extends AbstractProcess
 {
+
     public function run($arg)
     {
-        var_dump($arg);
-        echo "process is run.\n";
-
         // TODO: Implement run() method.
+        Logger::getInstance()->console($this->getProcessName()." start");
+        while (1){
+            \co::sleep(5);
+            Logger::getInstance()->console($this->getProcessName()." run");
+        }
     }
 
     public function onShutDown()
     {
-        echo "process is onShutDown.\n";
         // TODO: Implement onShutDown() method.
     }
 
     public function onReceive(string $str)
     {
-        echo "process is onReceive.\n";
         // TODO: Implement onReceive() method.
     }
-
 }
