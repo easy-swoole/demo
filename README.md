@@ -10,6 +10,17 @@ cd demo && composer install
 php vendor/bin/easyswoole install
 php easyswoole start
 ```
+## 请先查看dev.php,修改数据库配置,防止报错
+请新增一个test数据库,以及运行以下sql
+ ````sql
+ CREATE TABLE `member` (
+   `member_id` int(11) NOT NULL AUTO_INCREMENT,
+   `mobile` varchar(255) DEFAULT NULL,
+   `name` varchar(255) DEFAULT NULL,
+   `password` varchar(255) DEFAULT NULL,
+   PRIMARY KEY (`member_id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ ````
 
 ## 请先认真阅读手册 再进行体验
 
