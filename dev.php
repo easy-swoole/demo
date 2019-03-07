@@ -45,5 +45,4 @@ return [
         'PROCESS_NUM' => 0,
         'BACKLOG' => 256,
     ],
-    'DISPLAY_ERROR' => true,
 ];
