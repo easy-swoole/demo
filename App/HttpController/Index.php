@@ -9,98 +9,56 @@
 namespace App\HttpController;
 
 
-use App\Utility\Pool\MysqlObject;
-use EasySwoole\Component\Context;
-use EasySwoole\EasySwoole\Config;
-use EasySwoole\EasySwoole\Console\ConsoleService;
-use EasySwoole\EasySwoole\Logger;
+use App\Task\Test;
 use EasySwoole\EasySwoole\ServerManager;
 use EasySwoole\Http\AbstractInterface\Controller;
-use EasySwoole\Http\Message\Status;
-use EasySwoole\Http\Request;
 
 class Index extends Controller
 {
     function index()
     {
-        $ip = ServerManager::getInstance()->getSwooleServer()->connection_info($this->request()->getSwooleRequest()->fd);
-//        var_dump($ip);
-        $this->response()->write('your ip:'.$ip['remote_ip']);
-        $this->response()->write('Index Controller is run');
         // TODO: Implement index() method.
     }
 
-    function test(){
-        $this->response()->write("router test");
-    }
-
-    /**
-     * request 使用方法
-     */
-    function requestMethod()
+    function task()
     {
-        $request = $this->request();
+        \EasySwoole\EasySwoole\Swoole\Task\TaskManager::async(function () {
+            echo "执行异步任务1...\n";
+            return true;
+        }, function () {
+            echo "异步任务执行完毕2...\n";
+        });
 
-        $data = $request->getRequestParam();//用于获取用户通过POST或者GET提交的参数（注意：若POST与GET存在同键名参数，则以POST为准）。 示例：
-        $param1 = $request->getRequestParam('param1');
-        $get = $request->getQueryParams();
-        $post = $request->getParsedBody();
-
-        $post_data = $request->getBody();
-
-
-        $swoole_request = $request->getSwooleRequest();//获取当前的swoole_http_request对象。
-
-        $cookie = $request->getCookieParams();
-        $cookie1 = $request->getCookieParams('cookie1');
-
-        $files = $request->getUploadedFiles();
-        $file = $request->getUploadedFile('form1');
-
-
-        $content = $request->getBody()->__toString();
-        $raw_array = json_decode($content, true);
-
-
-        $header = $request->getHeaders();
-
-        $server = $request->getServerParams();
-
+        // 在定时器中投递的例子
+        $a = \EasySwoole\Component\Timer::getInstance()->loop(1000, function () {
+            \EasySwoole\EasySwoole\Swoole\Task\TaskManager::async(function () {
+                echo "执行异步任务3...\n";
+            });
+        });
+        $this->response()->write('执行异步任务成功');
     }
 
-
-    function onException(\Throwable $throwable): void
-    {
-        Logger::getInstance()->log($throwable->getMessage());
+    function templateTask(){
+        // 实例化任务模板类 并将数据带进去 可以在任务类$taskData参数拿到数据
+        $taskClass = new Test('taskData');
+        \EasySwoole\EasySwoole\Swoole\Task\TaskManager::async($taskClass);
+        $this->response()->write('执行模板异步任务成功');
+    }
+    function quickTask(){
+        $result =  \EasySwoole\EasySwoole\Swoole\Task\TaskManager::async(\App\Task\QuickTaskTest::class);
+        $this->response()->write('执行快速任务成功');
     }
 
+    function multiTaskConcurrency(){
+        // 多任务并发
+        $tasks[] = function () { sleep(1);return 'this is 1'; }; // 任务1
+        $tasks[] = function () { sleep(2);return 'this is 2'; };     // 任务2
+        $tasks[] = function () { sleep(3);return 'this is 3'; }; // 任务3
 
-    /**
-     * response使用方法
-     */
-    function responseMethod(){
-        $response = $this->response();
-        $swoole_response = $response->getSwooleResponse();
-        $response->withStatus(Status::CODE_OK);
-        $response->write('response write.');
-        $response->setCookie('cookie name','cookie value',time()+120);
-        $response->redirect('/test');
-        $response->withHeader('Content-type','application/json;charset=utf-8');
+        $results = \EasySwoole\EasySwoole\Swoole\Task\TaskManager::barrier($tasks, 3);
 
-        if ($response->isEndResponse()==$response::STATUS_NOT_END){
-            $response->end();
-        }
+        var_dump($results);
+        $this->response()->write('执行并发任务成功');
+
     }
-
-
-    protected function onRequest(?string $action): ?bool
-    {
-        if(0/*auth_fail*/){
-            $this->response()->write('auth fail');
-            return false;
-        }else{
-            return true or null;
-        }
-    }
-
 }
