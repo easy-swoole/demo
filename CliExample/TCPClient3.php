@@ -34,6 +34,7 @@ go(function () {
         ],
     ];
     $str = json_encode($data);
+    var_dump($str);
     $client->send(encode($str));
     $data = $client->recv();//服务器已经做了pack处理
     $data = decode($data);//需要自己剪切解析数据

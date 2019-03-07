@@ -25,7 +25,6 @@ class EasySwooleEvent implements Event
     {
         // TODO: Implement initialize() method.
         date_default_timezone_set('Asia/Shanghai');//设置时区
-
     }
 
     public static function mainServerCreate(EventRegister $register)
@@ -52,7 +51,7 @@ class EasySwooleEvent implements Event
         });
 
 
-        ################# tcp 服务器2 没有处理粘包 #####################
+        ################# tcp 服务器2 处理粘包 #####################
         $subPort2 = $server->addlistener('0.0.0.0', 9503, SWOOLE_TCP);
         $subPort2->set(
             [
