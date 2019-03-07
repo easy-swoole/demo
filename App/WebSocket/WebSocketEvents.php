@@ -74,7 +74,7 @@ class WebSocketEvents
     static function onClose(\swoole_server $server, int $fd, int $reactorId)
     {
         $info = $server->connection_info($fd);
-        if ($info['websocket_status'] !== 0) {
+        if (isset($info['websocket_status']) && $info['websocket_status'] !== 0) {
             $redisPool = PoolManager::getInstance()->getPool(RedisPool::class);
             $redis = $redisPool->getObj();
             if ($redis instanceof RedisPoolObject) {

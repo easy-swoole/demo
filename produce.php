@@ -28,13 +28,20 @@ return [
         'LISTEN_ADDRESS' => '127.0.0.1',
         'HOST' => '127.0.0.1',
         'PORT' => 9500,
-        'EXPIRE' => '120',
-        'AUTH' => null,
-        'PUSH_LOG' => true,
+        'USER' => 'root',
+        'PASSWORD' => '123456'
     ],
     'FAST_CACHE' => [
         'PROCESS_NUM' => 0,
         'BACKLOG' => 256,
     ],
     'DISPLAY_ERROR' => true,
+    'SYSTEM' => [
+        'WS_SERVER_PATH' => 'ws://127.0.0.1:9501',
+        'LAST_MESSAGE_MAX' => 10
+    ],
+    'REDIS' => [
+        'HOST' => '127.0.0.1',
+        'PORT' => 6379
+    ]
 ];
