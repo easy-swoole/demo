@@ -9,6 +9,8 @@
 namespace EasySwoole\EasySwoole;
 
 
+use App\console\TestConsole;
+use EasySwoole\Console\ConsoleModuleContainer;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
@@ -21,6 +23,8 @@ class EasySwooleEvent implements Event
     {
         // TODO: Implement initialize() method.
         date_default_timezone_set('Asia/Shanghai');
+        ConsoleModuleContainer ::getInstance()->set(new TestConsole());
+
     }
 
     public static function mainServerCreate(EventRegister $register)

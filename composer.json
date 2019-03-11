@@ -5,7 +5,8 @@
     }
   },
   "require": {
-    "easyswoole/easyswoole": "3.1.15",
-    "phpoffice/phpexcel": "^1.8"
+    "easyswoole/easyswoole": "^3-dev",
+    "phpoffice/phpexcel": "^1.8",
+    "easyswoole/verifycode": "^3.0"
   }
 }
