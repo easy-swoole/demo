@@ -27,7 +27,7 @@ class WebSocketEvent
     public function onHandShake(\swoole_http_request $request, \swoole_http_response $response)
     {
         /** 此处自定义握手规则 返回 false 时中止握手 */
-        if ($this->customHandShake($request, $response)) {
+        if (!$this->customHandShake($request, $response)) {
             $response->end();
             return false;
         }
