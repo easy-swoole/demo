@@ -32,21 +32,18 @@ class EasySwooleEvent implements Event
         $server = ServerManager::getInstance()->getSwooleServer();
 
         ################# tcp 服务器1 没有处理粘包 #####################
-        $subPort1 = $server->addlistener('0.0.0.0', 9502, SWOOLE_TCP);
-        $subPort1->set(
-            [
-                'open_length_check' => false,//不验证数据包
-            ]
-        );
-        $subPort1->on('connect', function (\swoole_server $server, int $fd, int $reactor_id) {
+        $tcp1ventRegister = $subPort1 = ServerManager::getInstance()->addServer('tcp1', 9502, SWOOLE_TCP, '0.0.0.0', [
+            'open_length_check' => false,//不验证数据包
+        ]);
+        $tcp1ventRegister->set(EventRegister::onConnect,function (\swoole_server $server, int $fd, int $reactor_id) {
             echo "tcp服务1  fd:{$fd} 已连接\n";
             $str = '恭喜你连接成功服务器1';
             $server->send($fd, $str);
         });
-        $subPort1->on('close', function (\swoole_server $server, int $fd, int $reactor_id) {
+        $tcp1ventRegister->set(EventRegister::onClose,function (\swoole_server $server, int $fd, int $reactor_id) {
             echo "tcp服务1  fd:{$fd} 已关闭\n";
         });
-        $subPort1->on('receive', function (\swoole_server $server, int $fd, int $reactor_id, string $data) {
+        $tcp1ventRegister->set(EventRegister::onReceive,function (\swoole_server $server, int $fd, int $reactor_id, string $data) {
             echo "tcp服务1  fd:{$fd} 发送消息:{$data}\n";
         });
 
@@ -82,10 +79,10 @@ class EasySwooleEvent implements Event
 
         $socketConfig = new \EasySwoole\Socket\Config();
         $socketConfig->setType($socketConfig::TCP);
-        $socketConfig->setParser(new \App\TcpController\Parser());
+        $socketConfig->setParser(new Parser());
         //设置解析异常时的回调,默认将抛出异常到服务器
         $socketConfig->setOnExceptionHandler(function ($server, $throwable, $raw, $client, $response) {
-            echo  "tcp服务3  fd:{$client->getFd()} 发送数据异常 \n";
+            echo "tcp服务3  fd:{$client->getFd()} 发送数据异常 \n";
             $server->close($client->getFd());
         });
         $dispatch = new \EasySwoole\Socket\Dispatcher($socketConfig);
