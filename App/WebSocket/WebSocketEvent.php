@@ -8,21 +8,32 @@
 
 namespace App\WebSocket;
 
+/**
+ * Class WebSocketEvent
+ *
+ * 此类是 WebSocet 中一些非强制的自定义事件处理
+ *
+ * @package App\WebSocket
+ */
 class WebSocketEvent
 {
     /**
      * 握手事件
-     * @param  swoole_http_request $request swoole http request
-     * @param  swoole_http_response $response swoole http response
-     * @return bool                         是否通过握手
+     *
+     * @param \swoole_http_request  $request
+     * @param \swoole_http_response $response
+     * @return bool
      */
     public function onHandShake(\swoole_http_request $request, \swoole_http_response $response)
     {
-        // 通过自定义握手 和 RFC ws 握手验证
-        if ($this->customHandShake($request, $response) && $this->secWebsocketAccept($request, $response)) {
-            // 接受握手 还需要101状态码以切换状态
-            $response->status(101);
-            var_dump('shake success at fd :' . $request->fd);
+        /** 此处自定义握手规则 返回 false 时中止握手 */
+        if (!$this->customHandShake($request, $response)) {
+            $response->end();
+            return false;
+        }
+
+        /** 此处是  RFC规范中的WebSocket握手验证过程 必须执行 否则无法正确握手 */
+        if ($this->secWebsocketAccept($request, $response)) {
             $response->end();
             return true;
         }
@@ -32,30 +43,19 @@ class WebSocketEvent
     }
 
     /**
-     * 关闭事件
-     * @param  swoole_server $server    swoole server
-     * @param  int           $fd        fd
-     * @param  int           $reactorId 线程id
-     * @return void
-     */
-    public function onClose(\swoole_server $server, int $fd, int $reactorId)
-    {
-        // 判断连接是否为 WebSocket 客户端 详情 参见 https://wiki.swoole.com/wiki/page/490.html
-        $connection = $server->connection_info($fd);
-
-        // 判断连接是否为 server 主动关闭 参见 https://wiki.swoole.com/wiki/page/p-event/onClose.html
-        $reactorId < 0 ? '主动' : '被动';
-    }
-
-    /**
      * 自定义握手事件
-     * 在这里自定义验证规则
-     * @param  swoole_http_request $request swoole http request
-     * @param  swoole_http_response $response swoole http response
-     * @return bool                         是否通过握手
+     *
+     * @param \swoole_http_request  $request
+     * @param \swoole_http_response $response
+     * @return bool
      */
     protected function customHandShake(\swoole_http_request $request, \swoole_http_response $response): bool
     {
+        /**
+         * 这里可以通过 http request 获取到相应的数据
+         * 进行自定义验证后即可
+         * (注) 浏览器中 JavaScript 并不支持自定义握手请求头 只能选择别的方式 如get参数
+         */
         $headers = $request->header;
         $cookie = $request->cookie;
 
@@ -66,10 +66,38 @@ class WebSocketEvent
     }
 
     /**
+     * 关闭事件
+     *
+     * @param \swoole_server $server
+     * @param int            $fd
+     * @param int            $reactorId
+     */
+    public function onClose(\swoole_server $server, int $fd, int $reactorId)
+    {
+        /** @var array $info */
+        $info = $server->getClientInfo($fd);
+        /**
+         * 判断此fd 是否是一个有效的 websocket 连接
+         * 参见 https://wiki.swoole.com/wiki/page/490.html
+         */
+        if ($info && $info['websocket_status'] === WEBSOCKET_STATUS_FRAME) {
+            /**
+             * 判断连接是否是 server 主动关闭
+             * 参见 https://wiki.swoole.com/wiki/page/p-event/onClose.html
+             */
+            if ($reactorId < 0) {
+                echo "server close \n";
+            }
+        }
+    }
+
+    /**
      * RFC规范中的WebSocket握手验证过程
-     * @param  swoole_http_request $request swoole http request
-     * @param  swoole_http_response $response swoole http response
-     * @return bool                           是否通过验证
+     * 以下内容必须强制使用
+     *
+     * @param \swoole_http_request  $request
+     * @param \swoole_http_response $response
+     * @return bool
      */
     protected function secWebsocketAccept(\swoole_http_request $request, \swoole_http_response $response): bool
     {
@@ -104,6 +132,10 @@ class WebSocketEvent
         foreach ($headers as $key => $val) {
             $response->header($key, $val);
         }
+
+        // 接受握手 还需要101状态码以切换状态
+        $response->status(101);
+        var_dump('shake success at fd :' . $request->fd);
         return true;
     }
 }
