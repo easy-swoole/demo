@@ -9,6 +9,7 @@
 namespace EasySwoole\EasySwoole;
 
 
+use App\Utility\Pool\Mysql2Pool;
 use App\Utility\Pool\MysqlPool;
 use App\Utility\Pool\RedisPool;
 use EasySwoole\Component\Pool\PoolManager;
@@ -37,7 +38,7 @@ class EasySwooleEvent implements Event
 
 
         //多数据库情况
-        $mysqlConf2 = PoolManager::getInstance()->register(MysqlPool::class, Config::getInstance()->getConf('MYSQL2.POOL_MAX_NUM'));
+        $mysqlConf2 = PoolManager::getInstance()->register(Mysql2Pool::class, Config::getInstance()->getConf('MYSQL2.POOL_MAX_NUM'));
 
         ################### REDIS   #######################
         $redisConf2 = PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
