@@ -1,17 +1,13 @@
 {
-    "name": "easyswoole/demo",
-    "authors": [
-        {
-            "name": "如果的如果",
-            "email": "291323003@qq.com"
-        }
-    ],
-    "require": {
-        "easyswoole/easyswoole": "3.x-dev"
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "App/"
-        }
+  "autoload": {
+    "psr-4": {
+      "App\\": "App/"
     }
+  },
+  "require": {
+    "easyswoole/easyswoole": "^3-dev",
+    "phpoffice/phpexcel": "^1.8",
+    "easyswoole/verifycode": "^3.0",
+    "easyswoole/rpc": "3.x"
+  }
 }
