@@ -7,6 +7,7 @@
   "require": {
     "easyswoole/easyswoole": "^3-dev",
     "phpoffice/phpexcel": "^1.8",
-    "easyswoole/verifycode": "^3.0"
+    "easyswoole/verifycode": "^3.0",
+    "easyswoole/rpc": "3.x"
   }
 }
