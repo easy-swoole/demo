@@ -10,8 +10,8 @@ Nirvana.chat
 git clone https://github.com/KeyBuffer/nirvana.chat.git
 git checkout 3.x-chat
 composer install
-easyswoole install
-cp sample.env dev.env
+php vendor/bin/easyswoole install
+php easyswoole start
 ```
 
 ## 配置
