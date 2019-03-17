@@ -24,7 +24,7 @@ class EasySwooleEvent implements Event
 
     public static function initialize()
     {
-        date_default_timezone_set('Asia/Shanghai');
+        date_default_timezone_set('Europe/Guernsey');
     }
 
     /**

@@ -43,7 +43,7 @@ return [
     'DISPLAY_ERROR' => true,
     'SYSTEM' => [
         'WS_SERVER_PATH' => 'ws://127.0.0.1:9501',
-        'LAST_MESSAGE_MAX' => 10
+        'LAST_MESSAGE_MAX' => 101
     ],
     'REDIS' => [
         'HOST' => '127.0.0.1',
