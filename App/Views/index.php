@@ -51,10 +51,6 @@
         <div class="talk_window">
             <div class="windows_top">
                 <div class="windows_top_left"><i class="am-icon am-icon-list online-list"></i> 欢迎乘坐特快列车</div>
-                <div class="windows_top_right">
-                    <a href="https://github.com/easy-swoole/demo/tree/3.x-chat" target="_blank"
-                       style="color: #999">查看源码</a>
-                </div>
             </div>
             <div class="windows_body" id="chat-window" v-scroll-bottom>
                 <ul class="am-comments-list am-comments-list-flip">
