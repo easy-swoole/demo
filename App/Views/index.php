@@ -17,7 +17,7 @@
 <div id="chat">
     <template>
         <div class="online_window">
-            <div class="me_info">
+            <!-- <div class="me_info">
                 <div class="me_item">
                     <div class="me_status">
                         <div class="me_username">
@@ -26,8 +26,8 @@
                     </div>
                     <div class="times-icon"><i class="am-icon am-icon-times"></i></div>
                 </div>
-            </div>
-            <div class="online_list">
+            </div> -->
+            <!-- <div class="online_list">
                 <div class="online_list_header">车上乘客</div>
                 <div class="online_item" v-for="user in roomUser">
                     <template v-if="user">
@@ -36,15 +36,15 @@
                         </div>
                     </template>
                 </div>
+            </div> -->
+            <div class="online_intro">
+                Seeking same kinds and have a nice trip
             </div>
             <div class="online_count">
-                <h6>车上乘客 <span>{{currentCount}}</span> 位</h6>
+                {{currentCount}} rangers here right now
             </div>
         </div>
         <div class="talk_window">
-            <div class="windows_top">
-                <div class="windows_top_left"><i class="am-icon am-icon-list online-list"></i> 欢迎乘坐特快列车</div>
-            </div>
             <div class="windows_body" id="chat-window" v-scroll-bottom>
                 <ul class="am-comments-list am-comments-list-flip">
                     <template v-for="chat in roomChat">
@@ -83,24 +83,17 @@
                 </ul>
             </div>
             <div class="windows_input">
-                <div class="am-btn-toolbar">
+                <!-- <div class="am-btn-toolbar">
                     <div class="am-btn-group am-btn-group-xs">
                         <button type="button" class="am-btn" @click="picture"><i class="am-icon am-icon-picture-o"></i>
                         </button>
                         <input type="file" id="fileInput" style="display: none" accept="image/*">
                     </div>
-                </div>
+                </div> -->
                 <div class="input-box">
-                    <label for="text-input" style="display: none"></label>
                     <textarea name="" id="text-input" cols="30" rows="10" title=""></textarea>
                 </div>
-                <div class="toolbar">
-                    <div class="left"><a href="http://www.easyswoole.com/" target="_blank">POWER BY EASYSWOOLE V3</a>
-                    </div>
-                    <div class="right">
-                        <button class="send" @click="clickBtnSend">发送消息 ( Enter )</button>
-                    </div>
-                </div>
+                <button class="send" @click="clickBtnSend">Send <br/>( Enter )</button>
             </div>
         </div>
     </template>
@@ -144,26 +137,6 @@
                 $('.online_window').hide();
                 $('.windows_input').show();
             });
-            var input = document.getElementById("fileInput");
-            input.addEventListener('change', readFile, false);
-
-            function readFile() {
-                var file = this.files[0];
-                //判断是否是图片类型
-                if (!/image\/\w+/.test(file.type)) {
-                    alert("只能选择图片");
-                    return false;
-                }
-                if (file.size > 1048576) {
-                    alert('图片大小不能超过1MB');
-                    return false;
-                }
-                var reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function (e) {
-                    othis.broadcastImageMessage(this.result)
-                }
-            }
         },
         methods: {
             connect: function () {
@@ -334,7 +307,7 @@
                         });
                     }
                 } else {
-                    layer.tips('请输入消息内容', '.windows_input', {
+                    layer.tips('no more empty msg plz~', '.windows_input', {
                         tips: [1, '#3595CC'],
                         time: 2000
                     });
