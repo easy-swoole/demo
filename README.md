@@ -11,7 +11,7 @@ EASYSWOOLE 聊天室DEMO
 安装时遇到提示是否覆盖 `EasySwooleEvent.php` 请选择否 (输入 n 回车)
 
 ```bash
-git clone https://github.com/easy-swoole/demo.git
+git clone https://github.com/KeyBuffer/nirvana.chat.git
 git checkout 3.x-chat
 composer install
 easyswoole install
