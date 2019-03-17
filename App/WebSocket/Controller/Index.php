@@ -25,7 +25,6 @@ class Index extends Base
             $message = new UserInfo;
             $message->setIntro($info['intro']);
             $message->setUserFd($info['userFd']);
-            $message->setAvatar($info['avatar']);
             $message->setUsername($info['username']);
             $this->response()->setMessage($message);
         }

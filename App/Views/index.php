@@ -19,9 +19,6 @@
         <div class="online_window">
             <div class="me_info">
                 <div class="me_item">
-                    <div class="me_avatar">
-                        <img :src="'/avatar/'+currentUser.avatar+'.jpg'" alt="">
-                    </div>
                     <div class="me_status">
                         <div class="me_username">
                             <i class="am-icon am-icon-pencil" @click="changeName"></i> {{currentUser.username}}
@@ -35,9 +32,6 @@
                 <div class="online_list_header">车上乘客</div>
                 <div class="online_item" v-for="user in roomUser">
                     <template v-if="user">
-                        <div class="online_avatar">
-                            <img :src="'/avatar/'+user.avatar+'.jpg'" alt="">
-                        </div>
                         <div class="online_status">
                             <div class="online_username">{{user.username}}</div>
                         </div>
@@ -64,10 +58,6 @@
                                 <span class="am-radius" style="color: #666666">{{chat.sendTime}}</span>
                             </div>
                             <article class="am-comment" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
-                                <a href="#link-to-user-home">
-                                    <img :src="'/avatar/'+chat.avatar+'.jpg'" alt="" class="am-comment-avatar"
-                                         width="48" height="48"/>
-                                </a>
                                 <div class="am-comment-main">
                                     <header class="am-comment-hd">
                                         <div class="am-comment-meta">
@@ -126,7 +116,7 @@
             ReconnectTimer: null,
             HeartBeatTimer: null,
             ReconnectBox: null,
-            currentUser: {username: '-----', intro: '-----------', userFd: 0, avatar: 0},
+            currentUser: {username: '-----', intro: '-----------', userFd: 0},
             roomUser: {},
             roomChat: [],
             up_recv_time: 0
@@ -217,8 +207,7 @@
                                         type: data.type ? data.type : 'text',
                                         fd: 0,
                                         content: data.content,
-                                        avatar: 99,
-                                        username: '列车乘务员'
+                                        username: 'ADMIN'
                                     });
                                     break;
                                 }
@@ -228,7 +217,6 @@
                                         type: data.type,
                                         fd: data.fromUserFd,
                                         content: data.content,
-                                        avatar: othis.roomUser[data.fromUserFd].avatar,
                                         username: othis.roomUser[data.fromUserFd].username,
                                         sendTime: data.sendTime
                                     };
@@ -241,7 +229,6 @@
                                         type: data.type,
                                         fd: data.fromUserFd,
                                         content: data.content,
-                                        avatar: data.avatar,
                                         username: data.username,
                                         sendTime: data.sendTime
                                     };
@@ -251,7 +238,6 @@
                                 case 201: {
                                     // 刷新自己的用户信息
                                     othis.currentUser.intro = data.intro;
-                                    othis.currentUser.avatar = data.avatar;
                                     othis.currentUser.userFd = data.userFd;
                                     othis.currentUser.username = data.username;
                                     break;

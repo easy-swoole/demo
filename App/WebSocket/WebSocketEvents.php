@@ -125,6 +125,6 @@ class WebSocketEvents
     {
         mt_srand();
         $introduce = ['请叫我秋名山车神', '这不是去学校的车', '最长的路是你的套路', '车速超快我有点怕', '最美的风景是在路上', '身娇腰柔易推倒', '时光静好与君语', '细水流年与君同', '繁华落尽与君老', '吃瓜什么的最棒了'];
-        return ['username' => $userName, 'userFd' => $userFd, 'avatar' => rand(0, 9), 'intro' => $introduce[rand(0, 9)]];
+        return ['username' => $userName, 'userFd' => $userFd, 'intro' => $introduce[rand(0, 9)]];
     }
 }

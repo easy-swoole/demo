@@ -50,7 +50,6 @@ class BroadcastTask extends AbstractAsyncTask
             $payload['fromUserFd'] = 0;
             $payload['action']     = WebSocketAction::BROADCAST_LAST_MESSAGE;
             $payload['username']   = $userinfo['username'];
-            $payload['avatar']     = $userinfo['avatar'];
             $redis->lPush(AppConst::REDIS_LAST_MESSAGE_KEY, json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
             $max = Config::getInstance()->getConf('SYSTEM.LAST_MESSAGE_MAX');
             $redis->lTrim(AppConst::REDIS_LAST_MESSAGE_KEY, 0, $max - 1);

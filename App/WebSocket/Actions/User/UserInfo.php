@@ -23,7 +23,6 @@ class UserInfo extends ActionPayload
     protected $username;
     protected $intro;
     protected $userFd;
-    protected $avatar;
 
     /**
      * @return mixed
@@ -55,22 +54,6 @@ class UserInfo extends ActionPayload
     public function setUserFd($userFd): void
     {
         $this->userFd = $userFd;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-    /**
-     * @param mixed $avatar
-     */
-    public function setAvatar($avatar): void
-    {
-        $this->avatar = $avatar;
     }
 
     /**
