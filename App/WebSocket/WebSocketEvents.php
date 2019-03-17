@@ -44,7 +44,7 @@ class WebSocketEvents
             TaskManager::async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $req->fd]));
 
             if (empty($req->get['is_reconnection']) || $req->get['is_reconnection'] == '0') {
-                // 发送最后?条数据
+                // 发送最后99条数据
                 $lastMessage = $redis->lRange(AppConst::REDIS_LAST_MESSAGE_KEY, 0, Config::getInstance()->getConf('SYSTEM.LAST_MESSAGE_MAX'));
                 for ($i = count($lastMessage) - 1; $i >= 0; $i--) {
                     $server->push($req->fd, $lastMessage[$i]);
