@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>微聊 - EASYSWOOLE DEMO</title>
+    <title>Nirvana - Happy Chat Around World</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/amazeui/2.7.2/css/amazeui.min.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/layer/2.3/skin/layer.css">
     <link rel="stylesheet" href="/css/main.css?v=120203">
@@ -312,13 +312,6 @@
              */
             broadcastTextMessage: function (content) {
                 this.release('broadcast', 'roomBroadcast', {content: content, type: 'text'})
-            },
-            /**
-             * 发送图片消息
-             * @param base64_content
-             */
-            broadcastImageMessage: function (base64_content) {
-                this.release('broadcast', 'roomBroadcast', {content: base64_content, type: 'image'})
             },
             picture: function () {
                 var input = document.getElementById("fileInput");
