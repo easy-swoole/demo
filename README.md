@@ -1,10 +1,6 @@
-# 微聊
+# Nirvana.chat
 
-EASYSWOOLE 聊天室DEMO
-
-## 在线体验
-
-[在线DEMO演示站](http://chat.evalor.cn/)
+Nirvana.chat
 
 ## 安装
 
