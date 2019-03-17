@@ -30,7 +30,7 @@ class Broadcast extends Controller
             $message->setFromUserFd($client->getFd());
             $message->setContent($broadcastPayload['content']);
             $message->setType($broadcastPayload['type']);
-            $message->setSendTime(date('Y-m-d H:i:s'));
+            $message->setSendTime(date('H:i'));
             TaskManager::async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $client->getFd()]));
         }
         $this->response()->setStatus($this->response()::STATUS_OK);
