@@ -34,12 +34,29 @@ class WebSocketEvents
         $username = $req->get['username'] ?? '吃瓜乘客' . str_pad($req->fd, 4, '0', STR_PAD_LEFT);
         if ($redis instanceof RedisPoolObject) {
             $info = self::mockUser($req->fd, $username);
-            $redis->hSet(AppConst::REDIS_ONLINE_KEY, $req->fd, $info);
-            $redis->incr(AppConst::SYSTEM_CON_COUNT_KEY);
+
+            if ($redis->exists(AppConst::REDIS_ONLINE_KEY) === FALSE) {    
+                $redis->hSet(AppConst::REDIS_ONLINE_KEY, $req->fd, $info);
+                //当日有效
+                $redis->expireAt(strtotime(date('Y-m-d 23:59:59', time())));
+            }else
+            {
+                $redis->hSet(AppConst::REDIS_ONLINE_KEY, $req->fd, $info);
+            }
+            
+            if($redis->exists(AppConst::SYSTEM_CON_COUNT_KEY) === FALSE)
+            {
+                $redis->incr(AppConst::SYSTEM_CON_COUNT_KEY);
+                //当日有效
+                $redis->expireAt(strtotime(date('Y-m-d 23:59:59', time())));
+            }else
+            {
+                $redis->incr(AppConst::SYSTEM_CON_COUNT_KEY);
+            }
+            
             $count = $redis->get(AppConst::SYSTEM_CON_COUNT_KEY);
 
             // 对该用户单独发送欢迎消息
-            $runDays = intval((time() - ($redis->get(AppConst::SYSTEM_RUNTIME_KEY))) / 86400);
             $message = new BroadcastAdmin;
             $message->setContent("{$username}，Welcome! Happy chat in Nirvana!");
             $server->push($req->fd, $message->__toString());
@@ -97,7 +114,6 @@ class WebSocketEvents
         $redisPool = PoolManager::getInstance()->getPool(RedisPool::class);
         $redis = $redisPool->getObj();
         if ($redis instanceof RedisPoolObject) {
-            $redis->set(AppConst::SYSTEM_RUNTIME_KEY, time());
             $redis->del(AppConst::SYSTEM_CON_COUNT_KEY);
             if ($redis->exists(AppConst::REDIS_ONLINE_KEY)) {
                 $clear = $redis->del(AppConst::REDIS_ONLINE_KEY);
