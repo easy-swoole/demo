@@ -23,7 +23,6 @@
                         <div class="me_username">
                             <i class="am-icon am-icon-pencil" @click="changeName"></i> {{currentUser.username}}
                         </div>
-                        <div class="me_income">{{currentUser.intro}}</div>
                     </div>
                     <div class="times-icon"><i class="am-icon am-icon-times"></i></div>
                 </div>
@@ -116,7 +115,7 @@
             ReconnectTimer: null,
             HeartBeatTimer: null,
             ReconnectBox: null,
-            currentUser: {username: '-----', intro: '-----------', userFd: 0},
+            currentUser: {username: '-----', userFd: 0, msgCnt: 0},
             roomUser: {},
             roomChat: [],
             up_recv_time: 0
@@ -237,9 +236,9 @@
                                 }
                                 case 201: {
                                     // 刷新自己的用户信息
-                                    othis.currentUser.intro = data.intro;
                                     othis.currentUser.userFd = data.userFd;
                                     othis.currentUser.username = data.username;
+                                    othis.currentUser.msgCnt = data.msgCnt;
                                     break;
                                 }
                                 case 202: {

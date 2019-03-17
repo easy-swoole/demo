@@ -23,9 +23,9 @@ class Index extends Base
         $info = $this->currentUser();
         if ($info) {
             $message = new UserInfo;
-            $message->setIntro($info['intro']);
             $message->setUserFd($info['userFd']);
             $message->setUsername($info['username']);
+            $message->setMsgCnt($info['msgCnt']);
             $this->response()->setMessage($message);
         }
     }

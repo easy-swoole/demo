@@ -21,8 +21,8 @@ class UserInfo extends ActionPayload
 {
     protected $action = WebSocketAction::USER_INFO;
     protected $username;
-    protected $intro;
     protected $userFd;
+    protected $msgCnt;
 
     /**
      * @return mixed
@@ -59,18 +59,17 @@ class UserInfo extends ActionPayload
     /**
      * @return mixed
      */
-    public function getIntro()
+    public function getMsgCnt()
     {
-        return $this->intro;
+        return $this->msgCnt;
     }
 
     /**
-     * @param mixed $intro
+     * @param int $msgCnt
      */
-    public function setIntro($intro): void
+    public function setMsgCnt($msgCnt): void
     {
-        $this->intro = $intro;
+        $this->msgCnt = $msgCnt;
     }
-
 
 }
