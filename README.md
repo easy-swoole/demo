@@ -8,6 +8,7 @@ Nirvana.chat
 
 ```bash
 git clone https://github.com/KeyBuffer/nirvana.chat.git
+cd nirvana
 git checkout 3.x-chat
 composer install
 php vendor/bin/easyswoole install
