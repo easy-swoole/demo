@@ -12,7 +12,6 @@ cd nirvana
 git checkout 3.x-chat
 composer install
 php vendor/bin/easyswoole install
-php easyswoole start
 ```
 
 ## 配置
