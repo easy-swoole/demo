@@ -217,17 +217,7 @@
                                     othis.$set(othis.roomUser, data.info.userFd, data.info);
                                     othis.roomChat.push({
                                         type: 'tips',
-                                        content: '乘客 ' + data.info.username + ' 已登车',
-                                    });
-                                    break;
-                                }
-                                case 204: {
-                                    // 用户已离线
-                                    var username = othis.roomUser[data.userFd].username;
-                                    othis.$delete(othis.roomUser, data.userFd);
-                                    othis.roomChat.push({
-                                        type: 'tips',
-                                        content: '乘客 ' + username + ' 下车了',
+                                        content: 'Niror ' + data.info.username + ' is comming',
                                     });
                                     break;
                                 }
@@ -247,7 +237,7 @@
             doReconnect: function () {
                 var othis = this;
                 clearInterval(othis.HeartBeatTimer);
-                othis.ReconnectBox = layer.msg('已断开，正在重连...', {
+                othis.ReconnectBox = layer.msg('Disconnected，reconnecting...', {
                     scrollbar: false,
                     shade: 0.3,
                     shadeClose: false,
@@ -290,7 +280,7 @@
                         this.broadcastTextMessage(content);
                         textInput.val('');
                     } else {
-                        layer.tips('连接已断开', '.windows_input', {
+                        layer.tips('Disconnected', '.windows_input', {
                             tips: [1, '#ff4f4f'],
                             time: 2000
                         });
