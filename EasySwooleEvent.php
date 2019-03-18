@@ -10,6 +10,7 @@ namespace EasySwoole\EasySwoole;
 
 
 use App\Utility\TrackerManager;
+use EasySwoole\Component\Di;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Message\Status;
@@ -29,6 +30,7 @@ class EasySwooleEvent implements Event
 
     public static function mainServerCreate(EventRegister $register)
     {
+
         // TODO: Implement mainServerCreate() method.
     }
 
