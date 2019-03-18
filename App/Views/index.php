@@ -130,10 +130,14 @@
                     // 前端循环心跳 (1min)
                     othis.HeartBeatTimer = setInterval(function () {
                         othis.websocketInstance.send('PING');
-                    }, 1000 * 30);
+                    }, 1000 * 10);
                     // 请求获取自己的用户信息和在线列表
                     othis.release('index', 'info');
                     othis.release('index', 'online');
+                    othis.OnlineNirorTimer = setInterval(function(){
+                        othis.release('index', 'online')
+                    }, 1000);
+                    
                     othis.websocketInstance.onmessage = function (ev) {
                         try {
                             var data = JSON.parse(ev.data);
