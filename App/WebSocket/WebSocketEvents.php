@@ -31,7 +31,7 @@ class WebSocketEvents
     {
         $redisPool = PoolManager::getInstance()->getPool(RedisPool::class);
         $redis = $redisPool->getObj();
-        $username = $req->get['username'] ?? '吃瓜乘客' . str_pad($req->fd, 4, '0', STR_PAD_LEFT);
+        $username = $req->get['username'] ?? 'Niror_' . str_pad($req->fd, 5, '0', STR_PAD_LEFT);
         if ($redis instanceof RedisPoolObject) {
             $info = self::mockUser($req->fd, $username);
 
@@ -53,8 +53,6 @@ class WebSocketEvents
             {
                 $redis->incr(AppConst::SYSTEM_CON_COUNT_KEY);
             }
-            
-            $count = $redis->get(AppConst::SYSTEM_CON_COUNT_KEY);
 
             // 对该用户单独发送欢迎消息
             $message = new BroadcastAdmin;
@@ -134,7 +132,6 @@ class WebSocketEvents
      */
     static private function mockUser($userFd, $userName)
     {
-        mt_srand();
         return ['username' => $userName, 'userFd' => $userFd, 'msgCnt' => 0];
     }
 }
