@@ -57,13 +57,16 @@ class BroadcastTask extends AbstractAsyncTask
         
         //更新用户聊天消息总数
         $fromFd = $taskData['fromFd'];
-        $userInfo_u = $redis->hGet(AppConst::REDIS_ONLINE_KEY, $fromFd);
-        if ($userInfo_u)
-        {
-            $userInfo_u['msgCnt'] = $userInfo_u['msgCnt'] + 1;
-            $redis->hDel(AppConst::REDIS_ONLINE_KEY, $fromFd);
-            $redis->hSet(AppConst::REDIS_ONLINE_KEY, $fromFd, $userInfo_u);
+        if ($payload['action'] == 103){
+            $userInfo_u = $redis->hGet(AppConst::REDIS_ONLINE_KEY, $fromFd);
+            if ($userInfo_u)
+            {
+                $userInfo_u['msgCnt'] = $userInfo_u['msgCnt'] + 1;
+                $redis->hDel(AppConst::REDIS_ONLINE_KEY, $fromFd);
+                $redis->hSet(AppConst::REDIS_ONLINE_KEY, $fromFd, $userInfo_u);
+            }
         }
+        
         return true;
     }
 
