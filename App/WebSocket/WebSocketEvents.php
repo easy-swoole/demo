@@ -14,7 +14,6 @@ use App\Utility\Pool\RedisPool;
 use App\Utility\Pool\RedisPoolObject;
 use App\WebSocket\Actions\Broadcast\BroadcastAdmin;
 use App\WebSocket\Actions\User\UserInRoom;
-use App\WebSocket\Actions\User\UserOutRoom;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\EasySwoole\Config;
