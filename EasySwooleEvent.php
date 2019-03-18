@@ -31,6 +31,15 @@ class EasySwooleEvent implements Event
     public static function mainServerCreate(EventRegister $register)
     {
         // TODO: Implement mainServerCreate() method.
+        //要求在握手阶段用户传递session来进行验证
+        $register->set($register::onHandShake,function (){
+
+        });
+
+        //协议解析全部走wensocket控制器
+        $register->set($register::onMessage,function (){
+
+        });
     }
 
     public static function onRequest(Request $request, Response $response): bool
