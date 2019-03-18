@@ -89,14 +89,8 @@ class WebSocketEvents
             $redis = $redisPool->getObj();
             if ($redis instanceof RedisPoolObject) {
                 $redis->hDel(AppConst::REDIS_ONLINE_KEY, $fd);
-
-                // 全频道通知用户已离线
-                $message = new UserOutRoom;
-                $message->setUserFd($fd);
-                TaskManager::async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $fd]));
-
+                
                 $redisPool->recycleObj($redis);
-                echo "websocket user {$fd} was close\n";
             } else {
                 throw new \Exception('redis pool is empty');
             }
