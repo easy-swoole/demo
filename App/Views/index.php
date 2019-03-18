@@ -12,7 +12,34 @@
     <script src="https://cdn.staticfile.org/vue/2.5.17-beta.0/vue.js"></script>
     <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/layer/2.3/layer.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/jquery.emojipicker.css">
+    <script type="text/javascript" src="/script/jquery.emojipicker.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/jquery.emojipicker.tw.css">
+    <script type="text/javascript" src="/script/jquery.emojis.js"></script>
+
+    
 </head>
+<script type='text/javascript'>
+        $(document).ready(function(e) {
+     $('.emojiable-input').emojiPicker({
+        width: '300px',
+        height: '200px',
+        button: false
+      });
+
+      $('.emojiable-input').emojiPicker({
+        width: '200px',
+        height: '100px'
+      });
+      $('.send').click(function(e) {
+        e.preventDefault();
+        $('#text-input').emojiPicker('toggle');
+      });
+
+    });
+</script>
 <body>
 <div id="chat">
     <template>
@@ -62,11 +89,13 @@
                     </template>
                 </ul>
             </div>
+            
             <div class="windows_input">
                 <div class="input-box">
-                    <textarea name="" id="text-input" cols="30" rows="10" title=""></textarea>
+                    <textarea name="" id="text-input" cols="30" rows="10" class="emojiable-input"></textarea>
                 </div>
-                <button class="send" @click="clickBtnSend">Send</button>
+                <button class="send" >Emoji</button>
+                <!--<button class="send" @click="clickBtnSend">Send</button>-->
             </div>
         </div>
     </template>
@@ -101,14 +130,6 @@
                     ev.preventDefault();
                     return false;
                 }
-            });
-            $('.online-list').on('click', function () {
-                $('.online_window').show();
-                $('.windows_input').hide();
-            });
-            $('.times-icon').on('click', function () {
-                $('.online_window').hide();
-                $('.windows_input').show();
             });
         },
         methods: {
