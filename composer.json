@@ -19,7 +19,8 @@
         "easyswoole/swoole-ide-helper": "^1.0",
         "catfan/medoo": "^1.6",
         "ext-json": "*",
-        "ext-redis": "*"
+        "ext-redis": "*",
+        "easyswoole/mysqli": "^1.1"
     },
     "require-dev": {
         "composer/composer": "^1.6"
