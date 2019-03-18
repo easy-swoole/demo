@@ -66,7 +66,7 @@
                 <div class="input-box">
                     <textarea name="" id="text-input" cols="30" rows="10" title=""></textarea>
                 </div>
-                <button class="send" @click="clickBtnSend">Send <br/>( Enter )</button>
+                <button class="send" @click="clickBtnSend">Send</button>
             </div>
         </div>
     </template>
@@ -81,7 +81,7 @@
             ReconnectTimer: null,
             HeartBeatTimer: null,
             ReconnectBox: null,
-            currentUser: {username: '-----', userFd: 0, msgCnt: 0},
+            currentUser: {username: 'Niror', userFd: 0, msgCnt: 0},
             roomUser: {},
             roomChat: [],
             up_recv_time: 0
