@@ -9,6 +9,9 @@
 namespace EasySwoole\EasySwoole;
 
 
+use App\Actor\PlayerActor;
+use App\Actor\RoomActor;
+use EasySwoole\Actor\Actor;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
@@ -21,6 +24,8 @@ class EasySwooleEvent implements Event
     {
         // TODO: Implement initialize() method.
         date_default_timezone_set('Asia/Shanghai');
+        Actor::getInstance()->register(RoomActor::class);
+        Actor::getInstance()->register(PlayerActor::class);
     }
 
     public static function mainServerCreate(EventRegister $register)

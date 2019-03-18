@@ -18,7 +18,7 @@ class RoomActor extends AbstractActor
     static function configure(ActorConfig $actorConfig)
     {
         // TODO: Implement configure() method.
-        return 'room';
+        $actorConfig->setActorName('room');
     }
 
     function onStart($arg)

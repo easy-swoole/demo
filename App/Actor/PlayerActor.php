@@ -12,13 +12,14 @@ namespace App\Actor;
 use EasySwoole\Actor\AbstractActor;
 use EasySwoole\Actor\ActorConfig;
 
-class Player extends AbstractActor
+class PlayerActor extends AbstractActor
 {
 
     static function configure(ActorConfig $actorConfig)
     {
         // TODO: Implement configure() method.
-        return 'player';
+        $actorConfig->setActorName( 'player');
+
     }
 
     function onStart($arg)
