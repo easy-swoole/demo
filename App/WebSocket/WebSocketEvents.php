@@ -41,7 +41,7 @@ class WebSocketEvents
                 $redis->expireAt(strtotime(date('Y-m-d 23:59:59', time())));
             }else
             {
-                $redis->hSet(AppConst::REDIS_ONLINE_KEY, $req->fd, $info);
+                $redis->hSet(AppConst::REDIS_ONLINE_KEY, $req->fd, $info);                
             }
             
             if($redis->exists(AppConst::SYSTEM_CON_COUNT_KEY) === FALSE)
