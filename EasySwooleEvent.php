@@ -25,15 +25,6 @@ class EasySwooleEvent implements Event
     {
         // TODO: Implement initialize() method.
         date_default_timezone_set('Asia/Shanghai');
-        //调用链追踪器设置Token获取值为协程id
-        TrackerManager::getInstance()->setTokenGenerator(function () {
-            return \Swoole\Coroutine::getuid();
-        });
-        //每个链结束的时候，都会执行的回调
-        TrackerManager::getInstance()->setEndTrackerHook(function ($token, Tracker $tracker) {
-            Logger::getInstance()->console("Traceker:".(string)$tracker);
-        });
-
     }
 
     public static function mainServerCreate(EventRegister $register)
@@ -58,27 +49,14 @@ class EasySwooleEvent implements Event
             return false;
         }
 
-        //为每个请求做标记
-        TrackerManager::getInstance()->getTracker()->addAttribute('workerId', ServerManager::getInstance()->getSwooleServer()->worker_id);
-        // TODO: Implement onRequest() method.
-        //增加tracker 调用栈监控
-        TrackerManager::getInstance()->getTracker()->setPoint('request');
-
         return true;
     }
 
     public static function afterRequest(Request $request, Response $response): void
     {
-        TrackerManager::getInstance()->getTracker()->endPoint('request');
-
         $responseMsg = $response->getBody()->__toString();
         Logger::getInstance()->console("响应内容:".$responseMsg);
         //响应状态码:
 //        var_dump($response->getStatusCode());
-
-
-        //tracker结束,结束之后,能看到中途设置的参数,调用栈的运行情况
-        TrackerManager::getInstance()->closeTracker();
-        // TODO: Implement afterAction() method.
     }
 }
