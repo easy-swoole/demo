@@ -11,7 +11,7 @@ namespace App\Model\Bean;
 
 use EasySwoole\Spl\SplEnum;
 
-class Poker extends SplEnum
+class PokerCard extends SplEnum
 {
 
     const BLACK_JOKER = 53;//黑鬼
@@ -78,5 +78,4 @@ class Poker extends SplEnum
     const DIAMOND_JACK = 50;
     const DIAMOND_QUEEN = 51;
     const DIAMOND_KING = 52;
-
 }
