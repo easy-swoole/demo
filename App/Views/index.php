@@ -17,26 +17,6 @@
 <div id="chat">
     <template>
         <div class="online_window">
-            <!-- <div class="me_info">
-                <div class="me_item">
-                    <div class="me_status">
-                        <div class="me_username">
-                            <i class="am-icon am-icon-pencil" @click="changeName"></i> {{currentUser.username}}
-                        </div>
-                    </div>
-                    <div class="times-icon"><i class="am-icon am-icon-times"></i></div>
-                </div>
-            </div> -->
-            <!-- <div class="online_list">
-                <div class="online_list_header">车上乘客</div>
-                <div class="online_item" v-for="user in roomUser">
-                    <template v-if="user">
-                        <div class="online_status">
-                            <div class="online_username">{{user.username}}</div>
-                        </div>
-                    </template>
-                </div>
-            </div> -->
             <div class="online_intro">
                 Seeking same kinds and have a nice trip
             </div>
