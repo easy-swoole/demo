@@ -17,8 +17,6 @@ class Index extends Base
 {
     function index()
     {
-        TrackerManager::getInstance()->getTracker()->addAttribute('code',$this->request()->getRequestParam('code'));
-
         $this->response()->write('666');
         // TODO: Implement index() method.
     }

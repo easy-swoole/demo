@@ -1,3 +1,201 @@
+GET http://x.cn?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T021111.200.html
+
+###
+
+GET http://x.cn?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020835.200.html
+
+###
+
+GET http://x.cn?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020744.200.html
+
+###
+
+GET http://x.cn/阿斯顿?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020726.200.html
+
+###
+
+GET http://x.cn/Test/index?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020723.200.html
+
+###
+
+GET http://x.cn/Test/index?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020623.200.html
+
+###
+
+GET http://x.cn/Test/index?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020510.200.html
+
+###
+
+GET http://x.cn/Test/index?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020454-1.200.html
+
+###
+
+GET http://x.cn/Test/index?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020454.200.html
+
+###
+
+GET http://x.cn/Test/index?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020441-1.200.html
+
+###
+
+GET http://x.cn/Test/index?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020441.200.html
+
+###
+
+GET http://x.cn/Test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T020440.200.html
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/test?code=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn/user?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T014219.200.html
+
+###
+
+GET http://x.cn/user?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T014204-1.502.html
+
+###
+
+GET http://x.cn/user?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T014204.502.html
+
+###
+
 GET http://x.cn/?code=123
 Accept: */*
 Cache-Control: no-cache

@@ -57,6 +57,6 @@ class EasySwooleEvent implements Event
         $responseMsg = $response->getBody()->__toString();
         Logger::getInstance()->console("响应内容:".$responseMsg);
         //响应状态码:
-//        var_dump($response->getStatusCode());
+        var_dump($response->getStatusCode());
     }
 }
