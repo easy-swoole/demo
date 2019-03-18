@@ -1,0 +1,76 @@
+GET http://x.cn/?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T112225.200.html
+
+###
+
+GET http://x.cn/?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T112113.200.html
+
+###
+
+GET http://x.cn/?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T112011.200.html
+
+###
+
+GET http://x.cn/?code=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T111816.500.json
+
+###
+
+GET http://x.cn/
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T111733.500.html
+
+###
+
+GET http://x.cn/
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T111532.400.json
+
+###
+
+GET http://x
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://x.cn
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T111404-1.400.json
+
+###
+
+GET http://x.cn
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-18T111404.400.json
+
+###
+
+GET http://
+Accept: */*
+Cache-Control: no-cache
+
+###
+
