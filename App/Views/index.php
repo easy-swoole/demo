@@ -83,13 +83,6 @@
                 </ul>
             </div>
             <div class="windows_input">
-                <!-- <div class="am-btn-toolbar">
-                    <div class="am-btn-group am-btn-group-xs">
-                        <button type="button" class="am-btn" @click="picture"><i class="am-icon am-icon-picture-o"></i>
-                        </button>
-                        <input type="file" id="fileInput" style="display: none" accept="image/*">
-                    </div>
-                </div> -->
                 <div class="input-box">
                     <textarea name="" id="text-input" cols="30" rows="10" title=""></textarea>
                 </div>
@@ -284,10 +277,6 @@
              */
             broadcastTextMessage: function (content) {
                 this.release('broadcast', 'roomBroadcast', {content: content, type: 'text'})
-            },
-            picture: function () {
-                var input = document.getElementById("fileInput");
-                input.click();
             },
             /**
              * 点击发送按钮

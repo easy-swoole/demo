@@ -108,9 +108,7 @@ class WebSocketEvents
         if ($redis instanceof RedisPoolObject) {
             $redis->del(AppConst::SYSTEM_CON_COUNT_KEY);
             if ($redis->exists(AppConst::REDIS_ONLINE_KEY)) {
-                $clear = $redis->del(AppConst::REDIS_ONLINE_KEY);
-                $status = $clear ? 'success' : 'failed';
-                echo "Redis online user clean {$status}\n";
+                $redis->del(AppConst::REDIS_ONLINE_KEY);
             }
             $redisPool->recycleObj($redis);
         } else {
