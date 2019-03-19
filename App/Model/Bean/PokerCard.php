@@ -78,4 +78,16 @@ class PokerCard extends SplEnum
     const DIAMOND_JACK = 50;
     const DIAMOND_QUEEN = 51;
     const DIAMOND_KING = 52;
+
+    public static function getPokerGroup(int $num = 5):PokerCardsContainer
+    {
+        $container = new PokerCardsContainer();
+        $list = self::getEnumList();
+        $subList = array_rand($list,$num);
+        foreach ($subList as $key){
+            $item = new PokerCard($list[$key]);
+            $container->addPoker($item);
+        }
+        return $container;
+    }
 }

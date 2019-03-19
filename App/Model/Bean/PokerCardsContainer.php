@@ -19,9 +19,6 @@ class PokerCardsContainer
 
     function addPoker(PokerCard $pokerCard):bool
     {
-        if(count($this->list) == 5){
-            return false;
-        }
         $this->list[$pokerCard->getValue()] = $pokerCard;
         return true;
     }

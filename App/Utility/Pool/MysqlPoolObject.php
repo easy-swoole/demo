@@ -17,12 +17,14 @@ class MysqlPoolObject extends Mysqli implements PoolObjectInterface
 
     function gc()
     {
+        $this->rollback();
         $this->resetDbStatus();
         $this->getMysqlClient()->close();
     }
 
     function objectRestore()
     {
+        $this->rollback();
         $this->resetDbStatus();
     }
 

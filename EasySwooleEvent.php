@@ -12,6 +12,7 @@ namespace EasySwoole\EasySwoole;
 use App\Actor\PlayerActor;
 use App\Actor\RoomActor;
 use EasySwoole\Actor\Actor;
+use EasySwoole\Component\Timer;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
@@ -31,14 +32,24 @@ class EasySwooleEvent implements Event
     public static function mainServerCreate(EventRegister $register)
     {
         // TODO: Implement mainServerCreate() method.
-        //要求在握手阶段用户传递session来进行验证
-        $register->set($register::onHandShake,function (){
+        //协议解析全部走wensocket控制器
+        $register->set($register::onOpen,function ($ser,\swoole_http_request $req){
+            $actor = PlayerActor::invoke()->create($req->fd);
+            Config::getInstance()->setDynamicConf('fd_'.$req->fd,$actor);
+        });
+
+        $register->set($register::onMessage,function (\swoole_websocket_server $server,\swoole_websocket_frame $frame){
 
         });
 
-        //协议解析全部走wensocket控制器
-        $register->set($register::onMessage,function (){
-
+        //demo 项目，仅仅设置一个房间
+        $register->set($register::onWorkerStart,function ($ser,$id){
+            if($id == 0){
+                Timer::getInstance()->after(1000,function (){
+                    $actorId = RoomActor::invoke()->create();
+                    Config::getInstance()->setDynamicConf('roomActor',$actorId);
+                });
+            }
         });
     }
 

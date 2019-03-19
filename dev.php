@@ -36,17 +36,6 @@ return [
         'BACKLOG' => 256,
     ],
     'DISPLAY_ERROR' => true,
-    'MYSQL' => [
-        'host' => '',
-        'port' => 3306,
-        'user' => '',
-        'password' => '',
-        'database' => '',
-        'timeout' => 5,
-        'charset' => 'utf8mb4',
-        'POOL_MAX_NUM' => 10,
-        'POOL_TIME_OUT' => 0.1
-    ],
     'REDIS' => [
         'host' => '127.0.0.1',
         'port' => 6379,
@@ -54,4 +43,7 @@ return [
         'POOL_MAX_NUM' => 10,
         'POOL_TIME_OUT' => 0.1
     ],
+    'PHAR'=>[
+        'App/','xxx.php'
+    ]
 ];
