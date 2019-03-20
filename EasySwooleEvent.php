@@ -19,6 +19,9 @@ use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
 use EasySwoole\Socket\Dispatcher;
 
+use EasySwoole\EasySwoole\Crontab\Crontab;
+use App\Crontab\TaskOne;
+
 use App\Utility\Pool\MysqlPool;
 
 class EasySwooleEvent implements Event
@@ -85,6 +88,9 @@ class EasySwooleEvent implements Event
                 WebSocketEvents::cleanOnlineUser();
             }
         });
+        
+        //Crontab
+        Crontab::getInstance()->addTask(TaskOne::class);
     }
 
     public static function onRequest(Request $request, Response $response): bool
