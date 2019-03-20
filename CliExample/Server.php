@@ -30,9 +30,32 @@ $rpc->registerAction('call1', function (Request $request, Response $response) {
     //设置返回给客户端信息
     $response->setMessage('response');
 });
-//注册响应方法2
+
+//注册响应方法2 实现控制器调度
 $rpc->registerAction('call2', function (Request $request, Response $response)
-{});
+{
+    $args = $request->getArg();
+
+    $className  = "\\App\\Rpc\\". ($args['class'] ?? 'Index');
+    $methodName = $args['method'] ?? 'index';
+
+    if (class_exists($className)){
+        try{
+            $class = new $className($args);
+            if (method_exists($class, $methodName)){
+                $msg = $class->$methodName();
+                $response->setMessage($msg);
+            }else{
+                $response->setMessage("方法不存在");
+            }
+        }catch (\Exception $e){
+
+        }
+    }else{
+        $response->setMessage("类不存在");
+    }
+
+});
 
 
 //监听/广播 rpc 自定义进程对象

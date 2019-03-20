@@ -16,7 +16,7 @@ $config = new Config();
 $rpc = new Rpc($config);
 //获取所有服务节点列表
 $nodeList = $config->getNodeManager()->allServiceNodes();
-var_dump($nodeList);
+// var_dump($nodeList);
 
 go(function () use ($rpc) {
     $client = $rpc->client();
@@ -28,6 +28,22 @@ go(function () use ($rpc) {
             echo ($response->getMessage()).PHP_EOL;
         })->setOnFail(function () {
             echo ("请求失败1!\n");
+        });
+
+    //创建执行任务 控制器调度
+    $serviceClient->createTask()->setAction('call2')
+        ->setArg([
+            'class'  => 'Siam', // 控制器名
+            'method' => 'name', // 方法名
+            'params' => [
+                '1',
+                '2'
+            ], // 参数
+        ])
+        ->setOnSuccess(function (Response $response) {
+            echo ($response->getMessage()).PHP_EOL;
+        })->setOnFail(function () {
+            echo ("请求失败2!\n");
         });
 
     //创建执行任务
