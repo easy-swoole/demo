@@ -4,8 +4,9 @@ namespace App\HttpController;
 
 use EasySwoole\EasySwoole\Config;
 use EasySwoole\Http\AbstractInterface\Controller;
-use EasySwoole\Mysqli\Mysqli;
-use EasySwoole\Mysqli\Config as MysqlConfig;
+
+use EasySwoole\Component\Pool\PoolManager;
+use App\Utility\Pool\MysqlPool;
 
 /**
  * Class Index
@@ -26,9 +27,11 @@ class Index extends Controller
     
     function checkmysql()
     {
-        $conf = new MysqlConfig(Config::getInstance()->getConf('MYSQL'));
-        $db = new Mysqli($conf);
-        $data = $db->get('test');
-        var_dump($data);
+        $db = PoolManager::getInstance()->getPool(MysqlPool::class)->getObj();
+        $data = $db->get('a');
+        
+        //使用完毕需要回收
+        PoolManager::getInstance()->getPool(MysqlPool::class)->recycleObj($db);
+        $this->response()->write(json_encode($data));
     }
 }

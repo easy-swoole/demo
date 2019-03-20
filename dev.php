@@ -47,7 +47,8 @@ return [
     ],
     'REDIS' => [
         'HOST' => '127.0.0.1',
-        'PORT' => 6379
+        'PORT' => 6379,
+        'POOL_MAX_NUM' => 5
     ],
     'MYSQL' => [
         'host'          => '127.0.0.1',
