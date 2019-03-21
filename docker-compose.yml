@@ -1,0 +1,13 @@
+version: '3'
+services:
+# 定义的服务
+  php:
+    #可以根据自己的需求，修改dockerfile，重新build
+    image: easyswoole/easyswoole:3.x-dev
+    container_name: es
+    ports:
+      - 9501:9501
+    volumes:
+      - .:/var/www/es
+    command: ["php", "vendor/easyswoole/easyswoole/bin/easyswoole", "start"]
+
