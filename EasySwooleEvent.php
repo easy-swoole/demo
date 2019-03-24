@@ -22,7 +22,7 @@ use EasySwoole\Socket\Dispatcher;
 use EasySwoole\EasySwoole\Crontab\Crontab;
 use App\Crontab\TaskOne;
 
-use App\Utility\Pool\MysqlPool;
+//use App\Utility\Pool\MysqlPool;
 
 class EasySwooleEvent implements Event
 {
@@ -32,15 +32,15 @@ class EasySwooleEvent implements Event
         date_default_timezone_set('Europe/Guernsey');
         
         ###############注册Mysql
-        $mysqlConf = PoolManager::getInstance()->register(MysqlPool::class, 
-                Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'));
-        
-        if ($mysqlConf === null)
-        {
-            throw new Exception("Mysql Pool注册失败!");
-        }
-        
-        $mysqlConf->setMaxObjectNum(20)->setMinObjectNum(5);
+//        $mysqlConf = PoolManager::getInstance()->register(MysqlPool::class, 
+//                Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'));
+//        
+//        if ($mysqlConf === null)
+//        {
+//            throw new Exception("Mysql Pool注册失败!");
+//        }
+//        
+//        $mysqlConf->setMaxObjectNum(20)->setMinObjectNum(5);
         
         PoolManager::getInstance()->register(RedisPool::class, Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
     }
@@ -59,7 +59,7 @@ class EasySwooleEvent implements Event
             if ($server->taskworker == false) {
                 
                 //每个worker进程都预创建连接
-                PoolManager::getInstance()->getPool(MysqlPool::class)->preLoad(5);//最小创建数量
+//                PoolManager::getInstance()->getPool(MysqlPool::class)->preLoad(5);//最小创建数量
                 
                 //每个worker进程都预创建连接
                 PoolManager::getInstance()->getPool(RedisPool::class)->preload(2);
