@@ -22,22 +22,12 @@
     
 </head>
 <script type='text/javascript'>
-        $(document).ready(function(e) {
-     $('.emojiable-input').emojiPicker({
-        width: '300px',
-        height: '200px',
-        button: false
-      });
-
-      $('.emojiable-input').emojiPicker({
-        width: '200px',
-        height: '100px'
-      });
-      $('.send').click(function(e) {
-        e.preventDefault();
-        $('#text-input').emojiPicker('toggle');
-      });
-
+    $(document).ready(function(e) {
+        $('.emojiable-input').emojiPicker({ button: false });
+        $('#emoji-button').click(function (e) {
+            e.preventDefault();
+            $('#text-input').emojiPicker('toggle');
+        });
     });
 </script>
 <body>
@@ -52,8 +42,8 @@
             </div>
         </div>
         <div class="talk_window">
-            <div class="windows_body" id="chat-window" v-scroll-bottom>
-                <ul class="am-comments-list am-comments-list-flip">
+            <div class="windows_body" id="chat-window">
+                <ul class="am-comments-list am-comments-list-flip" v-scroll-bottom>
                     <template v-for="chat in roomChat">
                         <template v-if="chat.type === 'tips'">
                             <div class="chat-tips">
@@ -94,8 +84,10 @@
                 <div class="input-box">
                     <textarea name="" id="text-input" cols="30" rows="10" class="emojiable-input"></textarea>
                 </div>
-                <button class="send" >Emoji</button>
-                <!--<button class="send" @click="clickBtnSend">Send</button>-->
+                <div class="input-btns">
+                    <button id="emoji-button"></button>
+                    <button class="send" @click="clickBtnSend">Send</button>
+                </div>
             </div>
         </div>
     </template>
@@ -309,7 +301,7 @@
             }
         },
         computed: {
-            currentCount() {
+            currentCount: function () {
                 return Object.getOwnPropertyNames(this.roomUser).length - 1;
             }
         },

@@ -139,9 +139,15 @@ ul {
 .windows_body {
     width: 100%;
     height: 100%;
-    overflow-y: scroll;
+    overflow: hidden;
     padding-bottom: 140px;
     background: #e7e7e7;
+}
+
+.windows_body .am-comments-list {
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 1.6rem;
 }
 
 .am-comment-bd {
@@ -230,27 +236,46 @@ ul {
     line-height: 1.6;
 }
 
-.windows_input .send {
+.windows_input .input-btns {
     display: block;
     position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 10px 30px;
-    background: #e7e7e7;
+    right: 0;
+    top: 0;
+    padding: 0 10px;
     color: #333;
     text-align: left;
     font-weight: 700;
     font-size: 16px;
     line-height: 1.2;
+}
+
+.windows_input .input-btns button {
+    margin: 10px;
+}
+
+.windows_input .send {
     border: 0;
+    padding: 10px 30px;
+    background: #e7e7e7;
+    display: block;
+    border: 1px solid #333;
+    clear: both;
 }
 
-.windows_input .send:hover {
-    background: #CCC;
+.windows_input #emoji-button {
+    border: 1px solid #333;
+    background-color: #e7e7e7;
+    height: 30px;
+    width: 30px;
+    display: block;
+    float: right;
 }
 
-.windows_input .send:focus {
+.windows_input .send:hover, .windows_input #emoji-button:hover {
+    background-color: #CCC;
+}
+
+.windows_input .send:focus, .windows_input #emoji-button:focus {
     outline: none;
 }
 
