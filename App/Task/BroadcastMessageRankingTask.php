@@ -12,15 +12,13 @@ use App\Utility\AppConst;
 use App\Utility\Redis;
 use EasySwoole\EasySwoole\ServerManager;
 use EasySwoole\EasySwoole\Swoole\Task\AbstractAsyncTask;
-use App\WebSocket\WebSocketAction;
-use EasySwoole\EasySwoole\Config;
 
 /**
- * 发送广播消息
- * Class BroadcastTask
+ * 发送消息排行榜广播消息
+ * Class BroadcastMessageRankingTask
  * @package App\Task
  */
-class BroadcastTask extends AbstractAsyncTask
+class BroadcastMessageRankingTask extends AbstractAsyncTask
 {
 
     /**
@@ -42,17 +40,6 @@ class BroadcastTask extends AbstractAsyncTask
             if ($connection['websocket_status'] == 3) { // 用户正常在线时可以进行消息推送
                 $server->push($userFd, $taskData['payload']);
             }
-        }
-        // 添加到离线消息
-        $payload = json_decode($taskData['payload'], true);
-        if ($payload['action'] == 103) {
-            $userinfo              = $redis->hGet(AppConst::REDIS_ONLINE_KEY, $taskData['fromFd']);
-            $payload['fromUserFd'] = 0;
-            $payload['action']     = WebSocketAction::BROADCAST_LAST_MESSAGE;
-            $payload['username']   = $userinfo['username'];
-            $redis->lPush(AppConst::REDIS_LAST_MESSAGE_KEY, json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-            $max = Config::getInstance()->getConf('SYSTEM.LAST_MESSAGE_MAX');
-            $redis->lTrim(AppConst::REDIS_LAST_MESSAGE_KEY, 0, $max - 1);
         }
              
         return true;

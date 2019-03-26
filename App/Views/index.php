@@ -193,6 +193,10 @@
                                     othis.roomChat.push(lastMsg);
                                     break;
                                 }
+                                case 105: {
+                                        //按消息量排行榜
+                                        break;
+                                }
                                 case 201: {
                                     // 刷新自己的用户信息
                                     othis.currentUser.userFd = data.userFd;
@@ -286,7 +290,7 @@
                 }
             },
             changeName: function () {
-                layer.prompt({title: '拒绝吃瓜，秀出你的昵称', formType: 0}, function (username, index) {
+                layer.prompt({title: 'your nickyname', formType: 0}, function (username, index) {
                     if (username) {
                         localStorage.setItem('username', username);
                         window.location.reload();

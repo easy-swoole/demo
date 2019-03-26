@@ -34,13 +34,25 @@ class WebSocketEvents
         if ($redis instanceof RedisPoolObject) {
             $info = self::mockUser($req->fd, $username);
 
-            if ($redis->exists(AppConst::REDIS_ONLINE_KEY) === FALSE) {    
+            if ($redis->exists(AppConst::REDIS_ONLINE_KEY) === FALSE) 
+            {    
                 $redis->hSet(AppConst::REDIS_ONLINE_KEY, $req->fd, $info);
                 //当日有效
                 $redis->expireAt(strtotime(date('Y-m-d 23:59:59', time())));
             }else
             {
                 $redis->hSet(AppConst::REDIS_ONLINE_KEY, $req->fd, $info);                
+            }
+            
+            if ($redis->exists(AppConst::REDIS_USERNAME_TO_USERINFO) === FALSE)
+            {
+                $redis->hSet(AppConst::REDIS_USERNAME_TO_USERINFO, $username, $info);
+                //当日有效
+                $redis->expireAt(strtotime(date('Y-m-d 23:59:59', time())));
+            }
+            else
+            {
+                $redis->hSet(AppConst::REDIS_USERNAME_TO_USERINFO, $username, $info);
             }
             
             if($redis->exists(AppConst::SYSTEM_CON_COUNT_KEY) === FALSE)
@@ -53,6 +65,13 @@ class WebSocketEvents
                 $redis->incr(AppConst::SYSTEM_CON_COUNT_KEY);
             }
 
+            if ($redis->exists(AppConst::REDIS_MESSAGE_RANK_KEY) === FALSE)
+            {
+                $redis->zAdd(AppConst::REDIS_MESSAGE_RANK_KEY, 0, $info['username']);
+                
+                $redis->expire(AppConst::REDIS_MESSAGE_RANK_KEY, 3600);
+            }
+            
             // 对该用户单独发送欢迎消息
             $message = new BroadcastAdmin;
             $message->setContent("{$username}，Welcome! Happy chat in Nirvana!");
@@ -87,7 +106,20 @@ class WebSocketEvents
             $redisPool = PoolManager::getInstance()->getPool(RedisPool::class);
             $redis = $redisPool->getObj();
             if ($redis instanceof RedisPoolObject) {
+                
+                $userinfo = $redis->hGet(AppConst::REDIS_ONLINE_KEY, $fd);
+                
                 $redis->hDel(AppConst::REDIS_ONLINE_KEY, $fd);
+                
+                if ($userinfo)
+                {
+                    $username = $userinfo['username'];
+                    
+                    $redis->zRem(AppConst::REDIS_MESSAGE_RANK_KEY, $username);
+                    
+                    $redis->hDel(AppConst::REDIS_USERNAME_TO_USERINFO, $username);
+                    
+                }
                 
                 $redisPool->recycleObj($redis);
             } else {
