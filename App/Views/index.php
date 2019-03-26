@@ -195,7 +195,15 @@
                                 }
                                 case 105: {
                                         //按消息量排行榜
-                                        break;
+                                    var broadcastMsg = {
+                                        type: 103,
+                                        fd: 100000,
+                                        content: 'message_ranking_data_for_check',
+                                        username: 'message_rankcheck',
+                                        sendTime: '00:01'
+                                    };
+                                    othis.roomChat.push(broadcastMsg);                                        
+                                    break;
                                 }
                                 case 201: {
                                     // 刷新自己的用户信息
