@@ -1,4 +1,7 @@
 <?php
-include "vendor/autoload.php";
-\EasySwoole\EasySwoole\Core::getInstance()->initialize();
-\EasySwoole\Component\Timer::getInstance();
+/**
+ * Created by PhpStorm.
+ * User: Tioncico
+ * Date: 2019/3/13 0013
+ * Time: 14:41
+ */
