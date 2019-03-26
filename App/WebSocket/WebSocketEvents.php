@@ -19,7 +19,6 @@ use EasySwoole\EasySwoole\Config;
 use App\WebSocket\WebSocketAction;
 use App\Task\BroadcastMessageRankingTask;
 use App\WebSocket\Actions\Broadcast\BroadcastMessageRanking;
-use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 
 class WebSocketEvents
 {
@@ -95,7 +94,7 @@ class WebSocketEvents
             $message_rank->setType(WebSocketAction::BROADCAST_RANKING_BY_MESSAGE);
             $message_rank->setContent('message_rank_test');
             
-            TaskManager::async(new BroadcastMessageRankingTask(['payload' => $message_rank->__toString(), 'fromFd' => $client->getFd()]));
+            TaskManager::async(new BroadcastMessageRankingTask(['payload' => $message_rank->__toString()]));
         
         } else {
             throw new \Exception('redis pool is empty');

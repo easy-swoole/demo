@@ -63,7 +63,7 @@ class Broadcast extends Controller
             $message_rank->setType(WebSocketAction::BROADCAST_RANKING_BY_MESSAGE);
             $message_rank->setContent('message_rank_test');
             
-            TaskManager::async(new BroadcastMessageRankingTask(['payload' => $message_rank->__toString(), 'fromFd' => $client->getFd()]));
+            TaskManager::async(new BroadcastMessageRankingTask(['payload' => $message_rank->__toString()]));
         }
         
         $this->response()->setStatus($this->response()::STATUS_OK);
