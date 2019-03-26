@@ -1,26 +1,32 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Tioncico
- * Date: 2019/3/8 0008
- * Time: 15:16
+ * User: Apple
+ * Date: 2018/11/1 0001
+ * Time: 11:10
  */
 
 namespace App\HttpController;
 
 
-use App\Utility\Excel;
-use EasySwoole\Component\Context\ContextManager;
+
+use EasySwoole\EasySwoole\ServerManager;
 use EasySwoole\Http\AbstractInterface\Controller;
-use EasySwoole\Utility\Random;
-use EasySwoole\VerifyCode\Conf;
-use EasySwoole\VerifyCode\VerifyCode;
 
 class Index extends Controller
 {
     function index()
     {
-        $this->response()->write('hello world');
+        // TODO: Implement index() method.
+    }
+
+    function push(){
+        $fd = intval($this->request()->getRequestParam('fd'));
+        $info = ServerManager::getInstance()->getSwooleServer()->connection_info($fd);
+        if(is_array($info)){
+            ServerManager::getInstance()->getSwooleServer()->send($fd,'push in http at '.time());
+        }else{
+            $this->response()->write("fd {$fd} not exist");
+        }
     }
 }
-

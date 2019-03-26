@@ -8,62 +8,107 @@
 
 namespace EasySwoole\EasySwoole;
 
-
-use App\console\TestConsole;
-use App\Utility\Context\RegisterClassHandel;
-use EasySwoole\Component\Context\ContextManager;
-use EasySwoole\Component\Tests\ContextTest;
-use EasySwoole\Console\ConsoleModuleContainer;
-use EasySwoole\EasySwoole\Swoole\EventRegister;
+use App\TcpController\Parser;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
+use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
-use EasySwoole\Rpc\NodeManager\FileManager;
-use EasySwoole\Rpc\Rpc;
-use PhpParser\Node\Expr\New_;
+use Swoole\Server;
 
 class EasySwooleEvent implements Event
 {
-
+    /**
+     * 框架初始化事件
+     * 在Swoole没有启动之前 会先执行这里的代码
+     */
     public static function initialize()
     {
         // TODO: Implement initialize() method.
-        date_default_timezone_set('Asia/Shanghai');
-
+        date_default_timezone_set('Asia/Shanghai');//设置时区
     }
 
     public static function mainServerCreate(EventRegister $register)
     {
-        #####################  rpc 服务1 #######################
-        $rpcConfig = new \EasySwoole\Rpc\Config();
-        //注册服务名称
-        $rpcConfig->setServiceName('ser1');
+        $server = ServerManager::getInstance()->getSwooleServer();
 
-//设置广播地址，可以多个地址
-        $rpcConfig->getAutoFindConfig()->setAutoFindBroadcastAddress(['127.0.0.1:9600']);
-//设置广播监听地址
-        $rpcConfig->getAutoFindConfig()->setAutoFindListenAddress('127.0.0.1:9600');
-
-        $rpcConfig->setNodeManager(FileManager::class);
-        $rpc1 = new Rpc($rpcConfig);
-        //注册响应方法
-        $rpc1->registerAction('call1', function (\EasySwoole\Rpc\Request $request, \EasySwoole\Rpc\Response $response) {
-            //获取请求参数
-            var_dump($request->getArg());
-            //设置返回给客户端信息
-            $response->setMessage('response');
+        ################# tcp 服务器1 没有处理粘包 #####################
+        $tcp1ventRegister = $subPort1 = ServerManager::getInstance()->addServer('tcp1', 9502, SWOOLE_TCP, '0.0.0.0', [
+            'open_length_check' => false,//不验证数据包
+        ]);
+        $tcp1ventRegister->set(EventRegister::onConnect,function (\swoole_server $server, int $fd, int $reactor_id) {
+            echo "tcp服务1  fd:{$fd} 已连接\n";
+            $str = '恭喜你连接成功服务器1';
+            $server->send($fd, $str);
+        });
+        $tcp1ventRegister->set(EventRegister::onClose,function (\swoole_server $server, int $fd, int $reactor_id) {
+            echo "tcp服务1  fd:{$fd} 已关闭\n";
+        });
+        $tcp1ventRegister->set(EventRegister::onReceive,function (\swoole_server $server, int $fd, int $reactor_id, string $data) {
+            echo "tcp服务1  fd:{$fd} 发送消息:{$data}\n";
         });
 
 
-        //监听/广播 rpc 自定义进程对象
-        $autoFindProcess = $rpc1->autoFindProcess('es_rpc_process_1');
-        //增加自定义进程去监听/广播服务
-        ServerManager::getInstance()->getSwooleServer()->addProcess($autoFindProcess->getProcess());
-        //起一个子服务去运行rpc
-        ServerManager::getInstance()->addServer('rpc1',9527);
-        $rpc1->attachToServer(ServerManager::getInstance()->getSwooleServer('rpc1'));
-        // TODO: Implement mainServerCreate() method.
+        ################# tcp 服务器2 处理粘包 #####################
+        $subPort2 = $server->addlistener('0.0.0.0', 9503, SWOOLE_TCP);
+        $subPort2->set(
+            [
+                'open_length_check'     => true,
+                'package_max_length'    => 81920,
+                'package_length_type'   => 'N',
+                'package_length_offset' => 0,
+                'package_body_offset'   => 4,
+            ]
+        );
+        $subPort2->on('connect', function (\swoole_server $server, int $fd, int $reactor_id) {
+            echo "tcp服务2  fd:{$fd} 已连接\n";
+            $str = '恭喜你连接成功服务器2';
+            $server->send($fd, pack('N', strlen($str)) . $str);
+        });
+        $subPort2->on('close', function (\swoole_server $server, int $fd, int $reactor_id) {
+            echo "tcp服务2  fd:{$fd} 已关闭\n";
+        });
+        $subPort2->on('receive', function (\swoole_server $server, int $fd, int $reactor_id, string $data) {
+            echo "tcp服务2  fd:{$fd} 发送原始消息:{$data}\n";
+            echo "tcp服务2  fd:{$fd} 发送消息:" . substr($data, '4') . "\n";
+        });
+
+
+        ############# tcp 服务器3 tcp控制器实现+处理粘包############
+
+        $subPort3 = $server->addListener(Config::getInstance()->getConf('MAIN_SERVER.LISTEN_ADDRESS'), 9504, SWOOLE_TCP);
+
+        $socketConfig = new \EasySwoole\Socket\Config();
+        $socketConfig->setType($socketConfig::TCP);
+        $socketConfig->setParser(new Parser());
+        //设置解析异常时的回调,默认将抛出异常到服务器
+        $socketConfig->setOnExceptionHandler(function ($server, $throwable, $raw, $client, $response) {
+            echo "tcp服务3  fd:{$client->getFd()} 发送数据异常 \n";
+            $server->close($client->getFd());
+        });
+        $dispatch = new \EasySwoole\Socket\Dispatcher($socketConfig);
+
+        $subPort3->on('receive', function (\swoole_server $server, int $fd, int $reactor_id, string $data) use ($dispatch) {
+            echo "tcp服务3  fd:{$fd} 发送消息:{$data}\n";
+            $dispatch->dispatch($server, $data, $fd, $reactor_id);
+        });
+        $subPort3->set(
+            [
+                'open_length_check'     => true,
+                'package_max_length'    => 81920,
+                'package_length_type'   => 'N',
+                'package_length_offset' => 0,
+                'package_body_offset'   => 4,
+            ]
+        );
+        $subPort3->on('connect', function (\swoole_server $server, int $fd, int $reactor_id) {
+            echo "tcp服务3  fd:{$fd} 已连接\n";
+        });
+        $subPort3->on('close', function (\swoole_server $server, int $fd, int $reactor_id) {
+            echo "tcp服务3  fd:{$fd} 已关闭\n";
+        });
+
     }
+
 
     public static function onRequest(Request $request, Response $response): bool
     {
@@ -75,4 +120,11 @@ class EasySwooleEvent implements Event
     {
         // TODO: Implement afterAction() method.
     }
+
+    public static function onReceive(\swoole_server $server, int $fd, int $reactor_id, string $data): void
+    {
+        echo "TCP onReceive.\n";
+    }
+
+
 }
