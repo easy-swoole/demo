@@ -8,7 +8,6 @@
 
 namespace App\WebSocket;
 
-use App\Task\BroadcastTask;
 use App\Utility\AppConst;
 use App\Utility\Pool\RedisPool;
 use App\Utility\Pool\RedisPoolObject;
@@ -17,6 +16,10 @@ use App\WebSocket\Actions\User\UserInRoom;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 use EasySwoole\EasySwoole\Config;
+use App\WebSocket\WebSocketAction;
+use App\Task\BroadcastMessageRankingTask;
+use App\WebSocket\Actions\Broadcast\BroadcastMessageRanking;
+use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
 
 class WebSocketEvents
 {
@@ -87,6 +90,13 @@ class WebSocketEvents
 
             $redisPool->recycleObj($redis);
             echo "websocket user {$req->fd} was connected\n";
+            
+            $message_rank = new BroadcastMessageRanking;
+            $message_rank->setType(WebSocketAction::BROADCAST_RANKING_BY_MESSAGE);
+            $message_rank->setContent('message_rank_test');
+            
+            TaskManager::async(new BroadcastMessageRankingTask(['payload' => $message_rank->__toString(), 'fromFd' => $client->getFd()]));
+        
         } else {
             throw new \Exception('redis pool is empty');
         }
