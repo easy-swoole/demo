@@ -22,9 +22,9 @@ class Index extends Controller
 
     function push(){
         $fd = intval($this->request()->getRequestParam('fd'));
-        $info = ServerManager::getInstance()->getSwooleServer('tcp1')->connection_info($fd);
+        $info = ServerManager::getInstance()->getSwooleServer()->connection_info($fd);
         if(is_array($info)){
-            ServerManager::getInstance()->getSwooleServer('tcp1')->send($fd,'push in http at '.time());
+            ServerManager::getInstance()->getSwooleServer()->send($fd,'push in http at '.time());
         }else{
             $this->response()->write("fd {$fd} not exist");
         }
