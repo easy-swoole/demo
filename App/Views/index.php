@@ -35,10 +35,20 @@
     <template>
         <div class="online_window">
             <div class="online_intro">
-                Seeking same kinds and have a nice trip
+                Seeking same kinds and have a nice trip<br/>
+                Hello {{currentUser.username}}
             </div>
-            <div class="online_count">
-                {{currentCount}} rangers here right now
+            <div class="online_sheets" :class="{'active': userListIsShowing}">
+                <div class="online_count" @click="toggleUserList">
+                    {{currentCount}} rangers here right now
+                </div>
+                <div class="online_userList" :class="{'active': userListIsShowing}">
+                    <div :title="'locate ' + user.username + '\'s latest message'" class="online_userList_item" v-for="user in roomUser">
+                        <span @click="scrollToTargetMsg(user)">
+                            {{user.username}}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="talk_window">
@@ -53,7 +63,7 @@
                             <div v-if="chat.sendTime" class="chat-tips">
                                 <span class="am-radius" style="color: #666666">{{chat.sendTime}}</span>
                             </div>
-                            <article class="am-comment" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
+                            <article class="am-comment" :data-fd="chat.fd" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
                                 <div class="am-comment-main">
                                     <header class="am-comment-hd">
                                         <div class="am-comment-meta">
@@ -105,7 +115,8 @@
             currentUser: {username: 'Niror', userFd: 0, msgCnt: 0},
             roomUser: {},
             roomChat: [],
-            up_recv_time: 0
+            up_recv_time: 0,
+            userListIsShowing: false
         },
         created: function () {
             this.connect();
@@ -306,6 +317,16 @@
                     layer.close(index);
                 });
 
+            },
+            scrollToTargetMsg: function (user) {
+                var fd = user.userFd;
+                if (fd) {
+                    var $ele = $('[data-fd=' + user.userFd + ']');
+                    if ($ele.length) $ele[$ele.length - 1].scrollIntoView();
+                }
+            },
+            toggleUserList: function () {
+                this.userListIsShowing = !this.userListIsShowing;
             }
         },
         computed: {

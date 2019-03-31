@@ -1,13 +1,17 @@
-*, :after, :before {
+*,
+:after,
+:before {
     box-sizing: border-box
 }
 
-body, html {
+body,
+html {
     overflow: hidden;
     height: 100%
 }
 
-body, ul {
+body,
+ul {
     margin: 0;
     padding: 0
 }
@@ -41,6 +45,7 @@ ul {
     padding: 20px;
     font-size: 16px;
     line-height: 2;
+    position: relative;
 }
 
 /* ---------------- 个人信息 ---------------- */
@@ -63,7 +68,8 @@ ul {
     background: #ccc
 }
 
-.me_avatar, .me_avatar img {
+.me_avatar,
+.me_avatar img {
     width: 40px;
     height: 40px
 }
@@ -74,7 +80,8 @@ ul {
     line-height: 23px
 }
 
-.me_income, .me_username {
+.me_income,
+.me_username {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap
@@ -94,12 +101,71 @@ ul {
     font-weight: 700
 }
 
+.online_sheets {
+    transition: all .3s ease;
+    position: absolute;
+    width: 320px;
+    padding: 10px 0 10px 25px;
+    bottom: 0;
+    left: 0;
+    background: rgba(231, 231, 231, .1);
+}
+
+.online_sheets.active {
+    background: #fff;
+    border-right: 1px solid #e7e7e7;
+}
+
+.online_sheets.active .online_count {
+    border-bottom: 1px solid #e7e7e7;
+    margin-bottom: 5px;
+}
+
 .online_count {
     font-size: 13px;
+    position: relative;
+    cursor: pointer;
+}
+
+.online_count::before {
+    -webkit-animation: flash 3s infinite;
+    animation: flash 3s infinite;
+    position: absolute;
+    left: -15px;
+    top: 9px;
+    border-radius: 50%;
+    width: 7px;
+    height: 7px;
+    background: #3cff01;
+    content: '';
 }
 
 .online_count span {
     color: #333
+}
+
+.online_userList {
+    transition: height .3s ease;
+    overflow: hidden;
+    height: 0;
+}
+
+.online_userList_item {
+    font-size: 13px;
+}
+
+.online_userList_item span {
+    color: #0e90d2;
+    cursor: pointer;
+}
+
+.online_userList_item span:hover {
+    color: #333;
+}
+
+.online_userList.active {
+    overflow: auto;
+    height: 200px;
 }
 
 /* ---------------- 聊天区 ---------------- */
@@ -271,11 +337,13 @@ ul {
     float: right;
 }
 
-.windows_input .send:hover, .windows_input #emoji-button:hover {
+.windows_input .send:hover,
+.windows_input #emoji-button:hover {
     background-color: #CCC;
 }
 
-.windows_input .send:focus, .windows_input #emoji-button:focus {
+.windows_input .send:focus,
+.windows_input #emoji-button:focus {
     outline: none;
 }
 
@@ -317,8 +385,32 @@ ul {
 
 /* ---------------- 响应式适配 ---------------- */
 
-@media only screen and (min-width: 641px ) {
+@media only screen and (min-width: 641px) {}
+
+@media only screen and (max-width: 640px) {}
+
+/* ------------------- 动画 ------------------ */
+
+@-webkit-keyframes flash {
+    from,
+    50%,
+    to {
+        opacity: 1;
+    }
+    25%,
+    75% {
+        opacity: .3;
+    }
 }
 
-@media only screen and (max-width: 640px ) {
+@keyframes flash {
+    from,
+    50%,
+    to {
+        opacity: 1;
+    }
+    25%,
+    75% {
+        opacity: .3;
+    }
 }
