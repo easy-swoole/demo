@@ -37,13 +37,15 @@
             <div class="online_intro">
                 Seeking same kinds and have a nice trip<br/>
                 Hello {{currentUser.username}}
+                <br />
+                <br />
+                <div class="online_count">
+                    <a href="/chat/create">creaet new chat room</a>
+                </div>
             </div>
             <div class="online_sheets" :class="{'active': userListIsShowing}">
                 <div class="online_count" @click="toggleUserList">
                     {{currentCount}} rangers here right now
-                </div>
-                <div class="online_count">
-                    <a href="/chat/create">creaet new chat room</a>
                 </div>
                 <div class="online_userList" :class="{'active': userListIsShowing}">
                     <div :title="'locate ' + user.username + '\'s latest message'" class="online_userList_item" v-for="user in roomUser">
