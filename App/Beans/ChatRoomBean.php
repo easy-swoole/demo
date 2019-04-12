@@ -12,10 +12,10 @@ use EasySwoole\Spl\SplBean;
 /**
  *
  * 聊天室Bean
- * Class ChatBean
+ * Class ChatRoomBean
  * @package App\Beans
  */
-class ChatBean extends SplBean
+class ChatRoomBean extends SplBean
 {
     protected $id;
     protected $name;

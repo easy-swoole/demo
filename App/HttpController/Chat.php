@@ -10,6 +10,8 @@ use App\Utility\Pool\MysqlPool;
 
 use EasySwoole\Http\Message\Status;
 
+use App\Beans\ChatRoomBean;
+
 /**
  * Class Chat
  * @package App\HttpController
@@ -34,11 +36,43 @@ class Chat extends Controller
             $this->response()->write($content);
         }
         else if ('POST' == $method)
-        {
-            $chatRoom = array('id' => 34589, 'name'=> 'Room01', 'desc' => 'a new chatroom', 
-                          'inviteUrl' => 'https://baidu.com');
-        
-            $this->writeJson(Status::CODE_OK, $chatRoom, 'new chatroot created'); 
+        {            
+            $name = $request->getRequestParam('name');
+            $subject = $request->getRequestParam('subject');
+            
+            $type = 0;
+            $creator = 'admin';
+            $creator_id = 1;
+            $create_at = date('Y-m-d H:i:s');
+            $capacity = 30;
+            $duration = 1 * 60 * 60;
+            
+            $chatroom = new ChatRoomBean(
+                            array(
+                                'name' => $name,
+                                'type' => $type,
+                                'creator' => $creator,
+                                'creator_id' => $creator_id,
+                                'subject'   => $subject,
+                                'capacity'  => $capacity,
+                                'create_at' => $create_at,
+                                'duration' => $duration
+                                
+                            ));
+            
+            $chatroom_array = $chatroom->toArray(null, ChatRoomBean::FILTER_NOT_NULL);
+            
+            $db = PoolManager::getInstance()->getPool(MysqlPool::class)->getObj();
+            
+            $insert_id = $db->insert('chat_room', $chatroom_array);
+            
+            $res = array('id' => $insert_id, 'error' => $db->getLastError());
+            //使用完毕需要回收
+            PoolManager::getInstance()->getPool(MysqlPool::class)->recycleObj($db); 
+            
+            
+            
+            $this->writeJson(Status::CODE_OK, $res, 'new chatroot created'); 
         }
 
     }
