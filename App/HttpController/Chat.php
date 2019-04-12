@@ -21,13 +21,30 @@ class Chat extends Controller
      */
     function create()
     {        
-        $chatRoom = array('id' => 34589, 'name'=> 'Room01', 'desc' => 'a new chatroom', 
+        $request = $this->request();
+        
+        $sever_params = $request->getServerParams();
+        $method = $sever_params['request_method'];
+        
+        if ('GET' === $method)
+        {
+            ob_start();
+            include dirname(__FILE__) . '/../Views/create.php';
+            $content = ob_get_clean();
+            $this->response()->write($content);
+        }
+        else if ('POST' == $method)
+        {
+            $chatRoom = array('id' => 34589, 'name'=> 'Room01', 'desc' => 'a new chatroom', 
                           'inviteUrl' => 'https://baidu.com');
-        $this->writeJson(Status::CODE_OK, $chatRoom, 'new chatroot created');
+        
+            $this->writeJson(Status::CODE_OK, $chatRoom, 'new chatroot created'); 
+        }
+
     }
     
     /**
-     * 进入私密聊天室, 私密聊天室需要验证码，创建时保存在数据库里
+     * 进入聊天室, 私密聊天室可能需要验证码，创建时保存在数据库里
      */
     function chat()
     {

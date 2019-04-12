@@ -51,13 +51,13 @@ return [
         'POOL_MAX_NUM' => 5
     ],
     'MYSQL' => [
-        'host'          => '127.0.0.1',
+        'host'          => '172.16.255.34',
         'port'          => '3306',
         'user'          => 'root',
         'timeout'       => '5',
         'charset'       => 'utf8mb4',
-        'password'      => '',
-        'database'      => 'test',
+        'password'      => 'Vjiedai2017',
+        'database'      => 'nirvana',
         'POOL_MAX_NUM'  => '20',
         'POOL_TIME_OUT' => '0.1',
     ],

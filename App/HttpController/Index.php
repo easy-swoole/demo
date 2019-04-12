@@ -24,14 +24,4 @@ class Index extends Controller
         $content = ob_get_clean();
         $this->response()->write($content);
     }
-    
-    function checkmysql()
-    {
-        $db = PoolManager::getInstance()->getPool(MysqlPool::class)->getObj();
-        $data = $db->get('a');
-        
-        //使用完毕需要回收
-        PoolManager::getInstance()->getPool(MysqlPool::class)->recycleObj($db);
-        $this->response()->write(json_encode($data));
-    }
 }

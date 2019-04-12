@@ -42,6 +42,9 @@
                 <div class="online_count" @click="toggleUserList">
                     {{currentCount}} rangers here right now
                 </div>
+                <div class="online_count">
+                    <a href="/chat/create">creaet new chat room</a>
+                </div>
                 <div class="online_userList" :class="{'active': userListIsShowing}">
                     <div :title="'locate ' + user.username + '\'s latest message'" class="online_userList_item" v-for="user in roomUser">
                         <span @click="scrollToTargetMsg(user)">
