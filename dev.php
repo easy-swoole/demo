@@ -91,6 +91,6 @@ return [
         'port'          => '6379',
         'auth'          => 'test',
         'POOL_MAX_NUM'  => '5',
-        'POOL_TIME_OUT' => 'utf8mb4',
+        'POOL_TIME_OUT' => '0.1',
     ],
 ];
