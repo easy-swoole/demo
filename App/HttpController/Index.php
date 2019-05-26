@@ -17,4 +17,9 @@ class Index extends Controller
             'time'=>time()
         ]));
     }
+
+    function reload(){
+        Render::getInstance()->restartWorker();
+        $this->response()->write('restart success');
+    }
 }
