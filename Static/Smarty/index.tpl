@@ -1,0 +1,1 @@
+hello {$user}a,now is {$time}
