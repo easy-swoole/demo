@@ -1,0 +1,411 @@
+*, :after, :before {
+    box-sizing: border-box
+}
+
+body, html {
+    overflow: hidden;
+    height: 100%
+}
+
+body, ul {
+    margin: 0;
+    padding: 0
+}
+
+body {
+    background: #f5f5f5 url(/images/bg.jpg) no-repeat center;
+    background-size: cover;
+    color: #4d4d4d;
+    font: 14px/1.4em 'Helvetica Neue', Helvetica, Microsoft Yahei, Arial, sans-serif;
+    font-smoothing: antialiased
+}
+
+ul {
+    list-style: none
+}
+
+#chat {
+    margin: 20px auto;
+    width: 860px;
+    height: 650px
+}
+
+/* ---------------- 左侧区域 ---------------- */
+
+.online_window {
+    float: left;
+    overflow: hidden;
+    width: 210px;
+    height: 100%;
+    border-radius: 10px 0 0 10px;
+    background: #e6e5e5
+}
+
+/* ---------------- 个人信息 ---------------- */
+
+.me_info {
+    height: 65px
+}
+
+.me_item {
+    padding: 9pt;
+    width: 100%;
+    height: 4pc;
+    background: #2a2e32
+}
+
+.me_avatar {
+    float: left;
+    overflow: hidden;
+    border-radius: 2px;
+    background: #ccc
+}
+
+.me_avatar, .me_avatar img {
+    width: 40px;
+    height: 40px
+}
+
+.me_username {
+    color: #fff;
+    font-size: 14px;
+    line-height: 23px
+}
+
+.me_income, .me_username {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.me_income {
+    color: #ddd;
+    font-size: 9pt;
+    line-height: 20px
+}
+
+.me_status {
+    float: left;
+    padding-left: 8px;
+    width: 140px;
+    height: 40px;
+    font-weight: 700
+}
+
+/* ---------------- 在线列表 ---------------- */
+
+.online_list {
+    height: calc(100% - 64px - 45px);
+    overflow-y: auto;
+}
+
+.online_list_header {
+    height: 40px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 40px;
+    background: #CCC;
+}
+
+.online_item:last-child {
+    border-bottom: none
+}
+
+.online_item {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 15px;
+    width: 100%;
+    height: 41px
+}
+
+.online_item:hover {
+    background: #CCC;
+}
+
+.online_avatar {
+    float: left;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #ccc
+}
+
+.online_avatar, .online_avatar img {
+    width: 25px;
+    height: 25px
+}
+
+.online_username {
+    overflow: hidden;
+    color: #333;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 9pt;
+    line-height: 25px
+}
+
+.online_status {
+    float: left;
+    padding-left: 8px;
+    width: 140px;
+    height: 25px;
+    font-weight: 700
+}
+
+/* ---------------- 列表底部 ---------------- */
+
+.online_count {
+    height: 45px;
+    background: #d5d5d5;
+    color: #666;
+    text-align: center;
+    font-size: 13px;
+    line-height: 45px
+}
+
+.online_count span {
+    color: #333
+}
+
+/* ---------------- 聊天区 ---------------- */
+
+.talk_window {
+    float: left;
+    width: 610px;
+    height: 100%;
+    background: #f5f5f5
+}
+
+/* ---------------- 聊天区头部 ---------------- */
+
+.windows_top {
+    clear: both;
+    padding: 0 25px;
+    height: 4pc;
+    border-bottom: 1px solid #e7e7e7;
+    font-weight: 700
+}
+
+.windows_top_left {
+    float: left;
+    height: 4pc;
+    color: #666;
+    font-size: 1pc;
+    line-height: 62px
+}
+
+.windows_top_right {
+    float: right;
+    height: 4pc;
+    color: #ccc;
+    line-height: 62px
+}
+
+/* ---------------- 聊天内容区 ---------------- */
+
+.windows_body {
+    padding: 15px;
+    width: 100%;
+    height: 440px;
+    overflow-y: scroll;
+}
+
+.am-comment-bd {
+    overflow-wrap: break-word;
+    padding: 0;
+}
+
+.am-comment-meta {
+    padding: 0;
+}
+
+.am-comment-flip .am-comment-meta {
+    text-align: right;
+}
+
+.bd-content {
+    max-width: 100%;
+    float: left;
+    background: #FFF;
+    padding: 10px 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.am-comment-flip .bd-content {
+    max-width: 100%;
+    float: right;
+    background: #d1f1fe;
+}
+
+.am-comment-hd {
+    border: none;
+    background: none;
+}
+
+.am-comment-main {
+    border: none;
+}
+
+.am-comment-main:before {
+    border: none;
+    content: none;
+}
+
+.am-comment-main:after {
+    border-right: none;
+    margin: 0;
+}
+
+.am-comment-flip .am-comment-main:after {
+    border-left: none;
+    margin: 0;
+}
+
+.chat-tips {
+    width: 100%;
+    text-align: center;
+    height: 24px;
+    font-size: 12px;
+    line-height: 24px;
+    margin: 1.6rem 0 0 0;
+}
+
+/* ---------------- 聊天输入框 ---------------- */
+
+.windows_input {
+    width: 100%;
+    height: 9pc;
+    border-top: 1px solid #e7e7e7
+}
+
+.windows_input .input-box {
+    width: 100%;
+    height: 72px;
+    background: #fff
+}
+
+.windows_input .toolbar {
+    width: 100%;
+    height: 43px;
+    border-top: 1px solid #e7e7e7
+}
+
+.windows_input .toolbar .left {
+    float: left;
+    padding-left: 10px
+}
+
+.windows_input .toolbar .right {
+    float: right
+}
+
+.windows_input .toolbar .send {
+    width: 160px;
+    height: 44px;
+    background: #ddd;
+    color: #333;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 44px;
+    padding: 0;
+    border: 0;
+}
+
+.windows_input .toolbar .send:hover {
+    background: #CCC;
+}
+
+.windows_input .toolbar .send:focus {
+    outline: none;
+}
+
+.windows_input .toolbar .left a {
+    height: 44px;
+    color: #999;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 44px
+}
+
+.windows_input .toolbar .left a:hover {
+    color: #666;
+}
+
+#text-input {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border: none;
+    padding: 10px;
+}
+
+#text-input:focus {
+    outline: none;
+}
+
+#text-input::-ms-clear {
+    display: none;
+}
+
+.online-list {
+    display: none;
+}
+
+.times-icon {
+    display: none;
+}
+
+/* ---------------- 响应式适配 ---------------- */
+
+@media only screen and (min-width: 641px ) {
+    .online_window {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 640px ) {
+    #chat {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    .online_window {
+        display: none;
+        width: 100%;
+        z-index: 10000;
+        border-radius: 0;
+    }
+
+    .talk_window {
+        width: 100%;
+    }
+
+    .windows_body {
+        height: calc(100% - 143px - 63px);
+    }
+
+    .windows_input {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 100;
+    }
+
+    .online-list {
+        display: inline-block;
+        padding-right: 10px;
+    }
+
+    .times-icon {
+        color: #FFF;
+        font-size: 150%;
+        display: block;
+        float: right;
+        margin-right: 10px;
+    }
+}
