@@ -21,7 +21,8 @@
         "nette/mail": "^3.0",
         "easyswoole/template": "^1.0",
         "league/plates": "3.*",
-        "easyswoole/smtp": "^1.0"
+        "easyswoole/smtp": "^1.0",
+        "easyswoole/socket": "^1.1"
     },
     "require-dev": {
         "composer/composer": "^1.6"

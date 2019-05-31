@@ -18,7 +18,6 @@ use EasySwoole\FastCache\Cache;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
 use EasySwoole\Socket\Dispatcher;
-use EasySwoole\Socket\Exception\Exception as SocketException;
 use swoole_server;
 use swoole_websocket_frame;
 use \Exception;
@@ -33,7 +32,6 @@ class EasySwooleEvent implements Event
     /**
      * 服务启动前
      * @param EventRegister $register
-     * @throws SocketException
      * @throws Exception
      */
     public static function mainServerCreate(EventRegister $register)
