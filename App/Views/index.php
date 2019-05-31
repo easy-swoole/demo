@@ -36,7 +36,7 @@
                 <div class="online_item" v-for="user in roomUser">
                     <template v-if="user">
                         <div class="online_avatar">
-                            <img :src="currentUser.avatar" alt="">
+                            <img :src="user.avatar" alt="">
                         </div>
                         <div class="online_status">
                             <div class="online_username">{{user.username}}</div>
@@ -69,7 +69,7 @@
                             </div>
                             <article class="am-comment" :class="{ 'am-comment-flip' : chat.fd == currentUser.userFd }">
                                 <a href="#link-to-user-home">
-                                    <img :src="currentUser.avatar" alt="" class="am-comment-avatar"
+                                    <img :src="chat.avatar" alt="" class="am-comment-avatar"
                                          width="48" height="48"/>
                                 </a>
                                 <div class="am-comment-main">
