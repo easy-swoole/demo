@@ -1,17 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: eValor
- * Date: 2019-03-20
- * Time: 16:59
- */
 
 namespace App\HttpController;
 
+use App\Utility\PlatesRender;
 use EasySwoole\EasySwoole\Config;
 use EasySwoole\Http\AbstractInterface\Controller;
+use EasySwoole\Template\Render;
 
 /**
+ * 基础控制器
  * Class Base
  * @package App\HttpController
  */
@@ -19,37 +16,32 @@ class Base extends Controller
 {
     function index()
     {
-        $this->actionNotFound($this->getActionName());
+        $this->actionNotFound('index');
     }
 
     /**
-     * 获取当前站点域名
-     * @return string
+     * 分离式渲染
+     * @param $template
+     * @param $vars
      */
-    function host()
+    function render($template, array $vars = [])
     {
-        return rtrim(Config::getInstance()->getConf('HOST'), '/');
+        $engine = new PlatesRender(EASYSWOOLE_ROOT . '/App/Views');
+        $render = Render::getInstance();
+        $render->getConfig()->setRender($engine);
+        $content = $engine->render($template, $vars);
+        $this->response()->write($content);
     }
 
     /**
-     * 渲染一个模板页面
-     * @param $tplName
-     * @param array $tplVars
-     * @throws \Exception
+     * 获取配置值
+     * @param $name
+     * @param null $default
+     * @return array|mixed|null
      */
-    function renderTemplate($tplName, array $tplVars = [])
+    function cfgValue($name, $default = null)
     {
-        $staticPath = EASYSWOOLE_ROOT . '/Static/';
-        $templateFile = $staticPath . $tplName;
-        if (is_file($templateFile)) {
-            $content = file_get_contents($templateFile);
-            foreach ($tplVars as $tplVarName => $tplVarValue) {
-                $content = str_replace("{{{$tplVarName}}}", $tplVarValue, $content);
-            }
-            $this->response()->withHeader('content-type', 'text/html;charset=utf8');
-            $this->response()->write($content);
-        } else {
-            throw new \Exception('template ' . $tplName . ' does not exist');
-        }
+        $value = Config::getInstance()->getConf($name);
+        return is_null($value) ? $default : $value;
     }
 }

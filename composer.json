@@ -17,8 +17,11 @@
         "ext-swoole": ">=4.0.3",
         "easyswoole/easyswoole": "3.x-dev",
         "easyswoole/swoole-ide-helper": "^1.0",
-        "endroid/qr-code": "^3.5",
-        "easyswoole/wechat": "dev-master"
+        "easyswoole/fast-cache": "^1.0",
+        "nette/mail": "^3.0",
+        "easyswoole/template": "^1.0",
+        "league/plates": "3.*",
+        "easyswoole/smtp": "^1.0"
     },
     "require-dev": {
         "composer/composer": "^1.6"

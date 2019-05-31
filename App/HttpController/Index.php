@@ -2,22 +2,21 @@
 
 namespace App\HttpController;
 
+use App\Utility\ReverseProxyTools;
+use EasySwoole\EasySwoole\Config;
 use EasySwoole\Http\AbstractInterface\Controller;
-
 
 /**
  * Class Index
  * @package App\HttpController
  */
-class Index extends Controller
+class Index extends Base
 {
-    /**
-     * 首页方法
-     * @author : evalor <master@evalor.cn>
-     */
     function index()
     {
-        $echostr = $this->request()->getRequestParam('echostr');
-        $this->response()->write($echostr);
+        $hostName = $this->cfgValue('WEBSOCKET_HOST', 'ws://127.0.0.1:9501');
+        $this->render('index', [
+            'server' => $hostName
+        ]);
     }
 }
