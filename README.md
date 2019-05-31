@@ -1,7 +1,34 @@
 # 微聊
 
-1. 用户注册，发送验证邮件给用户，内含验证码，回页面输入正确的验证码即成功注册账号
-2. 用户登录，使用email，验证用户密码，密码正确则发放一个session用于后续操作，存放在swooleTable中
-3. 携带对应的session转入聊天室界面，首先发起http请求，checkSession，如果令牌存在，则是已经登录过的用户，否则转入登录界面
-4. 使用session令牌发起websocket连接，握手检查令牌，令牌无效则拒绝连接，令牌有效则更新令牌表中的fd，后续根据该fd进行广播处理
-5. 客户端需要维持该令牌的心跳，至少每10s发送一次心跳刷新指令，自定义进程内，每隔1min则会遍历用户表，检查30秒无心跳的用户进行移除
+EASYSWOOLE 聊天室DEMO
+
+## 在线体验
+
+[在线DEMO演示站](http://chat.evalor.cn/)
+
+## 安装
+
+安装时遇到提示是否覆盖 `EasySwooleEvent.php` 请选择否 (输入 n 回车)
+
+```bash
+git clone https://github.com/easy-swoole/demo.git
+git checkout 3.x-chat
+composer install
+easyswoole install
+cp sample.env dev.env
+```
+
+## 配置
+
+修改 `dev.env` 内的配置项，改为自己服务器的信息
+
+```ini
+'HOST' => 'http://127.0.0.1:9501',
+'WEBSOCKET_HOST' => 'ws://127.0.0.1:9501',
+```
+
+## 启动
+
+```bash
+php easyswoole start
+```
