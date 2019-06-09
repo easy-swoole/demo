@@ -9,15 +9,15 @@
 namespace EasySwoole\EasySwoole;
 
 
-use App\Utility\TrackerManager;
-use EasySwoole\Component\Di;
+
+use App\Device\Command;
+use App\Device\DeviceActor;
+use App\Device\DeviceManager;
+use EasySwoole\Actor\Actor;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
-use EasySwoole\Http\Message\Status;
-use EasySwoole\Http\Message\Stream;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
-use EasySwoole\Trace\Bean\Tracker;
 
 class EasySwooleEvent implements Event
 {
@@ -30,35 +30,58 @@ class EasySwooleEvent implements Event
 
     public static function mainServerCreate(EventRegister $register)
     {
+        //注册Actor
+        Actor::getInstance()->register(DeviceActor::class);
+        Actor::getInstance()->setListenPort(9600)
+            ->setTrigger(Trigger::getInstance())
+            ->setListenAddress('0.0.0.0')
+            ->setTempDir(EASYSWOOLE_TEMP_DIR);
+        Actor::getInstance()->attachServer(ServerManager::getInstance()->getSwooleServer());
+        //创建Table用来记录 fd与actor的映射关系
+        DeviceManager::tableInit();
+        $register->add($register::onOpen,function (\swoole_websocket_server $svr, \swoole_http_request $req){
+            if(!isset($req->get['deviceId'])){
+                ServerManager::getInstance()->getSwooleServer()->push($req->fd,'deviceId@length=8 is require');
+                ServerManager::getInstance()->getSwooleServer()->close($req->fd);
+                return;
+            }
+            $deviceId = $req->get['deviceId'];
+            $info = DeviceManager::deviceInfo($deviceId);
+            if($info){
+                //说明是断线重连
+                $command = new Command();
+                $command->setCommand($command::RECONNECT);
+                $command->setArg($req->fd);
+                DeviceActor::client()->send($info->getActorId(),$command);
+            }else{
+                //第一次链接服务端
+                DeviceActor::client()->create([
+                    'deviceId'=>$deviceId,
+                    'fd'=>$req->fd
+                ]);
+            }
+        });
 
-        // TODO: Implement mainServerCreate() method.
+        $register->add($register::onMessage,function (\swoole_websocket_server  $server, \swoole_websocket_frame $frame){
+            $info = DeviceManager::deviceInfoByFd($frame->fd);
+            if($info){
+                $com = new Command();
+                $com->setCommand($com::WS_MSG);
+                $com->setArg($frame->data);
+                DeviceActor::client()->send($info->getActorId(),$com);
+            }else{
+                $server->close($frame->fd);
+            }
+        });
     }
 
     public static function onRequest(Request $request, Response $response): bool
     {
-        //不建议在这拦截请求,可增加一个控制器基类进行拦截
-        //如果真要拦截,判断之后return false即可
-        $code = $request->getRequestParam('code');
-        if (0/*empty($code)验证失败*/){
-            $data = Array(
-                "code" => Status::CODE_BAD_REQUEST,
-                "result" => [],
-                "msg" => '验证失败'
-            );
-            $response->write(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-            $response->withHeader('Content-type', 'application/json;charset=utf-8');
-            $response->withStatus(Status::CODE_BAD_REQUEST);
-            return false;
-        }
-
         return true;
     }
 
     public static function afterRequest(Request $request, Response $response): void
     {
-        $responseMsg = $response->getBody()->__toString();
-        Logger::getInstance()->console("响应内容:".$responseMsg);
-        //响应状态码:
-        var_dump($response->getStatusCode());
+
     }
 }
