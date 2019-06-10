@@ -47,6 +47,7 @@ class DeviceActor extends AbstractActor
     protected function onMessage($msg)
     {
         if($msg instanceof Command){
+            $this->lastHeartBeat = time();
             switch ($msg->getCommand()){
                 case $msg::RECONNECT:{
                     DeviceManager::updateDeviceInfo($this->deviceId,[
