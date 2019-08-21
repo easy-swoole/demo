@@ -10,7 +10,7 @@ namespace App\WebSocket\Controller;
 
 use App\Task\BroadcastTask;
 use App\WebSocket\Actions\Broadcast\BroadcastMessage;
-use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
+use EasySwoole\EasySwoole\Task\TaskManager;
 use EasySwoole\Socket\AbstractInterface\Controller;
 use EasySwoole\Socket\Client\WebSocket as WebSocketClient;
 
@@ -31,7 +31,7 @@ class Broadcast extends Controller
             $message->setContent($broadcastPayload['content']);
             $message->setType($broadcastPayload['type']);
             $message->setSendTime(date('Y-m-d H:i:s'));
-            TaskManager::async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $client->getFd()]));
+            TaskManager::getInstance()->async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $client->getFd()]));
         }
         $this->response()->setStatus($this->response()::STATUS_OK);
     }

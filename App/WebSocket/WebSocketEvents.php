@@ -10,7 +10,7 @@ use App\WebSocket\Actions\Broadcast\BroadcastAdmin;
 use App\WebSocket\Actions\User\UserInRoom;
 
 use App\WebSocket\Actions\User\UserOutRoom;
-use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
+use EasySwoole\EasySwoole\Task\TaskManager;
 use EasySwoole\Utility\Random;
 
 use \swoole_server;
@@ -49,8 +49,7 @@ class WebSocketEvents
         // 发送广播告诉频道里的用户 有新用户上线
         $userInRoomMessage = new UserInRoom;
         $userInRoomMessage->setInfo(['fd' => $fd, 'avatar' => $avatar, 'username' => $username]);
-        TaskManager::async(new BroadcastTask(['payload' => $userInRoomMessage->__toString(), 'fromFd' => $fd]));
-
+        TaskManager::getInstance()->async(new BroadcastTask(['payload' => $userInRoomMessage->__toString(), 'fromFd' => $fd]));
         if (empty($request->get['is_reconnection']) || $request->get['is_reconnection'] == '0') {
 
             // 发送欢迎消息给用户
@@ -86,7 +85,7 @@ class WebSocketEvents
             OnlineUser::getInstance()->delete($fd);
             $message = new UserOutRoom;
             $message->setUserFd($fd);
-            TaskManager::async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $fd]));
+            TaskManager::getInstance()->async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $fd]));
 
         }
     }

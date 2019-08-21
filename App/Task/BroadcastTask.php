@@ -14,14 +14,22 @@ use EasySwoole\EasySwoole\ServerManager;
 use EasySwoole\EasySwoole\Swoole\Task\AbstractAsyncTask;
 use App\WebSocket\WebSocketAction;
 use EasySwoole\EasySwoole\Config;
+use EasySwoole\Task\AbstractInterface\TaskInterface;
 
 /**
  * 发送广播消息
  * Class BroadcastTask
  * @package App\Task
  */
-class BroadcastTask extends AbstractAsyncTask
+class BroadcastTask implements TaskInterface
 {
+    protected $taskData;
+
+    public function __construct($taskData)
+    {
+        $this->taskData = $taskData;
+    }
+
 
     /**
      * 执行投递
@@ -31,8 +39,9 @@ class BroadcastTask extends AbstractAsyncTask
      * @param $flags
      * @return bool
      */
-    protected function run($taskData, $taskId, $fromWorkerId, $flags = null)
+     function run(int $taskId, int $workerIndex)
     {
+        $taskData = $this->taskData;
         /** @var \swoole_websocket_server $server */
         $server = ServerManager::getInstance()->getSwooleServer();
 
@@ -58,8 +67,9 @@ class BroadcastTask extends AbstractAsyncTask
         return true;
     }
 
-    function finish($result, $task_id)
+    function onException(\Throwable $throwable, int $taskId, int $workerIndex)
     {
-        // TODO: Implement finish() method.
+        throw $throwable;
     }
+
 }
