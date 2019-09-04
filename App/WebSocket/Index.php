@@ -8,7 +8,7 @@
 namespace App\WebSocket;
 
 use EasySwoole\EasySwoole\ServerManager;
-use EasySwoole\EasySwoole\Swoole\Task\TaskManager;
+use EasySwoole\EasySwoole\Task\TaskManager;
 use EasySwoole\Socket\AbstractInterface\Controller;
 
 /**
@@ -35,7 +35,7 @@ class Index extends Controller
         $client = $this->caller()->getClient();
 
         // 异步推送, 这里直接 use fd也是可以的
-        TaskManager::async(function () use ($client){
+        TaskManager::getInstance()->async(function () use ($client){
             $server = ServerManager::getInstance()->getSwooleServer();
             $i = 0;
             while ($i < 5) {
