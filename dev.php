@@ -17,13 +17,16 @@ return [
         'SETTING'        => [// Swoole Server的运行配置（ 完整配置可见[Swoole文档](https://wiki.swoole.com/wiki/page/274.html) ）
             'worker_num'               => 8,//运行的 task_worker 进程数量
             'max_request'              => 5000,// task_worker 完成该数量的请求后将退出，防止内存溢出
-            'task_worker_num'          => 8,//运行的 worker 进程数量
-            'task_max_request'         => 1000,// worker 完成该数量的请求后将退出，防止内存溢出
             'enable_static_handler'    => true,//加入以下两条配置以返回静态文件
             'document_root'            => EASYSWOOLE_ROOT . "/Static",
 //            'heartbeat_idle_time'      => 60, // 300没有心跳时则断开
 //            'heartbeat_check_interval' => 10,
         ],
+        'TASK'=>[
+            'workerNum'=>4,
+            'maxRunningNum'=>128,
+            'timeout'=>15
+        ]
     ],
     'TEMP_DIR'    => null,//临时文件存放的目录
     'LOG_DIR'     => null,//日志文件存放的目录
