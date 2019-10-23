@@ -1,6 +1,7 @@
 {
   "require": {
-    "easyswoole/easyswoole": "3.x"
+    "easyswoole/easyswoole": "3.x",
+    "easyswoole/orm": "dev-master"
   },
   "autoload": {
     "psr-4": {
