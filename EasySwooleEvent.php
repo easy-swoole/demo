@@ -24,13 +24,7 @@ class EasySwooleEvent implements Event
         // TODO: Implement initialize() method.
         date_default_timezone_set('Asia/Shanghai');
 
-        $config = new \EasySwoole\ORM\Db\Config();
-        $config->setDatabase('demo');
-        $config->setUser('demo');
-        $config->setPassword('123456');
-        $config->setHost('127.0.0.1');
-        $config->setMaxObjectNum(20);//设置连接池最大数量
-
+        $config = new \EasySwoole\ORM\Db\Config(Config::getInstance()->getConf('MYSQL'));
         DbManager::getInstance()->addConnection(new Connection($config));
 
     }
