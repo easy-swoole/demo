@@ -10,30 +10,44 @@ namespace App\HttpController\Api\Admin;
 
 use App\Model\User\UserBean;
 use App\Model\User\UserModel;
+use EasySwoole\Http\Annotation\Param;
 use EasySwoole\Http\Message\Status;
-use EasySwoole\MysqliPool\Mysql;
 use EasySwoole\Validate\Validate;
 
 class User extends AdminBase
 {
+    /**
+     * getAll
+     * @Param(name="page", alias="页数", optional="", integer="")
+     * @Param(name="limit", alias="每页总数", optional="", integer="")
+     * @Param(name="keyword", alias="关键字", optional="", lengthMax="32")
+     * @author Tioncico
+     * Time: 14:01
+     */
     function getAll()
     {
-        $db = Mysql::defer('mysql');
         $page = (int)$this->input('page', 1);
         $limit = (int)$this->input('limit', 20);
-        $model = new UserModel($db);
+        $model = new UserModel();
         $data = $model->getAll($page, $this->input('keyword'), $limit);
         $this->writeJson(Status::CODE_OK, $data, 'success');
     }
 
 
+    /**
+     * getOne
+     * @Param(name="userId", alias="用户id", required="", integer="")
+     * @throws \EasySwoole\ORM\Exception\Exception
+     * @throws \Throwable
+     * @author Tioncico
+     * Time: 11:48
+     */
     function getOne()
     {
-        $db = Mysql::defer('mysql');
         $param = $this->request()->getRequestParam();
-        $data['userId'] = intval($param['userId']);
-        $model = new UserModel($db);
-        $rs = $model->getOne(new UserBean($data));
+        $model = new UserModel();
+        $model->userId = $param['userId'];
+        $rs = $model->get();
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, "success");
         } else {
@@ -42,99 +56,88 @@ class User extends AdminBase
 
     }
 
-
+    /**
+     * add
+     * @Param(name="userName", alias="用户昵称", optional="", lengthMax="32")
+     * @Param(name="userAccount", alias="用户名", required="", lengthMax="32")
+     * @Param(name="userPassword", alias="用户密码", required="", lengthMin="6",lengthMax="18")
+     * @Param(name="phone", alias="手机号码", optional="", lengthMax="18",numeric="")
+     * @Param(name="state", alias="用户状态", optional="", inArray="{0,1}")
+     * @author Tioncico
+     * Time: 11:48
+     */
     function add()
     {
-        $db = Mysql::defer('mysql');
         $param = $this->request()->getRequestParam();
-        $model = new UserModel($db);
-        $bean = new UserBean($param);
-        $bean->setUserPassword(md5($param['userPassword']));
-        $bean->setState($this->input('state',1));
-        $bean->setMoney(0);
-        $bean->setAddTime(time());
-        $rs = $model->add($bean);
+        $model = new UserModel($param);
+        $model->userPassword = md5($param['userPassword']);
+        $rs = $model->save();
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, "success");
         } else {
-            $this->writeJson(Status::CODE_BAD_REQUEST, [], $db->getLastError());
+            $this->writeJson(Status::CODE_BAD_REQUEST, [], $model->lastQueryResult()->getLastError());
         }
     }
 
+    /**
+     * update
+     * @Param(name="userId", alias="用户id", required="", integer="")
+     * @Param(name="userPassword", alias="会员密码", optional="", lengthMin="6",lengthMax="18")
+     * @Param(name="userName", alias="会员名", optional="",  lengthMax="32")
+     * @Param(name="state", alias="状态", optional="", inArray="{0,1}")
+     * @Param(name="phone", alias="手机号", optional="",  lengthMax="18")
+     * @throws \EasySwoole\ORM\Exception\Exception
+     * @throws \Throwable
+     * @author Tioncico
+     * Time: 11:54
+     */
     function update()
     {
-        $db = Mysql::defer('mysql');
-        $model = new UserModel($db);
-        $userInfo = $model->getOne( new UserBean(['userId' => $this->input('userId')]));
-        if (!$userInfo){
+        $model = new UserModel();
+        $model->userId = $this->input('userId');
+        /**
+         * @var $userInfo UserModel
+         */
+        $userInfo = $model->get();
+        if (!$userInfo) {
             $this->writeJson(Status::CODE_BAD_REQUEST, [], '未找到该会员');
         }
         $password = $this->input('userPassword');
-        $updateBean = new UserBean();
-        $updateBean->setUserName($this->input('userName',$userInfo->getUserName()));
-        $updateBean->setUserPassword($password?md5($password):$userInfo->getUserPassword());
-        $updateBean->setState($this->input('state',$userInfo->getState()));
-        $updateBean->setPhone($this->input('phone',$userInfo->getPhone()));
+        $update = [
+          'userName'=>$this->input('userName', $userInfo->userName),
+          'userPassword'=>$password ? md5($password) : $userInfo->userPassword,
+          'state'=>$this->input('state', $userInfo->state),
+          'phone'=>$this->input('phone', $userInfo->phone),
+        ];
 
-        $rs = $model->update($userInfo, $updateBean->toArray([], $updateBean::FILTER_NOT_EMPTY));
+        $rs = $model->update($update);
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, "success");
         } else {
-            $this->writeJson(Status::CODE_BAD_REQUEST, [], $db->getLastError());
+            $this->writeJson(Status::CODE_BAD_REQUEST, [], $model->lastQueryResult()->getLastError());
         }
 
     }
 
+    /**
+     * delete
+     * @Param(name="userId", alias="用户id", required="", integer="")
+     * @throws \EasySwoole\ORM\Exception\Exception
+     * @throws \Throwable
+     * @author Tioncico
+     * Time: 14:02
+     */
     function delete()
     {
-        $db = Mysql::defer('mysql');
         $param = $this->request()->getRequestParam();
-        $model = new UserModel($db);
-        $bean = new UserBean(['userId' => intval($param['userId'])]);
-        $rs = $model->delete($bean);
+        $model = new UserModel();
+        $model->userId = $param['userId'];
+        $rs = $model->destroy();
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, "success");
         } else {
             $this->writeJson(Status::CODE_BAD_REQUEST, [], '删除失败');
         }
 
-    }
-
-    function getValidateRule(?string $action): ?Validate
-    {
-        $validate = null;
-        switch ($action) {
-            case 'getAll':
-                $validate = new Validate();
-                $validate->addColumn('page','页数')->optional();
-                $validate->addColumn('limit','limit')->optional();
-                $validate->addColumn('keyword','关键词')->optional();
-                break;
-            case 'getOne':
-                $validate = new Validate();
-                $validate->addColumn('userId', '会员id')->required()->lengthMax(11);
-                break;
-            case 'add':
-                $validate = new Validate();
-                $validate->addColumn('userName', '会员名')->required()->lengthMax(18);
-                $validate->addColumn('userAccount', '会员账号')->required()->lengthMax(32);
-                $validate->addColumn('userPassword', '会员密码')->required()->lengthMax(18);
-                $validate->addColumn('phone', '手机号')->optional()->lengthMax(18);
-                $validate->addColumn('state', '状态')->optional()->inArray([0,1]);
-                break;
-            case 'update':
-                $validate = new Validate();
-                $validate->addColumn('userId', '会员id')->required()->lengthMax(11);
-                $validate->addColumn('userName', '会员名')->optional()->lengthMax(18);
-                $validate->addColumn('userPassword', '会员密码')->optional()->lengthMax(18);
-                $validate->addColumn('phone', '手机号')->optional()->lengthMax(18);
-                $validate->addColumn('state', '状态')->optional()->inArray([0,1]);
-                break;
-            case 'delete':
-                $validate = new Validate();
-                $validate->addColumn('userId', '会员id')->required()->lengthMax(11);
-                break;
-        }
-        return $validate;
     }
 }

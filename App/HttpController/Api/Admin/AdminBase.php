@@ -17,7 +17,8 @@ use EasySwoole\Validate\Validate;
 
 class AdminBase extends ApiBase
 {
-    protected $who;
+    //public才会根据协程清除
+    public $who;
     //session的cookie头
     protected $sessionKey = 'adminSession';
     //白名单
@@ -54,9 +55,9 @@ class AdminBase extends ApiBase
      * @author yangzhenyu
      * Time: 13:51
      */
-    function getWho(): ?AdminBean
+    function getWho(): ?AdminModel
     {
-        if ($this->who instanceof AdminBean) {
+        if ($this->who instanceof AdminModel) {
             return $this->who;
         }
         $sessionKey = $this->request()->getRequestParam($this->sessionKey);
@@ -66,9 +67,9 @@ class AdminBase extends ApiBase
         if (empty($sessionKey)) {
             return null;
         }
-        $db = Mysql::defer('mysql');
-        $adminModel = new AdminModel($db);
-        $this->who = $adminModel->getOneBySession($sessionKey);
+        $adminModel = new AdminModel();
+        $adminModel->adminSession = $sessionKey;
+        $this->who = $adminModel->getOneBySession();
         return $this->who;
     }
 

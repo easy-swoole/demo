@@ -8,36 +8,41 @@
 
 namespace App\HttpController\Api\Admin;
 
-use App\Model\Admin\AdminBean;
 use App\Model\Admin\AdminModel;
+use EasySwoole\Http\Annotation\Param;
 use EasySwoole\Http\Message\Status;
-use EasySwoole\MysqliPool\Mysql;
-use EasySwoole\Spl\SplBean;
-use EasySwoole\Validate\Validate;
 
 class Auth extends AdminBase
 {
     protected $whiteList=['login'];
 
 
+    /**
+     * login
+     * 登陆,参数验证注解写法
+     * @Param(name="account", alias="帐号", required="", lengthMax="20")
+     * @Param(name="password", alias="密码", required="", lengthMin="6", lengthMax="16")
+     * @throws \EasySwoole\ORM\Exception\Exception
+     * @throws \Throwable
+     * @author Tioncico
+     * Time: 10:18
+     */
     function login()
     {
         $param = $this->request()->getRequestParam();
-        $db = Mysql::defer('mysql');
-        $model = new AdminModel($db);
-        $bean = new AdminBean();
-        $bean->setAdminAccount($param['account']);
-        $bean->setAdminPassword(md5($param['password']));
+        $model = new AdminModel();
+        $model->adminAccount = $param['account'];
+        $model->adminPassword = md5($param['password']);
 
-        if ($rs = $model->login($bean)) {
-            $bean->restore(['adminId' => $rs->getAdminId()]);
-            $sessionHash = md5(time() . $rs->getAdminId());
-            $model->update($bean, [
+        if ($user = $model->login()) {
+            $sessionHash = md5(time() . $user->adminId);
+            $user->update([
                 'adminLastLoginTime' => time(),
                 'adminLastLoginIp'   => $this->clientRealIP(),
                 'adminSession'       => $sessionHash
             ]);
-            $rs = $rs->toArray(null, SplBean::FILTER_NOT_NULL);
+
+            $rs = $user->toArray();
             unset($rs['adminPassword']);
             $rs['adminSession'] = $sessionHash;
             $this->response()->setCookie('adminSession', $sessionHash, time() + 3600, '/');
@@ -48,6 +53,14 @@ class Auth extends AdminBase
 
     }
 
+    /**
+     * logout
+     * 退出登录,参数注解写法
+     * @Param(name="adminSession", from={COOKIE}, required="")
+     * @return bool
+     * @author Tioncico
+     * Time: 10:23
+     */
     function logout()
     {
         $sessionKey = $this->request()->getRequestParam($this->sessionKey);
@@ -58,9 +71,7 @@ class Auth extends AdminBase
             $this->writeJson(Status::CODE_UNAUTHORIZED, '', '尚未登入');
             return false;
         }
-        $db = Mysql::defer('mysql');
-        $adminModel = new AdminModel($db);
-        $result = $adminModel->logout($this->getWho());
+        $result = $this->getWho()->logout();
         if ($result) {
             $this->writeJson(Status::CODE_OK, '', "登出成功");
         } else {
@@ -70,21 +81,6 @@ class Auth extends AdminBase
 
     function getInfo()
     {
-        $this->writeJson(200, $this->getWho(), 'success');
-    }
-
-    protected function getValidateRule(?string $action): ?Validate
-    {
-        $validate = null;
-        switch ($action) {
-            case 'login':
-                $validate = new Validate();
-                $validate->addColumn('account')->required()->lengthMax(32);
-                $validate->addColumn('password')->required()->lengthMax(32);
-                break;
-            case 'logout':
-                break;
-        }
-        return $validate;
+        $this->writeJson(200, $this->getWho()->toArray(), 'success');
     }
 }

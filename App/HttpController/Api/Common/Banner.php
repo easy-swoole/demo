@@ -4,6 +4,7 @@ namespace App\HttpController\Api\Common;
 
 use App\Model\Admin\BannerBean;
 use App\Model\Admin\BannerModel;
+use EasySwoole\Http\Annotation\Param;
 use EasySwoole\Http\Message\Status;
 use EasySwoole\MysqliPool\Mysql;
 use EasySwoole\Validate\Validate;
@@ -15,12 +16,20 @@ use EasySwoole\Validate\Validate;
 class Banner extends CommonBase
 {
 
-	public function getOne()
+    /**
+     * getOne
+     * @Param(name="bannerId", alias="主键id", required="", integer="")
+     * @throws \EasySwoole\ORM\Exception\Exception
+     * @throws \Throwable
+     * @author Tioncico
+     * Time: 14:03
+     */
+    public function getOne()
 	{
-		$db = Mysql::defer('mysql');
 		$param = $this->request()->getRequestParam();
-		$model = new BannerModel($db);
-		$bean = $model->getOne(new BannerBean(['bannerId' => $param['bannerId']]));
+		$model = new BannerModel();
+		$model->bannerId = $param['bannerId'];
+		$bean = $model->get();
 		if ($bean) {
 		    $this->writeJson(Status::CODE_OK, $bean, "success");
 		} else {
@@ -28,14 +37,21 @@ class Banner extends CommonBase
 		}
 	}
 
-	public function getAll()
+    /**
+     * getAll
+     * @Param(name="page", alias="页数", optional="", integer="")
+     * @Param(name="limit", alias="每页总数", optional="", integer="")
+     * @Param(name="keyword", alias="关键字", optional="", lengthMax="32")
+     * @author Tioncico
+     * Time: 14:02
+     */
+    public function getAll()
 	{
-        $db = Mysql::defer('mysql');
         $param = $this->request()->getRequestParam();
 		$page = $param['page']??1;
 		$limit = $param['limit']??20;
-		$model = new BannerModel($db);
-		$data = $model->getAllByState($page, 1,$param['keyword']??null, $limit);
+		$model = new BannerModel();
+		$data = $model->getAll($page, 1,$param['keyword']??null, $limit);
 		$this->writeJson(Status::CODE_OK, $data, 'success');
 	}
 
