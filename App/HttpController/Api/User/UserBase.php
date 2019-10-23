@@ -56,13 +56,12 @@ class UserBase extends ApiBase
 
     /**
      * getWho
-     * @return bool
      * @author yangzhenyu
      * Time: 13:51
      */
-    function getWho(): ?UserBean
+    function getWho(): ?UserModel
     {
-        if ($this->who instanceof UserBean) {
+        if ($this->who instanceof UserModel) {
             return $this->who;
         }
         $sessionKey = $this->request()->getRequestParam($this->sessionKey);
@@ -72,15 +71,9 @@ class UserBase extends ApiBase
         if (empty($sessionKey)) {
             return null;
         }
-        $db = Mysql::defer('mysql');
-        $userModel = new UserModel($db);
-        $this->who = $userModel->getOneBySession($sessionKey);
+        $userModel = new UserModel();
+        $userModel->userSession = $sessionKey;
+        $this->who = $userModel->getOneBySession();
         return $this->who;
-    }
-
-    protected function getValidateRule(?string $action): ?Validate
-    {
-        return null;
-        // TODO: Implement getValidateRule() method.
     }
 }

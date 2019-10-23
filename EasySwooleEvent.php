@@ -13,6 +13,8 @@ use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\Http\Request;
 use EasySwoole\Http\Response;
+use EasySwoole\ORM\Db\Connection;
+use EasySwoole\ORM\DbManager;
 
 class EasySwooleEvent implements Event
 {
@@ -21,10 +23,16 @@ class EasySwooleEvent implements Event
     {
         // TODO: Implement initialize() method.
         date_default_timezone_set('Asia/Shanghai');
-        $configData = Config::getInstance()->getConf('MYSQL');
-        $config = new \EasySwoole\Mysqli\Config($configData);
-        $poolConf = \EasySwoole\MysqliPool\Mysql::getInstance()->register('mysql', $config);
-        $poolConf->setMaxObjectNum(20);
+
+        $config = new \EasySwoole\ORM\Db\Config();
+        $config->setDatabase('demo');
+        $config->setUser('demo');
+        $config->setPassword('123456');
+        $config->setHost('127.0.0.1');
+        $config->setMaxObjectNum(20);//设置连接池最大数量
+
+        DbManager::getInstance()->addConnection(new Connection($config));
+
     }
 
     public static function mainServerCreate(EventRegister $register)

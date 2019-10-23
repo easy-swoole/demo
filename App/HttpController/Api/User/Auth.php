@@ -14,6 +14,7 @@ use App\Model\User\UserModel;
 use App\Service\Common\VerifyService;
 use App\Utility\Pool\MysqlPool;
 use App\Utility\SwooleApi\User\Login;
+use EasySwoole\Http\Annotation\Param;
 use EasySwoole\Http\Message\Status;
 use EasySwoole\MysqliPool\Mysql;
 use EasySwoole\Spl\SplBean;
@@ -23,24 +24,30 @@ class Auth extends UserBase
 {
     protected $whiteList = ['login', 'register'];
 
+    /**
+     * login
+     * @Param(name="userAccount", alias="用户名", required="", lengthMax="32")
+     * @Param(name="userPassword", alias="密码", required="", lengthMin="6",lengthMax="18")
+     * @throws \EasySwoole\ORM\Exception\Exception
+     * @throws \Throwable
+     * @author Tioncico
+     * Time: 15:06
+     */
     function login()
     {
         $param = $this->request()->getRequestParam();
-        $db = Mysql::defer('mysql');
-        $model = new UserModel($db);
-        $bean = new UserBean();
-        $bean->setUserAccount($param['userAccount']);
-        $bean->setUserPassword(md5($param['userPassword']));
+        $model = new UserModel();
+        $model->userAccount = $param['userAccount'];
+        $model->userPassword = md5($param['userPassword']);
 
-        if ($rs = $model->login($bean)) {
-            $bean->restore(['userId' => $rs->getUserId()]);
-            $sessionHash = md5(time() . $rs->getUserId());
-            $model->update($bean, [
+        if ($userInfo = $model->login()) {
+            $sessionHash = md5(time() . $userInfo->userId);
+            $userInfo->update([
                 'lastLoginIp'   => $this->clientRealIP(),
                 'lastLoginTime' => time(),
                 'userSession'   => $sessionHash
             ]);
-            $rs = $rs->toArray(null, SplBean::FILTER_NOT_NULL);
+            $rs = $userInfo->toArray();
             unset($rs['userPassword']);
             $rs['userSession'] = $sessionHash;
             $this->response()->setCookie('userSession', $sessionHash, time() + 3600, '/');
@@ -61,9 +68,7 @@ class Auth extends UserBase
             $this->writeJson(Status::CODE_UNAUTHORIZED, '', '尚未登入');
             return false;
         }
-        $db = Mysql::defer('mysql');
-        $userModel = new UserModel($db);
-        $result = $userModel->logout($this->getWho());
+        $result = $this->getWho()->logout();
         if ($result) {
             $this->writeJson(Status::CODE_OK, '', "登出成功");
         } else {
@@ -74,24 +79,6 @@ class Auth extends UserBase
 
     function getInfo()
     {
-        $this->getWho()->setPhone(substr_replace($this->getWho()->getPhone(), '****', 3, 4));
         $this->writeJson(200, $this->getWho(), 'success');
-    }
-
-    protected function getValidateRule(?string $action): ?Validate
-    {
-        $validate = null;
-        switch ($action) {
-            case 'login':
-                $validate = new Validate();
-                $validate->addColumn('userAccount')->required()->lengthMax(32);
-                $validate->addColumn('userPassword')->required()->lengthMax(32);
-                break;
-            case 'getInfo':
-                break;
-            case 'logout':
-                break;
-        }
-        return $validate;
     }
 }
