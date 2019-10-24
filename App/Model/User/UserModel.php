@@ -54,7 +54,6 @@ class UserModel extends AbstractModel
         return $info;
     }
 
-
     /*
      * 登录成功后请返回更新后的bean
      */
