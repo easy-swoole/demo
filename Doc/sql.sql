@@ -1,4 +1,4 @@
-CREATE TABLE `admin_list` (
+CREATE TABLE if not exists  `admin_list` (
   `adminId` int(11) NOT NULL AUTO_INCREMENT,
   `adminName` varchar(15) DEFAULT NULL,
   `adminAccount` varchar(18) DEFAULT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE `admin_list` (
 INSERT INTO `admin_list` VALUES ('1', '仙士可', 'xsk', 'e10adc3949ba59abbe56e057f20f883e', '', '1566279458', '192.168.159.1');
 
 
-CREATE TABLE `user_list` (
+CREATE TABLE if not exists  `user_list` (
   `userId` int(11) NOT NULL AUTO_INCREMENT,
   `userName` varchar(32) NOT NULL,
   `userAccount` varchar(18) NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE `user_list` (
 INSERT INTO `user_list` VALUES ('1', 'xsk', 'xsk', 'e10adc3949ba59abbe56e057f20f883e', '18459537313', null, '192.168.199.113', '1561081989', '0e81873434f94d3217a3a7d6d04d1561', '1', '10000', '0');
 
 
-CREATE TABLE `banner_list` (
+CREATE TABLE if not exists `banner_list` (
   `bannerId` int(11) NOT NULL AUTO_INCREMENT,
   `bannerName` varchar(32) DEFAULT NULL,
   `bannerImg` varchar(255) NOT NULL COMMENT 'banner图片',
@@ -44,3 +44,4 @@ CREATE TABLE `banner_list` (
   PRIMARY KEY (`bannerId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+INSERT INTO `banner_list` VALUES ('1', '测试banner', 'asdadsasdasd.jpg', '测试的banner数据', 'www.php20.cn',1);

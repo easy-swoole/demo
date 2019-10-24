@@ -11,7 +11,6 @@ namespace App\HttpController\Api;
 
 use App\HttpController\BaseController;
 use EasySwoole\EasySwoole\Core;
-use EasySwoole\EasySwoole\ServerManager;
 use EasySwoole\EasySwoole\Trigger;
 use EasySwoole\Http\Exception\ParamAnnotationValidateError;
 use EasySwoole\Http\Message\Status;
