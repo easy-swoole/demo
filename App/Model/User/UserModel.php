@@ -63,7 +63,6 @@ class UserModel extends AbstractModel
         return $info;
     }
 
-
     function getOneBySession($field='*'):?UserModel
     {
         $info = $this->field($field)->get(['userSession'=>$this->userSession]);
