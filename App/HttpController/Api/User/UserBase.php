@@ -47,7 +47,7 @@ class UserBase extends ApiBase
                 return false;
             }
             //刷新cookie存活
-            $this->response()->setCookie($this->sessionKey, $data->getUserSession(), time() + 3600, '/');
+            $this->response()->setCookie($this->sessionKey, $data->userSession, time() + 3600, '/');
 
             return true;
         }

@@ -46,8 +46,7 @@ class User extends AdminBase
     {
         $param = $this->request()->getRequestParam();
         $model = new UserModel();
-        $model->userId = $param['userId'];
-        $rs = $model->get();
+        $rs = $model->get($param['userId']);
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, "success");
         } else {
@@ -94,11 +93,10 @@ class User extends AdminBase
     function update()
     {
         $model = new UserModel();
-        $model->userId = $this->input('userId');
         /**
          * @var $userInfo UserModel
          */
-        $userInfo = $model->get();
+        $userInfo = $model->get($this->input('userId'));
         if (!$userInfo) {
             $this->writeJson(Status::CODE_BAD_REQUEST, [], '未找到该会员');
         }
@@ -131,8 +129,7 @@ class User extends AdminBase
     {
         $param = $this->request()->getRequestParam();
         $model = new UserModel();
-        $model->userId = $param['userId'];
-        $rs = $model->destroy();
+        $rs = $model->destroy($param['userId']);
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, "success");
         } else {
