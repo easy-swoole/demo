@@ -25,8 +25,7 @@ class Banner extends CommonBase
 	{
 		$param = $this->request()->getRequestParam();
 		$model = new BannerModel();
-		$model->bannerId = $param['bannerId'];
-		$bean = $model->get();
+		$bean = $model->get($param['bannerId']);
 		if ($bean) {
 		    $this->writeJson(Status::CODE_OK, $bean, "success");
 		} else {
