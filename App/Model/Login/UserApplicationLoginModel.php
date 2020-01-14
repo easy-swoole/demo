@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Model\User;
+namespace App\Model\Login;
 
 /**
- * Class UserModel
+ * Class UserApplicationLoginModel
  * Create With Automatic Generator
+ * @property $id int |
+ * @property $appId int |
  * @property $userId int |
- * @property $userAccount string | 会员账号
- * @property $userPassword string | 会员密码
- * @property $userKey string | 用户登录标识
+ * @property $appSecret string |
+ * @property $expireTime int |
  */
-class UserModel extends \EasySwoole\ORM\AbstractModel
+class UserApplicationLoginModel extends \EasySwoole\ORM\AbstractModel
 {
-	protected $tableName = 'user_list';
+	protected $tableName = 'user_application_login_list';
 
 
 	/**
@@ -38,29 +39,5 @@ class UserModel extends \EasySwoole\ORM\AbstractModel
 		$total = $this->lastQueryResult()->getTotalCount();;
 		return ['total' => $total, 'list' => $list];
 	}
-
-
-    /*
-     * 登录成功后请返回更新后的bean
-     */
-    function login():?UserModel
-    {
-        $info = $this->get(['userAccount'=>$this->userAccount,'userPassword'=>$this->userPassword]);
-        return $info;
-    }
-
-
-
-    /**
-     * 注销用户
-     * @return mixed
-     * @throws \Throwable
-     */
-    function logout()
-    {
-        return $this->update(['userKey' => '']);
-    }
-
-
 }
 

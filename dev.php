@@ -5,7 +5,6 @@
  * Date: 2019-01-01
  * Time: 20:06
  */
-
 return [
     'SERVER_NAME' => "EasySwoole",
     'MAIN_SERVER' => [

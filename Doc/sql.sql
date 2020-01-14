@@ -1,47 +1,71 @@
-CREATE TABLE if not exists  `admin_list` (
-  `adminId` int(11) NOT NULL AUTO_INCREMENT,
-  `adminName` varchar(15) DEFAULT NULL,
-  `adminAccount` varchar(18) DEFAULT NULL,
-  `adminPassword` varchar(32) DEFAULT NULL,
-  `adminSession` varchar(32) DEFAULT NULL,
-  `adminLastLoginTime` int(11) DEFAULT NULL,
-  `adminLastLoginIp` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`adminId`),
-  UNIQUE KEY `adminAccount` (`adminAccount`),
-  KEY `adminSession` (`adminSession`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `admin_list` VALUES ('1', '仙士可', 'xsk', 'e10adc3949ba59abbe56e057f20f883e', '', '1566279458', '192.168.159.1');
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : x.cn
+Source Server Version : 50562
+Source Host           : x.cn:3306
+Source Database       : demo
+
+Target Server Type    : MYSQL
+Target Server Version : 50562
+File Encoding         : 65001
+
+Date: 2020-01-14 09:44:13
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for application_list
+-- ----------------------------
+DROP TABLE IF EXISTS `application_list`;
+CREATE TABLE `application_list` (
+                                  `appId` int(11) NOT NULL AUTO_INCREMENT,
+                                  `appName` varchar(32) DEFAULT NULL,
+                                  PRIMARY KEY (`appId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of application_list
+-- ----------------------------
+INSERT INTO `application_list` VALUES ('1', '测试应用(仙士可博客)');
+
+-- ----------------------------
+-- Table structure for user_application_login_list
+-- ----------------------------
+DROP TABLE IF EXISTS `user_application_login_list`;
+CREATE TABLE `user_application_login_list` (
+                                             `id` int(11) NOT NULL AUTO_INCREMENT,
+                                             `appId` int(11) DEFAULT NULL,
+                                             `userId` int(11) DEFAULT NULL,
+                                             `appSecret` varchar(32) DEFAULT NULL,
+                                             `expireTime` int(11) DEFAULT NULL COMMENT '失效时间',
+                                             PRIMARY KEY (`id`),
+                                             UNIQUE KEY `appId` (`appId`,`userId`) USING BTREE,
+                                             KEY `appId_2` (`appId`,`appSecret`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE if not exists  `user_list` (
-  `userId` int(11) NOT NULL AUTO_INCREMENT,
-  `userName` varchar(32) NOT NULL,
-  `userAccount` varchar(18) NOT NULL,
-  `userPassword` varchar(32) NOT NULL,
-  `phone` varchar(18) NOT NULL,
-  `addTime` int(11) DEFAULT NULL,
-  `lastLoginIp` varchar(20) DEFAULT NULL,
-  `lastLoginTime` int(10) DEFAULT NULL,
-  `userSession` varchar(32) DEFAULT NULL,
-  `state` tinyint(2) DEFAULT NULL,
-  `money` int(10) NOT NULL DEFAULT '0' COMMENT '用户余额',
-  `frozenMoney` int(10) NOT NULL DEFAULT '0' COMMENT '冻结余额',
-  PRIMARY KEY (`userId`),
-  UNIQUE KEY `pk_userAccount` (`userAccount`),
-  KEY `userSession` (`userSession`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `user_list` VALUES ('1', 'xsk', 'xsk', 'e10adc3949ba59abbe56e057f20f883e', '18459537313', null, '192.168.199.113', '1561081989', '0e81873434f94d3217a3a7d6d04d1561', '1', '10000', '0');
+-- ----------------------------
+-- Records of user_application_login_list
+-- ----------------------------
+INSERT INTO `user_application_login_list` VALUES ('1', null, null, null, null);
 
+-- ----------------------------
+-- Table structure for user_list
+-- ----------------------------
+DROP TABLE IF EXISTS `user_list`;
+CREATE TABLE `user_list` (
+                           `userId` int(11) NOT NULL AUTO_INCREMENT,
+                           `userAccount` varchar(18) DEFAULT NULL COMMENT '会员账号',
+                           `userPassword` varchar(32) DEFAULT NULL COMMENT '会员密码',
+                           `userKey` varchar(255) DEFAULT NULL COMMENT '用户登录标识',
+                           PRIMARY KEY (`userId`),
+                           KEY `userKey` (`userKey`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-CREATE TABLE if not exists `banner_list` (
-  `bannerId` int(11) NOT NULL AUTO_INCREMENT,
-  `bannerName` varchar(32) DEFAULT NULL,
-  `bannerImg` varchar(255) NOT NULL COMMENT 'banner图片',
-  `bannerDescription` varchar(255) DEFAULT NULL,
-  `bannerUrl` varchar(255) DEFAULT NULL COMMENT '跳转地址',
-  `state` tinyint(3) DEFAULT NULL COMMENT '状态0隐藏 1正常',
-  PRIMARY KEY (`bannerId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-INSERT INTO `banner_list` VALUES ('1', '测试banner', 'asdadsasdasd.jpg', '测试的banner数据', 'www.php20.cn',1);
+-- ----------------------------
+-- Records of user_list
+-- ----------------------------
+INSERT INTO `user_list` VALUES ('1', 'tioncico', 'e10adc3949ba59abbe56e057f20f883e', null);

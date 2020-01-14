@@ -9,17 +9,14 @@
 namespace App\HttpController\Api\User;
 
 use App\HttpController\Api\ApiBase;
-use App\Model\User\UserBean;
 use App\Model\User\UserModel;
-use App\Utility\Pool\MysqlPool;
-use App\Utility\Pool\RedisPool;
 use EasySwoole\Http\Message\Status;
-use EasySwoole\MysqliPool\Mysql;
-use EasySwoole\Spl\SplBean;
-use EasySwoole\Validate\Validate;
 
 class UserBase extends ApiBase
 {
+    /**
+     * @var $who UserModel
+     */
     protected $who;
     //session的cookie头
     protected $sessionKey = 'userSession';
@@ -47,7 +44,7 @@ class UserBase extends ApiBase
                 return false;
             }
             //刷新cookie存活
-            $this->response()->setCookie($this->sessionKey, $data->userSession, time() + 3600, '/');
+            $this->response()->setCookie($this->sessionKey, $data->userKey, time() + 3600, '/');
 
             return true;
         }
@@ -65,15 +62,16 @@ class UserBase extends ApiBase
             return $this->who;
         }
         $sessionKey = $this->request()->getRequestParam($this->sessionKey);
+
         if (empty($sessionKey)) {
             $sessionKey = $this->request()->getCookieParams($this->sessionKey);
         }
+        var_dump($this->request()->getCookieParams());
         if (empty($sessionKey)) {
             return null;
         }
         $userModel = new UserModel();
-        $userModel->userSession = $sessionKey;
-        $this->who = $userModel->getOneBySession();
+        $this->who = $userModel->get(['userKey'=>$sessionKey]);
         return $this->who;
     }
 }

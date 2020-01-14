@@ -1,7 +1,10 @@
 {
   "require": {
     "easyswoole/easyswoole": "3.x",
-    "easyswoole/orm": "dev-master"
+    "easyswoole/orm": "1.x",
+    "easyswoole/swoole-ide-helper": "^1.3",
+    "tioncico/curd-automatic-generation": "^2.0",
+    "easyswoole/redis-pool": "^2.0"
   },
   "autoload": {
     "psr-4": {

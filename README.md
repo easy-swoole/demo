@@ -20,12 +20,26 @@ php vendor/bin/easyswoole install
 ````
 php easyswoole start
 ````
-### 访问url
-````
-管理员登陆:127.0.0.1:9501/Api/Admin/Auth/login?account=xsk&password=123456 
-公共请求banner:127.0.0.1:9501/Api/Common/Banner/getAll
-会员登陆:127.0.0.1:9501/Api/User/Auth/login?userAccount=xsk&userPassword=123456    
-````
+### auth 2.0执行步骤
+#### 登陆接口,获取会员token
+访问:`/Api/User/Auth/login?userAccount=toncico&userPassword=123456`  
+
+输出:  
+
+`{"code":200,"result":{"userAccount":"tioncico","userId":1,"userKey":"44ed7e8e4a4c2ce609c08166dfcdb081","userSession":"44ed7e8e4a4c2ce609c08166dfcdb081"},"msg":null}`
+
+#### 带上userSession通过application接口获取appSecret
+访问:`/Api/User/Application/getSecret?userSession=44ed7e8e4a4c2ce609c08166dfcdb081&appId=1`  
+
+输出:  
+
+`{"code":200,"result":"a2c1ed89dfc428838f0124bd4381d52f","msg":"获取appSecret成功"}`
+
+#### 通过`appSecret`可反查会员信息(无需userSession)
+访问:`/Api/Common/Application/getUserInfo?appSecret=a2c1ed89dfc428838f0124bd4381d52f&appId=1` 
+输出:  
+
+`{"code":200,"result":{"userId":1,"userAccount":"tioncico"},"msg":"获取用户信息成功"}`
 
 ## 请先认真阅读手册 再进行体验
 
