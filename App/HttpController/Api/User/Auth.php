@@ -45,7 +45,7 @@ class Auth extends UserBase
             $userInfo->update([
                 'lastLoginIp'   => $this->clientRealIP(),
                 'lastLoginTime' => time(),
-                'userSession'   => $sessionHash
+                'userKey'   => $sessionHash
             ]);
             $rs = $userInfo->toArray();
             unset($rs['userPassword']);
@@ -75,7 +75,6 @@ class Auth extends UserBase
             $this->writeJson(Status::CODE_UNAUTHORIZED, '', 'fail');
         }
     }
-
 
     function getInfo()
     {
