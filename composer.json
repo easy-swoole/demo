@@ -1,6 +1,7 @@
 {
   "require": {
     "easyswoole/easyswoole": "3.x",
+    "easyswoole/http-annotation": "dev-master",
     "easyswoole/orm": "dev-master"
   },
   "autoload": {
