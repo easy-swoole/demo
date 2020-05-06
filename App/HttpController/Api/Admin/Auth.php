@@ -9,8 +9,8 @@
 namespace App\HttpController\Api\Admin;
 
 use App\Model\Admin\AdminModel;
-use EasySwoole\Http\Annotation\Param;
 use EasySwoole\Http\Message\Status;
+use EasySwoole\HttpAnnotation\AnnotationTag\Param;
 
 class Auth extends AdminBase
 {

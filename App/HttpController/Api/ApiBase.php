@@ -12,14 +12,13 @@ namespace App\HttpController\Api;
 use App\HttpController\BaseController;
 use EasySwoole\EasySwoole\Core;
 use EasySwoole\EasySwoole\Trigger;
-use EasySwoole\Http\Exception\ParamAnnotationValidateError;
 use EasySwoole\Http\Message\Status;
+use EasySwoole\HttpAnnotation\Exception\Annotation\ParamValidateError;
 
 abstract class ApiBase extends BaseController
 {
     function index()
     {
-        // TODO: Implement index() method.
         $this->actionNotFound('index');
     }
 
@@ -38,7 +37,7 @@ abstract class ApiBase extends BaseController
 
     protected function onException(\Throwable $throwable): void
     {
-        if ($throwable instanceof ParamAnnotationValidateError) {
+        if ($throwable instanceof ParamValidateError) {
             $msg = $throwable->getValidate()->getError()->getErrorRuleMsg();
             $this->writeJson(400, null, "{$msg}");
         } else {

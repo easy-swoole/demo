@@ -9,14 +9,8 @@
 namespace App\HttpController\Api\User;
 
 use App\HttpController\Api\ApiBase;
-use App\Model\User\UserBean;
 use App\Model\User\UserModel;
-use App\Utility\Pool\MysqlPool;
-use App\Utility\Pool\RedisPool;
 use EasySwoole\Http\Message\Status;
-use EasySwoole\MysqliPool\Mysql;
-use EasySwoole\Spl\SplBean;
-use EasySwoole\Validate\Validate;
 
 class UserBase extends ApiBase
 {

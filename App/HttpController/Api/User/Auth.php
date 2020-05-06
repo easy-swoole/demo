@@ -9,16 +9,9 @@
 namespace App\HttpController\Api\User;
 
 
-use App\Model\User\UserBean;
 use App\Model\User\UserModel;
-use App\Service\Common\VerifyService;
-use App\Utility\Pool\MysqlPool;
-use App\Utility\SwooleApi\User\Login;
-use EasySwoole\Http\Annotation\Param;
 use EasySwoole\Http\Message\Status;
-use EasySwoole\MysqliPool\Mysql;
-use EasySwoole\Spl\SplBean;
-use EasySwoole\Validate\Validate;
+use EasySwoole\HttpAnnotation\AnnotationTag\Param;
 
 class Auth extends UserBase
 {
