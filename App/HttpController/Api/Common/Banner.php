@@ -3,8 +3,8 @@
 namespace App\HttpController\Api\Common;
 
 use App\Model\Admin\BannerModel;
-use EasySwoole\Http\Annotation\Param;
 use EasySwoole\Http\Message\Status;
+use EasySwoole\HttpAnnotation\AnnotationTag\Param;
 
 /**
  * Class Banner

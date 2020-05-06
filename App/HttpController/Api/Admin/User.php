@@ -8,11 +8,9 @@
 
 namespace App\HttpController\Api\Admin;
 
-use App\Model\User\UserBean;
 use App\Model\User\UserModel;
-use EasySwoole\Http\Annotation\Param;
 use EasySwoole\Http\Message\Status;
-use EasySwoole\Validate\Validate;
+use EasySwoole\HttpAnnotation\AnnotationTag\Param;
 
 class User extends AdminBase
 {

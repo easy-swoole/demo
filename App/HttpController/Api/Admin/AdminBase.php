@@ -9,10 +9,8 @@
 namespace App\HttpController\Api\Admin;
 
 use App\HttpController\Api\ApiBase;
-use App\Model\Admin\AdminBean;
 use App\Model\Admin\AdminModel;
 use EasySwoole\Http\Message\Status;
-use EasySwoole\MysqliPool\Mysql;
 use EasySwoole\Validate\Validate;
 
 class AdminBase extends ApiBase
