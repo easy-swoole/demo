@@ -15,12 +15,12 @@
     "require": {
         "php": ">=7.1.0",
         "ext-swoole": ">=4.0.3",
-        "easyswoole/easyswoole": "3.x-dev",
-        "easyswoole/swoole-ide-helper": "^1.0",
-        "easyswoole/fast-cache": "^1.0",
-        "nette/mail": "^3.0",
+        "easyswoole/easyswoole": "3.x",
+        "easyswoole/swoole-ide-helper": "^1.3",
+        "easyswoole/fast-cache": "^1.3",
+        "nette/mail": "^3.1",
         "easyswoole/template": "^1.0",
-        "league/plates": "3.*",
+        "league/plates": "^3.3",
         "easyswoole/smtp": "^1.0",
         "easyswoole/socket": "^1.1"
     },
