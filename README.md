@@ -12,15 +12,16 @@ EASYSWOOLE 聊天室DEMO
 
 ```bash
 git clone https://github.com/easy-swoole/demo.git
+cd demo
 git checkout 3.x-chat
 composer install
-easyswoole install
-cp sample.env dev.env
+php vendor/easyswoole/easyswoole/bin/easyswoole install
+composer dump-autoload
 ```
 
 ## 配置
 
-修改 `dev.env` 内的配置项，改为自己服务器的信息
+修改 `dev.php` 内的配置项，改为自己服务器的信息
 
 ```ini
 'HOST' => 'http://127.0.0.1:9501',
