@@ -15,7 +15,7 @@
     "require": {
         "php": ">=7.1.0",
         "ext-swoole": ">=4.0.3",
-        "easyswoole/easyswoole": "3.x-dev",
+        "easyswoole/easyswoole": "3.x",
         "easyswoole/swoole-ide-helper": "^1.0",
         "easyswoole/fast-cache": "^1.0",
         "nette/mail": "^3.0",
