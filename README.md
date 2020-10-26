@@ -6,22 +6,38 @@
 
 `composer install`
 
+安装框架：
+
+`php vendor/bin easyswoole install`
+
+一键回车即可。
+
 框架目录：
 
 ```bash
-- App
- - Parser
-    TcpParser.php - tcp解析器
-    UdpParser.php - udp解析器
-    WebsocketParser.php - websocket解析器
- - TcpController tcp控制器目录
- - UdpController udp控制器目录
- - WebSocketController websocket控制器目录
- WebsocketEvent.php websocket自定义握手
-- Test
- tcp.php tcp客户端
- udp.php udp客户端
- websocket.php websocket客户端
+├── App
+│   ├── HttpController http控制器目录 可忽略
+│   │   ├── Index.php
+│   │   └── Router.php
+│   ├── Parser socket 解析器
+│   │   ├── TcpParser.php
+│   │   ├── UdpParser.php
+│   │   └── WebSocketParser.php
+│   ├── TcpController tcp服务控制器
+│   │   ├── Base.php
+│   │   └── Index.php
+│   ├── UdpController udp服务控制器
+│   │   ├── Base.php
+│   │   └── Index.php
+│   ├── WebSocketController websocket服务控制器
+│   │   ├── Base.php
+│   │   └── Index.php
+│   └── WebSocketEvent.php websocket的event
+├── EasySwooleEvent.php 主框架Event
+├── Test 测试客户端
+│   ├── tcp.php
+│   ├── udp.php
+│   └── websocket.php
 ```
 
 ## Tcp
