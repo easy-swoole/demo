@@ -14,3 +14,4 @@ easyswoole
 easyswoole.install
 Log
 Temp
+composer.lock

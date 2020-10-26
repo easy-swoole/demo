@@ -1,4 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace App\WebSocket;
 
@@ -13,9 +19,6 @@ use App\WebSocket\Actions\User\UserOutRoom;
 use EasySwoole\EasySwoole\Task\TaskManager;
 use EasySwoole\Utility\Random;
 
-use \swoole_server;
-use \swoole_websocket_server;
-use \swoole_http_request;
 use \Exception;
 
 /**
@@ -27,10 +30,10 @@ class WebSocketEvents
 {
     /**
      * 打开了一个链接
-     * @param swoole_websocket_server $server
-     * @param swoole_http_request $request
+     * @param \Swoole\WebSocket\Server $server
+     * @param \Swoole\Http\Request $request
      */
-    static function onOpen(\swoole_websocket_server $server, \swoole_http_request $request)
+    public static function onOpen(\Swoole\WebSocket\Server $server, \Swoole\Http\Request $request)
     {
         // 为用户分配身份并插入到用户表
         $fd = $request->fd;
@@ -65,18 +68,17 @@ class WebSocketEvents
                     $server->push($fd, $message);
                 }
             }
-
         }
     }
 
     /**
      * 链接被关闭时
-     * @param swoole_server $server
+     * @param \Swoole\Server $server
      * @param int $fd
      * @param int $reactorId
      * @throws Exception
      */
-    static function onClose(\swoole_server $server, int $fd, int $reactorId)
+    public static function onClose(\Swoole\Server $server, int $fd, int $reactorId)
     {
         $info = $server->connection_info($fd);
         if (isset($info['websocket_status']) && $info['websocket_status'] !== 0) {
@@ -86,7 +88,6 @@ class WebSocketEvents
             $message = new UserOutRoom;
             $message->setUserFd($fd);
             TaskManager::getInstance()->async(new BroadcastTask(['payload' => $message->__toString(), 'fromFd' => $fd]));
-
         }
     }
 }

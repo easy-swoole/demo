@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: evalor
- * Date: 2018-12-02
- * Time: 01:46
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 namespace App\WebSocket\Actions;

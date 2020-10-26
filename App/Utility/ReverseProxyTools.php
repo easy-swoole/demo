@@ -1,4 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace App\Utility;
 
@@ -32,7 +38,9 @@ class ReverseProxyTools
                 $clientAddress = $xri[0];
             } elseif (!empty($xff)) {  // 如果不存在xri 则继续判断xff
                 $list = explode(',', $xff[0]);
-                if (isset($list[0])) $clientAddress = $list[0];
+                if (isset($list[0])) {
+                    $clientAddress = $list[0];
+                }
             }
         }
         return $clientAddress;
@@ -87,7 +95,9 @@ class ReverseProxyTools
                 $clientAddress = $xri[0];
             } elseif (!empty($xff)) {  // 如果不存在xri 则继续判断xff
                 $list = explode(',', $xff[0]);
-                if (isset($list[0])) $clientAddress = $list[0];
+                if (isset($list[0])) {
+                    $clientAddress = $list[0];
+                }
             }
         }
         return $clientAddress;

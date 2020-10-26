@@ -1,4 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace App\Storage;
 
@@ -11,10 +17,12 @@ use EasySwoole\Spl\SplBean;
  */
 class UserBean extends SplBean
 {
-
     protected $email;
+
     protected $username;
+
     protected $userAvatar;
+
     protected $userPassword;
 
     /**
@@ -80,6 +88,4 @@ class UserBean extends SplBean
     {
         $this->userPassword = $userPassword;
     }
-
-
 }

@@ -1,4 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace App\HttpController;
 
@@ -10,6 +16,7 @@ use EasySwoole\Utility\Random;
 use EasySwoole\Validate\Validate;
 
 use EasySwoole\Smtp\MailerConfig as MailerSet;
+use Throwable;
 
 /**
  * 注册用户
@@ -21,7 +28,7 @@ class Register extends Base
     /**
      * 渲染注册页面
      */
-    function index()
+    public function index()
     {
         $this->render('register', [
             'EnableMailCheck' => (bool)$this->cfgValue('CHECK_EMAIL'),
@@ -31,7 +38,7 @@ class Register extends Base
     /**
      *
      */
-    function registerAccount()
+    public function registerAccount()
     {
         $v = new Validate;
         $v->addColumn('email')->required('登录账号没有填/(ㄒoㄒ)/~~')->regex('^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$', '邮箱格式不对呀/(ㄒoㄒ)/~~');
@@ -40,15 +47,13 @@ class Register extends Base
         if ($this->validate($v)) {
 
             // 账号注册逻辑
-
         } else {
             $this->writeJson(200, ['code' => 1, $v->getError()->getErrorRuleMsg()]);
         }
-
     }
 
     // 发送邮件验证码
-    function sendValidateCode()
+    public function sendValidateCode()
     {
         $v = new Validate;
         $v->addColumn('email')->required('登录账号没有填/(ㄒoㄒ)/~~')->regex('/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/', '邮箱格式不对呀/(ㄒoㄒ)/~~');
@@ -80,11 +85,12 @@ class Register extends Base
                 $this->writeJson(200, ['code' => 1, 'msg' => '当前未配置邮件设置，请联系管理员 O(∩_∩)O~~']);
                 return false;
             } else {
-                if (!$emailSet = $this->cfgValue('EMAIL_SETTING'))
+                if (!$emailSet = $this->cfgValue('EMAIL_SETTING')) {
                     if (empty($emailSet['SERVER'])) {
                         $this->writeJson(200, ['code' => 1, 'msg' => '邮件服务器未配置，请联系管理员 O(∩_∩)O~~']);
                         return false;
                     }
+                }
                 if (empty($emailSet['USERNAME'])) {
                     $this->writeJson(200, ['code' => 1, 'msg' => '邮件账号未配置，请联系管理员 O(∩_∩)O~~']);
                     return false;
@@ -107,23 +113,18 @@ class Register extends Base
             $mimeBean->setBody('您正在注册微聊，验证码为: ' . $validateCode);
 
             try {
-
                 $mailer = new Mailer($mailerSet);
                 $mailer->sendTo($email, $mimeBean);
                 Cache::getInstance()->set(md5($email), ['time' => time(), 'code' => $validateCode]);
                 $this->writeJson(200, ['code' => 1, 'msg' => '发送成功，请查收您的验证码 O(∩_∩)O~~']);
                 return true;
-
-            } catch (\Throwable $throwable) {
+            } catch (Throwable $throwable) {
                 $this->writeJson(200, ['code' => 0, 'msg' => '邮件发送失败/(ㄒoㄒ)/~~', 'data' => $throwable->getMessage()]);
                 return false;
             }
-
-
         } else {
             $this->writeJson(200, ['code' => 1, 'msg' => $v->getError()->getErrorRuleMsg()]);
             return false;
         }
-
     }
 }
