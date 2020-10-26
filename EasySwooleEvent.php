@@ -1,8 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace EasySwoole\EasySwoole;
-
 
 use App\Parser\TcpParser;
 use App\Parser\UdpParser;
@@ -16,6 +20,7 @@ use EasySwoole\Socket\Client\Tcp;
 use EasySwoole\Socket\Client\Udp;
 use EasySwoole\Socket\Client\WebSocket;
 use EasySwoole\Socket\Dispatcher;
+use Throwable;
 
 class EasySwooleEvent implements Event
 {
@@ -32,10 +37,11 @@ class EasySwooleEvent implements Event
             $config->setType($config::TCP);
             $config->setParser(TcpParser::class);
             $dispatcher = new Dispatcher($config);
-            $config->setOnExceptionHandler(function (\Swoole\Server $server, \Throwable $throwable, string $raw, Tcp $client, Response $response) {
-                $response->setMessage('system error!');
+            // 可接管异常
+            /*$config->setOnExceptionHandler(function (\Swoole\Server $server, Throwable $throwable, string $raw, Tcp $client, Response $response) {
+                $response->setMessage('system error:' . $throwable->getMessage());
                 $response->setStatus($response::STATUS_RESPONSE_AND_CLOSE);
-            });
+            });*/
             $register->set($register::onReceive, function (\Swoole\Server $server, int $fd, int $reactorId, string $data) use ($dispatcher) {
                 $dispatcher->dispatch($server, $data, $fd, $reactorId);
             });
@@ -47,12 +53,13 @@ class EasySwooleEvent implements Event
             $config->setType($config::UDP);
             $config->setParser(UdpParser::class);
             $dispatcher = new Dispatcher($config);
-            $config->setOnExceptionHandler(function (\Swoole\Server $server, \Throwable $throwable, string $raw, Udp $client, Response $response) {
-                $response->setMessage('system error!');
+            // 可接管异常
+            /*$config->setOnExceptionHandler(function (\Swoole\Server $server, Throwable $throwable, string $raw, Udp $client, Response $response) {
+                $response->setMessage('system error:' . $throwable->getMessage());
                 $response->setStatus($response::STATUS_RESPONSE_AND_CLOSE);
-            });
+            });*/
             $server = ServerManager::getInstance()->getSwooleServer();
-            $udpServer = $server->addListener('0.0.0.0', '9511', SWOOLE_UDP);
+            $udpServer = $server->addListener('0.0.0.0', 9511, SWOOLE_UDP);
             $udpServer->on($register::onPacket, function (\Swoole\Server $server, string $data, array $clientInfo) use ($dispatcher) {
                 $dispatcher->dispatch($server, $data, $clientInfo['server_socket'], $clientInfo['address'], $clientInfo['port']);
             });
@@ -64,10 +71,11 @@ class EasySwooleEvent implements Event
             $config->setType($config::WEB_SOCKET);
             $config->setParser(WebSocketParser::class);
             $dispatcher = new Dispatcher($config);
-            $config->setOnExceptionHandler(function (\Swoole\Server $server, \Throwable $throwable, string $raw, WebSocket $client, Response $response) {
-                $response->setMessage('system error!');
+            // 可接管异常
+            /*$config->setOnExceptionHandler(function (\Swoole\Server $server, Throwable $throwable, string $raw, WebSocket $client, Response $response) {
+                $response->setMessage('system error:' . $throwable->getMessage());
                 $response->setStatus($response::STATUS_RESPONSE_AND_CLOSE);
-            });
+            });*/
 
             // 自定义握手
             /*$websocketEvent = new WebSocketEvent();

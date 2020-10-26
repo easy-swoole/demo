@@ -1,6 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * @author gaobinzhan <gaobinzhan@gmail.com>
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 namespace App;
@@ -76,13 +79,13 @@ class WebSocketEvent
         }
 
         $key = base64_encode(sha1($request->header['sec-websocket-key'] . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
-        $headers = array(
+        $headers = [
             'Upgrade' => 'websocket',
             'Connection' => 'Upgrade',
             'Sec-WebSocket-Accept' => $key,
             'Sec-WebSocket-Version' => '13',
             'KeepAlive' => 'off',
-        );
+        ];
 
         if (isset($request->header['sec-websocket-protocol'])) {
             $headers['Sec-WebSocket-Protocol'] = $request->header['sec-websocket-protocol'];
