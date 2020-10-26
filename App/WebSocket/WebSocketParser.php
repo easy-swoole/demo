@@ -8,6 +8,7 @@
 
 namespace App\WebSocket;
 
+use App\WebSocket\Actions\ActionPayload;
 use EasySwoole\Socket\AbstractInterface\ParserInterface;
 use EasySwoole\Socket\Bean\Caller;
 use EasySwoole\Socket\Bean\Response;
@@ -53,6 +54,7 @@ class WebSocketParser implements ParserInterface
      */
     public function encode(Response $response, $client): ?string
     {
-        return json_encode($response->getMessage());
+        $message = $response->getMessage();
+        return $message instanceof ActionPayload ? $message->__toString() : $message;
     }
 }
