@@ -1,6 +1,6 @@
 {
     "require": {
-        "easyswoole/easyswoole": "3.x-dev",
+        "easyswoole/easyswoole": "3.4.x",
         "easyswoole/socket": "^1.1"
     },
     "autoload": {
