@@ -1,4 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace App\Storage;
 
@@ -15,14 +21,16 @@ class ChatMessage
     use Singleton;
 
     protected $storage;
+
     protected $capacity;
+
     protected $initialization = false;
 
     /**
      * ChatMessage constructor.
      * @param int $capacity 消息的储存容量 超出容量会自动丢弃
      */
-    function __construct(int $capacity = 10)
+    public function __construct(int $capacity = 10)
     {
         $this->capacity = $capacity;
         $this->storage = $this->createStorage();
@@ -38,7 +46,6 @@ class ChatMessage
      */
     public function saveMessage($message)
     {
-
         if ($handle = fopen($this->storage, 'r+')) {
             clearstatcache() && flock($handle, LOCK_EX);
             $content = fread($handle, filesize($this->storage));

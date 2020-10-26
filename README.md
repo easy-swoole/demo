@@ -4,7 +4,7 @@ EASYSWOOLE 聊天室DEMO
 
 ## 在线体验
 
-[在线DEMO演示站](http://chat.evalor.cn/)
+[在线DEMO演示站](http://easyswoole-chat.gaobinzhan.com/)
 
 ## 安装
 
@@ -16,7 +16,7 @@ cd demo
 git checkout 3.x-chat
 composer install
 php vendor/easyswoole/easyswoole/bin/easyswoole install
-composer dump-autoload
+composer dump-autoload -o
 ```
 
 ## 配置
@@ -31,5 +31,5 @@ composer dump-autoload
 ## 启动
 
 ```bash
-php easyswoole start
+php easyswoole server start
 ```

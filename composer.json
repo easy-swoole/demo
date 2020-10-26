@@ -15,17 +15,20 @@
     "require": {
         "php": ">=7.1.0",
         "ext-swoole": ">=4.0.3",
-        "easyswoole/easyswoole": "3.x",
-        "easyswoole/swoole-ide-helper": "^1.3",
-        "easyswoole/fast-cache": "^1.3",
-        "nette/mail": "^3.1",
+        "ext-json": "*",
+        "easyswoole/easyswoole": "3.4.*",
+        "easyswoole/swoole-ide-helper": "^1.0",
+        "easyswoole/fast-cache": "^1.0",
+        "nette/mail": "^3.0",
         "easyswoole/template": "^1.0",
         "league/plates": "^3.3",
         "easyswoole/smtp": "^1.0",
-        "easyswoole/socket": "^1.1"
+        "easyswoole/socket": "^1.1",
+        "easyswoole/validate": "^1.2"
     },
     "require-dev": {
-        "composer/composer": "^1.6"
+        "swoole/ide-helper": "4.*",
+        "friendsofphp/php-cs-fixer": "2.*"
     },
     "autoload": {
         "psr-4": {
@@ -33,9 +36,7 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd": [
-            "App\\Run::postCreateCmd"
-        ]
+        "cs-fix": "/usr/bin/env php ./vendor/bin/php-cs-fixer fix"
     },
     "repositories": {
         "packagist": {

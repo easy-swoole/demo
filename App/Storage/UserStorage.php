@@ -1,4 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace App\Storage;
 
@@ -14,7 +20,7 @@ class UserStorage
      * @param $email
      * @return bool
      */
-    static function emailIsExist($email)
+    public static function emailIsExist($email)
     {
         clearstatcache();
         $dir = self::getStorageDir();
@@ -25,7 +31,7 @@ class UserStorage
      * 获取存储目录
      * @return string
      */
-    static function getStorageDir()
+    public static function getStorageDir()
     {
         return dirname(__FILE__) . DIRECTORY_SEPARATOR . 'User';
     }

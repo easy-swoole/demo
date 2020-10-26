@@ -1,4 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace App\HttpController;
 
@@ -6,6 +12,7 @@ use App\Utility\PlatesRender;
 use EasySwoole\EasySwoole\Config;
 use EasySwoole\Http\AbstractInterface\Controller;
 use EasySwoole\Template\Render;
+use EasySwoole\Validate\Validate;
 
 /**
  * 基础控制器
@@ -14,7 +21,7 @@ use EasySwoole\Template\Render;
  */
 class Base extends Controller
 {
-    function index()
+    public function index()
     {
         $this->actionNotFound('index');
     }
@@ -24,7 +31,7 @@ class Base extends Controller
      * @param $template
      * @param $vars
      */
-    function render($template, array $vars = [])
+    public function render($template, array $vars = [])
     {
         $engine = new PlatesRender(EASYSWOOLE_ROOT . '/App/Views');
         $render = Render::getInstance();
@@ -39,9 +46,14 @@ class Base extends Controller
      * @param null $default
      * @return array|mixed|null
      */
-    function cfgValue($name, $default = null)
+    public function cfgValue($name, $default = null)
     {
         $value = Config::getInstance()->getConf($name);
         return is_null($value) ? $default : $value;
+    }
+
+    public function validate(Validate $validate)
+    {
+        return $validate->validate($this->request()->getRequestParam());
     }
 }
