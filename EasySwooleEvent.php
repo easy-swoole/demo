@@ -1,26 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: yf
- * Date: 2018/5/28
- * Time: 下午6:33
- */
+
 
 namespace EasySwoole\EasySwoole;
 
-use App\Storage\ChatMessage;
-use App\Storage\OnlineUser;
-use App\WebSocket\WebSocketEvents;
-use App\WebSocket\WebSocketParser;
-use EasySwoole\EasySwoole\Swoole\EventRegister;
+
+use App\Parser\TcpParser;
+use App\Parser\UdpParser;
+use App\Parser\WebSocketParser;
+use App\WebSocketEvent;
+use EasySwoole\Command\CommandManager;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
-use EasySwoole\FastCache\Cache;
-use EasySwoole\Http\Request;
-use EasySwoole\Http\Response;
+use EasySwoole\EasySwoole\Swoole\EventRegister;
+use EasySwoole\Socket\Bean\Response;
+use EasySwoole\Socket\Client\Tcp;
+use EasySwoole\Socket\Client\Udp;
+use EasySwoole\Socket\Client\WebSocket;
 use EasySwoole\Socket\Dispatcher;
-use swoole_server;
-use swoole_websocket_frame;
-use \Exception;
 
 class EasySwooleEvent implements Event
 {
@@ -29,41 +24,60 @@ class EasySwooleEvent implements Event
         date_default_timezone_set('Asia/Shanghai');
     }
 
-    /**
-     * 服务启动前
-     * @param EventRegister $register
-     * @throws Exception
-     */
     public static function mainServerCreate(EventRegister $register)
     {
-        $server = ServerManager::getInstance()->getSwooleServer();
+        // tcp
+        if (CommandManager::getInstance()->getOpt('mode') === 'tcp') {
+            $config = new \EasySwoole\Socket\Config();
+            $config->setType($config::TCP);
+            $config->setParser(TcpParser::class);
+            $dispatcher = new Dispatcher($config);
+            $config->setOnExceptionHandler(function (\Swoole\Server $server, \Throwable $throwable, string $raw, Tcp $client, Response $response) {
+                $response->setMessage('system error!');
+                $response->setStatus($response::STATUS_RESPONSE_AND_CLOSE);
+            });
+            $register->set($register::onReceive, function (\Swoole\Server $server, int $fd, int $reactorId, string $data) use ($dispatcher) {
+                $dispatcher->dispatch($server, $data, $fd, $reactorId);
+            });
+        }
 
-        OnlineUser::getInstance();
-        ChatMessage::getInstance();
-        Cache::getInstance()->setTempDir(EASYSWOOLE_ROOT . '/Temp')->attachToServer($server);
+        // udp
+        if (CommandManager::getInstance()->getOpt('mode') === 'udp') {
+            $config = new \EasySwoole\Socket\Config();
+            $config->setType($config::UDP);
+            $config->setParser(UdpParser::class);
+            $dispatcher = new Dispatcher($config);
+            $config->setOnExceptionHandler(function (\Swoole\Server $server, \Throwable $throwable, string $raw, Udp $client, Response $response) {
+                $response->setMessage('system error!');
+                $response->setStatus($response::STATUS_RESPONSE_AND_CLOSE);
+            });
+            $server = ServerManager::getInstance()->getSwooleServer();
+            $udpServer = $server->addListener('0.0.0.0', '9511', SWOOLE_UDP);
+            $udpServer->on($register::onPacket, function (\Swoole\Server $server, string $data, array $clientInfo) use ($dispatcher) {
+                $dispatcher->dispatch($server, $data, $clientInfo['server_socket'], $clientInfo['address'], $clientInfo['port']);
+            });
+        }
 
-        // 注册服务事件
-        $register->add(EventRegister::onOpen, [WebSocketEvents::class, 'onOpen']);
-        $register->add(EventRegister::onClose, [WebSocketEvents::class, 'onClose']);
+        // websocket
+        if (CommandManager::getInstance()->getOpt('mode') === 'websocket') {
+            $config = new \EasySwoole\Socket\Config();
+            $config->setType($config::WEB_SOCKET);
+            $config->setParser(WebSocketParser::class);
+            $dispatcher = new Dispatcher($config);
+            $config->setOnExceptionHandler(function (\Swoole\Server $server, \Throwable $throwable, string $raw, WebSocket $client, Response $response) {
+                $response->setMessage('system error!');
+                $response->setStatus($response::STATUS_RESPONSE_AND_CLOSE);
+            });
 
-        // 收到用户消息时处理
-        $conf = new \EasySwoole\Socket\Config;
-        $conf->setType($conf::WEB_SOCKET);
-        $conf->setParser(new WebSocketParser);
-        $dispatch = new Dispatcher($conf);
-        $register->set(EventRegister::onMessage, function (swoole_server $server, swoole_websocket_frame $frame) use ($dispatch) {
-            $dispatch->dispatch($server, $frame->data, $frame);
-        });
+            // 自定义握手
+            /*$websocketEvent = new WebSocketEvent();
+            $register->set(EventRegister::onHandShake, function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) use ($websocketEvent) {
+                $websocketEvent->onHandShake($request, $response);
+            });*/
 
-    }
-
-    public static function onRequest(Request $request, Response $response): bool
-    {
-        return true;
-    }
-
-    public static function afterRequest(Request $request, Response $response): void
-    {
-
+            $register->set($register::onMessage, function (\Swoole\Websocket\Server $server, \Swoole\Websocket\Frame $frame) use ($dispatcher) {
+                $dispatcher->dispatch($server, $frame->data, $frame);
+            });
+        }
     }
 }

@@ -1,34 +1,58 @@
-# 微聊
+# EasySwooleSocketDemo
 
-EASYSWOOLE 聊天室DEMO
+本`demo`为`EasySwoole`如何注册`Socket`服务器。
 
-## 在线体验
+初始化：
 
-[在线DEMO演示站](http://chat.evalor.cn/)
+`composer install`
 
-## 安装
-
-安装时遇到提示是否覆盖 `EasySwooleEvent.php` 请选择否 (输入 n 回车)
+框架目录：
 
 ```bash
-git clone https://github.com/easy-swoole/demo.git
-git checkout 3.x-chat
-composer install
-easyswoole install
-cp sample.env dev.env
+- App
+ - Parser
+    TcpParser.php - tcp解析器
+    UdpParser.php - udp解析器
+    WebsocketParser.php - websocket解析器
+ - TcpController tcp控制器目录
+ - UdpController udp控制器目录
+ - WebSocketController websocket控制器目录
+ WebsocketEvent.php websocket自定义握手
+- Test
+ tcp.php tcp客户端
+ udp.php udp客户端
+ websocket.php websocket客户端
 ```
 
-## 配置
+## Tcp
 
-修改 `dev.env` 内的配置项，改为自己服务器的信息
+启动：
 
-```ini
-'HOST' => 'http://127.0.0.1:9501',
-'WEBSOCKET_HOST' => 'ws://127.0.0.1:9501',
-```
+`php easyswoole server start -mode=tcp`
 
-## 启动
+测试：
 
-```bash
-php easyswoole start
-```
+`php Test/tcp.php`
+
+## Udp
+
+提示: `udp`服务器为`EasySwoole`子服务。
+
+启动：
+
+`php easyswoole server start -mode=udp`
+
+测试：
+
+`php Test/udp.php`
+
+## Websocket
+
+
+启动：
+
+`php easyswoole server start -mode=websocket`
+
+测试：
+
+`php Test/websocket.php`
