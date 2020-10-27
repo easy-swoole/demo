@@ -2,14 +2,32 @@
 > 可以注册多个自定义进程，但进程名字建议不相同。
 
 
-## 请先认真阅读手册 再进行体验
+## 安装
 
-- [EASYSWOOLE在线手册](https://www.easyswoole.com)
-- QQ交流群
-    - VIP群 579434607 （本群需要付费599元）
-    - EasySwoole官方一群 633921431(已满)
-    - EasySwoole官方二群 709134628
-    
-- 商业支持：
-    - QQ 291323003
-    - EMAIL admin@fosuss.com    
+一路回车即可。
+
+```bash
+git clone https://github.com/easy-swoole/demo.git
+cd demo
+git checkout 3.x-process
+composer install
+php vendor/easyswoole/easyswoole/bin/easyswoole install
+composer dump-autoload -o
+``` 
+
+## 启动
+
+```
+php easyswoole server start
+```
+
+
+查看进程运行状态：
+
+```bash
+php easyswoole process show -d
+```
+
+向进程发送数据：
+
+http://127.0.0.1:9501/process/write?text=xxx

@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: yf
- * Date: 2019-01-01
- * Time: 20:06
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 return [
-    'SERVER_NAME' => "EasySwoole",
+    'SERVER_NAME' => 'EasySwoole',
     'MAIN_SERVER' => [// 默认Server配置
         'LISTEN_ADDRESS' => '0.0.0.0',// 默认Server监听的地址**(3.0.7以前 为 HOST)
         'PORT'           => 9501,//默认Server监听的端口
@@ -20,7 +20,7 @@ return [
             'task_worker_num'          => 8,//运行的 worker 进程数量
             'task_max_request'         => 1000,// worker 完成该数量的请求后将退出，防止内存溢出
             'enable_static_handler'    => true,//加入以下两条配置以返回静态文件
-            'document_root'            => EASYSWOOLE_ROOT . "/Static",
+            'document_root'            => EASYSWOOLE_ROOT . '/Static',
         ],
     ],
     'TEMP_DIR'    => null,//临时文件存放的目录
