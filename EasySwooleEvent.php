@@ -1,13 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: yf
- * Date: 2018/5/28
- * Time: 下午6:33
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 namespace EasySwoole\EasySwoole;
-
 
 use App\Smarty;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
@@ -18,7 +17,6 @@ use EasySwoole\Template\Render;
 
 class EasySwooleEvent implements Event
 {
-
     public static function initialize()
     {
         // TODO: Implement initialize() method.
@@ -29,16 +27,5 @@ class EasySwooleEvent implements Event
     {
         Render::getInstance()->getConfig()->setRender(new Smarty());
         Render::getInstance()->attachServer(ServerManager::getInstance()->getSwooleServer());
-    }
-
-    public static function onRequest(Request $request, Response $response): bool
-    {
-        // TODO: Implement onRequest() method.
-        return true;
-    }
-
-    public static function afterRequest(Request $request, Response $response): void
-    {
-        // TODO: Implement afterAction() method.
     }
 }
