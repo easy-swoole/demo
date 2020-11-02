@@ -1,13 +1,19 @@
 {
-  "autoload": {
-    "psr-4": {
-      "App\\": "App/"
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    },
+    "require": {
+        "easyswoole/easyswoole": "3.4.*",
+        "easyswoole/rpc": "4.x"
+    },
+    "require-dev": {
+        "swoole/ide-helper": "4.*",
+        "friendsofphp/php-cs-fixer": "2.*"
+    },
+    "scripts": {
+        "cs-check": "/usr/bin/env php ./vendor/bin/php-cs-fixer fix --dry-run",
+        "cs-fix": "/usr/bin/env php ./vendor/bin/php-cs-fixer fix"
     }
-  },
-  "require": {
-    "easyswoole/easyswoole": "^3-dev",
-    "phpoffice/phpexcel": "^1.8",
-    "easyswoole/verifycode": "^3.0",
-    "easyswoole/rpc": "3.x"
-  }
 }
