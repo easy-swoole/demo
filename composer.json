@@ -1,0 +1,17 @@
+{
+    "require": {
+        "easyswoole/easyswoole": "3.4.x"
+    },
+    "require-dev": {
+        "swoole/ide-helper": "4.*",
+        "friendsofphp/php-cs-fixer": "2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    },
+    "scripts": {
+        "cs-fix": "/usr/bin/env php ./vendor/bin/php-cs-fixer fix"
+    }
+}
