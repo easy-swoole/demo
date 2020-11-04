@@ -8,8 +8,10 @@
 
 namespace EasySwoole\EasySwoole;
 
+use EasySwoole\Component\Timer;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
+use EasySwoole\EasySwoole\Task\TaskManager;
 
 class EasySwooleEvent implements Event
 {
@@ -20,5 +22,13 @@ class EasySwooleEvent implements Event
 
     public static function mainServerCreate(EventRegister $register)
     {
+        $register->add($register::onWorkerStart, function (\Swoole\Server $server, int $workerId) {
+            // 在定时器中使用task
+            Timer::getInstance()->loop(1000, function () use ($workerId) {
+                TaskManager::getInstance()->sync(function () use ($workerId) {
+                    var_dump('sync---' . $workerId . PHP_EOL);
+                });
+            });
+        });
     }
 }
