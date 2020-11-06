@@ -27,7 +27,7 @@ class Rpc extends Controller
         // 设置超时时间
         $client->exec(100);
 
-        // 获取当前调用统计次数
+        // 获取当前调用统计次数 这里是服务端所提供的 因为本demo客户端及服务端部署在一起 所以方可调用
         $result['getList'] = \EasySwoole\Rpc\Rpc::getInstance()->statisticsTable('test_a')->get('getList');
         $this->writeJson(200, $result);
     }
