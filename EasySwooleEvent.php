@@ -94,7 +94,7 @@ class EasySwooleEvent implements Event
         Rpc::getInstance($config);
 
 
-        // 如果本服务需要调用其它服务 需要进行添加 不需要跳过
+        // 向外部暴露本地址所部署的服务 如果本机器只是调用者 无需进行add操作
         Rpc::getInstance()->add(new TestA());
         Rpc::getInstance()->add(new TestB());
 
