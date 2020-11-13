@@ -41,7 +41,7 @@ abstract class ApiBase extends BaseController
             $msg = $throwable->getValidate()->getError()->getErrorRuleMsg();
             $this->writeJson(400, null, "{$msg}");
         } else {
-            if (Core::getInstance()->runMode()) {
+            if (Core::getInstance()->runMode() === 'dev') {
                 $this->writeJson(500, null, $throwable->getMessage());
             } else {
                 Trigger::getInstance()->throwable($throwable);
