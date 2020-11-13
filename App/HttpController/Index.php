@@ -1,23 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: Tioncico
- * Date: 2019/3/18 0018
- * Time: 9:40
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 namespace App\HttpController;
 
-
-use App\Utility\TrackerManager;
-use EasySwoole\Http\AbstractInterface\Controller;
-use EasySwoole\Trace\Bean\Tracker;
-
 class Index extends Base
 {
-    function index()
+    public function index()
     {
         $this->response()->write('666');
-        // TODO: Implement index() method.
     }
 }

@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: yf
- * Date: 2019-01-01
- * Time: 20:06
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 return [
-    'SERVER_NAME'   => "EasySwoole",//服务名
+    'SERVER_NAME'   => 'EasySwoole',//服务名
     'MAIN_SERVER'   => [
         'LISTEN_ADDRESS' => '0.0.0.0',//监听地址
         'PORT'           => 9501,//监听端口

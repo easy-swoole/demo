@@ -1,49 +1,32 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: Tioncico
- * Date: 2019/3/18 0018
- * Time: 14:56
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 namespace App\Utility;
 
-
-use EasySwoole\Trace\AbstractInterface\LoggerInterface;
+use EasySwoole\Log\LoggerInterface;
 
 class Logger implements LoggerInterface
 {
     /**
      * 打印到控制台并记录日志
      * console
-     * @param string $str
-     * @param null   $category
-     * @param bool   $saveLog
-     * @return string|null
-     * @author Tioncico
-     * Time: 14:57
      */
-    public function console(string $str, $category = null, $saveLog = true): ?string
+    public function console(?string $msg, int $logLevel = self::LOG_LEVEL_INFO, string $category = 'console')
     {
-        // TODO: Implement console() method.
-        echo $str;
+        echo $msg;
     }
 
     /**
      * 自定义进行日志存储,比如存到数据库,存到文件,或者请求其他地方存储
      * log
-     * @param string   $str
-     * @param null     $logCategory
-     * @param int|null $timestamp
-     * @return string|null
-     * @author Tioncico
-     * Time: 14:56
      */
-    public function log(string $str, $logCategory = null, int $timestamp = null): ?string
+    public function log(?string $msg, int $logLevel = self::LOG_LEVEL_INFO, string $category = 'debug')
     {
-        // TODO: Implement log() method.
-        file_put_contents(getcwd()."/test.log",$str.PHP_EOL,FILE_APPEND);
+        file_put_contents(EASYSWOOLE_TEMP_DIR.'/test.log', $msg.PHP_EOL, FILE_APPEND);
     }
-
-
 }
