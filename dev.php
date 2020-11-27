@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: yf
- * Date: 2019-01-01
- * Time: 20:06
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 return [
-    'SERVER_NAME'   => "EasySwoole",//服务名
+    'SERVER_NAME'   => 'EasySwoole',//服务名
     'MAIN_SERVER'   => [
         'LISTEN_ADDRESS' => '0.0.0.0',//监听地址
         'PORT'           => 9501,//监听端口
@@ -17,8 +17,6 @@ return [
         'SETTING'        => [// Swoole Server的运行配置（ 完整配置可见[Swoole文档](https://wiki.swoole.com/wiki/page/274.html) ）
             'worker_num'       => 8,//运行的  worker进程数量
             'max_request'      => 5000,// worker 完成该数量的请求后将退出，防止内存溢出
-            'task_worker_num'  => 8,//运行的 task_worker 进程数量
-            'task_max_request' => 1000// task_worker 完成该数量的请求后将退出，防止内存溢出
         ]
     ],
     'TEMP_DIR'      => null,//临时文件存放的目录
@@ -29,10 +27,6 @@ return [
         'PORT'           => 9500,//监听端口
         'USER'           => 'root',//验权用户名
         'PASSWORD'       => '123456'//验权用户名
-    ],
-    'FAST_CACHE'    => [//fastCache组件
-        'PROCESS_NUM' => 0,//进程数,大于0才开启
-        'BACKLOG'     => 256,//数据队列缓冲区大小
     ],
     'DISPLAY_ERROR' => true,//是否开启错误显示
 ];

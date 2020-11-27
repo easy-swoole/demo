@@ -1,64 +1,38 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: yf
- * Date: 2018/5/28
- * Time: 下午6:33
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 namespace EasySwoole\EasySwoole;
 
-
-use App\Utility\TrackerManager;
+use App\Utility\HttpEvent;
 use EasySwoole\Component\Di;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
-use EasySwoole\Http\Message\Status;
-use EasySwoole\Http\Message\Stream;
-use EasySwoole\Http\Request;
-use EasySwoole\Http\Response;
-use EasySwoole\Trace\Bean\Tracker;
 
 class EasySwooleEvent implements Event
 {
-
     public static function initialize()
     {
         // TODO: Implement initialize() method.
         date_default_timezone_set('Asia/Shanghai');
+
+        // 全局-http请求前
+        Di::getInstance()->set(SysConst::HTTP_GLOBAL_ON_REQUEST, [HttpEvent::class, 'onRequest']);
+        // 全局-http请求后
+        Di::getInstance()->set(SysConst::HTTP_GLOBAL_AFTER_REQUEST, [HttpEvent::class, 'afterRequest']);
+        // trigger 重写
+        Di::getInstance()->set(SysConst::TRIGGER_HANDLER, \App\Utility\Trigger::class);
+        // logger重写
+        Di::getInstance()->set(SysConst::LOGGER_HANDLER, \App\Utility\Logger::class);
     }
 
     public static function mainServerCreate(EventRegister $register)
     {
 
         // TODO: Implement mainServerCreate() method.
-    }
-
-    public static function onRequest(Request $request, Response $response): bool
-    {
-        //不建议在这拦截请求,可增加一个控制器基类进行拦截
-        //如果真要拦截,判断之后return false即可
-        $code = $request->getRequestParam('code');
-        if (0/*empty($code)验证失败*/){
-            $data = Array(
-                "code" => Status::CODE_BAD_REQUEST,
-                "result" => [],
-                "msg" => '验证失败'
-            );
-            $response->write(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-            $response->withHeader('Content-type', 'application/json;charset=utf-8');
-            $response->withStatus(Status::CODE_BAD_REQUEST);
-            return false;
-        }
-
-        return true;
-    }
-
-    public static function afterRequest(Request $request, Response $response): void
-    {
-        $responseMsg = $response->getBody()->__toString();
-        Logger::getInstance()->console("响应内容:".$responseMsg);
-        //响应状态码:
-        var_dump($response->getStatusCode());
     }
 }

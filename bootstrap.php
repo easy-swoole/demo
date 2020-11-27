@@ -6,12 +6,4 @@
  * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
-namespace App\HttpController;
-
-class Index extends Base
-{
-    public function index()
-    {
-        $this->response()->write('666');
-    }
-}
+date_default_timezone_set('Asia/Shanghai');
