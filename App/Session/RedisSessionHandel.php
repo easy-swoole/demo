@@ -28,7 +28,7 @@ class RedisSessionHandel implements \SessionHandlerInterface
     public function destroy($session_id)
     {
         return Redis::invoke("", function (\EasySwoole\Redis\Redis $redis) use ($session_id) {
-            $redis->del($this->temp . $session_id);
+            $redis->del($this->prefix . $session_id);
         });
     }
 
