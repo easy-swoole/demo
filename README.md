@@ -11,6 +11,7 @@
 git clone https://github.com/easy-swoole/demo.git demo
 cd demo && composer install
 php vendor/easyswoole/easyswoole/bin/easyswoole install
+composer dump-autoload
 ```
 ### 配置数据库
 在 `dev.php` 中的 `MYSQL` 配置项中配置数据库
