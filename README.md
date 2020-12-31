@@ -35,12 +35,12 @@ php easyswoole server start
 
 - [EASYSWOOLE在线手册](https://www.easyswoole.com)
 - QQ 交流群
-    - VIP群 579434607 （本群需要付费599元）
+    - VIP 群 579434607 （本群需要付费599元）
     - EasySwoole 官方一群 633921431(已满)
     - EasySwoole 官方二群 709134628(已满)
     - EasySwoole 官方三群 932625047(已满)
-    - Easyswoole 官方四群 779897753
-    - Easyswoole 官方五群 853946743
+    - EasySwoole 官方四群 779897753
+    - EasySwoole 官方五群 853946743
     
 - 商业支持：
     - QQ 291323003
