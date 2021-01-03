@@ -28,7 +28,7 @@ class PlatesRender implements RenderInterface
      * @param array $options
      * @return string|null
      */
-    public function render(string $template, array $data = [], array $options = []): ?string
+    public function render(string $template, ?array $data = null, ?array $options = null): ?string
     {
         // 支持模板引擎以闭包形式设置(多进程渲染时请注意进程隔离问题)
         if (isset($options['call']) && is_callable($options['call'])) {
@@ -57,7 +57,7 @@ class PlatesRender implements RenderInterface
      * @param \Throwable $throwable
      * @return string
      */
-    public function onException(\Throwable $throwable): string
+    public function onException(\Throwable $throwable, $arg): string
     {
         return 'Error: ' . $throwable->getMessage();
     }

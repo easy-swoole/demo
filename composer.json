@@ -19,7 +19,7 @@
         "easyswoole/swoole-ide-helper": "^1.0",
         "easyswoole/fast-cache": "^1.0",
         "nette/mail": "^3.0",
-        "easyswoole/template": "^1.0",
+        "easyswoole/template": "1.1.0",
         "league/plates": "3.*",
         "easyswoole/smtp": "^1.0",
         "easyswoole/socket": "^1.1"
