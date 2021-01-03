@@ -1,9 +1,16 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace App\Utility;
 
 use EasySwoole\Template\RenderInterface;
 use League\Plates\Engine;
+use Throwable;
 
 /**
  * 模板渲染器
@@ -13,6 +20,7 @@ use League\Plates\Engine;
 class PlatesRender implements RenderInterface
 {
     private $views;
+
     private $engine;
 
     public function __construct($views)
@@ -54,7 +62,7 @@ class PlatesRender implements RenderInterface
 
     /**
      * 异常时可以输出错误模板
-     * @param \Throwable $throwable
+     * @param Throwable $throwable
      * @return string
      */
     public function onException(\Throwable $throwable, $arg): string

@@ -1,4 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
+ */
 
 namespace App\Storage;
 
@@ -14,15 +20,17 @@ use Swoole\Table;
 class OnlineUser
 {
     use Singleton;
+
     protected $table;  // 储存用户信息的Table
 
     const INDEX_TYPE_ROOM_ID = 1;
+
     const INDEX_TYPE_ACTOR_ID = 2;
 
     /**
      * OnlineUser constructor.
      */
-    function __construct()
+    public function __construct()
     {
         TableManager::getInstance()->add('onlineUsers', [
             'fd' => ['type' => Table::TYPE_INT, 'size' => 8],
@@ -41,9 +49,9 @@ class OnlineUser
      * @param $avatar
      * @return mixed
      */
-    function set($fd, $username, $avatar)
+    public function set($fd, $username, $avatar)
     {
-        return $this->table->set($fd, [
+        return $this->table->set((string)$fd, [
             'fd' => $fd,
             'avatar' => $avatar,
             'username' => $username,
@@ -56,9 +64,9 @@ class OnlineUser
      * @param $fd
      * @return array|mixed|null
      */
-    function get($fd)
+    public function get($fd)
     {
-        $info = $this->table->get($fd);
+        $info = $this->table->get((string)$fd);
         return is_array($info) ? $info : null;
     }
 
@@ -67,7 +75,7 @@ class OnlineUser
      * @param $fd
      * @param $data
      */
-    function update($fd, $data)
+    public function update($fd, $data)
     {
         $info = $this->get($fd);
         if ($info) {
@@ -81,11 +89,11 @@ class OnlineUser
      * 删除一条用户信息
      * @param $fd
      */
-    function delete($fd)
+    public function delete($fd)
     {
-        $info = $this->get($fd);
+        $info = $this->get((string)$fd);
         if ($info) {
-            $this->table->del($info['fd']);
+            $this->table->del((string)$info['fd']);
         }
     }
 
@@ -93,7 +101,7 @@ class OnlineUser
      * 心跳检查
      * @param int $ttl
      */
-    function heartbeatCheck($ttl = 60)
+    public function heartbeatCheck($ttl = 60)
     {
         foreach ($this->table as $item) {
             $time = $item['time'];
@@ -107,7 +115,7 @@ class OnlineUser
      * 心跳更新
      * @param $fd
      */
-    function updateHeartbeat($fd)
+    public function updateHeartbeat($fd)
     {
         $this->update($fd, [
             'last_heartbeat' => time()
@@ -118,7 +126,7 @@ class OnlineUser
      * 直接获取当前的表
      * @return Table|null
      */
-    function table()
+    public function table()
     {
         return $this->table;
     }

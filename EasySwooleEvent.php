@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: yf
- * Date: 2018/5/28
- * Time: 下午6:33
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 namespace EasySwoole\EasySwoole;
@@ -15,11 +15,7 @@ use App\WebSocket\WebSocketParser;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
 use EasySwoole\FastCache\Cache;
-use EasySwoole\Http\Request;
-use EasySwoole\Http\Response;
 use EasySwoole\Socket\Dispatcher;
-use swoole_server;
-use swoole_websocket_frame;
 use \Exception;
 
 class EasySwooleEvent implements Event
@@ -51,19 +47,8 @@ class EasySwooleEvent implements Event
         $conf->setType($conf::WEB_SOCKET);
         $conf->setParser(new WebSocketParser);
         $dispatch = new Dispatcher($conf);
-        $register->set(EventRegister::onMessage, function (swoole_server $server, swoole_websocket_frame $frame) use ($dispatch) {
+        $register->set(EventRegister::onMessage, function (\Swoole\Server $server, \Swoole\WebSocket\Frame $frame) use ($dispatch) {
             $dispatch->dispatch($server, $frame->data, $frame);
         });
-
-    }
-
-    public static function onRequest(Request $request, Response $response): bool
-    {
-        return true;
-    }
-
-    public static function afterRequest(Request $request, Response $response): void
-    {
-
     }
 }

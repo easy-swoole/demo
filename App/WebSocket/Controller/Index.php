@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: evalor
- * Date: 2018-12-02
- * Time: 01:19
+ * This file is part of EasySwoole
+ * @link     https://github.com/easy-swoole
+ * @document https://www.easyswoole.com
+ * @license https://github.com/easy-swoole/easyswoole/blob/3.x/LICENSE
  */
 
 namespace App\WebSocket\Controller;
@@ -19,7 +19,7 @@ class Index extends Base
      * 当前用户信息
      * @throws Exception
      */
-    function info()
+    public function info()
     {
         $info = $this->currentUser();
         if ($info) {
@@ -36,10 +36,10 @@ class Index extends Base
      * 在线用户列表
      * @throws Exception
      */
-    function online()
+    public function online()
     {
         $table = OnlineUser::getInstance()->table();
-        $users = array();
+        $users = [];
 
         foreach ($table as $user) {
             $users['user' . $user['fd']] = $user;
@@ -52,7 +52,7 @@ class Index extends Base
         }
     }
 
-    function heartbeat()
+    public function heartbeat()
     {
         $this->response()->setMessage('PONG');
     }
