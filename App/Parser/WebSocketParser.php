@@ -21,7 +21,7 @@ class WebSocketParser implements ParserInterface
         $controller = !empty($data['controller']) ? $data['controller'] : 'Index';
         $action = !empty($data['action']) ? $data['action'] : 'index';
         $param = !empty($data['param']) ? $data['param'] : [];
-        $controller = "App\\WebsocketController\\{$controller}";
+        $controller = "App\\WebSocketController\\{$controller}";
         $caller->setControllerClass($controller);
         $caller->setAction($action);
         $caller->setArgs($param);
