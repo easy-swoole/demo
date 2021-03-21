@@ -1,9 +1,6 @@
 {
   "require": {
-    "easyswoole/easyswoole": "3.x",
-    "easyswoole/swoole-ide-helper": "^1.3",
-    "easyswoole/orm": "dev-master",
-    "easyswoole/http-annotation": "^1.0"
+    "easyswoole/easyswoole": "3.4.x"
   },
   "autoload": {
     "psr-4": {
