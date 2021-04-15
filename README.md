@@ -6,7 +6,7 @@
 
 ## 安装
 
-安装时遇到提示是否覆盖 `EasySwooleEvent.php` 和 `dev.php` 时，请选择否 (输入 `N` 回车)
+安装时遇到提示是否覆盖 `EasySwooleEvent.php`、`dev.php`、`produce.php` 时，请选择否 (输入 `N` 回车)
 
 ```bash
 git clone https://github.com/easy-swoole/demo.git
@@ -15,6 +15,16 @@ git checkout 3.x-ws-http
 composer install
 php vendor/easyswoole/easyswoole/bin/easyswoole install
 composer dump-autoload -o
+```
+
+执行 `php vendor/easyswoole/easyswoole/bin/easyswoole install` 时，遇到提示时一直输入 `N` 然后回车即可安装成功。如下所示：
+
+```bash
+Index.php has already existed, do you want to replace it? [ Y / N (default) ] : N
+Router.php has already existed, do you want to replace it? [ Y / N (default) ] : N
+dev.php has already existed, do you want to replace it? [ Y / N (default) ] : N
+produce.php has already existed, do you want to replace it? [ Y / N (default) ] : N
+EasySwooleEvent.php has already existed, do you want to replace it? [ Y / N (default) ] : N
 ```
 
 ## 启动项目

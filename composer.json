@@ -1,11 +1,11 @@
 {
-  "require": {
-    "easyswoole/easyswoole": "3.4.x"
-  },
-  "autoload": {
-    "psr-4": {
-      "App\\": "App/"
+    "require": {
+        "easyswoole/easyswoole": "3.4.x",
+        "swoole/ide-helper": "^4.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
     }
-  }
 }
-
