@@ -20,6 +20,7 @@ class EasySwooleEvent implements Event
 
     public static function mainServerCreate(EventRegister $register)
     {
+        ###### 处理 WebSocket 服务 ######
         $config = new \EasySwoole\Socket\Config();
         $config->setType($config::WEB_SOCKET);
         $config->setParser(WebSocketParser::class);
