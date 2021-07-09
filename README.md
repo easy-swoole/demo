@@ -4,7 +4,7 @@ EASYSWOOLE 聊天室DEMO
 
 ## 在线体验
 
-[在线DEMO演示站](http://easyswoole-chat.gaobinzhan.com/)
+[在线DEMO演示站](https://easyswoole-chat.stitch.cn/)
 
 ## 安装
 
