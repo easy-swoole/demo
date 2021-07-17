@@ -8,7 +8,7 @@ EASYSWOOLE 聊天室DEMO
 
 ## 安装
 
-安装时遇到提示是否覆盖 `EasySwooleEvent.php` 请选择否 (输入 n 回车)
+安装时遇到提示是否覆盖,全部为`N`.
 
 ```bash
 git clone https://github.com/easy-swoole/demo.git
