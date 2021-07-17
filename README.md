@@ -8,7 +8,7 @@
 
 安装框架：
 
-`php vendor/bin easyswoole install`
+`php vendor/bin/easyswoole install`
 
 一键回车即可。
 
