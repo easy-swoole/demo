@@ -1,8 +1,9 @@
 {
     "require": {
         "easyswoole/easyswoole": "3.4.x",
-        "easyswoole/orm": "dev-master",
-        "easyswoole/swoole-ide-helper": "^1.3"
+        "easyswoole/rpc": "^5.0",
+        "easyswoole/redis-pool": "^2.2",
+        "easyswoole/queue": "^3.0"
     },
     "autoload": {
         "psr-4": {

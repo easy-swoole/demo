@@ -4,11 +4,14 @@
 namespace App\HttpController;
 
 
+use App\Utility\MyRpc;
+use EasySwoole\Component\Di;
 use EasySwoole\Http\AbstractInterface\Controller;
+use EasySwoole\Rpc\Protocol\Response;
+use EasySwoole\Rpc\Rpc;
 
 class Index extends Controller
 {
-
     public function index()
     {
         $file = EASYSWOOLE_ROOT.'/vendor/easyswoole/easyswoole/src/Resource/Http/welcome.html';

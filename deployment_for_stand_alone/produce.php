@@ -26,19 +26,8 @@ return [
         'level' => LoggerInterface::LOG_LEVEL_DEBUG,
         'handler' => null,
         'logConsole' => true,
-        'displayConsole'=>true,
+        'displayConsole' => true,
         'ignoreCategory' => []
     ],
-    'TEMP_DIR' => null,
-    'MYSQL'         => [
-        'host'          => '127.0.0.1',
-        'port'          => 3306,
-        'user'          => 'testEs',
-        'password'      => 'KdhHirAsRRY8WAaM',
-        'database'      => 'testEs',
-        'timeout'       => 5,
-        'charset'       => 'utf8mb4',
-        'POOL_MAX_NUM'  => 20,
-        'POOL_TIME_OUT' => 1
-    ]
+    'TEMP_DIR' => null
 ];

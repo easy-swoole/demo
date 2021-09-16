@@ -1,57 +1,36 @@
-# EASYSWOOLE DEMO
+# EasySwoole-RPC 5.x 版本 demo
 
-## 关于具体 demo 在哪
-
-`demo/3.x` 分支对应了 `EasySwoole 3.x` 版本的 `demo`，`3.x` 主要是 `EasySwoole` 基础使用的例子，其他使用请看 `3.x` 对应的分支。
-
-## 如何运行 `DEMO`
-
-安装项目时请不要覆盖默认的配置文件（`dev.php` / `produce.php`）以及 `EasySwooleEvent` 事件注册文件（`EasySwooleEvent.php`）
-
-### 安装 EasySwoole
+## 下载 5.x-rpc-demo
 
 ```bash
-git clone https://github.com/easy-swoole/demo.git
-cd demo
-git checkout 3.x
+git clone https://gitee.com/1592328848/easyswoole_demo.git
+cd easyswoole_demo
+git checkout 5.x-rpc
+```
+
+
+
+## 安装和运行
+
+## 1.安装单机部署版 5.x-rpc-demo(仅支持单机内部进行 rpc 调用)
+
+```bash
+# 切到到单机部署 demo 目录
+cd deployment_for_stand_alone
+# 安装
 composer install
 php vendor/easyswoole/easyswoole/bin/easyswoole install
+# 然后一直按回车
 composer dump-autoload
-```
 
-### 配置数据库
-在 `dev.php` 中的 `MYSQL` 配置项中配置数据库
-
-### 安装项目数据库
-运行 `/Doc/sql.sql` 文件
-
-## 启动项目
-
-### 启动项目
-
-```
+# 启动服务
 php easyswoole server start
 ```
 
-### 访问 `url`
+> 注意：`rpc` 服务端是在 `EasySwoole` 全局事件 `EasySwooleEvent.php` 中进行注册，具体如何请查看 [`EasySwooleEvent.php`](https://gitee.com/1592328848/easyswoole_demo/blob/5.x-rpc/deployment_for_stand_alone/EasySwooleEvent.php)。`rpc` 客户端调用在 [`App\HttpController\RpcClientOne.php`](https://gitee.com/1592328848/easyswoole_demo/blob/5.x-rpc/deployment_for_stand_alone/App/HttpController/RpcClientOne.php)  和 [`App\HttpController\RpcClientTwo.php`](https://gitee.com/1592328848/easyswoole_demo/blob/5.x-rpc/deployment_for_stand_alone/App/HttpController/RpcClientTwo.php) 中进行调用。
 
-```bash
-管理员登陆: http://127.0.0.1:9501/Api/Admin/Auth/login?account=xsk&password=123456 
-公共请求banner: http://127.0.0.1:9501/Api/Common/Banner/getAll
-会员登陆: http://127.0.0.1:9501/Api/User/Auth/login?userAccount=xsk&userPassword=123456
-```
 
-## 请先认真阅读手册 再进行体验
 
-- [EASYSWOOLE 在线手册](https://www.easyswoole.com)
-- QQ 交流群
-    - VIP 群 579434607 （本群需要付费599元）
-    - EasySwoole 官方一群 633921431(已满)
-    - EasySwoole 官方二群 709134628(已满)
-    - EasySwoole 官方三群 932625047(已满)
-    - EasySwoole 官方四群 779897753(已满)
-    - EasySwoole 官方五群 853946743
-    
-- 商业支持：
-    - QQ 291323003
-    - EMAIL admin@fosuss.com    
+## 2.安装分布式部署版本 5.x-rpc-demo
+
+暂时未完成。
