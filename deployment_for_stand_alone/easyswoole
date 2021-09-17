@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+$file = null;
+foreach ([__DIR__ . '/./vendor/bin/easyswoole', __DIR__ . '/./bin/easyswoole'] as $file) {
+    if (file_exists($file)) {
+        require $file;
+        break;
+    }
+}
+if(!file_exists($file)){
+    die("include vendor/bin/easyswoole fail\n");
+}
