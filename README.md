@@ -3,12 +3,10 @@
 ## 下载 5.x-rpc-demo
 
 ```bash
-git clone https://gitee.com/1592328848/easyswoole_demo.git
-cd easyswoole_demo
-git checkout 5.x-rpc
+git clone https://github.com/easy-swoole/demo.git
+cd demo
+git checkout 3.x-rpc-5.x
 ```
-
-
 
 ## 安装和运行
 
@@ -28,8 +26,6 @@ php easyswoole server start
 ```
 
 > 注意：`rpc` 服务端是在 `EasySwoole` 全局事件 `EasySwooleEvent.php` 中进行注册，具体如何请查看 [`EasySwooleEvent.php`](https://gitee.com/1592328848/easyswoole_demo/blob/5.x-rpc/deployment_for_stand_alone/EasySwooleEvent.php)。`rpc` 客户端调用在 [`App\HttpController\RpcClientOne.php`](https://gitee.com/1592328848/easyswoole_demo/blob/5.x-rpc/deployment_for_stand_alone/App/HttpController/RpcClientOne.php)  和 [`App\HttpController\RpcClientTwo.php`](https://gitee.com/1592328848/easyswoole_demo/blob/5.x-rpc/deployment_for_stand_alone/App/HttpController/RpcClientTwo.php) 中进行调用。
-
-
 
 ## 2.安装分布式部署版本 5.x-rpc-demo
 
